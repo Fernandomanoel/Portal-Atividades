@@ -1,20 +1,25 @@
-# Portal de Atividades
+# MicroAtividades
 
-Página única (sem dependências ou build) com duas abas:
+Página única (sem dependências ou build), com um navbar no topo alternando entre duas views:
 
-- **Atividades** — cada curso tem um card com um formulário para adicionar itens (título, data, descrição), salvos no `localStorage` do navegador.
-- **Provas** — protegida por senha, lista os arquivos reais guardados em `provas/<curso>/` (PDFs, DOCX, links, provas interativas, etc.), organizados por categoria numa barra lateral, um card por curso, no mesmo visual da aba Atividades.
+- **Início (Atividades)** — banner, carrossel de atividades e cards "Mais Atividades", com modo escuro.
+- **Provas** — protegida por senha, lista os arquivos reais guardados em `provas/<curso>/` (PDFs, DOCX, links, provas interativas, etc.), organizados por categoria numa navbar própria, um card por curso.
+
+Provas interativas (`.prova.js`) abrem numa terceira view de página inteira, com um botão para voltar ao Início — ver `COMO-CRIAR-PROVAS.md` para o formato.
 
 ## Estrutura
 
 ```
 .
-├── index.html                          # marcação e templates dos cards/itens/modal de prova
+├── index.html                          # marcação e templates dos cards/perguntas
+├── COMO-CRIAR-PROVAS.md                # formato das provas interativas (.prova.js), autossuficiente
 ├── css/
-│   └── style.css                       # estilos
+│   ├── style.css                       # estilos gerais do site (navbar, banner, carrossel, provas)
+│   └── quiz.css                        # estilos só da prova interativa (independente do resto)
 ├── js/
 │   ├── script.js                       # núcleo: navegação entre views, carrossel, modo escuro
-│   ├── provas.js                       # área de provas: senha, listagem, filtro, provas interativas
+│   ├── quiz.js                         # motor da prova interativa (independente do resto)
+│   ├── provas.js                       # área de provas: senha, listagem de arquivos, filtro por categoria
 │   └── provas-data.js                  # gerado — lista de arquivos/categorias de provas/ (não editar à mão)
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/provas-data.js a partir de provas/
@@ -25,6 +30,8 @@ Página única (sem dependências ou build) com duas abas:
 └── provas/
     └── <curso>/                        # arquivos reais das provas, organizados por curso
 ```
+
+`js/quiz.js` + `css/quiz.css` só sabem rodar uma prova (carregar o `.prova.js`, desenhar as perguntas, receber o envio); não sabem nada sobre cursos, categorias ou senha. Dá pra copiar os dois pra outro projeto sozinhos, desde que o HTML tenha os elementos e templates que `quiz.js` espera (documentado no topo do próprio arquivo) e uma função `showView(nome)` para abrir/fechar a página da prova.
 
 ## Como rodar
 
@@ -38,24 +45,18 @@ python3 -m http.server 8000
 ## Adicionando provas (arquivo comum: PDF, DOCX, link, etc.)
 
 1. Coloque o arquivo dentro de `provas/<curso>/` (crie a pasta do curso se ainda não existir).
-2. Se for um curso novo, adicione-o em `CATEGORY_MAP` no topo de `scripts/generate-provas-manifest.py` (senão ele cai em "Outros" na barra lateral).
+2. Se for um curso novo, adicione-o em `CATEGORY_MAP` no topo de `scripts/generate-provas-manifest.py` (senão ele cai em "Outros" na navegação).
 3. Rode `python3 scripts/generate-provas-manifest.py` para atualizar `js/provas-data.js`.
 4. Recarregue a página — o arquivo aparece automaticamente no card do curso na aba Provas.
 
 ## Adicionando uma prova interativa (respondida no próprio portal)
 
-Existem dois formatos, os dois em arquivos `.prova.js` dentro de `provas/<curso>/`:
+Guia completo e autossuficiente em **`COMO-CRIAR-PROVAS.md`** — pensado para ser copiado inteiro numa conversa com qualquer IA e gerar uma prova nova sem precisar de mais contexto. Resumo:
 
-**Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora e mostra "X de Y corretas". A correção é feita inteiramente no navegador do aluno — não há servidor nem banco de dados — então trate como autoavaliação, não como prova oficial à prova de cola.
+- **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora, mostra "X de Y corretas". Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
+- **Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas. O aluno escreve, envia uma única vez (sem opção de refazer) e a tela de revisão mostra as respostas com um campo "Nota" para o instrutor preencher ali mesmo. Sem indicação automática de certo/errado. A trava contra reenvio é por navegador (`localStorage`), não por aluno — o site não tem login de aluno.
 
-**Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas, sem alternativas. O aluno escreve, envia uma única vez (não dá para refazer, nem se acertar nem se errar — não existe "acertar/errar" automático aqui) e a tela de revisão mostra o que ele escreveu junto com um campo "Nota" para o instrutor preencher ali mesmo, olhando as respostas. A prova enviada (respostas + nota) fica salva no `localStorage` daquele navegador — é uma trava por aparelho, não por aluno; como o site não tem cadastro nem login de aluno, não dá pra impedir de verdade que alguém troque de navegador ou limpe os dados pra refazer.
-
-Passos, para os dois formatos:
-
-1. Copie o modelo (`scripts/exemplo.prova.js` ou `scripts/exemplo-descritiva.prova.js`) para dentro de `provas/<curso>/`, com um nome terminado em `.prova.js` (ex: `modulo-1.prova.js`).
-2. Edite o título e as perguntas dentro do arquivo (o formato está comentado nele).
-3. Rode `python3 scripts/generate-provas-manifest.py`.
-4. Na aba Provas, o card do curso passa a mostrar um botão "Fazer prova"; ao clicar, abre um modal com as perguntas, sem sair da página.
+Depois de copiar o modelo pra `provas/<curso>/` e editar, rode `python3 scripts/generate-provas-manifest.py` — o botão "Fazer prova" aparece sozinho no card do curso.
 
 ## Ícones dos cursos
 
@@ -63,5 +64,5 @@ Cada card (Atividades e Provas) mostra um quadrado colorido com a inicial do cur
 
 ## Funcionamento
 
-- **Atividades**: cada curso cadastrado ganha um card com um formulário para adicionar itens. Os itens são ordenados automaticamente pela data mais próxima (itens sem data ficam no final). Cursos podem ser adicionados/removidos pela barra de ferramentas no topo. Tudo é salvo no `localStorage`, na chave `portal-atividades`.
-- **Provas**: a aba fica bloqueada por uma senha (definida em `js/provas.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois disso fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`), e o botão "Sair" tranca de novo. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte). **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.
+- **Início/Atividades**: carrossel e cards estáticos, definidos direto no `index.html` (não vêm de `provas/`).
+- **Provas**: a view fica bloqueada por uma senha (definida em `js/provas.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois disso fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`), e o botão "Sair" tranca de novo. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte). **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.

@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MicroAtividades</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/quiz.css">
   <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
 </head>
 
@@ -317,9 +318,15 @@
     </div>
   </template>
 
-  <!-- provas-data.js precisa vir antes de provas.js (define os dados) -->
+  <!--
+    Ordem: provas-data.js define os dados que provas.js consome; script.js
+    define showView(), usada por quiz.js. Entre quiz.js e provas.js a ordem
+    não importa de verdade (as funções só são chamadas depois, em resposta
+    a cliques), mas fica assim porque provas.js chama openQuiz(), de quiz.js.
+  -->
   <script src="js/provas-data.js"></script>
   <script src="js/script.js"></script>
+  <script src="js/quiz.js"></script>
   <script src="js/provas.js"></script>
 </body>
 

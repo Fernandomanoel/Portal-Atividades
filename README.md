@@ -13,7 +13,8 @@ Página única (sem dependências ou build) com duas abas:
 ├── css/
 │   └── style.css                       # estilos
 ├── js/
-│   ├── script.js                       # estado, renderização, senha e provas interativas
+│   ├── script.js                       # núcleo: navegação entre views, carrossel, modo escuro
+│   ├── provas.js                       # área de provas: senha, listagem, filtro, provas interativas
 │   └── provas-data.js                  # gerado — lista de arquivos/categorias de provas/ (não editar à mão)
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/provas-data.js a partir de provas/
@@ -56,4 +57,4 @@ Cada card (Atividades e Provas) mostra um quadrado colorido com a inicial do cur
 ## Funcionamento
 
 - **Atividades**: cada curso cadastrado ganha um card com um formulário para adicionar itens. Os itens são ordenados automaticamente pela data mais próxima (itens sem data ficam no final). Cursos podem ser adicionados/removidos pela barra de ferramentas no topo. Tudo é salvo no `localStorage`, na chave `portal-atividades`.
-- **Provas**: a aba fica bloqueada por uma senha (definida em `js/script.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois disso fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`). A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte). **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.
+- **Provas**: a aba fica bloqueada por uma senha (definida em `js/provas.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois disso fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`), e o botão "Sair" tranca de novo. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte). **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.

@@ -743,59 +743,37 @@ body.dark-mode .provas-logout {
   white-space: nowrap;
 }
 
-/* ================= MODAL DA PROVA ================= */
+/* ================= PÁGINA DA PROVA ================= */
 
-.quiz-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.quiz-modal-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.quiz-modal-content {
-  position: relative;
+.quiz-page {
   background: var(--card);
   border-radius: 24px;
   padding: 35px;
-  max-width: 640px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+  max-width: 720px;
+  margin: 0 auto;
+  box-shadow: var(--sombra);
 }
 
-.quiz-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 34px;
-  height: 34px;
+.quiz-voltar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border: none;
-  border-radius: 50%;
   background: var(--suave);
   color: var(--apagado);
-  font-size: 15px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: bold;
   cursor: pointer;
+  margin-bottom: 28px;
   transition: 0.3s ease;
 }
 
-.quiz-modal-close:hover {
-  background: var(--perigo);
+.quiz-voltar-btn:hover {
+  background: var(--azul);
   color: #fff;
-}
-
-#quiz-title {
-  margin: 0 40px 25px 0;
-  font-size: 22px;
+  transform: translateX(-3px);
 }
 
 .quiz-question {
@@ -1061,7 +1039,7 @@ body.dark-mode .provas-logout {
     grid-template-columns: 1fr;
   }
 
-  .quiz-modal-content {
+  .quiz-page {
     padding: 25px 20px;
   }
 }

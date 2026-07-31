@@ -208,6 +208,25 @@
 
     </section>
 
+    <!-- ================= VIEW: PROVA INTERATIVA ================= -->
+    <section id="view-quiz" class="view hidden">
+
+      <div class="banner">
+        <div class="banner-text">
+          <h1 id="quiz-title">Prova</h1>
+          <p>Responda e envie. Depois de enviada, não é possível refazer.</p>
+        </div>
+      </div>
+
+      <div class="quiz-page">
+        <button type="button" id="quiz-voltar-btn" class="quiz-voltar-btn">← Voltar para Atividades</button>
+
+        <form id="quiz-form"></form>
+        <div id="quiz-result" class="quiz-result hidden"></div>
+      </div>
+
+    </section>
+
   </div>
 
   <footer class="footer">
@@ -269,16 +288,6 @@
   <template id="provas-nav-item-template">
     <button type="button" class="provas-nav-btn"></button>
   </template>
-
-  <div id="quiz-modal" class="quiz-modal hidden">
-    <div class="quiz-modal-backdrop"></div>
-    <div class="quiz-modal-content" role="dialog" aria-modal="true">
-      <button type="button" id="quiz-modal-close" class="quiz-modal-close" aria-label="Fechar">✕</button>
-      <h2 id="quiz-title"></h2>
-      <form id="quiz-form"></form>
-      <div id="quiz-result" class="quiz-result hidden"></div>
-    </div>
-  </div>
 
   <template id="quiz-question-template">
     <fieldset class="quiz-question">

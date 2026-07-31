@@ -185,20 +185,16 @@ function loadQuiz(path) {
   });
 }
 
-const quizModal = document.getElementById("quiz-modal");
 const quizTitleEl = document.getElementById("quiz-title");
 const quizForm = document.getElementById("quiz-form");
 const quizResultEl = document.getElementById("quiz-result");
 
-function closeQuiz() {
-  quizModal.classList.add("hidden");
-  quizForm.innerHTML = "";
-  quizResultEl.classList.add("hidden");
-  quizResultEl.textContent = "";
-}
-
-document.getElementById("quiz-modal-close")?.addEventListener("click", closeQuiz);
-document.querySelector(".quiz-modal-backdrop")?.addEventListener("click", closeQuiz);
+// "Voltar para Atividades" fica sempre visível na página da prova — tanto
+// pra desistir antes de responder quanto pra sair depois de terminar
+// (já respondida ou, na descritiva, já revisada/pontuada pelo instrutor).
+document.getElementById("quiz-voltar-btn")?.addEventListener("click", () => {
+  showView("atividades");
+});
 
 function renderQuizMultiplaEscolha(data) {
   const questionTemplate = document.getElementById("quiz-question-template");
@@ -277,6 +273,7 @@ function saveQuizSubmission(path, submissao) {
 function renderQuizDescritivaRevisao(perguntas, submissao, path) {
   quizForm.innerHTML = "";
   quizForm.onsubmit = null;
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
   const aviso = document.createElement("p");
   aviso.className = "quiz-descritiva-enviado";
@@ -372,7 +369,7 @@ function renderQuiz(data, path) {
 }
 
 function openQuiz(path, fallbackLabel) {
-  quizModal.classList.remove("hidden");
+  showView("quiz");
   quizTitleEl.textContent = `Carregando "${fallbackLabel}"...`;
   quizForm.innerHTML = "";
   quizResultEl.classList.add("hidden");

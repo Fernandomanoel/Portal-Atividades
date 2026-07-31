@@ -271,11 +271,11 @@ function renderProvasCourses() {
     });
 }
 
-renderProvasCourses();
-
 // Aviso: isto é só uma trava simples de interface, não é segurança de
 // verdade — o código e os arquivos em provas/ continuam acessíveis a
 // quem souber ler o JS ou acessar os arquivos diretamente pelo repositório.
+// Por isso a lista só é montada no DOM depois da senha certa: antes disso,
+// abrir o "Inspecionar elemento" não mostra nenhum curso ou arquivo.
 const PROVAS_PASSWORD = "Instrutores@Cazzo10";
 const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
 
@@ -289,6 +289,10 @@ function unlockProvas() {
   sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
   provasLock.classList.add("hidden");
   provasGrid.classList.remove("hidden");
+  if (!provasGrid.dataset.rendered) {
+    renderProvasCourses();
+    provasGrid.dataset.rendered = "1";
+  }
 }
 
 if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {

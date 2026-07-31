@@ -478,6 +478,61 @@ body {
   margin-top: 14px;
 }
 
+/* ================= BOTÃO SAIR ================= */
+
+.provas-logout {
+  position: relative;
+  z-index: 2;
+  padding: 11px 26px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  flex-shrink: 0;
+}
+
+.provas-logout:hover {
+  background: #fff;
+  color: var(--azul-escuro);
+  transform: translateY(-2px);
+}
+
+/* ================= AVISO DE LISTA VAZIA ================= */
+
+.provas-vazio {
+  grid-column: 1 / -1;
+  background: var(--card);
+  border-radius: 20px;
+  border-left: 5px solid var(--perigo);
+  padding: 30px;
+  box-shadow: var(--sombra);
+}
+
+.provas-vazio strong {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.provas-vazio p {
+  font-size: 14px;
+  color: var(--apagado);
+  line-height: 1.7;
+}
+
+.provas-vazio code {
+  font-family: Consolas, "Courier New", monospace;
+  background: var(--suave);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 13px;
+  color: var(--azul);
+}
+
 /* ================= NAVBAR DE CATEGORIAS ================= */
 
 .provas-nav {

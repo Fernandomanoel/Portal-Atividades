@@ -148,6 +148,19 @@ function renderProvasCourses() {
   const categories = typeof PROVAS_CATEGORIES === "object" ? PROVAS_CATEGORIES : [];
   const courseCategoryMap = buildCourseCategoryMap(categories);
 
+  // Sem js/provas-data.js a área abriria em branco, sem explicação nenhuma.
+  if (Object.keys(manifest).length === 0) {
+    document.getElementById("provas-nav").innerHTML = "";
+    container.innerHTML =
+      '<div class="provas-vazio">' +
+      "<strong>Nenhum curso carregado.</strong>" +
+      "<p>O arquivo <code>js/provas-data.js</code> não foi encontrado ou está vazio. " +
+      "Gere ele rodando <code>python3 scripts/generate-provas-manifest.py</code> na pasta do projeto, " +
+      "e confira se a pasta <code>provas/</code> está junto do <code>index.html</code>.</p>" +
+      "</div>";
+    return;
+  }
+
   renderProvasNav(categories);
 
   container.innerHTML = "";
@@ -299,6 +312,7 @@ const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
 
 const provasLock = document.getElementById("provas-lock");
 const provasContent = document.getElementById("provas-content");
+const provasLogoutBtn = document.getElementById("provas-logout");
 const provasPasswordForm = document.getElementById("provas-password-form");
 const provasPasswordInput = document.getElementById("provas-password-input");
 const provasPasswordError = document.getElementById("provas-password-error");
@@ -307,11 +321,25 @@ function unlockProvas() {
   sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
   provasLock.classList.add("hidden");
   provasContent.classList.remove("hidden");
+  provasLogoutBtn.classList.remove("hidden");
   if (!provasContent.dataset.rendered) {
     renderProvasCourses();
     provasContent.dataset.rendered = "1";
   }
 }
+
+// Volta para a tela de senha. Sem isso, quem já entrou uma vez ficava
+// preso na listagem até fechar o navegador, sem jeito de rever o login.
+function lockProvas() {
+  sessionStorage.removeItem(PROVAS_UNLOCK_KEY);
+  provasContent.classList.add("hidden");
+  provasLogoutBtn.classList.add("hidden");
+  provasLock.classList.remove("hidden");
+  provasPasswordError.classList.add("hidden");
+  provasPasswordInput.value = "";
+}
+
+provasLogoutBtn.addEventListener("click", lockProvas);
 
 if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {
   unlockProvas();

@@ -16,14 +16,13 @@
   </header>
 
   <main>
-    <section class="toolbar">
-      <form id="course-form">
-        <input type="text" id="course-input" placeholder="Nome do curso (ex: Matemática)" required />
-        <button type="submit">Adicionar curso</button>
-      </form>
-    </section>
-
     <section id="tab-atividades" class="tab-panel" data-panel="atividades">
+      <section class="toolbar">
+        <form id="course-form">
+          <input type="text" id="course-input" placeholder="Nome do curso (ex: Matemática)" required />
+          <button type="submit">Adicionar curso</button>
+        </form>
+      </section>
       <div id="courses-atividades" class="courses-grid"></div>
     </section>
 
@@ -69,6 +68,27 @@
     </li>
   </template>
 
+  <template id="provas-course-card-template">
+    <article class="course-card">
+      <header class="course-card-header">
+        <h2 class="course-title"></h2>
+        <span class="provas-count"></span>
+      </header>
+      <ul class="file-list"></ul>
+    </article>
+  </template>
+
+  <template id="provas-file-template">
+    <li class="file-item">
+      <a class="file-link" target="_blank" rel="noopener">
+        <span class="file-icon" aria-hidden="true"></span>
+        <span class="file-name"></span>
+      </a>
+      <span class="file-size"></span>
+    </li>
+  </template>
+
+  <script src="js/provas-data.js"></script>
   <script src="js/script.js"></script>
 </body>
 </html>

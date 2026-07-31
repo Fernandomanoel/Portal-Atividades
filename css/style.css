@@ -275,3 +275,66 @@ main {
 .add-item-form button:hover {
   background: var(--primary-dark);
 }
+
+.provas-count {
+  font-size: 0.78rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-height: 0.5rem;
+}
+
+.file-list:empty::before {
+  content: "Nenhuma prova adicionada ainda.";
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+}
+
+.file-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.file-link:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+.file-icon {
+  flex-shrink: 0;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+}

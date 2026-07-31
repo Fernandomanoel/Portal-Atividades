@@ -1,5 +1,4 @@
 const STORAGE_KEY = "portal-atividades";
-const TABS = ["atividades", "provas"];
 
 const DEFAULT_COURSES = [
   "Português",
@@ -10,29 +9,19 @@ const DEFAULT_COURSES = [
   "Inglês",
 ];
 
-// Dados pré-carregados: adicione itens aqui (por curso) para que já
-// apareçam no site sem precisar preencher o formulário manualmente.
+// Dados pré-carregados de Atividades: adicione itens aqui (por curso) para
+// que já apareçam no site sem precisar preencher o formulário manualmente.
 // Formato do item: { title: "Título", date: "AAAA-MM-DD" (opcional), desc: "..." (opcional) }
 const SEED_DATA = {
-  atividades: {
-    // "Matemática": [{ title: "Lista de exercícios 1", date: "2026-08-10" }],
-  },
-  provas: {
-    // "Matemática": [{ title: "Prova bimestral", date: "2026-08-20", desc: "Capítulos 1 a 4" }],
-  },
+  // "Matemática": [{ title: "Lista de exercícios 1", date: "2026-08-10" }],
 };
 
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    const initial = {
-      courses: [...DEFAULT_COURSES],
-      atividades: {},
-      provas: {},
-    };
+    const initial = { courses: [...DEFAULT_COURSES], atividades: {}, deletedSeedIds: [] };
     DEFAULT_COURSES.forEach((course) => {
       initial.atividades[course] = [];
-      initial.provas[course] = [];
     });
     return initial;
   }
@@ -40,15 +29,14 @@ function loadState() {
     const parsed = JSON.parse(raw);
     parsed.courses = parsed.courses || [];
     parsed.atividades = parsed.atividades || {};
-    parsed.provas = parsed.provas || {};
+    parsed.deletedSeedIds = parsed.deletedSeedIds || [];
     parsed.courses.forEach((course) => {
       parsed.atividades[course] = parsed.atividades[course] || [];
-      parsed.provas[course] = parsed.provas[course] || [];
     });
     return parsed;
   } catch (err) {
     console.error("Falha ao ler dados salvos, iniciando do zero.", err);
-    return { courses: [], atividades: {}, provas: {} };
+    return { courses: [], atividades: {}, deletedSeedIds: [] };
   }
 }
 
@@ -65,35 +53,29 @@ function slugify(str) {
 }
 
 function mergeSeedData() {
-  state.deletedSeedIds = state.deletedSeedIds || [];
   let changed = false;
+  Object.entries(SEED_DATA).forEach(([course, items]) => {
+    if (!state.courses.includes(course)) {
+      state.courses.push(course);
+      changed = true;
+    }
+    state.atividades[course] = state.atividades[course] || [];
 
-  TABS.forEach((tab) => {
-    const seedCourses = SEED_DATA[tab] || {};
-    Object.entries(seedCourses).forEach(([course, items]) => {
-      if (!state.courses.includes(course)) {
-        state.courses.push(course);
+    items.forEach((item, index) => {
+      const seedId = `seed-${slugify(course)}-${index}`;
+      const alreadyPresent = state.atividades[course].some((i) => i.id === seedId);
+      const wasDeleted = state.deletedSeedIds.includes(seedId);
+      if (!alreadyPresent && !wasDeleted) {
+        state.atividades[course].push({
+          id: seedId,
+          title: item.title,
+          date: item.date || "",
+          desc: item.desc || "",
+        });
         changed = true;
       }
-      state[tab][course] = state[tab][course] || [];
-
-      items.forEach((item, index) => {
-        const seedId = `seed-${tab}-${slugify(course)}-${index}`;
-        const alreadyPresent = state[tab][course].some((i) => i.id === seedId);
-        const wasDeleted = state.deletedSeedIds.includes(seedId);
-        if (!alreadyPresent && !wasDeleted) {
-          state[tab][course].push({
-            id: seedId,
-            title: item.title,
-            date: item.date || "",
-            desc: item.desc || "",
-          });
-          changed = true;
-        }
-      });
     });
   });
-
   return changed;
 }
 
@@ -104,10 +86,7 @@ if (mergeSeedData()) {
 
 const courseCardTemplate = document.getElementById("course-card-template");
 const itemTemplate = document.getElementById("item-template");
-const containers = {
-  atividades: document.getElementById("courses-atividades"),
-  provas: document.getElementById("courses-provas"),
-};
+const atividadesContainer = document.getElementById("courses-atividades");
 
 function formatDate(isoDate) {
   if (!isoDate) return "";
@@ -125,27 +104,25 @@ function sortItemsByDate(items) {
   });
 }
 
-function renderItem(tab, course, item) {
+function renderItem(course, item) {
   const node = itemTemplate.content.firstElementChild.cloneNode(true);
   node.dataset.id = item.id;
   node.querySelector(".item-title").textContent = item.title;
   node.querySelector(".item-date").textContent = formatDate(item.date);
   node.querySelector(".item-desc").textContent = item.desc || "";
   node.querySelector(".remove-item-btn").addEventListener("click", () => {
-    state[tab][course] = state[tab][course].filter((i) => i.id !== item.id);
+    state.atividades[course] = state.atividades[course].filter((i) => i.id !== item.id);
     if (item.id.startsWith("seed-")) {
-      state.deletedSeedIds = state.deletedSeedIds || [];
       state.deletedSeedIds.push(item.id);
     }
     saveState();
-    renderCourse(tab, course);
+    renderCourse(course);
   });
   return node;
 }
 
-function renderCourse(tab, course) {
-  const container = containers[tab];
-  const existingCard = container.querySelector(
+function renderCourse(course) {
+  const existingCard = atividadesContainer.querySelector(
     `.course-card[data-course="${CSS.escape(course)}"]`
   );
 
@@ -155,8 +132,8 @@ function renderCourse(tab, course) {
 
   const list = card.querySelector(".item-list");
   list.innerHTML = "";
-  sortItemsByDate(state[tab][course] || []).forEach((item) => {
-    list.appendChild(renderItem(tab, course, item));
+  sortItemsByDate(state.atividades[course] || []).forEach((item) => {
+    list.appendChild(renderItem(course, item));
   });
 
   if (!existingCard) {
@@ -174,7 +151,7 @@ function renderCourse(tab, course) {
       const title = titleInput.value.trim();
       if (!title) return;
 
-      state[tab][course].push({
+      state.atividades[course].push({
         id: crypto.randomUUID(),
         title,
         date: dateInput.value,
@@ -182,27 +159,22 @@ function renderCourse(tab, course) {
       });
       saveState();
       form.reset();
-      renderCourse(tab, course);
+      renderCourse(course);
     });
 
-    container.appendChild(card);
+    atividadesContainer.appendChild(card);
   }
 }
 
 function renderAllCourses() {
-  TABS.forEach((tab) => {
-    const container = containers[tab];
-    container.innerHTML = "";
-    state.courses.forEach((course) => renderCourse(tab, course));
-  });
+  atividadesContainer.innerHTML = "";
+  state.courses.forEach((course) => renderCourse(course));
 }
 
 function addCourse(name) {
   if (state.courses.includes(name)) return;
   state.courses.push(name);
-  TABS.forEach((tab) => {
-    state[tab][name] = state[tab][name] || [];
-  });
+  state.atividades[name] = state.atividades[name] || [];
   saveState();
   renderAllCourses();
 }
@@ -210,7 +182,7 @@ function addCourse(name) {
 function removeCourse(name) {
   if (!confirm(`Remover o curso "${name}" e todos os itens dele?`)) return;
   state.courses = state.courses.filter((c) => c !== name);
-  TABS.forEach((tab) => delete state[tab][name]);
+  delete state.atividades[name];
   saveState();
   renderAllCourses();
 }
@@ -236,6 +208,70 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
     });
   });
 });
+
+renderAllCourses();
+
+// ---- Provas: lista os arquivos reais guardados em provas/<curso>/ ----
+// O conteúdo vem de js/provas-data.js (gerado por
+// scripts/generate-provas-manifest.py a partir da pasta provas/).
+
+const FILE_ICONS = {
+  pdf: "📄",
+  doc: "📝",
+  docx: "📝",
+  rtf: "📝",
+  txt: "🔗",
+  url: "🔗",
+  lnk: "🔗",
+  png: "🖼️",
+  jpg: "🖼️",
+  jpeg: "🖼️",
+  bmp: "🖼️",
+  mp4: "🎬",
+  xlsx: "📊",
+  html: "🌐",
+  db: "🗄️",
+};
+
+function fileIcon(filename) {
+  const ext = filename.split(".").pop().toLowerCase();
+  return FILE_ICONS[ext] || "📎";
+}
+
+function renderProvasCourses() {
+  const container = document.getElementById("courses-provas");
+  const provasCourseCardTemplate = document.getElementById("provas-course-card-template");
+  const provasFileTemplate = document.getElementById("provas-file-template");
+  const manifest = typeof PROVAS_MANIFEST === "object" ? PROVAS_MANIFEST : {};
+
+  container.innerHTML = "";
+  Object.keys(manifest)
+    .sort((a, b) => a.localeCompare(b, "pt-BR"))
+    .forEach((course) => {
+      const files = manifest[course] || [];
+      const card = provasCourseCardTemplate.content.firstElementChild.cloneNode(true);
+      card.querySelector(".course-title").textContent = course;
+      card.querySelector(".provas-count").textContent =
+        files.length === 1 ? "1 arquivo" : `${files.length} arquivos`;
+
+      const list = card.querySelector(".file-list");
+      files.forEach((file) => {
+        const node = provasFileTemplate.content.firstElementChild.cloneNode(true);
+        const link = node.querySelector(".file-link");
+        link.href = encodeURI(file.path);
+        node.querySelector(".file-icon").textContent = fileIcon(file.label);
+        const nameEl = node.querySelector(".file-name");
+        nameEl.textContent = file.label;
+        nameEl.title = file.label;
+        node.querySelector(".file-size").textContent = file.size;
+        list.appendChild(node);
+      });
+
+      container.appendChild(card);
+    });
+}
+
+renderProvasCourses();
 
 // Aviso: isto é só uma trava simples de interface, não é segurança de
 // verdade — o código e os arquivos em provas/ continuam acessíveis a
@@ -269,5 +305,3 @@ provasPasswordForm.addEventListener("submit", (e) => {
     provasPasswordError.classList.remove("hidden");
   }
 });
-
-renderAllCourses();

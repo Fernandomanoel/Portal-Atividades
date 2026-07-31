@@ -60,6 +60,15 @@ function formatDate(isoDate) {
   return `${day}/${month}/${year}`;
 }
 
+function sortItemsByDate(items) {
+  return [...items].sort((a, b) => {
+    if (!a.date && !b.date) return 0;
+    if (!a.date) return 1;
+    if (!b.date) return -1;
+    return a.date.localeCompare(b.date);
+  });
+}
+
 function renderItem(tab, course, item) {
   const node = itemTemplate.content.firstElementChild.cloneNode(true);
   node.dataset.id = item.id;
@@ -86,7 +95,7 @@ function renderCourse(tab, course) {
 
   const list = card.querySelector(".item-list");
   list.innerHTML = "";
-  (state[tab][course] || []).forEach((item) => {
+  sortItemsByDate(state[tab][course] || []).forEach((item) => {
     list.appendChild(renderItem(tab, course, item));
   });
 

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Python – Atividades em PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="img/iconpython.png" type="image/x-icon">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f4f8fb;
+        }
+
+        .app {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #306998;
+            padding: 30px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            color: white;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+
+        .logo-icon {
+            background: #FFD43B;
+            color: #306998;
+            font-weight: bold;
+            border-radius: 10px;
+            padding: 8px 12px;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .sidebar nav a {
+            display: block;
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar nav a:hover {
+            color: #FFD43B;
+        }
+
+        .sidebar nav a.active {
+            color: #FFD43B;
+            font-weight: 600;
+        }
+
+        /* CONTENT */
+        .content {
+            margin-left: 240px;
+            padding: 40px;
+            width: 100%;
+            overflow-y: auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #306998;
+        }
+
+        /* PDF CARD */
+        .pdf-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-icon {
+            width: 100px;
+            height: 100px;
+            background: #FFD43B;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #306998;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .info {
+            flex: 1;
+        }
+
+        .info h3 {
+            margin-bottom: 6px;
+            color: #1e4e79;
+        }
+
+        .desc {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .tags span {
+            background: #eef3f8;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #306998;
+            font-weight: 600;
+        }
+
+        .right button {
+            background: #306998;
+            border: none;
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .right button:hover {
+            background: #1e4e79;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">
+            <span class="logo-icon">PY</span>
+            <span class="logo-text">Python</span>
+        </div>
+
+        <nav>
+            <a href="index.html">Voltar</a>
+            <a href="pythonatividades.html" class="active">PDFs</a>
+        </nav>
+    </aside>
+
+    <!-- CONTENT -->
+    <main class="content">
+        <h1>Python – Atividades em PDF</h1>
+
+        <!-- INICIO DA CAIXA -->
+        <div class="pdf-card">
+            <div class="pdf-icon">PDF</div>
+
+            <div class="info">
+                <h3>Python: Fazendo o Primeiro Codigo</h3>
+                <p class="desc">
+                   Aprendendo o inicio da programação por meio do Python.
+                </p>
+
+                <div class="tags">
+                    <span>PDF</span>
+                </div>
+            </div>
+
+            <div class="right">
+                <a href="pdfs/Python/Python - Primeiro programa em Python.pdf" target="_blank">
+                    <button>Baixar</button>
+                </a>
+            </div>
+        </div>
+        <!-- FINAL DA CAIXA -->
+
+        <div class="pdf-card">
+            <div class="pdf-icon">PDF</div>
+
+            <div class="info">
+                <h3>Python: Lógica de Programação em Python</h3>
+                <p class="desc">Prática de Lógica de Programação utilizando a linguagem Python.</p>
+
+                <div class="tags">
+                    <span>PDF</span>
+                </div>
+            </div>
+
+            <div class="right">
+                <a href="pdfs/Python/Python - Lógica de Programação em Python.pdf" target="_blank">
+                    <button>Baixar</button>
+                </a>
+            </div>
+        </div>
+
+        <!-- INICIO DA CAIXA -->
+        <div class="pdf-card">
+            <div class="pdf-icon">PDF</div>
+
+            <div class="info">
+                <h3>Python: Entrada de Dados em Python</h3>
+                <p class="desc">
+                    Atividade introdutória para aprender os primeiros comandos e conceitos básicos da linguagem Python.
+                </p>
+
+                <div class="tags">
+                    <span>PDF</span>
+                </div>
+            </div>
+
+            <div class="right">
+                <a href="pdfs/Python/Python - Entrada de Dados em Python.pdf" target="_blank">
+                    <button>Baixar</button>
+                </a>
+            </div>
+        </div>
+        <!-- FINAL DA CAIXA -->
+
+        <!-- INICIO DA CAIXA -->
+        <div class="pdf-card">
+            <div class="pdf-icon">PDF</div>
+
+            <div class="info">
+                <h3>Python: Usando e aprendendo Operadores Matemáticos</h3>
+                <p class="desc">
+                    Prática dos operadores matemáticos básicos utilizando a linguagem Python.
+                </p>
+
+                <div class="tags">
+                    <span>PDF</span>
+                </div>
+            </div>
+            
+            <div class="right">
+                <a href="pdfs/Python/Python - Usando e aprendendo Operadores Matemáticos.pdf" target="_blank">
+                    <button>Baixar</button>
+                </a>
+            </div>
+        </div>
+        <!-- FINAL DA CAIXA -->
+
+        <div class="pdf-card">
+            <div class="pdf-icon">PDF</div>
+
+            <div class="info">
+                <h3>Python: Lista de Atividades</h3>
+                <p class="desc">
+                    Lista de Atividades com o foco de reforçar as aulas de Python.
+                </p>
+
+                <div class="tags">
+                    <span>PDF</span>
+                </div>
+            </div>
+
+            <div class="right">
+                <a href="pdfs/Python/Atividade Complementar - Python.pdf" target="_blank">
+                    <button>Baixar</button>
+                </a>
+            </div>
+        </div>
+        <!-- FINAL DA CAIXA -->
+
+
+    </main>
+</div>
+
+</body>
+</html>

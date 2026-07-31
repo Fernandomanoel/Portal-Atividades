@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Windows 11</title>
+    <link rel="stylesheet" href="css/styleword.css">
+</head>
+
+<body>
+
+    <div class="app">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="logo">
+                <span class="logo-icon">W</span>
+                <span class="logo-text">Windows 11</span>
+            </div>
+
+
+            <nav>
+                <nav>
+                    <a href="index.html">Voltar</a>
+                    <a href="#" class="active">Atividades</a>
+                    <a href="windowsatividade.html">PDFs</a>
+                </nav>
+            </nav>
+
+        </aside>
+
+        <!-- MAIN -->
+        <main class="content">
+
+            <h1>Windows 11</h1>
+
+            <div class="tabs">
+                <span class="tab active">Disponiveis</span>
+            </div>
+
+            <!-- CARD 
+      <div class="course-card">
+        <div class="thumb word">
+          <img src="img/excel atividade 1.png" alt="Atividade Word">
+        </div>
+
+
+        <div class="info">
+          <h3>Atividade 1: Produção de Texto Orientada</h3>
+          <p class="desc">Desenvolvimento de um texto seguindo orientações claras de estrutura e objetivo.</p>
+
+          <div class="tags">
+            <span>Atividades</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <button onclick="openOverlay()">Iniciar</button>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="thumb blue">
+          <img src="images/design.png">
+        </div>
+
+        <div class="info">
+          <h3>Atividade 2: Formataçao de textos</h3>
+          <p class="desc">Criação de um documento básico com título, parágrafos e organização adequada.</p>
+
+          <div class="tags">
+            <span>Atividades</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <button onclick="openOverlay2()">Iniciar</button>
+        </div>
+      </div>
+
+      <div class="course-card">
+        <div class="thumb pink">
+          <img src="images/business.png">
+        </div>
+
+        <div class="info">
+          <h3>Atividade 3: Organização de Conteúdo Escrito</h3>
+          <p class="desc">Organização das ideias em tópicos, parágrafos e sequência lógica.</p>
+
+          <div class="tags">
+            <span>Atividades</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <button>Iniciar</button>
+        </div>
+      </div>
+      <div class="course-card">
+        <div class="thumb blue">
+          <img src="images/design.png">
+        </div>
+
+        <div class="info">
+          <h3>Atividade 4: Preenchimento de Documento</h3>
+          <p class="desc">Criação de um documento básico com título, parágrafos e organização adequada.</p>
+
+          <div class="tags">
+            <span>Atividades</span>
+          </div>
+        </div>
+
+        <div class="right">
+          <button>Iniciar</button>
+        </div>
+      </div>
+    </main>
+-->
+    </div>
+    <!-- OVERLAY -->
+    <div class="overlay" id="overlay">
+        <div class="frame-box">
+            <span class="close-btn" onclick="closeOverlay()">✖</span>
+
+            <iframe title="Atividade Word 1" class="genially-frame"
+                src="https://view.genially.com/6939df52cb698f4dbb4d8e35" frameborder="0" allowfullscreen
+                scrolling="yes">
+            </iframe>
+        </div>
+
+    </div>
+    <div class="overlay" id="overlay">
+        <div style="width: 100%;">
+            <div style="position: relative; padding-bottom: 56.25%; padding-top: 0; height: 0;">
+                <iframe title="ATIVIDADE 02: FORMATAÇÃO DE TEXTO" frameborder="0" width="1200" height="675"
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    src="https://view.genially.com/69528ba168f005afda838af5" type="text/html" allowscriptaccess="always"
+                    allowfullscreen="true" scrolling="yes" allownetworking="all"></iframe>
+            </div>
+        </div>
+        <script>
+            function openOverlay() {
+                document.getElementById('overlay').style.display = 'flex';
+                document.querySelector('.genially-frame').src = "https://view.genially.com/6939df52cb698f4dbb4d8e35";
+            }
+
+            function openOverlay2() {
+                document.getElementById('overlay').style.display = 'flex';
+                document.querySelector('.genially-frame').src = "https://view.genially.com/69528ba168f005afda838af5";
+            }
+
+            function closeOverlay() {
+                document.getElementById('overlay').style.display = 'none';
+            }
+
+
+        </script>
+</body>
+
+</html>

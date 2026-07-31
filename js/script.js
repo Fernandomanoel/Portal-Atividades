@@ -10,6 +10,18 @@ const DEFAULT_COURSES = [
   "Inglês",
 ];
 
+// Dados pré-carregados: adicione itens aqui (por curso) para que já
+// apareçam no site sem precisar preencher o formulário manualmente.
+// Formato do item: { title: "Título", date: "AAAA-MM-DD" (opcional), desc: "..." (opcional) }
+const SEED_DATA = {
+  atividades: {
+    // "Matemática": [{ title: "Lista de exercícios 1", date: "2026-08-10" }],
+  },
+  provas: {
+    // "Matemática": [{ title: "Prova bimestral", date: "2026-08-20", desc: "Capítulos 1 a 4" }],
+  },
+};
+
 function loadState() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) {
@@ -44,7 +56,51 @@ function saveState() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
+function slugify(str) {
+  return str
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "-");
+}
+
+function mergeSeedData() {
+  state.deletedSeedIds = state.deletedSeedIds || [];
+  let changed = false;
+
+  TABS.forEach((tab) => {
+    const seedCourses = SEED_DATA[tab] || {};
+    Object.entries(seedCourses).forEach(([course, items]) => {
+      if (!state.courses.includes(course)) {
+        state.courses.push(course);
+        changed = true;
+      }
+      state[tab][course] = state[tab][course] || [];
+
+      items.forEach((item, index) => {
+        const seedId = `seed-${tab}-${slugify(course)}-${index}`;
+        const alreadyPresent = state[tab][course].some((i) => i.id === seedId);
+        const wasDeleted = state.deletedSeedIds.includes(seedId);
+        if (!alreadyPresent && !wasDeleted) {
+          state[tab][course].push({
+            id: seedId,
+            title: item.title,
+            date: item.date || "",
+            desc: item.desc || "",
+          });
+          changed = true;
+        }
+      });
+    });
+  });
+
+  return changed;
+}
+
 let state = loadState();
+if (mergeSeedData()) {
+  saveState();
+}
 
 const courseCardTemplate = document.getElementById("course-card-template");
 const itemTemplate = document.getElementById("item-template");
@@ -77,6 +133,10 @@ function renderItem(tab, course, item) {
   node.querySelector(".item-desc").textContent = item.desc || "";
   node.querySelector(".remove-item-btn").addEventListener("click", () => {
     state[tab][course] = state[tab][course].filter((i) => i.id !== item.id);
+    if (item.id.startsWith("seed-")) {
+      state.deletedSeedIds = state.deletedSeedIds || [];
+      state.deletedSeedIds.push(item.id);
+    }
     saveState();
     renderCourse(tab, course);
   });

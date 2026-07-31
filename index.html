@@ -35,7 +35,10 @@
           <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
         </form>
       </div>
-      <div id="courses-provas" class="courses-grid hidden"></div>
+      <div id="provas-content" class="provas-content hidden">
+        <nav id="provas-nav" class="provas-nav"></nav>
+        <div id="courses-provas" class="courses-grid"></div>
+      </div>
     </section>
   </main>
 
@@ -86,6 +89,10 @@
       </a>
       <span class="file-size"></span>
     </li>
+  </template>
+
+  <template id="provas-nav-item-template">
+    <button type="button" class="provas-nav-btn"></button>
   </template>
 
   <script src="js/provas-data.js"></script>

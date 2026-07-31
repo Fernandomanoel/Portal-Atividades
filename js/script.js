@@ -238,11 +238,54 @@ function fileIcon(filename) {
   return FILE_ICONS[ext] || "📎";
 }
 
+function buildCourseCategoryMap(categories) {
+  const map = {};
+  categories.forEach((cat) => {
+    cat.courses.forEach((course) => {
+      map[course] = cat.name;
+    });
+  });
+  return map;
+}
+
+function renderProvasNav(categories, courseCategoryMap) {
+  const nav = document.getElementById("provas-nav");
+  const navItemTemplate = document.getElementById("provas-nav-item-template");
+  nav.innerHTML = "";
+
+  const allBtn = navItemTemplate.content.firstElementChild.cloneNode(true);
+  allBtn.textContent = "Todos os cursos";
+  allBtn.dataset.category = "";
+  allBtn.classList.add("active");
+  nav.appendChild(allBtn);
+
+  categories.forEach((cat) => {
+    const btn = navItemTemplate.content.firstElementChild.cloneNode(true);
+    btn.textContent = `${cat.name} (${cat.courses.length})`;
+    btn.dataset.category = cat.name;
+    nav.appendChild(btn);
+  });
+
+  nav.addEventListener("click", (e) => {
+    const btn = e.target.closest(".provas-nav-btn");
+    if (!btn) return;
+    nav.querySelectorAll(".provas-nav-btn").forEach((b) => b.classList.toggle("active", b === btn));
+    const category = btn.dataset.category;
+    document.querySelectorAll("#courses-provas .course-card").forEach((card) => {
+      card.classList.toggle("hidden", Boolean(category) && card.dataset.category !== category);
+    });
+  });
+}
+
 function renderProvasCourses() {
   const container = document.getElementById("courses-provas");
   const provasCourseCardTemplate = document.getElementById("provas-course-card-template");
   const provasFileTemplate = document.getElementById("provas-file-template");
   const manifest = typeof PROVAS_MANIFEST === "object" ? PROVAS_MANIFEST : {};
+  const categories = typeof PROVAS_CATEGORIES === "object" ? PROVAS_CATEGORIES : [];
+  const courseCategoryMap = buildCourseCategoryMap(categories);
+
+  renderProvasNav(categories, courseCategoryMap);
 
   container.innerHTML = "";
   Object.keys(manifest)
@@ -250,6 +293,7 @@ function renderProvasCourses() {
     .forEach((course) => {
       const files = manifest[course] || [];
       const card = provasCourseCardTemplate.content.firstElementChild.cloneNode(true);
+      card.dataset.category = courseCategoryMap[course] || "Outros";
       card.querySelector(".course-title").textContent = course;
       card.querySelector(".provas-count").textContent =
         files.length === 1 ? "1 arquivo" : `${files.length} arquivos`;
@@ -280,7 +324,7 @@ const PROVAS_PASSWORD = "Instrutores@Cazzo10";
 const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
 
 const provasLock = document.getElementById("provas-lock");
-const provasGrid = document.getElementById("courses-provas");
+const provasContent = document.getElementById("provas-content");
 const provasPasswordForm = document.getElementById("provas-password-form");
 const provasPasswordInput = document.getElementById("provas-password-input");
 const provasPasswordError = document.getElementById("provas-password-error");
@@ -288,10 +332,10 @@ const provasPasswordError = document.getElementById("provas-password-error");
 function unlockProvas() {
   sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
   provasLock.classList.add("hidden");
-  provasGrid.classList.remove("hidden");
-  if (!provasGrid.dataset.rendered) {
+  provasContent.classList.remove("hidden");
+  if (!provasContent.dataset.rendered) {
     renderProvasCourses();
-    provasGrid.dataset.rendered = "1";
+    provasContent.dataset.rendered = "1";
   }
 }
 

@@ -890,3 +890,113 @@ const PROVAS_MANIFEST = {
     }
   ]
 };
+const PROVAS_CATEGORIES = [
+  {
+    "name": "Informática",
+    "courses": [
+      "Excel",
+      "Excel Avançado I",
+      "Excel Avançado II",
+      "Internet e Outlook",
+      "Internet, Redes Sociais e Aplicativos",
+      "Introdução à Informática",
+      "KIDS",
+      "Manutenção de Computadores",
+      "Power B.I",
+      "Power Point",
+      "Redes",
+      "Segurança da Era Digital",
+      "Windows 11",
+      "Word"
+    ]
+  },
+  {
+    "name": "Administrativo e Gestão",
+    "courses": [
+      "ADM",
+      "Assistente ADM",
+      "Assistente de Departamento Pessoal",
+      "Assistente de Logística",
+      "Atendimento ao Cliente",
+      "Compras e Estoque",
+      "Crédido e Cobrança",
+      "Custos",
+      "Escrita Fiscal e Contabilidade",
+      "Gestão de Pessoas",
+      "Operador de Caixa",
+      "Operador de Telemarketing",
+      "RH",
+      "Secretariado",
+      "Vendas"
+    ]
+  },
+  {
+    "name": "Design Gráfico",
+    "courses": [
+      "Adobe Illustrator",
+      "Adobe Photoshop I",
+      "Adobe Photoshop II",
+      "Adobe Photoshop III",
+      "Adobe Premiere",
+      "CorelDraw I",
+      "CorelDraw II",
+      "Design Gráfico"
+    ]
+  },
+  {
+    "name": "Desenvolvimento Web e Mobile",
+    "courses": [
+      "Cordova",
+      "Criando Aplicativo com Angular",
+      "Criando Aplicativos Mobile Ionic",
+      "CSS",
+      "Desenvolvimento WEB - Html, CSS e JavaScript",
+      "Fundamentos Web",
+      "HTML",
+      "JavaScript",
+      "WordpPress"
+    ]
+  },
+  {
+    "name": "Programação e Dados",
+    "courses": [
+      "Banco de Dados",
+      "C#",
+      "Inteligência Artificial",
+      "Lógica de Programação"
+    ]
+  },
+  {
+    "name": "Marketing",
+    "courses": [
+      "Google Adwords",
+      "Marketing Digital I",
+      "Marketing Digital II"
+    ]
+  },
+  {
+    "name": "Saúde",
+    "courses": [
+      "Auxiliar Médico",
+      "Farmácia",
+      "Recepcionista de saúde"
+    ]
+  },
+  {
+    "name": "Comportamental",
+    "courses": [
+      "Educação Financeira",
+      "Empreendedorismo",
+      "Inteligência Emocional",
+      "Liderança",
+      "Matemática Financeira",
+      "Segurança no Trabalho"
+    ]
+  },
+  {
+    "name": "Games",
+    "courses": [
+      "Desenvolvimento de Games"
+    ]
+  }
+];

@@ -878,6 +878,92 @@ body.dark-mode .provas-logout {
   font-weight: bold;
 }
 
+/* ================= PROVA DESCRITIVA ================= */
+
+.quiz-descritiva-input {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 15px;
+  border: 2px solid var(--borda);
+  border-radius: 12px;
+  background: var(--suave);
+  color: var(--texto);
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  transition: 0.3s ease;
+}
+
+.quiz-descritiva-input:focus {
+  outline: none;
+  border-color: var(--azul);
+  background: var(--card);
+}
+
+.quiz-aviso-descritiva {
+  font-size: 13px;
+  color: var(--apagado);
+  margin: -6px 0 16px 0;
+}
+
+.quiz-question-revisao {
+  background: var(--suave);
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+
+.quiz-question-revisao .quiz-question-text {
+  margin-bottom: 8px;
+}
+
+.quiz-descritiva-resposta {
+  font-size: 14px;
+  color: var(--apagado);
+  white-space: pre-wrap;
+}
+
+.quiz-descritiva-enviado {
+  font-size: 14px;
+  color: var(--azul);
+  background: rgba(79, 124, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.quiz-nota-bloco {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: var(--suave);
+  border-left: 5px solid var(--azul);
+}
+
+.quiz-nota-bloco label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--apagado);
+  margin-bottom: 8px;
+}
+
+.quiz-nota-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid var(--borda);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--texto);
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.quiz-nota-input:focus {
+  outline: none;
+  border-color: var(--azul);
+}
+
 /* ================= RODAPÉ ================= */
 
 .footer {

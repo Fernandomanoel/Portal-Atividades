@@ -3,6 +3,12 @@
 const PROVAS_MANIFEST = {
   "ADM": [
     {
+      "type": "quiz",
+      "label": "Avaliação Descritiva Assistente Administrativo I",
+      "path": "provas/ADM/Avaliação Descritiva - Assistente Administrativo I.prova.js",
+      "size": "636 B"
+    },
+    {
       "type": "file",
       "label": "Link - AV adm I.txt",
       "path": "provas/ADM/Link - AV adm I.txt",

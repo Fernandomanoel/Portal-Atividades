@@ -200,14 +200,9 @@ function closeQuiz() {
 document.getElementById("quiz-modal-close")?.addEventListener("click", closeQuiz);
 document.querySelector(".quiz-modal-backdrop")?.addEventListener("click", closeQuiz);
 
-function renderQuiz(data) {
+function renderQuizMultiplaEscolha(data) {
   const questionTemplate = document.getElementById("quiz-question-template");
   const optionTemplate = document.getElementById("quiz-option-template");
-
-  quizTitleEl.textContent = data.titulo || "Prova";
-  quizForm.innerHTML = "";
-  quizResultEl.classList.add("hidden");
-  quizResultEl.textContent = "";
 
   (data.perguntas || []).forEach((pergunta, qIndex) => {
     const question = questionTemplate.content.firstElementChild.cloneNode(true);
@@ -219,6 +214,7 @@ function renderQuiz(data) {
       const input = option.querySelector("input");
       input.name = `pergunta-${qIndex}`;
       input.value = String(oIndex);
+      input.required = true;
       option.querySelector(".quiz-option-text").textContent = opcao;
       optionsContainer.appendChild(option);
     });
@@ -248,6 +244,133 @@ function renderQuiz(data) {
   };
 }
 
+// ---- Provas descritivas (perguntas abertas, sem correção automática) ----
+// O aluno escreve as respostas, envia uma única vez (sem opção de refazer,
+// para não incentivar cola tentando de novo) e o instrutor lê e digita a
+// nota na mesma tela, olhando o que foi escrito. Não existe "certo/errado"
+// automático aqui — quem avalia é o instrutor, não o código.
+//
+// A prova enviada (respostas + nota) fica salva no localStorage do
+// navegador, então é por aparelho, não por aluno: nesse mesmo navegador,
+// reabrir a prova sempre mostra a revisão travada, nunca um formulário
+// novo. Limpar os dados do navegador ou usar outro dispositivo contorna
+// isso — é uma trava simples, do mesmo nível da senha da aba Provas, não
+// um controle de identidade de verdade.
+
+function quizStorageKey(path) {
+  return `portal-prova-enviada:${path}`;
+}
+
+function loadQuizSubmission(path) {
+  try {
+    const raw = localStorage.getItem(quizStorageKey(path));
+    return raw ? JSON.parse(raw) : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+function saveQuizSubmission(path, submissao) {
+  localStorage.setItem(quizStorageKey(path), JSON.stringify(submissao));
+}
+
+function renderQuizDescritivaRevisao(perguntas, submissao, path) {
+  quizForm.innerHTML = "";
+  quizForm.onsubmit = null;
+
+  const aviso = document.createElement("p");
+  aviso.className = "quiz-descritiva-enviado";
+  aviso.textContent = "Prova já enviada — não é possível respondê-la novamente neste navegador.";
+  quizForm.appendChild(aviso);
+
+  const reviewTemplate = document.getElementById("quiz-descritiva-review-template");
+  perguntas.forEach((pergunta, index) => {
+    const node = reviewTemplate.content.firstElementChild.cloneNode(true);
+    node.querySelector(".quiz-question-text").textContent = `${index + 1}. ${pergunta}`;
+    node.querySelector(".quiz-descritiva-resposta").textContent =
+      submissao.respostas[index] || "(sem resposta)";
+    quizForm.appendChild(node);
+  });
+
+  const notaBloco = document.createElement("div");
+  notaBloco.className = "quiz-nota-bloco";
+
+  const notaLabel = document.createElement("label");
+  notaLabel.setAttribute("for", "quiz-nota-input");
+  notaLabel.textContent = "Nota (preenchida pelo instrutor)";
+
+  const notaInput = document.createElement("input");
+  notaInput.type = "text";
+  notaInput.id = "quiz-nota-input";
+  notaInput.className = "quiz-nota-input";
+  notaInput.placeholder = "Ex: 8,5";
+  notaInput.value = submissao.nota || "";
+  notaInput.addEventListener("change", () => {
+    submissao.nota = notaInput.value;
+    saveQuizSubmission(path, submissao);
+  });
+
+  notaBloco.appendChild(notaLabel);
+  notaBloco.appendChild(notaInput);
+  quizForm.appendChild(notaBloco);
+}
+
+function renderQuizDescritiva(data, path) {
+  const perguntas = data.perguntas || [];
+  const submissaoSalva = loadQuizSubmission(path);
+
+  if (submissaoSalva) {
+    renderQuizDescritivaRevisao(perguntas, submissaoSalva, path);
+    return;
+  }
+
+  const questionTemplate = document.getElementById("quiz-descritiva-question-template");
+  const textareas = [];
+
+  perguntas.forEach((pergunta, index) => {
+    const node = questionTemplate.content.firstElementChild.cloneNode(true);
+    node.querySelector(".quiz-question-text").textContent = `${index + 1}. ${pergunta}`;
+    const textarea = node.querySelector(".quiz-descritiva-input");
+    textarea.required = true;
+    textareas.push(textarea);
+    quizForm.appendChild(node);
+  });
+
+  const aviso = document.createElement("p");
+  aviso.className = "quiz-aviso-descritiva";
+  aviso.textContent = "Depois de enviar não dá para refazer esta prova — revise suas respostas antes.";
+  quizForm.appendChild(aviso);
+
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.className = "quiz-submit-btn";
+  submitBtn.textContent = "Enviar respostas";
+  quizForm.appendChild(submitBtn);
+
+  quizForm.onsubmit = (e) => {
+    e.preventDefault();
+    const submissao = {
+      respostas: textareas.map((t) => t.value.trim()),
+      nota: "",
+    };
+    saveQuizSubmission(path, submissao);
+    renderQuizDescritivaRevisao(perguntas, submissao, path);
+  };
+}
+
+function renderQuiz(data, path) {
+  quizTitleEl.textContent = data.titulo || "Prova";
+  quizForm.innerHTML = "";
+  quizResultEl.classList.add("hidden");
+  quizResultEl.textContent = "";
+
+  if (data.tipo === "descritiva") {
+    renderQuizDescritiva(data, path);
+  } else {
+    renderQuizMultiplaEscolha(data);
+  }
+}
+
 function openQuiz(path, fallbackLabel) {
   quizModal.classList.remove("hidden");
   quizTitleEl.textContent = `Carregando "${fallbackLabel}"...`;
@@ -255,7 +378,7 @@ function openQuiz(path, fallbackLabel) {
   quizResultEl.classList.add("hidden");
 
   loadQuiz(path)
-    .then((data) => renderQuiz(data))
+    .then((data) => renderQuiz(data, path))
     .catch((err) => {
       quizTitleEl.textContent = fallbackLabel;
       quizForm.innerHTML = `<p class="quiz-load-error">${err.message}</p>`;

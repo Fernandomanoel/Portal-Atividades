@@ -11,6 +11,7 @@ categoria caem automaticamente em "Outros".
 """
 import json
 import os
+import re
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROVAS_DIR = os.path.join(REPO_ROOT, "provas")
@@ -116,7 +117,8 @@ def human_size(num_bytes):
 
 def quiz_display_name(filename):
     base = filename[: -len(".prova.js")]
-    base = base.replace("_", " ").replace("-", " ").strip()
+    base = base.replace("_", " ").replace("-", " ")
+    base = re.sub(r"\s+", " ", base).strip()
     return base[:1].upper() + base[1:] if base else "Prova interativa"
 
 

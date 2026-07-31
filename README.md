@@ -18,7 +18,8 @@ Página única (sem dependências ou build) com duas abas:
 │   └── provas-data.js                  # gerado — lista de arquivos/categorias de provas/ (não editar à mão)
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/provas-data.js a partir de provas/
-│   └── exemplo.prova.js                # modelo de prova interativa pra copiar
+│   ├── exemplo.prova.js                # modelo de prova de múltipla escolha (corrige na hora)
+│   └── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
 ├── images/
 │   └── cursos/                         # ícones/capas dos cursos (opcional, ver README da pasta)
 └── provas/
@@ -43,12 +44,18 @@ python3 -m http.server 8000
 
 ## Adicionando uma prova interativa (respondida no próprio portal)
 
-1. Copie `scripts/exemplo.prova.js` para dentro de `provas/<curso>/`, com um nome terminado em `.prova.js` (ex: `modulo-1.prova.js`).
+Existem dois formatos, os dois em arquivos `.prova.js` dentro de `provas/<curso>/`:
+
+**Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora e mostra "X de Y corretas". A correção é feita inteiramente no navegador do aluno — não há servidor nem banco de dados — então trate como autoavaliação, não como prova oficial à prova de cola.
+
+**Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas, sem alternativas. O aluno escreve, envia uma única vez (não dá para refazer, nem se acertar nem se errar — não existe "acertar/errar" automático aqui) e a tela de revisão mostra o que ele escreveu junto com um campo "Nota" para o instrutor preencher ali mesmo, olhando as respostas. A prova enviada (respostas + nota) fica salva no `localStorage` daquele navegador — é uma trava por aparelho, não por aluno; como o site não tem cadastro nem login de aluno, não dá pra impedir de verdade que alguém troque de navegador ou limpe os dados pra refazer.
+
+Passos, para os dois formatos:
+
+1. Copie o modelo (`scripts/exemplo.prova.js` ou `scripts/exemplo-descritiva.prova.js`) para dentro de `provas/<curso>/`, com um nome terminado em `.prova.js` (ex: `modulo-1.prova.js`).
 2. Edite o título e as perguntas dentro do arquivo (o formato está comentado nele).
 3. Rode `python3 scripts/generate-provas-manifest.py`.
-4. Na aba Provas, o card do curso passa a mostrar um botão "Fazer prova"; ao clicar, abre um modal com as perguntas e corrige na hora, sem sair da página.
-
-A correção é feita inteiramente no navegador do aluno — não há servidor nem banco de dados — então trate como autoavaliação, não como prova oficial à prova de cola.
+4. Na aba Provas, o card do curso passa a mostrar um botão "Fazer prova"; ao clicar, abre um modal com as perguntas, sem sair da página.
 
 ## Ícones dos cursos
 

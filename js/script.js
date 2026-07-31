@@ -52,6 +52,22 @@ function slugify(str) {
     .replace(/[^a-z0-9]+/g, "-");
 }
 
+// Tenta carregar images/cursos/<slug>.png como capa do curso; se não
+// existir, mantém a letra inicial como marcador de posição. Basta colocar
+// o arquivo de imagem nessa pasta (mesmo nome do slug) que ela passa a
+// aparecer automaticamente, sem precisar mexer no código.
+function applyCourseIcon(el, courseName) {
+  el.textContent = (courseName.trim().charAt(0) || "?").toUpperCase();
+  const img = new Image();
+  img.alt = "";
+  img.onload = () => {
+    el.textContent = "";
+    el.appendChild(img);
+  };
+  img.onerror = () => {};
+  img.src = `images/cursos/${slugify(courseName)}.png`;
+}
+
 function mergeSeedData() {
   let changed = false;
   Object.entries(SEED_DATA).forEach(([course, items]) => {
@@ -129,6 +145,9 @@ function renderCourse(course) {
   const card = existingCard || courseCardTemplate.content.firstElementChild.cloneNode(true);
   card.dataset.course = course;
   card.querySelector(".course-title").textContent = course;
+  if (!existingCard) {
+    applyCourseIcon(card.querySelector(".course-icon"), course);
+  }
 
   const list = card.querySelector(".item-list");
   list.innerHTML = "";
@@ -295,11 +314,24 @@ function renderProvasCourses() {
       const card = provasCourseCardTemplate.content.firstElementChild.cloneNode(true);
       card.dataset.category = courseCategoryMap[course] || "Outros";
       card.querySelector(".course-title").textContent = course;
+      applyCourseIcon(card.querySelector(".course-icon"), course);
       card.querySelector(".provas-count").textContent =
         files.length === 1 ? "1 arquivo" : `${files.length} arquivos`;
 
       const list = card.querySelector(".file-list");
+      const quizItemTemplate = document.getElementById("provas-quiz-item-template");
       files.forEach((file) => {
+        if (file.type === "quiz") {
+          const node = quizItemTemplate.content.firstElementChild.cloneNode(true);
+          const nameEl = node.querySelector(".file-name");
+          nameEl.textContent = file.label;
+          nameEl.title = file.label;
+          node.querySelector(".quiz-start-btn").addEventListener("click", () => {
+            openQuiz(file.path, file.label);
+          });
+          list.appendChild(node);
+          return;
+        }
         const node = provasFileTemplate.content.firstElementChild.cloneNode(true);
         const link = node.querySelector(".file-link");
         link.href = encodeURI(file.path);
@@ -312,6 +344,106 @@ function renderProvasCourses() {
       });
 
       container.appendChild(card);
+    });
+}
+
+// ---- Provas interativas: arquivos "*.prova.js" que rodam dentro do portal ----
+// Formato documentado em scripts/exemplo.prova.js. O arquivo, ao ser
+// carregado, chama window.registerProvaInterativa(dados) — carregamos sob
+// demanda (só quando o aluno clica) e guardamos em cache pra não recarregar.
+
+const quizCache = new Map();
+
+function loadQuiz(path) {
+  if (quizCache.has(path)) {
+    return Promise.resolve(quizCache.get(path));
+  }
+  return new Promise((resolve, reject) => {
+    window.registerProvaInterativa = (data) => {
+      quizCache.set(path, data);
+      resolve(data);
+    };
+    const script = document.createElement("script");
+    script.src = encodeURI(path);
+    script.onerror = () => reject(new Error("Não foi possível carregar esta prova."));
+    document.body.appendChild(script);
+  });
+}
+
+const quizModal = document.getElementById("quiz-modal");
+const quizTitleEl = document.getElementById("quiz-title");
+const quizForm = document.getElementById("quiz-form");
+const quizResultEl = document.getElementById("quiz-result");
+
+function closeQuiz() {
+  quizModal.classList.add("hidden");
+  quizForm.innerHTML = "";
+  quizResultEl.classList.add("hidden");
+  quizResultEl.textContent = "";
+}
+
+document.getElementById("quiz-modal-close").addEventListener("click", closeQuiz);
+document.querySelector(".quiz-modal-backdrop").addEventListener("click", closeQuiz);
+
+function renderQuiz(data) {
+  const questionTemplate = document.getElementById("quiz-question-template");
+  const optionTemplate = document.getElementById("quiz-option-template");
+
+  quizTitleEl.textContent = data.titulo || "Prova";
+  quizForm.innerHTML = "";
+  quizResultEl.classList.add("hidden");
+  quizResultEl.textContent = "";
+
+  (data.perguntas || []).forEach((pergunta, qIndex) => {
+    const question = questionTemplate.content.firstElementChild.cloneNode(true);
+    question.querySelector(".quiz-question-text").textContent = `${qIndex + 1}. ${pergunta.pergunta}`;
+    const optionsContainer = question.querySelector(".quiz-options");
+
+    (pergunta.opcoes || []).forEach((opcao, oIndex) => {
+      const option = optionTemplate.content.firstElementChild.cloneNode(true);
+      const input = option.querySelector("input");
+      input.name = `pergunta-${qIndex}`;
+      input.value = String(oIndex);
+      option.querySelector(".quiz-option-text").textContent = opcao;
+      optionsContainer.appendChild(option);
+    });
+
+    quizForm.appendChild(question);
+  });
+
+  const submitBtn = document.createElement("button");
+  submitBtn.type = "submit";
+  submitBtn.className = "quiz-submit-btn";
+  submitBtn.textContent = "Corrigir";
+  quizForm.appendChild(submitBtn);
+
+  quizForm.onsubmit = (e) => {
+    e.preventDefault();
+    const perguntas = data.perguntas || [];
+    let acertos = 0;
+    perguntas.forEach((pergunta, qIndex) => {
+      const selected = quizForm.querySelector(`input[name="pergunta-${qIndex}"]:checked`);
+      if (selected && Number(selected.value) === pergunta.correta) {
+        acertos += 1;
+      }
+    });
+    quizResultEl.textContent = `Você acertou ${acertos} de ${perguntas.length} perguntas.`;
+    quizResultEl.classList.remove("hidden");
+    quizResultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
+}
+
+function openQuiz(path, fallbackLabel) {
+  quizModal.classList.remove("hidden");
+  quizTitleEl.textContent = `Carregando "${fallbackLabel}"...`;
+  quizForm.innerHTML = "";
+  quizResultEl.classList.add("hidden");
+
+  loadQuiz(path)
+    .then((data) => renderQuiz(data))
+    .catch((err) => {
+      quizTitleEl.textContent = fallbackLabel;
+      quizForm.innerHTML = `<p class="quiz-load-error">${err.message}</p>`;
     });
 }
 

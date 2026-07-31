@@ -45,6 +45,7 @@
   <template id="course-card-template">
     <article class="course-card">
       <header class="course-card-header">
+        <div class="course-icon" aria-hidden="true"></div>
         <h2 class="course-title"></h2>
         <button type="button" class="remove-course-btn" title="Remover curso">✕</button>
       </header>
@@ -74,6 +75,7 @@
   <template id="provas-course-card-template">
     <article class="course-card">
       <header class="course-card-header">
+        <div class="course-icon" aria-hidden="true"></div>
         <h2 class="course-title"></h2>
         <span class="provas-count"></span>
       </header>
@@ -91,8 +93,42 @@
     </li>
   </template>
 
+  <template id="provas-quiz-item-template">
+    <li class="file-item">
+      <button type="button" class="quiz-start-btn">
+        <span class="file-icon" aria-hidden="true">📝</span>
+        <span class="file-name"></span>
+      </button>
+      <span class="quiz-badge">Prova interativa</span>
+    </li>
+  </template>
+
   <template id="provas-nav-item-template">
     <button type="button" class="provas-nav-btn"></button>
+  </template>
+
+  <div id="quiz-modal" class="quiz-modal hidden">
+    <div class="quiz-modal-backdrop"></div>
+    <div class="quiz-modal-content" role="dialog" aria-modal="true">
+      <button type="button" id="quiz-modal-close" class="quiz-modal-close" aria-label="Fechar">✕</button>
+      <h2 id="quiz-title"></h2>
+      <form id="quiz-form"></form>
+      <div id="quiz-result" class="quiz-result hidden"></div>
+    </div>
+  </div>
+
+  <template id="quiz-question-template">
+    <fieldset class="quiz-question">
+      <legend class="quiz-question-text"></legend>
+      <div class="quiz-options"></div>
+    </fieldset>
+  </template>
+
+  <template id="quiz-option-template">
+    <label class="quiz-option">
+      <input type="radio" />
+      <span class="quiz-option-text"></span>
+    </label>
   </template>
 
   <script src="js/provas-data.js"></script>

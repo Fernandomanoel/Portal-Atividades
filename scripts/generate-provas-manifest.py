@@ -114,6 +114,12 @@ def human_size(num_bytes):
     return f"{size:.1f} GB"
 
 
+def quiz_display_name(filename):
+    base = filename[: -len(".prova.js")]
+    base = base.replace("_", " ").replace("-", " ").strip()
+    return base[:1].upper() + base[1:] if base else "Prova interativa"
+
+
 def build_manifest():
     manifest = {}
     for course in sorted(os.listdir(PROVAS_DIR), key=str.casefold):
@@ -128,8 +134,10 @@ def build_manifest():
                 full_path = os.path.join(dirpath, filename)
                 rel_to_course = os.path.relpath(full_path, course_path)
                 rel_to_repo = os.path.relpath(full_path, REPO_ROOT)
+                is_quiz = filename.lower().endswith(".prova.js")
                 files.append({
-                    "label": rel_to_course.replace(os.sep, " / "),
+                    "type": "quiz" if is_quiz else "file",
+                    "label": quiz_display_name(filename) if is_quiz else rel_to_course.replace(os.sep, " / "),
                     "path": rel_to_repo.replace(os.sep, "/"),
                     "size": human_size(os.path.getsize(full_path)),
                 })

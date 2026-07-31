@@ -1,0 +1,277 @@
+:root {
+  --bg: #f5f6fa;
+  --card-bg: #ffffff;
+  --border: #e0e2ea;
+  --primary: #4353ff;
+  --primary-dark: #2f3ed1;
+  --text: #1f2333;
+  --muted: #6b7080;
+  --danger: #e5484d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.topbar h1 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.4rem;
+}
+
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tab-btn {
+  border: none;
+  background: transparent;
+  padding: 0.5rem 1.1rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--muted);
+  transition: background 0.15s, color 0.15s;
+}
+
+.tab-btn:hover {
+  background: #eef0f8;
+}
+
+.tab-btn.active {
+  background: var(--primary);
+  color: #fff;
+}
+
+main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.toolbar {
+  margin-bottom: 1.25rem;
+}
+
+#course-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+#course-input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+#course-form button {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+#course-form button:hover {
+  background: var(--primary-dark);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.provas-lock {
+  max-width: 360px;
+  margin: 2rem auto;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.provas-lock label {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.provas-lock input {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+}
+
+.provas-lock button {
+  width: 100%;
+  padding: 0.55rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.provas-lock button:hover {
+  background: var(--primary-dark);
+}
+
+.provas-password-error {
+  color: var(--danger);
+  font-size: 0.85rem;
+  margin: 0.6rem 0 0 0;
+}
+
+.course-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.course-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.course-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.remove-course-btn,
+.remove-item-btn {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 0.2rem;
+}
+
+.remove-course-btn:hover,
+.remove-item-btn:hover {
+  color: var(--danger);
+}
+
+.item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 0.5rem;
+}
+
+.item-list:empty::before {
+  content: "Nenhum item adicionado ainda.";
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 0.5rem 0.65rem;
+}
+
+.item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.item-title {
+  font-size: 0.92rem;
+}
+
+.item-date {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.item-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+  white-space: pre-wrap;
+}
+
+.item-desc:empty {
+  display: none;
+}
+
+.add-item-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 0.75rem;
+}
+
+.add-item-form input,
+.add-item-form textarea {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.add-item-form button {
+  align-self: flex-end;
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 6px;
+  background: var(--primary);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.add-item-form button:hover {
+  background: var(--primary-dark);
+}

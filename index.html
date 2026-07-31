@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal de Atividades</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <h1>Portal de Atividades</h1>
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="atividades" role="tab" aria-selected="true">Atividades</button>
+      <button class="tab-btn" data-tab="provas" role="tab" aria-selected="false">Provas</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="toolbar">
+      <form id="course-form">
+        <input type="text" id="course-input" placeholder="Nome do curso (ex: Matemática)" required />
+        <button type="submit">Adicionar curso</button>
+      </form>
+    </section>
+
+    <section id="tab-atividades" class="tab-panel" data-panel="atividades">
+      <div id="courses-atividades" class="courses-grid"></div>
+    </section>
+
+    <section id="tab-provas" class="tab-panel hidden" data-panel="provas">
+      <div id="provas-lock" class="provas-lock">
+        <form id="provas-password-form">
+          <label for="provas-password-input">Esta aba é protegida por senha.</label>
+          <input type="password" id="provas-password-input" placeholder="Senha" autocomplete="off" required />
+          <button type="submit">Entrar</button>
+          <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
+        </form>
+      </div>
+      <div id="courses-provas" class="courses-grid hidden"></div>
+    </section>
+  </main>
+
+  <template id="course-card-template">
+    <article class="course-card">
+      <header class="course-card-header">
+        <h2 class="course-title"></h2>
+        <button type="button" class="remove-course-btn" title="Remover curso">✕</button>
+      </header>
+
+      <ul class="item-list"></ul>
+
+      <form class="add-item-form">
+        <input type="text" class="item-title-input" placeholder="Título" required />
+        <input type="date" class="item-date-input" />
+        <textarea class="item-desc-input" placeholder="Descrição (opcional)" rows="2"></textarea>
+        <button type="submit">Adicionar</button>
+      </form>
+    </article>
+  </template>
+
+  <template id="item-template">
+    <li class="item">
+      <div class="item-info">
+        <strong class="item-title"></strong>
+        <span class="item-date"></span>
+        <p class="item-desc"></p>
+      </div>
+      <button type="button" class="remove-item-btn" title="Remover">✕</button>
+    </li>
+  </template>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

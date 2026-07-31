@@ -1,0 +1,7 @@
+Nome do dispositivo	DESKTOP-VK2MO95
+Processador	Intel(R) Celeron(R) CPU  J1800  @ 2.41GHz   2.42 GHz
+RAM instalada	4,00 GB (utilizável: 3,89 GB)
+ID do dispositivo	2F647C81-0F2B-45DD-8DA4-3DC1075F3A49
+ID do Produto	00330-80000-00000-AA678
+Tipo de sistema	Sistema operacional de 64 bits, processador baseado em x64
+Caneta e toque	Nenhuma entrada à caneta ou por toque disponível para este vídeo

@@ -28,7 +28,15 @@
     </section>
 
     <section id="tab-provas" class="tab-panel hidden" data-panel="provas">
-      <div id="courses-provas" class="courses-grid"></div>
+      <div id="provas-lock" class="provas-lock">
+        <form id="provas-password-form">
+          <label for="provas-password-input">Esta aba é protegida por senha.</label>
+          <input type="password" id="provas-password-input" placeholder="Senha" autocomplete="off" required />
+          <button type="submit">Entrar</button>
+          <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
+        </form>
+      </div>
+      <div id="courses-provas" class="courses-grid hidden"></div>
     </section>
   </main>
 

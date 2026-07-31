@@ -237,4 +237,37 @@ document.querySelectorAll(".tab-btn").forEach((btn) => {
   });
 });
 
+// Aviso: isto é só uma trava simples de interface, não é segurança de
+// verdade — o código e os arquivos em provas/ continuam acessíveis a
+// quem souber ler o JS ou acessar os arquivos diretamente pelo repositório.
+const PROVAS_PASSWORD = "Instrutores@Cazzo10";
+const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
+
+const provasLock = document.getElementById("provas-lock");
+const provasGrid = document.getElementById("courses-provas");
+const provasPasswordForm = document.getElementById("provas-password-form");
+const provasPasswordInput = document.getElementById("provas-password-input");
+const provasPasswordError = document.getElementById("provas-password-error");
+
+function unlockProvas() {
+  sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
+  provasLock.classList.add("hidden");
+  provasGrid.classList.remove("hidden");
+}
+
+if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {
+  unlockProvas();
+}
+
+provasPasswordForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (provasPasswordInput.value === PROVAS_PASSWORD) {
+    provasPasswordError.classList.add("hidden");
+    provasPasswordInput.value = "";
+    unlockProvas();
+  } else {
+    provasPasswordError.classList.remove("hidden");
+  }
+});
+
 renderAllCourses();

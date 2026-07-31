@@ -197,8 +197,8 @@ function closeQuiz() {
   quizResultEl.textContent = "";
 }
 
-document.getElementById("quiz-modal-close").addEventListener("click", closeQuiz);
-document.querySelector(".quiz-modal-backdrop").addEventListener("click", closeQuiz);
+document.getElementById("quiz-modal-close")?.addEventListener("click", closeQuiz);
+document.querySelector(".quiz-modal-backdrop")?.addEventListener("click", closeQuiz);
 
 function renderQuiz(data) {
   const questionTemplate = document.getElementById("quiz-question-template");
@@ -279,12 +279,35 @@ const provasPasswordForm = document.getElementById("provas-password-form");
 const provasPasswordInput = document.getElementById("provas-password-input");
 const provasPasswordError = document.getElementById("provas-password-error");
 
+// Se algum elemento esperado não estiver no index.html, avisa no console em
+// vez de estourar um erro. Um erro aqui interrompia o resto do arquivo e o
+// formulário de senha ficava sem handler: ao clicar em "Entrar" o navegador
+// enviava o form do jeito padrão, recarregava a página e voltava ao início.
+const provasFaltando = Object.entries({
+  "#provas-lock": provasLock,
+  "#provas-content": provasContent,
+  "#provas-logout": provasLogoutBtn,
+  "#provas-password-form": provasPasswordForm,
+  "#provas-password-input": provasPasswordInput,
+  "#provas-password-error": provasPasswordError,
+})
+  .filter(([, el]) => !el)
+  .map(([id]) => id);
+
+if (provasFaltando.length) {
+  console.error(
+    "[provas.js] Elementos não encontrados no index.html:",
+    provasFaltando.join(", "),
+    "— o index.html está desatualizado em relação ao provas.js."
+  );
+}
+
 function unlockProvas() {
   sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
-  provasLock.classList.add("hidden");
-  provasContent.classList.remove("hidden");
-  provasLogoutBtn.classList.remove("hidden");
-  if (!provasContent.dataset.rendered) {
+  provasLock?.classList.add("hidden");
+  provasContent?.classList.remove("hidden");
+  provasLogoutBtn?.classList.remove("hidden");
+  if (provasContent && !provasContent.dataset.rendered) {
     renderProvasCourses();
     provasContent.dataset.rendered = "1";
   }
@@ -294,26 +317,28 @@ function unlockProvas() {
 // preso na listagem até fechar o navegador, sem jeito de rever o login.
 function lockProvas() {
   sessionStorage.removeItem(PROVAS_UNLOCK_KEY);
-  provasContent.classList.add("hidden");
-  provasLogoutBtn.classList.add("hidden");
-  provasLock.classList.remove("hidden");
-  provasPasswordError.classList.add("hidden");
-  provasPasswordInput.value = "";
+  provasContent?.classList.add("hidden");
+  provasLogoutBtn?.classList.add("hidden");
+  provasLock?.classList.remove("hidden");
+  provasPasswordError?.classList.add("hidden");
+  if (provasPasswordInput) provasPasswordInput.value = "";
 }
 
-provasLogoutBtn.addEventListener("click", lockProvas);
+// O handler do formulário vem primeiro: mesmo que algo abaixo falhe, o
+// "Entrar" nunca recarrega a página.
+provasPasswordForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+  if (provasPasswordInput?.value === PROVAS_PASSWORD) {
+    provasPasswordError?.classList.add("hidden");
+    provasPasswordInput.value = "";
+    unlockProvas();
+  } else {
+    provasPasswordError?.classList.remove("hidden");
+  }
+});
+
+provasLogoutBtn?.addEventListener("click", lockProvas);
 
 if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {
   unlockProvas();
 }
-
-provasPasswordForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  if (provasPasswordInput.value === PROVAS_PASSWORD) {
-    provasPasswordError.classList.add("hidden");
-    provasPasswordInput.value = "";
-    unlockProvas();
-  } else {
-    provasPasswordError.classList.remove("hidden");
-  }
-});

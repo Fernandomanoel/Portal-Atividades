@@ -1,48 +1,57 @@
-const STORAGE_KEY = "portal-atividades";
+// ---- Navegação entre as views (navbar + footer) ----
 
-const DEFAULT_COURSES = [
-  "Português",
-  "Matemática",
-  "História",
-  "Geografia",
-  "Ciências",
-  "Inglês",
-];
+function showView(viewName) {
+  document.querySelectorAll(".view").forEach((view) => {
+    view.classList.toggle("hidden", view.id !== `view-${viewName}`);
+  });
+  document.querySelectorAll(".nav-link").forEach((link) => {
+    link.classList.toggle("active", link.dataset.view === viewName);
+  });
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
 
-// Dados pré-carregados de Atividades: adicione itens aqui (por curso) para
-// que já apareçam no site sem precisar preencher o formulário manualmente.
-// Formato do item: { title: "Título", date: "AAAA-MM-DD" (opcional), desc: "..." (opcional) }
-const SEED_DATA = {
-  // "Matemática": [{ title: "Lista de exercícios 1", date: "2026-08-10" }],
-};
+document.querySelectorAll("[data-view]").forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.preventDefault();
+    showView(link.dataset.view);
+  });
+});
 
-function loadState() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) {
-    const initial = { courses: [...DEFAULT_COURSES], atividades: {}, deletedSeedIds: [] };
-    DEFAULT_COURSES.forEach((course) => {
-      initial.atividades[course] = [];
-    });
-    return initial;
-  }
-  try {
-    const parsed = JSON.parse(raw);
-    parsed.courses = parsed.courses || [];
-    parsed.atividades = parsed.atividades || {};
-    parsed.deletedSeedIds = parsed.deletedSeedIds || [];
-    parsed.courses.forEach((course) => {
-      parsed.atividades[course] = parsed.atividades[course] || [];
-    });
-    return parsed;
-  } catch (err) {
-    console.error("Falha ao ler dados salvos, iniciando do zero.", err);
-    return { courses: [], atividades: {}, deletedSeedIds: [] };
+// ---- Carrossel das atividades ----
+
+function scrollCourses(direction) {
+  const list = document.getElementById("courseList");
+  if (!list) return;
+  const card = list.querySelector(".course");
+  const step = card ? card.getBoundingClientRect().width + 20 : 300;
+  list.scrollBy({ left: direction * step, behavior: "smooth" });
+}
+
+// ---- Modo escuro ----
+
+const DARK_MODE_KEY = "portal-dark-mode";
+const darkModeToggle = document.getElementById("darkModeToggle");
+
+function applyDarkMode(enabled) {
+  document.body.classList.toggle("dark-mode", enabled);
+  if (darkModeToggle) {
+    darkModeToggle.textContent = enabled ? "☀️" : "🌙";
   }
 }
 
-function saveState() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+applyDarkMode(localStorage.getItem(DARK_MODE_KEY) === "1");
+
+if (darkModeToggle) {
+  darkModeToggle.addEventListener("click", () => {
+    const enabled = !document.body.classList.contains("dark-mode");
+    localStorage.setItem(DARK_MODE_KEY, enabled ? "1" : "0");
+    applyDarkMode(enabled);
+  });
 }
+
+// ---- Provas: lista os arquivos reais guardados em provas/<curso>/ ----
+// O conteúdo vem de js/provas-data.js (gerado por
+// scripts/generate-provas-manifest.py a partir da pasta provas/).
 
 function slugify(str) {
   return str
@@ -67,172 +76,6 @@ function applyCourseIcon(el, courseName) {
   img.onerror = () => {};
   img.src = `images/cursos/${slugify(courseName)}.png`;
 }
-
-function mergeSeedData() {
-  let changed = false;
-  Object.entries(SEED_DATA).forEach(([course, items]) => {
-    if (!state.courses.includes(course)) {
-      state.courses.push(course);
-      changed = true;
-    }
-    state.atividades[course] = state.atividades[course] || [];
-
-    items.forEach((item, index) => {
-      const seedId = `seed-${slugify(course)}-${index}`;
-      const alreadyPresent = state.atividades[course].some((i) => i.id === seedId);
-      const wasDeleted = state.deletedSeedIds.includes(seedId);
-      if (!alreadyPresent && !wasDeleted) {
-        state.atividades[course].push({
-          id: seedId,
-          title: item.title,
-          date: item.date || "",
-          desc: item.desc || "",
-        });
-        changed = true;
-      }
-    });
-  });
-  return changed;
-}
-
-let state = loadState();
-if (mergeSeedData()) {
-  saveState();
-}
-
-const courseCardTemplate = document.getElementById("course-card-template");
-const itemTemplate = document.getElementById("item-template");
-const atividadesContainer = document.getElementById("courses-atividades");
-
-function formatDate(isoDate) {
-  if (!isoDate) return "";
-  const [year, month, day] = isoDate.split("-");
-  if (!year || !month || !day) return isoDate;
-  return `${day}/${month}/${year}`;
-}
-
-function sortItemsByDate(items) {
-  return [...items].sort((a, b) => {
-    if (!a.date && !b.date) return 0;
-    if (!a.date) return 1;
-    if (!b.date) return -1;
-    return a.date.localeCompare(b.date);
-  });
-}
-
-function renderItem(course, item) {
-  const node = itemTemplate.content.firstElementChild.cloneNode(true);
-  node.dataset.id = item.id;
-  node.querySelector(".item-title").textContent = item.title;
-  node.querySelector(".item-date").textContent = formatDate(item.date);
-  node.querySelector(".item-desc").textContent = item.desc || "";
-  node.querySelector(".remove-item-btn").addEventListener("click", () => {
-    state.atividades[course] = state.atividades[course].filter((i) => i.id !== item.id);
-    if (item.id.startsWith("seed-")) {
-      state.deletedSeedIds.push(item.id);
-    }
-    saveState();
-    renderCourse(course);
-  });
-  return node;
-}
-
-function renderCourse(course) {
-  const existingCard = atividadesContainer.querySelector(
-    `.course-card[data-course="${CSS.escape(course)}"]`
-  );
-
-  const card = existingCard || courseCardTemplate.content.firstElementChild.cloneNode(true);
-  card.dataset.course = course;
-  card.querySelector(".course-title").textContent = course;
-  if (!existingCard) {
-    applyCourseIcon(card.querySelector(".course-icon"), course);
-  }
-
-  const list = card.querySelector(".item-list");
-  list.innerHTML = "";
-  sortItemsByDate(state.atividades[course] || []).forEach((item) => {
-    list.appendChild(renderItem(course, item));
-  });
-
-  if (!existingCard) {
-    card.querySelector(".remove-course-btn").addEventListener("click", () => {
-      removeCourse(course);
-    });
-
-    const form = card.querySelector(".add-item-form");
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const titleInput = form.querySelector(".item-title-input");
-      const dateInput = form.querySelector(".item-date-input");
-      const descInput = form.querySelector(".item-desc-input");
-
-      const title = titleInput.value.trim();
-      if (!title) return;
-
-      state.atividades[course].push({
-        id: crypto.randomUUID(),
-        title,
-        date: dateInput.value,
-        desc: descInput.value.trim(),
-      });
-      saveState();
-      form.reset();
-      renderCourse(course);
-    });
-
-    atividadesContainer.appendChild(card);
-  }
-}
-
-function renderAllCourses() {
-  atividadesContainer.innerHTML = "";
-  state.courses.forEach((course) => renderCourse(course));
-}
-
-function addCourse(name) {
-  if (state.courses.includes(name)) return;
-  state.courses.push(name);
-  state.atividades[name] = state.atividades[name] || [];
-  saveState();
-  renderAllCourses();
-}
-
-function removeCourse(name) {
-  if (!confirm(`Remover o curso "${name}" e todos os itens dele?`)) return;
-  state.courses = state.courses.filter((c) => c !== name);
-  delete state.atividades[name];
-  saveState();
-  renderAllCourses();
-}
-
-document.getElementById("course-form").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const input = document.getElementById("course-input");
-  const name = input.value.trim();
-  if (!name) return;
-  addCourse(name);
-  input.value = "";
-});
-
-document.querySelectorAll(".tab-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    const tab = btn.dataset.tab;
-    document.querySelectorAll(".tab-btn").forEach((b) => {
-      b.classList.toggle("active", b === btn);
-      b.setAttribute("aria-selected", b === btn ? "true" : "false");
-    });
-    document.querySelectorAll(".tab-panel").forEach((panel) => {
-      panel.classList.toggle("hidden", panel.dataset.panel !== tab);
-    });
-  });
-});
-
-renderAllCourses();
-
-// ---- Provas: lista os arquivos reais guardados em provas/<curso>/ ----
-// O conteúdo vem de js/provas-data.js (gerado por
-// scripts/generate-provas-manifest.py a partir da pasta provas/).
 
 const FILE_ICONS = {
   pdf: "📄",
@@ -267,7 +110,7 @@ function buildCourseCategoryMap(categories) {
   return map;
 }
 
-function renderProvasNav(categories, courseCategoryMap) {
+function renderProvasNav(categories) {
   const nav = document.getElementById("provas-nav");
   const navItemTemplate = document.getElementById("provas-nav-item-template");
   nav.innerHTML = "";
@@ -300,11 +143,12 @@ function renderProvasCourses() {
   const container = document.getElementById("courses-provas");
   const provasCourseCardTemplate = document.getElementById("provas-course-card-template");
   const provasFileTemplate = document.getElementById("provas-file-template");
+  const quizItemTemplate = document.getElementById("provas-quiz-item-template");
   const manifest = typeof PROVAS_MANIFEST === "object" ? PROVAS_MANIFEST : {};
   const categories = typeof PROVAS_CATEGORIES === "object" ? PROVAS_CATEGORIES : [];
   const courseCategoryMap = buildCourseCategoryMap(categories);
 
-  renderProvasNav(categories, courseCategoryMap);
+  renderProvasNav(categories);
 
   container.innerHTML = "";
   Object.keys(manifest)
@@ -319,7 +163,6 @@ function renderProvasCourses() {
         files.length === 1 ? "1 arquivo" : `${files.length} arquivos`;
 
       const list = card.querySelector(".file-list");
-      const quizItemTemplate = document.getElementById("provas-quiz-item-template");
       files.forEach((file) => {
         if (file.type === "quiz") {
           const node = quizItemTemplate.content.firstElementChild.cloneNode(true);
@@ -333,8 +176,7 @@ function renderProvasCourses() {
           return;
         }
         const node = provasFileTemplate.content.firstElementChild.cloneNode(true);
-        const link = node.querySelector(".file-link");
-        link.href = encodeURI(file.path);
+        node.querySelector(".file-link").href = encodeURI(file.path);
         node.querySelector(".file-icon").textContent = fileIcon(file.label);
         const nameEl = node.querySelector(".file-name");
         nameEl.textContent = file.label;

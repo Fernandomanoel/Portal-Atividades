@@ -1,76 +1,235 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Portal de Atividades</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <header class="topbar">
-    <h1>Portal de Atividades</h1>
-    <nav class="tabs" role="tablist">
-      <button class="tab-btn active" data-tab="atividades" role="tab" aria-selected="true">Atividades</button>
-      <button class="tab-btn" data-tab="provas" role="tab" aria-selected="false">Provas</button>
-    </nav>
-  </header>
+<html lang="pt-br">
 
-  <main>
-    <section id="tab-atividades" class="tab-panel" data-panel="atividades">
-      <section class="toolbar">
-        <form id="course-form">
-          <input type="text" id="course-input" placeholder="Nome do curso (ex: Matemática)" required />
-          <button type="submit">Adicionar curso</button>
-        </form>
-      </section>
-      <div id="courses-atividades" class="courses-grid"></div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MicroAtividades</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
+</head>
+
+<body>
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="navbar">
+    <a href="#" class="navbar-brand" data-view="atividades">MicroAtividades</a>
+
+    <ul class="navbar-links">
+      <li><a href="#" class="nav-link active" data-view="atividades">Início</a></li>
+      <li><a href="#" class="nav-link" data-view="provas">Provas</a></li>
+    </ul>
+
+    <button id="darkModeToggle" class="dark-mode-btn" aria-label="Alternar modo escuro">
+      🌙
+    </button>
+  </nav>
+
+  <div class="container">
+
+    <!-- ================= VIEW: ATIVIDADES ================= -->
+    <section id="view-atividades" class="view">
+
+      <!-- ================= BANNER ================= -->
+      <div class="banner">
+        <div class="banner-text">
+          <h1>Atividades Extras</h1>
+          <p>Escolha uma atividade abaixo para começar.</p>
+        </div>
+      </div>
+
+      <!-- TÍTULO -->
+      <h2 class="section-title">Atividades disponíveis</h2>
+
+      <!-- CARROSSEL -->
+      <div class="courses-container">
+
+        <button class="arrow left" onclick="scrollCourses(-1)">❮</button>
+
+        <div class="courses-wrapper">
+          <div class="courses" id="courseList">
+            <!--Inicio da caixa-->
+            <a href="windowsatividade.html" class="course">
+              <img src="img/windows11.jpg">
+              <div class="course-content">
+                <h3>Windows 11</h3>
+                <p>Modificar do básico ao avançado.</p>
+              </div>
+            </a>
+            <!--Final da caixa-->
+
+            <!--Inicio da caixa-->
+            <a href="excelpdf.html" class="course">
+              <img src="img/excelbackground.jpg">
+              <div class="course-content">
+                <h3>Excel Básico</h3>
+                <p>Planilhas e fórmulas simples.</p>
+              </div>
+            </a>
+            <!--Final da caixa-->
+            <a href="powerbi.html" class="course">
+              <img src="img/powerbi.jpg">
+              <div class="course-content">
+                <h3>Power Bi</h3>
+                <p>Atividades sobre o PowerBi
+                </p>
+              </div>
+            </a>
+
+            <!--Inicio da caixa-->
+            <a href="wordatividades.html" class="course">
+              <img src="img/wordpapeldeparede.jpg">
+              <div class="course-content">
+                <h3>Word</h3>
+                <p>Documentos, Normas ABNT e Automações</p>
+              </div>
+            </a>
+            <!--Final da caixa-->
+
+            <!--Inicio da caixa-->
+            <a href="powerpoint.html" class="course">
+              <img src="img/powerpointwallpaper.jpg">
+              <div class="course-content">
+                <h3>PowerPoint</h3>
+                <p>Apresentações Visuais e Profissionais.</p>
+              </div>
+            </a>
+            <!--Final da caixa-->
+            <a href="infokids.html" class="course">
+              <img src="img/infokidsbackground.png">
+              <div class="course-content">
+                <h3>Informática Kids</h3>
+                <p>Atividades para o Kids.</p>
+              </div>
+            </a>
+
+          </div>
+        </div>
+
+        <button class="arrow right" onclick="scrollCourses(1)">❯</button>
+
+      </div>
+
+      <!-- ================= MAIS ATIVIDADES ================= -->
+
+      <h2 class="section-title">Mais Atividades</h2>
+
+      <div class="courses-container">
+
+        <div class="courses-wrapper">
+          <div class="courses games">
+
+            <a href="htmlecss.html" class="game-card pink">
+              <div class="game-info">
+                <h3>Programação HTML &amp; CSS</h3>
+                <span>Atividades de HTML &amp; CSS</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/iconcsshtml.png" alt="">
+            </a>
+
+            <a href="pythonatividades.html" class="game-card orange">
+              <div class="game-info">
+                <h3>Python</h3>
+                <span>Atividades de Python</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/iconpython.png" alt="">
+            </a>
+
+            <a href="logprogramaçao.html" class="game-card blue">
+              <div class="game-info">
+                <h3>Lógica de Programação</h3>
+                <span>Exercícios práticos</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/programming.png" alt="">
+            </a>
+
+            <a href="javascript.html" class="game-card purple">
+              <div class="game-info">
+                <h3>Javascript</h3>
+                <span>Atividades de Javascript</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/iconjs.png" alt="">
+            </a>
+            <a href="inteligartificial.html" class="game-card red">
+              <div class="game-info">
+                <h3>Inteligência Artificial</h3>
+                <span>Atividades de Inteligência Artificial</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/artificial-intelligence.png" alt="">
+            </a>
+            <a href="bancodesql.html" class="game-card blue">
+              <div class="game-info">
+                <h3>Banco de Dados | SQL</h3>
+                <span>Atividades de Banco de Dados</span>
+                <button>▶ Inicie</button>
+              </div>
+              <img src="img/logo sql.png" alt="">
+            </a>
+          </div>
+        </div>
+
+      </div>
+
     </section>
 
-    <section id="tab-provas" class="tab-panel hidden" data-panel="provas">
+    <!-- ================= VIEW: PROVAS ================= -->
+    <section id="view-provas" class="view hidden">
+
+      <div class="banner">
+        <div class="banner-text">
+          <h1>Provas</h1>
+          <p>Área dos instrutores — avaliações organizadas por curso.</p>
+        </div>
+      </div>
+
       <div id="provas-lock" class="provas-lock">
         <form id="provas-password-form">
-          <label for="provas-password-input">Esta aba é protegida por senha.</label>
+          <label for="provas-password-input">Esta área é protegida por senha.</label>
           <input type="password" id="provas-password-input" placeholder="Senha" autocomplete="off" required />
           <button type="submit">Entrar</button>
           <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
         </form>
       </div>
-      <div id="provas-content" class="provas-content hidden">
+
+      <div id="provas-content" class="hidden">
+        <!-- navbar de categorias (substitui a antiga barra lateral) -->
         <nav id="provas-nav" class="provas-nav"></nav>
         <div id="courses-provas" class="courses-grid"></div>
       </div>
+
     </section>
-  </main>
 
-  <template id="course-card-template">
-    <article class="course-card">
-      <header class="course-card-header">
-        <div class="course-icon" aria-hidden="true"></div>
-        <h2 class="course-title"></h2>
-        <button type="button" class="remove-course-btn" title="Remover curso">✕</button>
-      </header>
+  </div>
 
-      <ul class="item-list"></ul>
+  <footer class="footer">
+    <div class="footer-content">
 
-      <form class="add-item-form">
-        <input type="text" class="item-title-input" placeholder="Título" required />
-        <input type="date" class="item-date-input" />
-        <textarea class="item-desc-input" placeholder="Descrição (opcional)" rows="2"></textarea>
-        <button type="submit">Adicionar</button>
-      </form>
-    </article>
-  </template>
-
-  <template id="item-template">
-    <li class="item">
-      <div class="item-info">
-        <strong class="item-title"></strong>
-        <span class="item-date"></span>
-        <p class="item-desc"></p>
+      <div class="footer-left">
+        <h3>MicroAtividades</h3>
+        <p>Atividades para reforços</p>
       </div>
-      <button type="button" class="remove-item-btn" title="Remover">✕</button>
-    </li>
-  </template>
+
+      <div class="footer-links">
+        <h4>Navegação</h4>
+        <a href="#" class="nav-link" data-view="atividades">Início</a>
+        <a href="#" class="nav-link" data-view="provas">Provas</a>
+      </div>
+
+      <div class="footer-info">
+        <h4>Informações</h4>
+        <p>Microlins São José | Feito por instrutores</p>
+        <p>© 2026 Todos os direitos reservados</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= TEMPLATES ================= -->
 
   <template id="provas-course-card-template">
     <article class="course-card">
@@ -134,4 +293,5 @@
   <script src="js/provas-data.js"></script>
   <script src="js/script.js"></script>
 </body>
+
 </html>

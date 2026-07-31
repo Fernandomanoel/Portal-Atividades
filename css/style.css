@@ -105,23 +105,14 @@ main {
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   min-width: 0;
-  flex: 1;
 }
 
-.provas-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;
-}
-
+/* Navbar de categorias das provas (horizontal, no topo da listagem). */
 .provas-nav {
-  flex-shrink: 0;
-  width: 220px;
   display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  position: sticky;
-  top: 90px;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
 }
 
 .provas-nav-btn {
@@ -142,19 +133,6 @@ main {
 .provas-nav-btn.active {
   background: var(--primary);
   color: #fff;
-}
-
-@media (max-width: 720px) {
-  .provas-content {
-    flex-direction: column;
-  }
-
-  .provas-nav {
-    width: 100%;
-    flex-direction: row;
-    flex-wrap: wrap;
-    position: static;
-  }
 }
 
 .provas-lock {

@@ -483,22 +483,40 @@ body {
 .provas-logout {
   position: relative;
   z-index: 2;
-  padding: 11px 26px;
-  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 26px;
+  border: none;
   border-radius: 30px;
-  background: rgba(255, 255, 255, 0.15);
-  color: #fff;
+  background: #fff;
+  color: var(--azul-escuro);
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s ease;
   flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
 }
 
 .provas-logout:hover {
-  background: #fff;
-  color: var(--azul-escuro);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+.provas-logout:active {
+  transform: translateY(0);
+}
+
+.provas-logout-icone {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* no modo escuro o banner fica cinza, então o botão branco puro pesa */
+body.dark-mode .provas-logout {
+  background: var(--azul);
+  color: #fff;
 }
 
 /* ================= AVISO DE LISTA VAZIA ================= */

@@ -137,6 +137,12 @@ const PROVAS_MANIFEST = {
   ],
   "Assistente de Departamento Pessoal": [
     {
+      "type": "quiz",
+      "label": "Avaliação Assistente de Departamento Pessoal",
+      "path": "provas/Assistente de Departamento Pessoal/Avaliação - Assistente de Departamento Pessoal.prova.js",
+      "size": "3.3 KB"
+    },
+    {
       "type": "file",
       "label": "Avaliação Prática - Assistente de Departamento Pessoal.pdf",
       "path": "provas/Assistente de Departamento Pessoal/Avaliação Prática - Assistente de Departamento Pessoal.pdf",
@@ -157,6 +163,12 @@ const PROVAS_MANIFEST = {
   ],
   "Assistente de Logística": [
     {
+      "type": "quiz",
+      "label": "Avaliação Assistente de Logística",
+      "path": "provas/Assistente de Logística/Avaliação - Assistente de Logística.prova.js",
+      "size": "3.3 KB"
+    },
+    {
       "type": "file",
       "label": "AvaliaçãoAss.deLogistica.docx",
       "path": "provas/Assistente de Logística/AvaliaçãoAss.deLogistica.docx",
@@ -169,6 +181,18 @@ const PROVAS_MANIFEST = {
       "label": "Atividade Atendimento ao Cliente.docx",
       "path": "provas/Atendimento ao Cliente/Atividade Atendimento ao Cliente.docx",
       "size": "17.2 KB"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Atendimento ao Cliente (Descritiva)",
+      "path": "provas/Atendimento ao Cliente/Avaliação - Atendimento ao Cliente (Descritiva).prova.js",
+      "size": "350 B"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Atendimento ao Cliente (Múltipla Escolha)",
+      "path": "provas/Atendimento ao Cliente/Avaliação - Atendimento ao Cliente (Múltipla Escolha).prova.js",
+      "size": "2.7 KB"
     }
   ],
   "Auxiliar Médico": [
@@ -446,6 +470,12 @@ const PROVAS_MANIFEST = {
   "Empreendedorismo": [],
   "Escrita Fiscal e Contabilidade": [
     {
+      "type": "quiz",
+      "label": "Avaliação Escrita Fiscal e Contabilidade",
+      "path": "provas/Escrita Fiscal e Contabilidade/Avaliação - Escrita Fiscal e Contabilidade.prova.js",
+      "size": "3.5 KB"
+    },
+    {
       "type": "file",
       "label": "Gabarito.pdf",
       "path": "provas/Escrita Fiscal e Contabilidade/Gabarito.pdf",
@@ -545,6 +575,18 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação - Gestão de Pessoas.docx",
       "path": "provas/Gestão de Pessoas/Avaliação - Gestão de Pessoas.docx",
       "size": "62.3 KB"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Gestão de Pessoas (Descritiva)",
+      "path": "provas/Gestão de Pessoas/Avaliação - Gestão de Pessoas (Descritiva).prova.js",
+      "size": "326 B"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Gestão de Pessoas (Múltipla Escolha)",
+      "path": "provas/Gestão de Pessoas/Avaliação - Gestão de Pessoas (Múltipla Escolha).prova.js",
+      "size": "2.8 KB"
     }
   ],
   "Google Adwords": [
@@ -597,6 +639,18 @@ const PROVAS_MANIFEST = {
   ],
   "Inteligência Emocional": [
     {
+      "type": "quiz",
+      "label": "Avaliação Inteligência Emocional (Descritiva)",
+      "path": "provas/Inteligência Emocional/Avaliação - Inteligência Emocional (Descritiva).prova.js",
+      "size": "384 B"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Inteligência Emocional (Múltipla Escolha)",
+      "path": "provas/Inteligência Emocional/Avaliação - Inteligência Emocional (Múltipla Escolha).prova.js",
+      "size": "3.0 KB"
+    },
+    {
       "type": "file",
       "label": "Avaliação-InteligênciaEmocional.txt",
       "path": "provas/Inteligência Emocional/Avaliação-InteligênciaEmocional.txt",
@@ -625,6 +679,12 @@ const PROVAS_MANIFEST = {
   ],
   "Internet, Redes Sociais e Aplicativos": [
     {
+      "type": "quiz",
+      "label": "Avaliação Internet, Redes Sociais e Aplicativos",
+      "path": "provas/Internet, Redes Sociais e Aplicativos/Avaliação - Internet, Redes Sociais e Aplicativos.prova.js",
+      "size": "3.2 KB"
+    },
+    {
       "type": "file",
       "label": "AVALIAÇÃO PRÁTICA - INTERNET REDES SOCIAIS E APLICATIVOS.pdf",
       "path": "provas/Internet, Redes Sociais e Aplicativos/AVALIAÇÃO PRÁTICA - INTERNET REDES SOCIAIS E APLICATIVOS.pdf",
@@ -638,6 +698,12 @@ const PROVAS_MANIFEST = {
     }
   ],
   "Introdução à Informática": [
+    {
+      "type": "quiz",
+      "label": "Avaliação Introdução à Informática",
+      "path": "provas/Introdução à Informática/Avaliação - Introdução à Informática.prova.js",
+      "size": "2.6 KB"
+    },
     {
       "type": "file",
       "label": "Avaliação Prática - Introdução à Informática 01.pdf",
@@ -661,6 +727,12 @@ const PROVAS_MANIFEST = {
     }
   ],
   "Liderança": [
+    {
+      "type": "quiz",
+      "label": "Avaliação Liderança",
+      "path": "provas/Liderança/Avaliação - Liderança.prova.js",
+      "size": "3.5 KB"
+    },
     {
       "type": "file",
       "label": "Avaliação Prática – Liderança _ Cialen.pdf",
@@ -832,6 +904,12 @@ const PROVAS_MANIFEST = {
   ],
   "Secretariado": [
     {
+      "type": "quiz",
+      "label": "Avaliação Secretariado",
+      "path": "provas/Secretariado/Avaliação - Secretariado.prova.js",
+      "size": "3.6 KB"
+    },
+    {
       "type": "file",
       "label": "Prova Secretariado.txt",
       "path": "provas/Secretariado/Prova Secretariado.txt",
@@ -850,9 +928,21 @@ const PROVAS_MANIFEST = {
       "label": "ATIVIDADE PRÁTICA - SEGURANÇA NA ERA DIGITAL.pdf",
       "path": "provas/Segurança da Era Digital/ATIVIDADE PRÁTICA - SEGURANÇA NA ERA DIGITAL.pdf",
       "size": "42.6 KB"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Segurança da Era Digital",
+      "path": "provas/Segurança da Era Digital/Avaliação - Segurança da Era Digital.prova.js",
+      "size": "3.4 KB"
     }
   ],
   "Segurança no Trabalho": [
+    {
+      "type": "quiz",
+      "label": "Avaliação Segurança no Trabalho",
+      "path": "provas/Segurança no Trabalho/Avaliação - Segurança no Trabalho.prova.js",
+      "size": "3.5 KB"
+    },
     {
       "type": "file",
       "label": "Prova - Segurança no Trabalho.txt",
@@ -872,6 +962,18 @@ const PROVAS_MANIFEST = {
       "label": "AVALIAÇÃO - VENDAS.pdf",
       "path": "provas/Vendas/AVALIAÇÃO - VENDAS.pdf",
       "size": "30.1 KB"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Vendas (Descritiva)",
+      "path": "provas/Vendas/Avaliação - Vendas (Descritiva).prova.js",
+      "size": "354 B"
+    },
+    {
+      "type": "quiz",
+      "label": "Avaliação Vendas (Múltipla Escolha)",
+      "path": "provas/Vendas/Avaliação - Vendas (Múltipla Escolha).prova.js",
+      "size": "2.7 KB"
     }
   ],
   "Windows 11": [

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de Administração - 10 Questões</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .option-label:hover {
+            background-color: #f3f4f6;
+        }
+        input[type="radio"]:checked + span {
+            color: #2563eb;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-6">
+        <header class="border-b pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-gray-800 text-center">Prova de Administração</h1>
+            <p class="text-gray-600 text-center mt-2">Teste seus conhecimentos sobre teorias, funções e processos administrativos.</p>
+        </header>
+
+        <form id="quizForm" class="space-y-8">
+            <!-- Questão 1 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">1. Quais são as quatro funções clássicas do processo administrativo?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q1" value="0" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Planejar, Operar, Dirigir e Controlar.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q1" value="1" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Planejar, Organizar, Dirigir e Controlar (PODC).</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q1" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Pesquisar, Organizar, Delegar e Comunicar.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 2 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">2. Frederick Taylor é considerado o pai de qual escola da administração?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q2" value="1" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Administração Científica.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q2" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Teoria Clássica.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q2" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Escola das Relações Humanas.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">3. Na análise SWOT (ou FOFA), quais elementos compõem o ambiente interno?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q3" value="0" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Oportunidades e Ameaças.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q3" value="1" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Forças e Fraquezas.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q3" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Estratégias e Metas.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 4 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">4. Qual é o foco principal da Teoria das Relações Humanas?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q4" value="0" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">A estrutura organizacional e a hierarquia.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q4" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">O aumento da produtividade via métodos de trabalho.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q4" value="1" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">As pessoas e os grupos sociais dentro da organização.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 5 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">5. O que define a "Missão" de uma organização?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q5" value="1" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">A razão de ser e o propósito atual da empresa.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q5" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Onde a empresa deseja chegar no futuro.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q5" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Os princípios éticos que regem os funcionários.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 6 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">6. Na administração, o que significa o conceito de "Eficiência"?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q6" value="1" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Fazer as coisas da maneira certa, otimizando recursos.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q6" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Atingir os objetivos e metas traçados, independente do custo.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q6" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Relacionar a empresa com o ambiente externo.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 7 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">7. Qual estilo de liderança é focado na participação dos subordinados no processo de decisão?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q7" value="0" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Liderança Autocrática.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q7" value="1" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Liderança Democrática.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q7" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Liderança Liberal (Laissez-faire).</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 8 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">8. A ferramenta de qualidade que busca identificar a causa raiz de um problema é:</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q8" value="1" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Diagrama de Ishikawa (Espinha de Peixe).</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q8" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Matriz BCG.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q8" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Fluxograma.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 9 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">9. O Ciclo PDCA é uma ferramenta de:</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q9" value="0" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Recrutamento e seleção.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q9" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Vendas e Marketing.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q9" value="1" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Melhoria contínua de processos.</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Questão 10 -->
+            <div class="question-container">
+                <p class="text-lg font-semibold text-gray-700">10. Qual nível da pirâmide organizacional lida com decisões de longo prazo e diretrizes gerais?</p>
+                <div class="mt-3 space-y-2">
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q10" value="1" class="w-4 h-4 text-blue-600" required>
+                        <span class="ml-3 text-gray-700">Nível Estratégico.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q10" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Nível Tático.</span>
+                    </label>
+                    <label class="flex items-center p-3 border rounded-lg cursor-pointer option-label">
+                        <input type="radio" name="q10" value="0" class="w-4 h-4 text-blue-600">
+                        <span class="ml-3 text-gray-700">Nível Operacional.</span>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300">
+                Finalizar e Ver Resultado
+            </button>
+        </form>
+
+        <div id="resultArea" class="hidden mt-8 p-6 border-t-2 border-blue-100 bg-blue-50 rounded-lg text-center">
+            <h2 class="text-2xl font-bold text-blue-800">Seu Resultado</h2>
+            <p id="scoreText" class="text-4xl font-extrabold text-blue-600 my-4"></p>
+            <p id="feedbackMessage" class="text-gray-700 font-medium"></p>
+            <div class="mt-6">
+                <a href="../../index.html" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg transition duration-300">
+                    Voltar à Página Inicial
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            let score = 0;
+            const total = 10;
+
+            for (let value of formData.values()) {
+                score += parseInt(value);
+            }
+
+            const resultArea = document.getElementById('resultArea');
+            const scoreText = document.getElementById('scoreText');
+            const feedbackMessage = document.getElementById('feedbackMessage');
+
+            scoreText.textContent = `${score} / ${total}`;
+
+            if (score >= 8) {
+                feedbackMessage.textContent = "Excelente! Você demonstra um ótimo domínio dos fundamentos da administração.";
+            } else if (score >= 5) {
+                feedbackMessage.textContent = "Bom trabalho! Você tem uma boa base, mas pode revisar alguns conceitos teóricos.";
+            } else {
+                feedbackMessage.textContent = "Continue estudando. A administração é uma área vasta e a prática ajuda muito na compreensão dos conceitos.";
+            }
+
+            resultArea.classList.remove('hidden');
+            resultArea.scrollIntoView({ behavior: 'smooth' });
+
+            // Desabilita os inputs após submissão
+            const inputs = this.querySelectorAll('input');
+            inputs.forEach(input => input.disabled = true);
+            this.querySelector('button[type="submit"]').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

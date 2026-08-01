@@ -4,26 +4,25 @@ Este guia é autossuficiente: dá pra colar ele inteiro numa conversa com
 qualquer IA (ou seguir na mão) para criar uma prova nova, sem precisar
 entender o resto do site.
 
-## O que é uma prova interativa
+Existem **três formatos**. Os dois primeiros passam pelo motor do site
+(`js/quiz.js`) e seguem o mesmo visual das outras páginas; o terceiro é
+uma página HTML comum, sem depender de nada daqui — o mais fácil de pedir
+pra qualquer IA gerar do zero.
 
-Um arquivo JavaScript (`.prova.js`) que fica dentro de `provas/<curso>/`,
-ao lado dos outros materiais daquele curso. Quando alguém clica em
-"Fazer prova" no site, esse arquivo é carregado e ele "se registra"
-chamando uma função global, uma única vez:
+| Formato | Arquivo | Corrige na hora? | Quem avalia |
+|---|---|---|---|
+| [1. Múltipla escolha](#formato-1-múltipla-escolha-corrige-na-hora) | `.prova.js` | Sim | Ninguém, é automático |
+| [2. Descritiva](#formato-2-descritiva-perguntas-abertas-instrutor-avalia) | `.prova.js` | Não | Instrutor, na mesma tela |
+| [3. Página autossuficiente](#formato-3-página-html-autossuficiente) | `.prova.html` | Depende do que a página fizer | Depende do que a página fizer |
 
-```javascript
-registerProvaInterativa({
-  tipo: "multipla_escolha",   // ou "descritiva" — ver os dois formatos abaixo
-  titulo: "Nome da prova",
-  perguntas: [ /* ... */ ],
-});
-```
-
-É só isso. O arquivo não precisa (e não deve) manipular HTML, CSS ou
-qualquer outra coisa da página — só descrever a prova e chamar essa
-função. Quem desenha a tela é o `js/quiz.js` do site.
+Nos três casos, o arquivo fica dentro de `provas/<curso>/`, ao lado dos
+outros materiais daquele curso.
 
 ## Formato 1: múltipla escolha (corrige na hora)
+
+Arquivo termina em **`.prova.js`**. Ao ser carregado, ele "se registra"
+chamando uma função global, uma única vez — não manipula HTML nem CSS,
+só descreve a prova:
 
 ```javascript
 registerProvaInterativa({
@@ -51,7 +50,11 @@ Regras:
 - Ao enviar, o aluno vê na hora "Você acertou X de Y perguntas." Não existe tela de revisão nem nota de instrutor nesse formato — é autocorreção simples.
 - **Atenção**: a correção roda no navegador do aluno. Qualquer um que souber abrir o código-fonte da página vê o gabarito (o campo `correta`). Não é à prova de cola — use para exercícios de fixação, não para provas de peso.
 
+Modelo pronto para copiar: `scripts/exemplo.prova.js`.
+
 ## Formato 2: descritiva (perguntas abertas, instrutor avalia)
+
+Também termina em **`.prova.js`**, mesma função de registro, `tipo` diferente:
 
 ```javascript
 registerProvaInterativa({
@@ -70,11 +73,45 @@ Regras:
 - Não existe correção automática nem indicação de certo/errado — não faz sentido para pergunta aberta, e é proposital: quem avalia é o instrutor.
 - A trava contra reenvio (e a nota digitada) ficam salvas no `localStorage` do navegador usado — é uma trava **por aparelho**, não por aluno. O site não tem login nem cadastro de aluno, então trocar de navegador ou limpar os dados do navegador permite refazer. Isso é uma limitação conhecida, não um bug.
 
+Modelo pronto para copiar: `scripts/exemplo-descritiva.prova.js`.
+
+## Formato 3: página HTML autossuficiente
+
+Arquivo termina em **`.prova.html`**. É uma página comum, completa
+(`<html>`, `<head>`, `<body>`, tudo) — **não** chama `registerProvaInterativa`
+nem depende de nenhum arquivo do site. O site só faz um link pra ela; ao
+clicar em "Fazer prova", ela abre numa aba nova, e cuida sozinha de tudo:
+perguntas, correção (se tiver), estilo, resultado.
+
+É o formato mais fácil de pedir pra qualquer IA gerar — basta descrever a
+prova ("crie uma página HTML com um formulário de 10 perguntas de múltipla
+escolha sobre X, que corrija e mostre a pontuação ao enviar") sem
+mencionar nada deste projeto. Só duas coisas precisam ser ajustadas depois
+de gerada:
+
+1. **O link de volta.** Se a página tiver um link "Voltar para o início"
+   ou parecido apontando pra `index.html`, ele precisa virar `../../index.html`
+   — a prova fica duas pastas abaixo da raiz (`provas/<curso>/arquivo.prova.html`).
+2. **O nome do arquivo** precisa terminar em `.prova.html` (ex:
+   `prova-vendas.prova.html`). Sem esse sufixo, o site trata o arquivo
+   como material comum para baixar, não como prova.
+
+Modelo pronto para copiar: `scripts/exemplo-standalone.prova.html`.
+
+Como esse formato não depende do resto do projeto, o autor é livre pra
+usar bibliotecas externas (o exemplo real que originou este formato usava
+Tailwind CSS via CDN). Únicos cuidados:
+- Se depender de internet (CDN externo), a prova só funciona com o
+  computador do aluno conectado.
+- O site não sabe nada sobre o que acontece dentro dessa página — não tem
+  nota salva, não tem trava contra reenvio, não tem integração com nada.
+  Se precisar de algum desses recursos, use o Formato 1 ou 2 em vez deste.
+
 ## Passo a passo para adicionar uma prova nova
 
 1. Escolha o curso (uma pasta dentro de `provas/`, ex: `provas/Excel/`). Se o curso ainda não existe, crie a pasta.
-2. Crie um arquivo texto dentro dela terminado em `.prova.js` — o nome antes disso é livre, mas evite espaços/acentos se for compartilhar fora do site (ex: `avaliacao-modulo-1.prova.js`). **Só o sufixo `.prova.js` importa**: é o que faz o site tratar o arquivo como prova interativa em vez de material comum para baixar.
-3. Cole um dos dois modelos acima e edite o `titulo` e as `perguntas`.
+2. Crie o arquivo dentro dela com o sufixo certo para o formato escolhido: `.prova.js` (formatos 1 e 2) ou `.prova.html` (formato 3). O nome antes do sufixo é livre, mas evite espaços/acentos (ex: `avaliacao-modulo-1.prova.js`).
+3. Cole um dos modelos acima e edite o `titulo`/perguntas (ou peça pra uma IA gerar direto no formato 3).
 4. Na raiz do projeto, rode:
    ```bash
    python3 scripts/generate-provas-manifest.py
@@ -85,8 +122,8 @@ Regras:
 
 ## Os arquivos que fazem essa engrenagem funcionar
 
-- `js/quiz.js` — sabe carregar um `.prova.js` e desenhar a prova na tela (os dois formatos). Não sabe nada sobre cursos ou categorias.
-- `css/quiz.css` — o visual da prova. Também é independente do resto do site (só depende de algumas variáveis de cor de `css/style.css`, documentadas no topo do arquivo).
-- `js/provas.js` — lista os cursos/arquivos e chama `openQuiz(caminho, nome)` (de `quiz.js`) quando alguém clica em "Fazer prova".
-- `scripts/generate-provas-manifest.py` — varre a pasta `provas/` e gera `js/provas-data.js`.
-- `scripts/exemplo.prova.js` e `scripts/exemplo-descritiva.prova.js` — cópias prontas dos dois modelos deste guia, para copiar direto em vez de digitar.
+- `js/quiz.js` — sabe carregar um `.prova.js` (formatos 1 e 2) e desenhar a prova na tela. Não sabe nada sobre cursos, categorias ou arquivos `.prova.html`.
+- `css/quiz.css` — o visual da prova (formatos 1 e 2). Também é independente do resto do site (só depende de algumas variáveis de cor de `css/style.css`, documentadas no topo do arquivo).
+- `js/provas.js` — lista os cursos/arquivos; para `.prova.js` chama `openQuiz(caminho, nome)` (de `quiz.js`), para `.prova.html` só monta um link normal que abre em nova aba.
+- `scripts/generate-provas-manifest.py` — varre a pasta `provas/` e gera `js/provas-data.js`; é quem decide, pelo nome do arquivo, se algo é `.prova.js`, `.prova.html` ou material comum.
+- `scripts/exemplo.prova.js`, `scripts/exemplo-descritiva.prova.js` e `scripts/exemplo-standalone.prova.html` — cópias prontas dos três modelos deste guia, para copiar direto em vez de digitar.

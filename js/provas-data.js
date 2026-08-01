@@ -19,6 +19,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - AV adm II.txt",
       "path": "provas/ADM/Link - AV adm II.txt",
       "size": "110 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova administracao",
+      "path": "provas/ADM/prova-administracao.prova.html",
+      "size": "15.9 KB"
     }
   ],
   "Adobe Illustrator": [

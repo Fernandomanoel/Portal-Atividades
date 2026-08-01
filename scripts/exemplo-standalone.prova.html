@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prova de exemplo (página autossuficiente)</title>
+</head>
+<body style="font-family: Arial, sans-serif; max-width: 640px; margin: 40px auto; padding: 0 20px;">
+
+  <h1>Prova de exemplo</h1>
+  <p>Este modelo mostra o formato mais simples possível: uma página HTML
+  comum, sem depender de nada do site. Qualquer IA consegue gerar uma
+  página assim a partir de uma descrição da prova — não precisa saber
+  nada sobre este projeto.</p>
+
+  <form id="quizForm">
+    <p><strong>1. Qual é a capital do Brasil?</strong></p>
+    <label><input type="radio" name="q1" value="0" required> Rio de Janeiro</label><br>
+    <label><input type="radio" name="q1" value="0"> São Paulo</label><br>
+    <label><input type="radio" name="q1" value="1"> Brasília</label><br>
+    <label><input type="radio" name="q1" value="0"> Salvador</label>
+
+    <p><strong>2. Quanto é 7 x 8?</strong></p>
+    <label><input type="radio" name="q2" value="0" required> 54</label><br>
+    <label><input type="radio" name="q2" value="1"> 56</label><br>
+    <label><input type="radio" name="q2" value="0"> 64</label><br>
+    <label><input type="radio" name="q2" value="0"> 48</label>
+
+    <p><button type="submit">Finalizar e ver resultado</button></p>
+  </form>
+
+  <div id="resultArea" style="display:none; margin-top: 20px; padding: 20px; background: #eef2fb; border-radius: 8px;">
+    <h2>Resultado</h2>
+    <p id="scoreText" style="font-size: 1.5rem; font-weight: bold;"></p>
+    <!-- Ajuste este link se a prova ficar em outra profundidade de pasta.
+         De provas/<curso>/arquivo.prova.html até a raiz são dois níveis: ../../index.html -->
+    <p><a href="../../index.html">Voltar à página inicial</a></p>
+  </div>
+
+  <script>
+    document.getElementById('quizForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      let score = 0;
+      const total = 2;
+      for (const value of formData.values()) {
+        score += parseInt(value, 10);
+      }
+      document.getElementById('scoreText').textContent = `${score} / ${total}`;
+      document.getElementById('resultArea').style.display = 'block';
+      this.querySelectorAll('input').forEach((input) => (input.disabled = true));
+      this.querySelector('button[type="submit"]').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

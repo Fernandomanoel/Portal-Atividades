@@ -115,11 +115,20 @@ def human_size(num_bytes):
     return f"{size:.1f} GB"
 
 
-def quiz_display_name(filename):
-    base = filename[: -len(".prova.js")]
+def quiz_display_name(filename, suffix):
+    base = filename[: -len(suffix)]
     base = base.replace("_", " ").replace("-", " ")
     base = re.sub(r"\s+", " ", base).strip()
     return base[:1].upper() + base[1:] if base else "Prova interativa"
+
+
+def classify(filename):
+    lower = filename.lower()
+    if lower.endswith(".prova.js"):
+        return "quiz", quiz_display_name(filename, ".prova.js")
+    if lower.endswith(".prova.html"):
+        return "quiz_html", quiz_display_name(filename, ".prova.html")
+    return "file", None
 
 
 def build_manifest():
@@ -136,10 +145,10 @@ def build_manifest():
                 full_path = os.path.join(dirpath, filename)
                 rel_to_course = os.path.relpath(full_path, course_path)
                 rel_to_repo = os.path.relpath(full_path, REPO_ROOT)
-                is_quiz = filename.lower().endswith(".prova.js")
+                file_type, quiz_label = classify(filename)
                 files.append({
-                    "type": "quiz" if is_quiz else "file",
-                    "label": quiz_display_name(filename) if is_quiz else rel_to_course.replace(os.sep, " / "),
+                    "type": file_type,
+                    "label": quiz_label if quiz_label else rel_to_course.replace(os.sep, " / "),
                     "path": rel_to_repo.replace(os.sep, "/"),
                     "size": human_size(os.path.getsize(full_path)),
                 })

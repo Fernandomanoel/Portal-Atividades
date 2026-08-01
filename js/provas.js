@@ -106,6 +106,7 @@ function renderProvasCourses() {
   const provasCourseCardTemplate = document.getElementById("provas-course-card-template");
   const provasFileTemplate = document.getElementById("provas-file-template");
   const quizItemTemplate = document.getElementById("provas-quiz-item-template");
+  const quizHtmlItemTemplate = document.getElementById("provas-quiz-html-item-template");
   const manifest = typeof PROVAS_MANIFEST === "object" ? PROVAS_MANIFEST : {};
   const categories = typeof PROVAS_CATEGORIES === "object" ? PROVAS_CATEGORIES : [];
   const courseCategoryMap = buildCourseCategoryMap(categories);
@@ -147,6 +148,19 @@ function renderProvasCourses() {
           node.querySelector(".quiz-start-btn").addEventListener("click", () => {
             openQuiz(file.path, file.label);
           });
+          list.appendChild(node);
+          return;
+        }
+        // Prova em HTML autossuficiente (*.prova.html): não passa pelo motor
+        // de quiz.js, é só um link — o arquivo cuida da própria tela,
+        // correção e navegação de volta.
+        if (file.type === "quiz_html") {
+          const node = quizHtmlItemTemplate.content.firstElementChild.cloneNode(true);
+          const link = node.querySelector(".quiz-start-btn");
+          link.href = encodeURI(file.path);
+          const nameEl = node.querySelector(".file-name");
+          nameEl.textContent = file.label;
+          nameEl.title = file.label;
           list.appendChild(node);
           return;
         }

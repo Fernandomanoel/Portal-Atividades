@@ -24,7 +24,8 @@ Provas interativas (`.prova.js`) abrem numa terceira view de página inteira, co
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/provas-data.js a partir de provas/
 │   ├── exemplo.prova.js                # modelo de prova de múltipla escolha (corrige na hora)
-│   └── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
+│   ├── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
+│   └── exemplo-standalone.prova.html   # modelo de prova em página HTML autossuficiente
 ├── images/
 │   └── cursos/                         # ícones/capas dos cursos (opcional, ver README da pasta)
 ├── img/                                 # imagens do carrossel/cards da página inicial (ver README da pasta)
@@ -63,6 +64,7 @@ Guia completo e autossuficiente em **`COMO-CRIAR-PROVAS.md`** — pensado para s
 
 - **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora, mostra "X de Y corretas". Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
 - **Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas. O aluno escreve, envia uma única vez (sem opção de refazer) e a tela de revisão mostra as respostas com um campo "Nota" para o instrutor preencher ali mesmo. Sem indicação automática de certo/errado. A trava contra reenvio é por navegador (`localStorage`), não por aluno — o site não tem login de aluno.
+- **Página HTML autossuficiente** (`scripts/exemplo-standalone.prova.html`) — uma página comum, sem depender de nada do site; o card só faz um link que abre ela numa aba nova. É o formato mais fácil de pedir pra qualquer IA gerar do zero, mas fica por conta da própria página cuidar de correção, estilo e link de volta.
 
 Depois de copiar o modelo pra `provas/<curso>/` e editar, rode `python3 scripts/generate-provas-manifest.py` — o botão "Fazer prova" aparece sozinho no card do curso.
 

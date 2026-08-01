@@ -3,9 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Informática Kids</title>
+    <title>Windows 11 – Atividades em PDF</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
 
     <style>
         * {
@@ -14,7 +13,35 @@
             box-sizing: border-box;
             font-family: "Segoe UI", sans-serif;
         }
+/* DARK MODE */
+body.dark {
+    background: #121212;
+    color: #fff;
+}
 
+body.dark .sidebar {
+    background: #1e1e1e;
+}
+
+body.dark .content {
+    background: #121212;
+}
+
+body.dark .pdf-card {
+    background: #1e1e1e;
+}
+
+body.dark .desc {
+    color: #bbb;
+}
+
+body.dark .sidebar nav a {
+    color: #bbb;
+}
+
+body.dark .sidebar nav a.active {
+    color: #4da3ff;
+}
         body {
             background: #f6f7fb;
         }
@@ -43,7 +70,7 @@
         }
 
         .logo-icon {
-            background: #1d6f42;
+            background: #2B579A;
             color: #fff;
             font-weight: bold;
             border-radius: 10px;
@@ -51,7 +78,7 @@
         }
 
         .logo-text {
-            color: #1d6f42;
+            color: #2B579A;
             font-size: 20px;
             font-weight: bold;
         }
@@ -64,7 +91,7 @@
         }
 
         .sidebar nav a.active {
-            color: #1d6f42;
+            color: #2B579A;
             font-weight: 600;
         }
 
@@ -127,7 +154,7 @@
         }
 
         .right button {
-            background: #1d6f42;
+            background: #106fff;
             border: none;
             color: #fff;
             padding: 10px 18px;
@@ -145,28 +172,32 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="logo">
-                <span class="logo-icon">M</span>
-                <span class="logo-text">Informática Kids</span>
+                <span class="logo-icon">W</span>
+                <span class="logo-text">Windows 11</span>
             </div>
 
             <nav>
-                <a href="index.html">Voltar</a>
+                <a href="../index.html">Voltar</a>
                 <a href="#" class="active">PDFs</a>
+                <a href="/site-provas/login.html" onclick="acessarProvas()">Provas</a>
             </nav>
+            <button onclick="toggleDarkMode()" style="margin-top:20px; padding:10px; border:none; border-radius:10px; background:#2B579A; color:#fff; cursor:pointer;">
+    🌙 Modo Noturno
+</button>
         </aside>
 
         <!-- CONTENT -->
         <main class="content">
-            <h1>Informatica Kids – Atividades em PDF</h1>
+            <h1>Windows 11 – Atividades em PDF</h1>
 
             <!-- PDF 1 -->
             <div class="pdf-card">
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Digitação com Personagens de Desenhos</h3>
-                    <p class="desc">Atividade divertida para crianças aprenderem digitação no Word usando textos com
-                        personagens de desenhos animados, treinando atenção, parágrafos e uso correto do teclado.</p>
+                    <h3>Windows 11: Organização de Pastas e Arquivos</h3>
+                    <p class="desc">Atividade prática para aprender a criar e organizar pastas, editar arquivos e salvar
+                        imagens (print) no formato .bmp no Windows.</p>
 
                     <div class="tags">
                         <span>PDF</span>
@@ -174,7 +205,7 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Missão dos Desenhos Animados no Word.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Organização de Pastas e Arquivos.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
@@ -185,9 +216,9 @@
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Treinando Digitação de Textos Longos</h3>
-                    <p class="desc">Atividade prática para desenvolver a digitação no Word, com textos mais longos e
-                        simples</p>
+                    <h3>Windows 11: Personalizando a Área de Trabalho</h3>
+                    <p class="desc">Exercício para desenvolver habilidades básicas no Windows 11, explorando a
+                        personalização da área de trabalho, temas, plano de fundo e ícones do sistema.</p>
 
                     <div class="tags">
                         <span>PDF</span>
@@ -195,7 +226,7 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitando textos grandes.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Personalizando a Área de Trabalho.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
@@ -204,9 +235,9 @@
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Digitação com a Turma da Mônica</h3>
-                    <p class="desc">Atividade prática para crianças aprenderem digitação no Word com textos da Turma da
-                        Mônica, trabalhando parágrafos, inserção de imagens e uso de lista com marcadores.</p>
+                    <h3>Windows 11: Gerenciador de Tarefas</h3>
+                    <p class="desc">Atividade de revisão voltada ao uso do Gerenciador de Tarefas, ajudando o aluno a
+                        compreender recursos do Windows 11</p>
 
                     <div class="tags">
                         <span>PDF</span>
@@ -214,7 +245,7 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitação com Turma da Mônica.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Gerenciador de Tarefas.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
@@ -223,10 +254,10 @@
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Digitação com O Incrível Mundo de Gumball</h3>
-                    <p class="desc">Atividade educativa em PDF para crianças treinarem digitação no Word com textos
-                        inspirados em O Incrível Mundo de Gumball, incluindo inserção de imagens e criação de lista não
-                        ordenad</p>
+                    <h3>Windows 11: Produtividade e Acessibilidade no Windows 11</h3>
+                    <p class="desc">Atividade voltada ao uso de ferramentas de produtividade e recursos de
+                        acessibilidade do Windows 11, ajudando na organização pessoal e no melhor aproveitamento do
+                        sistema.</p>
 
                     <div class="tags">
                         <span>PDF</span>
@@ -234,27 +265,8 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitação com O Incrível Mundo de Gumball.pdf" target="_blank">
-                        <button>Baixar</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="pdf-card">
-                <div class="pdf-icon">PDF</div>
-
-                <div class="info">
-                    <h3>Word 2021 - Digitando com a Patrulha Canina</h3>
-                    <p class="desc">Atividade básica e interativa em PDF para crianças aprenderem digitação no Word,
-                        inserir imagens e criar listas não ordenadas.</p>
-
-                    <div class="tags">
-                        <span>PDF</span>
-                    </div>
-                </div>
-
-                <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitação com a Patrulha Canina.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 -  Produtividade e Acessibilidade no Windows .pdf"
+                        target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
@@ -263,9 +275,12 @@
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Digitando com o Bluey</h3>
-                    <p class="desc">Atividade educativa em PDF para crianças treinarem digitação no Word com textos
-                        grandes, listas com bolinhas e inserção de imagens, usando a personagem Bluey</p>
+                    <h3>Windows 11: Copiar, Recortar e Colar Arquivos</h3>
+                    <p class="desc">
+                        Exercício prático para desenvolver habilidades básicas no Windows 11, trabalhando a criação,
+                        cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do
+                        teclado.
+                    </p>
 
                     <div class="tags">
                         <span>PDF</span>
@@ -273,7 +288,7 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitação com o Bluey.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Copiando e Colando.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
@@ -282,9 +297,12 @@
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Word 2021 - Digitação com PJ Masks</h3>
-                    <p class="desc">Material prático em PDF para crianças aprenderem digitação no Word, organizar
-                        textos, criar listas não ordenadas e inserir imagens com os personagens PJ Masks.</p>
+                    <h3>Windows 11: Desinstalar o Avast no Windows 11</h3>
+                    <p class="desc">
+                        Atividade prática para aprender a desinstalar o Avast Antivirus no Windows 11
+                        usando as Configurações do sistema.
+                    </p>
+
 
                     <div class="tags">
                         <span>PDF</span>
@@ -292,18 +310,23 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Desistalando Programas no Windows.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
             </div>
-            <!--
             <div class="pdf-card">
                 <div class="pdf-icon">PDF</div>
 
                 <div class="info">
-                    <h3>Tabela de Prejuízo</h3>
-                    <p class="desc">Tabela de Prejuízo no Excel.</p>
+                    <h3>Windows 11: Uso da Tecla SHIFT no Bloco de Notas</h3>
+                    <p class="desc">
+                        Atividade prática para treinar o uso da tecla SHIFT no Windows,
+                        utilizando o Bloco de Notas para digitação de textos com letras
+                        maiúsculas e símbolos do teclado.
+                    </p>
+
+
 
                     <div class="tags">
                         <span>PDF</span>
@@ -311,14 +334,30 @@
                 </div>
 
                 <div class="right">
-                    <a href="pdfs/Tabela de Prejuízo - Excel.pdf" target="_blank">
+                    <a href="pdfs/Windows 11/Windows 11 - Escrevendo e usando o Shift.pdf" target="_blank">
                         <button>Baixar</button>
                     </a>
                 </div>
             </div>
--->
+
+
         </main>
     </div>
+    <script>
+    function toggleDarkMode() {
+        document.body.classList.toggle("dark");
+    }
+
+    function acessarProvas() {
+        let senha = prompt("Digite a senha para acessar as provas:");
+
+        if (senha === "Micro.123") {
+            window.location.href = "provas.html";
+        } else {
+            alert("Senha incorreta!");
+        }
+    }
+</script>
 
 </body>
 

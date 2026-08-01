@@ -27,9 +27,17 @@ Provas interativas (`.prova.js`) abrem numa terceira view de página inteira, co
 │   └── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
 ├── images/
 │   └── cursos/                         # ícones/capas dos cursos (opcional, ver README da pasta)
+├── img/                                 # imagens do carrossel/cards da página inicial (ver README da pasta)
+├── atividades/                          # páginas de atividades ligadas pelos cards da Início
+│   ├── <atividade>.html                 # cada uma é independente, com <style> próprio
+│   ├── css/                             # css exclusivo de alguma atividade específica (não o do site)
+│   ├── images/                          # imagens exclusivas de atividades (não confundir com images/cursos/)
+│   └── pdfs/                            # PDFs/materiais das atividades, referenciados pelas páginas acima
 └── provas/
     └── <curso>/                        # arquivos reais das provas, organizados por curso
 ```
+
+Referências dentro de `atividades/*.html` para `../index.html`, `../img/` e `../css/style.css` apontam pra raiz do site (recursos compartilhados); referências para `css/`, `images/` ou `pdfs/` sem `../` são locais àquela pasta (materiais só daquela atividade).
 
 `js/quiz.js` + `css/quiz.css` só sabem rodar uma prova (carregar o `.prova.js`, desenhar as perguntas, receber o envio); não sabem nada sobre cursos, categorias ou senha. Dá pra copiar os dois pra outro projeto sozinhos, desde que o HTML tenha os elementos e templates que `quiz.js` espera (documentado no topo do próprio arquivo) e uma função `showView(nome)` para abrir/fechar a página da prova.
 

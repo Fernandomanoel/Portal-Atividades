@@ -5,339 +5,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MicroAtividades</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/quiz.css">
+  <link rel="stylesheet" href="css/main.css">
   <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
+  <!-- no <head> pra página já abrir escura, sem piscar branco antes -->
+  <script src="js/core/tema.js"></script>
 </head>
 
 <body>
 
-  <!-- ================= NAVBAR ================= -->
-  <nav class="navbar">
-    <a href="#" class="navbar-brand" data-view="atividades">MicroAtividades</a>
-
-    <ul class="navbar-links">
-      <li><a href="#" class="nav-link active" data-view="atividades">Início</a></li>
-      <li><a href="#" class="nav-link" data-view="provas">Provas</a></li>
-    </ul>
-
-    <button id="darkModeToggle" class="dark-mode-btn" aria-label="Alternar modo escuro">
-      🌙
-    </button>
-  </nav>
+  <app-navbar></app-navbar>
 
   <div class="container">
 
-    <!-- ================= VIEW: ATIVIDADES ================= -->
-    <section id="view-atividades" class="view">
+    <app-banner titulo="Atividades Extras" texto="Escolha uma atividade abaixo para começar.">
+    </app-banner>
 
-      <!-- ================= BANNER ================= -->
-      <div class="banner">
-        <div class="banner-text">
-          <h1>Atividades Extras</h1>
-          <p>Escolha uma atividade abaixo para começar.</p>
-        </div>
+    <!-- As listas abaixo são preenchidas por js/pages/home.js a partir do
+         catálogo em js/data/atividades.js — não escreva cursos aqui. -->
+
+    <h2 class="section-title">Atividades disponíveis</h2>
+
+    <div class="courses-container">
+      <button type="button" class="arrow left" data-rolar="-1" aria-label="Voltar">❮</button>
+
+      <div class="courses-wrapper">
+        <div class="courses" id="lista-cursos"></div>
       </div>
 
-      <!-- TÍTULO -->
-      <h2 class="section-title">Atividades disponíveis</h2>
+      <button type="button" class="arrow right" data-rolar="1" aria-label="Avançar">❯</button>
+    </div>
 
-      <!-- CARROSSEL -->
-      <div class="courses-container">
+    <h2 class="section-title">Mais Atividades</h2>
 
-        <button class="arrow left" onclick="scrollCourses(-1)">❮</button>
-
-        <div class="courses-wrapper">
-          <div class="courses" id="courseList">
-            <!--Inicio da caixa-->
-            <a href="atividades/windowsatividade.html" class="course">
-              <img src="img/windows11.jpg">
-              <div class="course-content">
-                <h3>Windows 11</h3>
-                <p>Modificar do básico ao avançado.</p>
-              </div>
-            </a>
-            <!--Final da caixa-->
-
-            <!--Inicio da caixa-->
-            <a href="atividades/excelpdf.html" class="course">
-              <img src="img/excelbackground.jpg">
-              <div class="course-content">
-                <h3>Excel Básico</h3>
-                <p>Planilhas e fórmulas simples.</p>
-              </div>
-            </a>
-            <!--Final da caixa-->
-            <a href="atividades/powerbi.html" class="course">
-              <img src="img/powerbi.jpg">
-              <div class="course-content">
-                <h3>Power Bi</h3>
-                <p>Atividades sobre o PowerBi
-                </p>
-              </div>
-            </a>
-
-            <!--Inicio da caixa-->
-            <a href="atividades/wordatividades.html" class="course">
-              <img src="img/wordpapeldeparede.jpg">
-              <div class="course-content">
-                <h3>Word</h3>
-                <p>Documentos, Normas ABNT e Automações</p>
-              </div>
-            </a>
-            <!--Final da caixa-->
-
-            <!--Inicio da caixa-->
-            <a href="atividades/powerpoint.html" class="course">
-              <img src="img/powerpointwallpaper.jpg">
-              <div class="course-content">
-                <h3>PowerPoint</h3>
-                <p>Apresentações Visuais e Profissionais.</p>
-              </div>
-            </a>
-            <!--Final da caixa-->
-            <a href="atividades/infokids.html" class="course">
-              <img src="img/infokidsbackground.png">
-              <div class="course-content">
-                <h3>Informática Kids</h3>
-                <p>Atividades para o Kids.</p>
-              </div>
-            </a>
-
-          </div>
-        </div>
-
-        <button class="arrow right" onclick="scrollCourses(1)">❯</button>
-
-      </div>
-
-      <!-- ================= MAIS ATIVIDADES ================= -->
-
-      <h2 class="section-title">Mais Atividades</h2>
-
-      <div class="courses-container">
-
-        <div class="courses-wrapper">
-          <div class="courses games">
-
-            <a href="atividades/htmlecss.html" class="game-card pink">
-              <div class="game-info">
-                <h3>Programação HTML &amp; CSS</h3>
-                <span>Atividades de HTML &amp; CSS</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/iconcsshtml.png" alt="">
-            </a>
-
-            <a href="atividades/pythonatividades.html" class="game-card orange">
-              <div class="game-info">
-                <h3>Python</h3>
-                <span>Atividades de Python</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/iconpython.png" alt="">
-            </a>
-
-            <a href="atividades/logprogramaçao.html" class="game-card blue">
-              <div class="game-info">
-                <h3>Lógica de Programação</h3>
-                <span>Exercícios práticos</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/programming.png" alt="">
-            </a>
-
-            <a href="atividades/javascript.html" class="game-card purple">
-              <div class="game-info">
-                <h3>Javascript</h3>
-                <span>Atividades de Javascript</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/iconjs.png" alt="">
-            </a>
-            <a href="atividades/inteligartificial.html" class="game-card red">
-              <div class="game-info">
-                <h3>Inteligência Artificial</h3>
-                <span>Atividades de Inteligência Artificial</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/artificial-intelligence.png" alt="">
-            </a>
-            <a href="atividades/bancodesql.html" class="game-card blue">
-              <div class="game-info">
-                <h3>Banco de Dados | SQL</h3>
-                <span>Atividades de Banco de Dados</span>
-                <button>▶ Inicie</button>
-              </div>
-              <img src="img/logo sql.png" alt="">
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- ================= VIEW: PROVAS ================= -->
-    <section id="view-provas" class="view hidden">
-
-      <div class="banner">
-        <div class="banner-text">
-          <h1>Provas</h1>
-          <p>Área dos instrutores — avaliações organizadas por curso.</p>
-        </div>
-        <button type="button" id="provas-logout" class="provas-logout hidden" title="Trancar a área de provas">
-          <span class="provas-logout-icone" aria-hidden="true">🔒</span>
-          <span>Sair</span>
-        </button>
-      </div>
-
-      <div id="provas-lock" class="provas-lock">
-        <form id="provas-password-form">
-          <label for="provas-password-input">Esta área é protegida por senha.</label>
-          <input type="password" id="provas-password-input" placeholder="Senha" autocomplete="off" required />
-          <button type="submit">Entrar</button>
-          <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
-        </form>
-      </div>
-
-      <div id="provas-content" class="hidden">
-        <!-- navbar de categorias (substitui a antiga barra lateral) -->
-        <nav id="provas-nav" class="provas-nav"></nav>
-        <div id="courses-provas" class="courses-grid"></div>
-      </div>
-
-    </section>
-
-    <!-- ================= VIEW: PROVA INTERATIVA ================= -->
-    <section id="view-quiz" class="view hidden">
-
-      <div class="banner">
-        <div class="banner-text">
-          <h1 id="quiz-title">Prova</h1>
-          <p>Responda e envie. Depois de enviada, não é possível refazer.</p>
-        </div>
-      </div>
-
-      <div class="quiz-page">
-        <button type="button" id="quiz-voltar-btn" class="quiz-voltar-btn">← Voltar para Atividades</button>
-
-        <form id="quiz-form"></form>
-        <div id="quiz-result" class="quiz-result hidden"></div>
-      </div>
-
-    </section>
+    <div class="courses games" id="lista-extras"></div>
 
   </div>
 
-  <footer class="footer">
-    <div class="footer-content">
+  <app-footer></app-footer>
 
-      <div class="footer-left">
-        <h3>MicroAtividades</h3>
-        <p>Atividades para reforços</p>
-      </div>
-
-      <div class="footer-links">
-        <h4>Navegação</h4>
-        <a href="#" class="nav-link" data-view="atividades">Início</a>
-        <a href="#" class="nav-link" data-view="provas">Provas</a>
-      </div>
-
-      <div class="footer-info">
-        <h4>Informações</h4>
-        <p>Microlins São José | Feito por instrutores</p>
-        <p>© 2026 Todos os direitos reservados</p>
-      </div>
-
-    </div>
-  </footer>
-
-  <!-- ================= TEMPLATES ================= -->
-
-  <template id="provas-course-card-template">
-    <article class="course-card">
-      <header class="course-card-header">
-        <div class="course-icon" aria-hidden="true"></div>
-        <h2 class="course-title"></h2>
-        <span class="provas-count"></span>
-      </header>
-      <ul class="file-list"></ul>
-    </article>
-  </template>
-
-  <template id="provas-file-template">
-    <li class="file-item">
-      <a class="file-link" target="_blank" rel="noopener">
-        <span class="file-icon" aria-hidden="true"></span>
-        <span class="file-name"></span>
-      </a>
-      <span class="file-size"></span>
-    </li>
-  </template>
-
-  <template id="provas-quiz-item-template">
-    <li class="file-item">
-      <button type="button" class="quiz-start-btn">
-        <span class="file-icon" aria-hidden="true">📝</span>
-        <span class="file-name"></span>
-      </button>
-      <span class="quiz-badge">Prova interativa</span>
-    </li>
-  </template>
-
-  <template id="provas-quiz-html-item-template">
-    <li class="file-item">
-      <a class="quiz-start-btn" target="_blank" rel="noopener">
-        <span class="file-icon" aria-hidden="true">📝</span>
-        <span class="file-name"></span>
-      </a>
-      <span class="quiz-badge">Prova interativa</span>
-    </li>
-  </template>
-
-  <template id="provas-nav-item-template">
-    <button type="button" class="provas-nav-btn"></button>
-  </template>
-
-  <template id="quiz-question-template">
-    <fieldset class="quiz-question">
-      <legend class="quiz-question-text"></legend>
-      <div class="quiz-options"></div>
-    </fieldset>
-  </template>
-
-  <template id="quiz-option-template">
-    <label class="quiz-option">
-      <input type="radio" />
-      <span class="quiz-option-text"></span>
-    </label>
-  </template>
-
-  <template id="quiz-descritiva-question-template">
-    <div class="quiz-question">
-      <label class="quiz-question-text"></label>
-      <textarea class="quiz-descritiva-input" rows="4" placeholder="Digite sua resposta aqui..."></textarea>
-    </div>
-  </template>
-
-  <template id="quiz-descritiva-review-template">
-    <div class="quiz-question quiz-question-revisao">
-      <p class="quiz-question-text"></p>
-      <p class="quiz-descritiva-resposta"></p>
-    </div>
-  </template>
-
-  <!--
-    Ordem: provas-data.js define os dados que provas.js consome; script.js
-    define showView(), usada por quiz.js. Entre quiz.js e provas.js a ordem
-    não importa de verdade (as funções só são chamadas depois, em resposta
-    a cliques), mas fica assim porque provas.js chama openQuiz(), de quiz.js.
-  -->
-  <script src="js/provas-data.js"></script>
-  <script src="js/script.js"></script>
-  <script src="js/quiz.js"></script>
-  <script src="js/provas.js"></script>
+  <script src="js/core/router.js"></script>
+  <script src="js/components/layout.js"></script>
+  <script src="js/components/cards.js"></script>
+  <script src="js/data/atividades.js"></script>
+  <script src="js/pages/home.js"></script>
 </body>
 
 </html>

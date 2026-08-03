@@ -1,0 +1,19 @@
+/* ==========================================================================
+   MicroAtividades — folha principal
+
+   Cada página carrega SÓ este arquivo; ele junta as partes abaixo. Assim
+   dá pra mexer em uma coisa de cada vez sem caçar a regra num arquivo
+   gigante:
+
+     base.css       → cores, modo escuro, reset e utilitários
+     layout.css     → moldura da página (menu, banner, rodapé, container)
+     components.css → cards, carrossel, lista de materiais, botões
+     provas.css     → só o que é da área de provas
+     quiz.css       → só o que é da prova interativa (independente do site)
+   ========================================================================== */
+
+@import url("base.css");
+@import url("layout.css");
+@import url("components.css");
+@import url("provas.css");
+@import url("quiz.css");

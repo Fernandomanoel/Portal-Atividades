@@ -5,7 +5,7 @@ qualquer IA (ou seguir na mão) para criar uma prova nova, sem precisar
 entender o resto do site.
 
 Existem **três formatos**. Os dois primeiros passam pelo motor do site
-(`js/quiz.js`) e seguem o mesmo visual das outras páginas; o terceiro é
+(`js/pages/quiz.js`) e seguem o mesmo visual das outras páginas; o terceiro é
 uma página HTML comum, sem depender de nada daqui — o mais fácil de pedir
 pra qualquer IA gerar do zero.
 
@@ -116,14 +116,14 @@ Tailwind CSS via CDN). Únicos cuidados:
    ```bash
    python3 scripts/generate-provas-manifest.py
    ```
-   Isso atualiza `js/provas-data.js`, o índice que o site lê para saber quais arquivos existem. **Sem rodar esse comando, a prova não aparece no site**, mesmo estando na pasta certa.
+   Isso atualiza `js/data/provas-data.js`, o índice que o site lê para saber quais arquivos existem. **Sem rodar esse comando, a prova não aparece no site**, mesmo estando na pasta certa.
 5. Se for um curso novo (pasta que você acabou de criar), adicione o nome dele em `CATEGORY_MAP`, no topo de `scripts/generate-provas-manifest.py`, apontando para uma das categorias existentes — senão ele cai em "Outros" na navegação.
 6. Abra o site: o botão "Fazer prova" aparece automaticamente no card do curso.
 
 ## Os arquivos que fazem essa engrenagem funcionar
 
-- `js/quiz.js` — sabe carregar um `.prova.js` (formatos 1 e 2) e desenhar a prova na tela. Não sabe nada sobre cursos, categorias ou arquivos `.prova.html`.
-- `css/quiz.css` — o visual da prova (formatos 1 e 2). Também é independente do resto do site (só depende de algumas variáveis de cor de `css/style.css`, documentadas no topo do arquivo).
-- `js/provas.js` — lista os cursos/arquivos; para `.prova.js` chama `openQuiz(caminho, nome)` (de `quiz.js`), para `.prova.html` só monta um link normal que abre em nova aba.
-- `scripts/generate-provas-manifest.py` — varre a pasta `provas/` e gera `js/provas-data.js`; é quem decide, pelo nome do arquivo, se algo é `.prova.js`, `.prova.html` ou material comum.
+- `js/pages/quiz.js` — sabe carregar um `.prova.js` (formatos 1 e 2) e desenhar a prova na tela. Não sabe nada sobre cursos, categorias ou arquivos `.prova.html`.
+- `css/quiz.css` — o visual da prova (formatos 1 e 2). Também é independente do resto do site (só depende de algumas variáveis de cor de `css/base.css`, documentadas no topo do arquivo).
+- `js/pages/provas.js` — lista os cursos/arquivos; para `.prova.js` chama `Quiz.abrir(caminho, nome)` (de `quiz.js`), para `.prova.html` só monta um link normal que abre em nova aba.
+- `scripts/generate-provas-manifest.py` — varre a pasta `provas/` e gera `js/data/provas-data.js`; é quem decide, pelo nome do arquivo, se algo é `.prova.js`, `.prova.html` ou material comum.
 - `scripts/exemplo.prova.js`, `scripts/exemplo-descritiva.prova.js` e `scripts/exemplo-standalone.prova.html` — cópias prontas dos três modelos deste guia, para copiar direto em vez de digitar.

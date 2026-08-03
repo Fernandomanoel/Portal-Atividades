@@ -1,0 +1,98 @@
+/* ==========================================================================
+   base.css — cores, modo escuro, reset e utilitários
+
+   Todo o resto do CSS usa as variáveis daqui. O modo escuro funciona
+   trocando essas variáveis (a classe .dark-mode entra no <html>, por
+   js/core/tema.js), então tudo que usa var(--...) acompanha sozinho.
+   ========================================================================== */
+
+:root {
+  --azul: #4f7cff;
+  --azul-escuro: #1e40af;
+  --cinza: #f4f6fb;
+  --texto: #2b2b2b;
+  --card: #ffffff;
+
+  /* apoio */
+  --suave: #eef2fb;
+  --borda: #e6e9f2;
+  --apagado: #6b7080;
+  --perigo: #e5484d;
+  --sombra: 0 10px 25px rgba(0, 0, 0, 0.08);
+  --sombra-forte: 0 18px 35px rgba(0, 0, 0, 0.15);
+
+  /* --gradiente escurece no modo escuro (banner);
+     --gradiente-azul continua azul sempre (botões, ícones, destaques) */
+  --gradiente: linear-gradient(135deg, #2b579a, #4f7cff);
+  --gradiente-azul: linear-gradient(135deg, #2b579a, #4f7cff);
+
+  --raio: 20px;
+  --raio-pequeno: 12px;
+}
+
+.dark-mode {
+  --cinza: #121212;
+  --texto: #ffffff;
+  --card: #1f1f1f;
+
+  --suave: #181818;
+  --borda: #2e2e2e;
+  --apagado: #9aa0ac;
+  --sombra: 0 10px 25px rgba(0, 0, 0, 0.4);
+  --sombra-forte: 0 18px 35px rgba(0, 0, 0, 0.55);
+  --gradiente: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+}
+
+/* ================= RESET ================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: var(--cinza);
+  color: var(--texto);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ================= UTILITÁRIOS ================= */
+
+.hidden {
+  display: none !important;
+}
+
+/* Caixa de aviso reaproveitada em "curso não encontrado", "busca sem
+   resultado" e "nenhuma prova carregada". */
+.aviso {
+  grid-column: 1 / -1;
+  background: var(--card);
+  border-radius: var(--raio);
+  border-left: 5px solid var(--perigo);
+  padding: 30px;
+  box-shadow: var(--sombra);
+}
+
+.aviso strong {
+  display: block;
+  font-size: 17px;
+  margin-bottom: 10px;
+}
+
+.aviso p {
+  font-size: 14px;
+  color: var(--apagado);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.aviso code {
+  font-family: Consolas, "Courier New", monospace;
+  background: var(--suave);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-size: 13px;
+  color: var(--azul);
+}

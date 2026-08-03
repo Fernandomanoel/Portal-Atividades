@@ -1,10 +1,10 @@
 /* ==========================================================================
    quiz.css — estilos da prova interativa (independente do resto do site)
 
-   Usa as variáveis de cor definidas em :root no css/style.css deste
+   Usa as variáveis de cor definidas em :root no css/base.css deste
    projeto (--azul, --card, --suave, --borda, --apagado, --perigo,
    --texto, --sombra, --gradiente-azul). Se for usar este arquivo em outro
-   projeto sem esse style.css, defina essas variáveis antes (ou troque os
+   projeto sem esse base.css, defina essas variáveis antes (ou troque os
    var(--...) abaixo por cores fixas).
 
    Cobre três partes:

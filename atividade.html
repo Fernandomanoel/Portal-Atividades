@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade — MicroAtividades</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
+  <script src="js/core/tema.js"></script>
+</head>
+
+<!--
+  PÁGINA GENÉRICA DE ATIVIDADE
+  Uma página só serve todos os cursos: quem manda é o endereço.
+      atividade.html?curso=word
+      atividade.html?curso=windows-11
+  O conteúdo (título, cor e lista de materiais) vem de
+  js/data/atividades.js — é lá que se adiciona PDF ou curso novo.
+-->
+
+<body>
+
+  <app-navbar></app-navbar>
+
+  <div class="container">
+
+    <app-banner id="atividade-banner" titulo="Carregando..."></app-banner>
+
+    <div class="atividade-barra" id="atividade-barra">
+      <span class="atividade-contador" id="contador-materiais"></span>
+      <input type="search" class="busca" id="busca-material" placeholder="Buscar material..."
+        aria-label="Buscar material">
+    </div>
+
+    <div class="materiais" id="lista-materiais"></div>
+
+  </div>
+
+  <app-footer></app-footer>
+
+  <script src="js/core/router.js"></script>
+  <script src="js/components/layout.js"></script>
+  <script src="js/components/cards.js"></script>
+  <script src="js/data/atividades.js"></script>
+  <script src="js/pages/atividade.js"></script>
+</body>
+
+</html>

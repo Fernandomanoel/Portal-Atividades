@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Gera js/provas-data.js a partir do conteúdo de provas/.
+"""Gera js/data/provas-data.js a partir do conteúdo de provas/.
 
 Roda sem argumentos, a partir da raiz do repositório:
     python3 scripts/generate-provas-manifest.py
 
 Sempre que adicionar/remover arquivos em provas/<curso>/, rode este
-script de novo e comite o js/provas-data.js atualizado. Se adicionar
+script de novo e comite o js/data/provas-data.js atualizado. Se adicionar
 uma pasta de curso nova, inclua-a em CATEGORY_MAP abaixo — cursos sem
 categoria caem automaticamente em "Outros".
 """
@@ -15,7 +15,7 @@ import re
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROVAS_DIR = os.path.join(REPO_ROOT, "provas")
-OUTPUT_FILE = os.path.join(REPO_ROOT, "js", "provas-data.js")
+OUTPUT_FILE = os.path.join(REPO_ROOT, "js", "data", "provas-data.js")
 
 # Ordem de exibição das categorias no navbar da aba Provas.
 CATEGORY_ORDER = [

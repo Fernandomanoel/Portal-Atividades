@@ -1,0 +1,286 @@
+/* ==========================================================================
+   provas.css — área de provas (provas.html)
+   Tela de senha, botão sair, navbar de categorias, cards de curso e lista
+   de arquivos. Nada aqui é usado pelas páginas de atividades.
+   ========================================================================== */
+
+/* ================= TELA DE SENHA ================= */
+
+.provas-lock {
+  max-width: 420px;
+  margin: 40px auto 60px;
+  background: var(--card);
+  border-radius: 24px;
+  padding: 40px 35px;
+  text-align: center;
+  box-shadow: var(--sombra);
+}
+
+.provas-lock::before {
+  content: "🔒";
+  display: block;
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 20px;
+  line-height: 70px;
+  font-size: 28px;
+  border-radius: 50%;
+  background: var(--gradiente-azul);
+  box-shadow: 0 10px 22px rgba(79, 124, 255, 0.35);
+}
+
+.provas-lock label {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--apagado);
+  font-size: 15px;
+}
+
+.provas-lock input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid var(--borda);
+  border-radius: 30px;
+  font-size: 15px;
+  margin-bottom: 14px;
+  background: var(--cinza);
+  color: var(--texto);
+  transition: 0.3s ease;
+}
+
+.provas-lock input:focus {
+  outline: none;
+  border-color: var(--azul);
+  background: var(--card);
+}
+
+.provas-lock button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 30px;
+  background: var(--gradiente-azul);
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.provas-lock button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(79, 124, 255, 0.4);
+}
+
+.provas-password-error {
+  color: var(--perigo);
+  font-size: 14px;
+  margin-top: 14px;
+}
+
+/* ================= BOTÃO SAIR ================= */
+
+.provas-logout {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 30px;
+  background: #fff;
+  color: var(--azul-escuro);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+  flex-shrink: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.provas-logout:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25);
+}
+
+.provas-logout:active {
+  transform: translateY(0);
+}
+
+.provas-logout-icone {
+  font-size: 15px;
+  line-height: 1;
+}
+
+/* no modo escuro o banner fica cinza, então o botão branco puro pesa */
+.dark-mode .provas-logout {
+  background: var(--azul);
+  color: #fff;
+}
+
+/* ================= NAVBAR DE CATEGORIAS ================= */
+
+.provas-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.provas-nav-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  background: var(--card);
+  color: var(--apagado);
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: var(--sombra);
+  transition: 0.3s ease;
+}
+
+.provas-nav-btn:hover {
+  transform: translateY(-2px);
+  color: var(--azul);
+}
+
+.provas-nav-btn.active {
+  background: var(--azul);
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(79, 124, 255, 0.35);
+}
+
+/* ================= CARDS DE CURSO ================= */
+
+.courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  min-width: 0;
+}
+
+.course-card {
+  background: var(--card);
+  border-radius: var(--raio);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: var(--sombra);
+  transition: 0.3s ease;
+}
+
+.course-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-forte);
+}
+
+.course-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.course-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--gradiente-azul);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+  overflow: hidden;
+}
+
+.course-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.course-title {
+  margin: 0;
+  font-size: 17px;
+  flex: 1;
+  min-width: 0;
+}
+
+.provas-count {
+  font-size: 12px;
+  color: var(--apagado);
+  white-space: nowrap;
+}
+
+/* ================= LISTA DE ARQUIVOS ================= */
+
+.file-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 8px;
+}
+
+.file-list:empty::before {
+  content: "Nenhuma prova adicionada ainda.";
+  color: var(--apagado);
+  font-size: 14px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: var(--suave);
+  border-radius: var(--raio-pequeno);
+  padding: 10px 14px;
+  transition: 0.2s ease;
+}
+
+.file-item:hover {
+  background: var(--borda);
+}
+
+.file-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: var(--texto);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.file-link:hover {
+  color: var(--azul);
+}
+
+.file-icon {
+  flex-shrink: 0;
+}
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-size {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--apagado);
+}
+
+@media (max-width: 768px) {
+  .courses-grid {
+    grid-template-columns: 1fr;
+  }
+}

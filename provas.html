@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provas — MicroAtividades</title>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="shortcut icon" href="img/siteicon.png" type="image/x-icon">
+  <script src="js/core/tema.js"></script>
+</head>
+
+<body>
+
+  <app-navbar></app-navbar>
+
+  <div class="container">
+
+    <!-- ================= LISTA DE PROVAS ================= -->
+    <section id="view-provas">
+
+      <app-banner titulo="Provas" texto="Área dos instrutores — avaliações organizadas por curso.">
+        <button type="button" id="provas-logout" class="provas-logout hidden" title="Trancar a área de provas">
+          <span class="provas-logout-icone" aria-hidden="true">🔒</span>
+          <span>Sair</span>
+        </button>
+      </app-banner>
+
+      <div id="provas-lock" class="provas-lock">
+        <form id="provas-password-form">
+          <label for="provas-password-input">Esta área é protegida por senha.</label>
+          <input type="password" id="provas-password-input" placeholder="Senha" autocomplete="off" required />
+          <button type="submit">Entrar</button>
+          <p id="provas-password-error" class="provas-password-error hidden">Senha incorreta.</p>
+        </form>
+      </div>
+
+      <div id="provas-content" class="hidden">
+        <nav id="provas-nav" class="provas-nav"></nav>
+        <div id="courses-provas" class="courses-grid"></div>
+      </div>
+
+    </section>
+
+    <!-- ================= PROVA INTERATIVA ================= -->
+    <!-- Ocupa a página inteira; "Voltar" devolve para a lista acima.
+         O <h1> do banner ganha o id quiz-title, que js/pages/quiz.js usa
+         para escrever o nome da prova aberta. -->
+    <section id="view-quiz" class="hidden">
+
+      <app-banner titulo-id="quiz-title" titulo="Prova"
+        texto="Responda e envie. Depois de enviada, não é possível refazer.">
+      </app-banner>
+
+      <div class="quiz-page">
+        <button type="button" id="quiz-voltar-btn" class="quiz-voltar-btn">← Voltar para as provas</button>
+
+        <form id="quiz-form"></form>
+        <div id="quiz-result" class="quiz-result hidden"></div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <app-footer></app-footer>
+
+  <!-- ================= TEMPLATES ================= -->
+
+  <template id="provas-course-card-template">
+    <article class="course-card">
+      <header class="course-card-header">
+        <div class="course-icon" aria-hidden="true"></div>
+        <h2 class="course-title"></h2>
+        <span class="provas-count"></span>
+      </header>
+      <ul class="file-list"></ul>
+    </article>
+  </template>
+
+  <template id="provas-file-template">
+    <li class="file-item">
+      <a class="file-link" target="_blank" rel="noopener">
+        <span class="file-icon" aria-hidden="true"></span>
+        <span class="file-name"></span>
+      </a>
+      <span class="file-size"></span>
+    </li>
+  </template>
+
+  <template id="provas-quiz-item-template">
+    <li class="file-item">
+      <button type="button" class="quiz-start-btn">
+        <span class="file-icon" aria-hidden="true">📝</span>
+        <span class="file-name"></span>
+      </button>
+      <span class="quiz-badge">Prova interativa</span>
+    </li>
+  </template>
+
+  <template id="provas-quiz-html-item-template">
+    <li class="file-item">
+      <a class="quiz-start-btn" target="_blank" rel="noopener">
+        <span class="file-icon" aria-hidden="true">📝</span>
+        <span class="file-name"></span>
+      </a>
+      <span class="quiz-badge">Prova interativa</span>
+    </li>
+  </template>
+
+  <template id="provas-nav-item-template">
+    <button type="button" class="provas-nav-btn"></button>
+  </template>
+
+  <template id="quiz-question-template">
+    <fieldset class="quiz-question">
+      <legend class="quiz-question-text"></legend>
+      <div class="quiz-options"></div>
+    </fieldset>
+  </template>
+
+  <template id="quiz-option-template">
+    <label class="quiz-option">
+      <input type="radio" />
+      <span class="quiz-option-text"></span>
+    </label>
+  </template>
+
+  <template id="quiz-descritiva-question-template">
+    <div class="quiz-question">
+      <label class="quiz-question-text"></label>
+      <textarea class="quiz-descritiva-input" rows="4" placeholder="Digite sua resposta aqui..."></textarea>
+    </div>
+  </template>
+
+  <template id="quiz-descritiva-review-template">
+    <div class="quiz-question quiz-question-revisao">
+      <p class="quiz-question-text"></p>
+      <p class="quiz-descritiva-resposta"></p>
+    </div>
+  </template>
+
+  <!--
+    Ordem: layout.js precisa vir antes (o <h1 id="quiz-title"> só existe
+    depois que o <app-banner> se monta); provas-data.js traz os dados que
+    provas.js consome; quiz.js vem antes de provas.js porque provas.js
+    chama Quiz.abrir().
+  -->
+  <script src="js/core/router.js"></script>
+  <script src="js/components/layout.js"></script>
+  <script src="js/data/provas-data.js"></script>
+  <script src="js/pages/quiz.js"></script>
+  <script src="js/pages/provas.js"></script>
+</body>
+
+</html>

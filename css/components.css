@@ -1,0 +1,305 @@
+/* ==========================================================================
+   components.css — peças reutilizáveis
+   Carrossel + card de curso, card colorido de "Mais Atividades", barra de
+   busca e lista de materiais da página de uma atividade.
+   O HTML dessas peças é gerado por js/components/cards.js.
+   ========================================================================== */
+
+/* ================= CARROSSEL ================= */
+
+.courses-container {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.arrow {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background: var(--azul);
+  color: #fff;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 999;
+  transition: 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.arrow:hover {
+  background: var(--azul-escuro);
+}
+
+.arrow.left {
+  left: -20px;
+}
+
+.arrow.right {
+  right: -20px;
+}
+
+.courses-wrapper {
+  overflow: hidden;
+}
+
+.courses {
+  display: flex;
+  gap: 25px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 20px 10px;
+  scrollbar-width: none;
+}
+
+.courses::-webkit-scrollbar {
+  display: none;
+}
+
+/* ================= CARD DE CURSO (com foto) ================= */
+
+.course {
+  min-width: 280px;
+  flex-shrink: 0;
+  background: var(--card);
+  border-radius: var(--raio);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--sombra);
+  transition: 0.3s ease;
+}
+
+.course:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--sombra-forte);
+}
+
+.course img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  background: var(--suave);
+}
+
+.course-content {
+  padding: 18px;
+}
+
+.course-content h3 {
+  margin-bottom: 8px;
+  font-size: 17px;
+}
+
+.course-content p {
+  font-size: 14px;
+  color: var(--apagado);
+}
+
+/* ================= CARDS COLORIDOS (MAIS ATIVIDADES) ================= */
+
+.games {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.game-card {
+  height: 200px;
+  border-radius: var(--raio);
+  padding: 20px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+  transition: 0.3s ease;
+}
+
+.game-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.18);
+}
+
+.game-info h3 {
+  font-size: 17px;
+  margin-bottom: 6px;
+}
+
+.game-info span {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.game-info button {
+  background: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.game-card:hover .game-info button {
+  transform: scale(1.05);
+}
+
+.game-card img {
+  width: 85px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  opacity: 0.95;
+}
+
+/* ==========================================================================
+   PÁGINA DE UMA ATIVIDADE (atividade.html)
+   ========================================================================== */
+
+/* ================= BARRA (contador + busca) ================= */
+
+.atividade-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.atividade-contador {
+  font-size: 14px;
+  color: var(--apagado);
+}
+
+.busca {
+  flex: 1;
+  min-width: 220px;
+  max-width: 340px;
+  margin-left: auto;
+  padding: 12px 18px;
+  border: 2px solid var(--borda);
+  border-radius: 30px;
+  background: var(--card);
+  color: var(--texto);
+  font-size: 14px;
+  transition: 0.3s ease;
+}
+
+.busca:focus {
+  outline: none;
+  border-color: var(--azul);
+}
+
+/* ================= LISTA DE MATERIAIS ================= */
+
+.materiais {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.material {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--card);
+  border-radius: var(--raio);
+  padding: 20px;
+  box-shadow: var(--sombra);
+  transition: 0.3s ease;
+}
+
+.material:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-forte);
+}
+
+.material-icone {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--raio-pequeno);
+  background: var(--suave);
+  font-size: 28px;
+}
+
+.material-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.material-titulo {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.material-desc {
+  font-size: 14px;
+  color: var(--apagado);
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.material-tag {
+  display: inline-block;
+  background: var(--suave);
+  color: var(--apagado);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.material-btn {
+  flex-shrink: 0;
+  display: inline-block;
+  padding: 11px 24px;
+  border: none;
+  border-radius: 30px;
+  background: var(--gradiente-azul);
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.material-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(79, 124, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .arrow {
+    display: none;
+  }
+
+  .material {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .material-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .busca {
+    max-width: none;
+  }
+}

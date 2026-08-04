@@ -22,10 +22,12 @@
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
 //   grupo     → "cursos" (carrossel de cima) ou "extras" (cards coloridos)
-//   imagem    → capa do card na home (arquivo dentro de img/)
-//   sigla     → 1-2 letras exibidas no cabeçalho da página do curso
-//   cor       → cor tema do curso (cabeçalho da página, ícones)
+//   sigla     → 1-2 letras usadas na capa gerada do curso
+//   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
+//   imagem    → OPCIONAL. Só use se a capa não seguir o padrão. A capa
+//               é procurada sozinha em img/<slug>.jpg e, se não houver
+//               foto, na capa colorida gerada em img/capas/<slug>.svg.
 //
 // ---- CAMPOS DE UM MATERIAL ----
 //   titulo, descricao
@@ -41,7 +43,6 @@ const ATIVIDADES = [
     titulo: "Windows 11",
     descricao: "Modificar do básico ao avançado.",
     grupo: "cursos",
-    imagem: "img/windows11.jpg",
     sigla: "W",
     cor: "#2b579a",
     materiais: [
@@ -108,7 +109,6 @@ const ATIVIDADES = [
     titulo: "Excel Básico",
     descricao: "Planilhas e fórmulas simples.",
     grupo: "cursos",
-    imagem: "img/excelbackground.jpg",
     sigla: "X",
     cor: "#1d6f42",
     materiais: [
@@ -226,7 +226,6 @@ const ATIVIDADES = [
     titulo: "Excel Avançado",
     descricao: "PROCV, macros e automações de planilha.",
     grupo: "cursos",
-    imagem: "img/excelbackground.jpg",
     sigla: "X+",
     cor: "#0f5132",
     materiais: [
@@ -245,7 +244,6 @@ const ATIVIDADES = [
     titulo: "Power BI",
     descricao: "Dashboards e análise de dados.",
     grupo: "cursos",
-    imagem: "img/powerbi.jpg",
     sigla: "BI",
     cor: "#c9a227",
     materiais: [
@@ -281,7 +279,6 @@ const ATIVIDADES = [
     titulo: "Word",
     descricao: "Documentos, Normas ABNT e Automações.",
     grupo: "cursos",
-    imagem: "img/wordpapeldeparede.jpg",
     sigla: "W",
     cor: "#2b579a",
     materiais: [
@@ -333,7 +330,6 @@ const ATIVIDADES = [
     titulo: "PowerPoint",
     descricao: "Apresentações Visuais e Profissionais.",
     grupo: "cursos",
-    imagem: "img/powerpointwallpaper.jpg",
     sigla: "P",
     cor: "#d24726",
     materiais: [
@@ -351,7 +347,6 @@ const ATIVIDADES = [
     titulo: "Informática Kids",
     descricao: "Atividades para o Kids.",
     grupo: "cursos",
-    imagem: "img/infokidsbackground.png",
     sigla: "K",
     cor: "#7c4dff",
     materiais: [
@@ -412,7 +407,6 @@ const ATIVIDADES = [
     titulo: "Redes de Computadores",
     descricao: "Cisco Packet Tracer, DHCP, VLANs e Wi-Fi.",
     grupo: "cursos",
-    imagem: "img/redes.jpg",
     sigla: "RD",
     cor: "#0f766e",
     materiais: [
@@ -478,7 +472,6 @@ const ATIVIDADES = [
     titulo: "Segurança na Era Digital",
     descricao: "Golpes, e-mails suspeitos e proteção de dados.",
     grupo: "cursos",
-    imagem: "img/seguranca.jpg",
     sigla: "SD",
     cor: "#b91c1c",
     materiais: [
@@ -505,7 +498,6 @@ const ATIVIDADES = [
     titulo: "Programação HTML & CSS",
     descricao: "Atividades de HTML & CSS",
     grupo: "extras",
-    imagem: "img/iconcsshtml.png",
     sigla: "HC",
     cor: "#ff4da6",
     materiais: [
@@ -530,7 +522,6 @@ const ATIVIDADES = [
     titulo: "Python",
     descricao: "Atividades de Python",
     grupo: "extras",
-    imagem: "img/iconpython.png",
     sigla: "PY",
     cor: "#ff9f43",
     materiais: [
@@ -573,7 +564,6 @@ const ATIVIDADES = [
     titulo: "Lógica de Programação",
     descricao: "Exercícios práticos",
     grupo: "extras",
-    imagem: "img/programming.png",
     sigla: "LP",
     cor: "#4a69bd",
     materiais: [
@@ -598,7 +588,6 @@ const ATIVIDADES = [
     titulo: "Javascript",
     descricao: "Atividades de Javascript",
     grupo: "extras",
-    imagem: "img/iconjs.png",
     sigla: "JS",
     cor: "#9b59b6",
     materiais: [
@@ -638,7 +627,6 @@ const ATIVIDADES = [
     titulo: "Inteligência Artificial",
     descricao: "Atividades de Inteligência Artificial",
     grupo: "extras",
-    imagem: "img/artificial-intelligence.png",
     sigla: "IA",
     cor: "#ff4d4d",
     // Os PDFs de IA ainda não foram enviados — assim que estiverem em
@@ -651,7 +639,6 @@ const ATIVIDADES = [
     titulo: "Desenvolvimento de Games",
     descricao: "Criação de jogos 3D com a Godot",
     grupo: "extras",
-    imagem: "img/godot.png",
     sigla: "GD",
     cor: "#478cbf",
     materiais: [
@@ -676,7 +663,6 @@ const ATIVIDADES = [
     titulo: "Banco de Dados | SQL",
     descricao: "Atividades de Banco de Dados",
     grupo: "extras",
-    imagem: "img/logo sql.png",
     sigla: "SQL",
     cor: "#00758f",
     materiais: [

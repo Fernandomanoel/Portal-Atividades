@@ -29,21 +29,27 @@ function enderecoDoMaterial(material) {
 }
 
 // ---- Imagem do card -------------------------------------------------
-// Todo curso já tem uma capa gerada (img/capas/<slug>.svg, criada por
-// scripts/generate-capas.py), então nenhum card fica com o quadrado
-// cinza de imagem quebrada. Se o curso tiver o campo `imagem` no
-// catálogo, essa foto é tentada primeiro e a capa gerada só entra caso
-// o arquivo não exista — assim é só soltar a foto em img/ que ela
-// aparece, sem mexer em código.
-function aplicarImagem(img, preferida, reserva) {
-  img.addEventListener(
-    "error",
-    () => {
-      img.src = reserva;
-    },
-    { once: true }
-  );
-  img.src = preferida || reserva;
+// A capa de um curso é procurada nesta ordem:
+//
+//   1. o campo `imagem` do curso, se ele existir no catálogo;
+//   2. img/<slug>.jpg — a foto do curso (basta soltar o arquivo lá com
+//      o nome do slug; não precisa mexer em código nenhum);
+//   3. img/capas/<slug>.svg — a capa colorida gerada por
+//      scripts/generate-capas.py, para nenhum card ficar com o quadrado
+//      cinza de imagem quebrada enquanto a foto não chega.
+function aplicarCapa(img, curso) {
+  const tentativas = [
+    curso.imagem,
+    `img/${curso.slug}.jpg`,
+    `img/capas/${curso.slug}.svg`,
+  ].filter(Boolean);
+
+  let atual = 0;
+  img.addEventListener("error", () => {
+    atual += 1;
+    if (atual < tentativas.length) img.src = tentativas[atual];
+  });
+  img.src = tentativas[0];
 }
 
 function cardCurso(curso) {
@@ -57,28 +63,29 @@ function cardCurso(curso) {
       <p></p>
     </div>
   `;
-  aplicarImagem(el.querySelector("img"), curso.imagem, `img/capas/${curso.slug}.svg`);
+  aplicarCapa(el.querySelector("img"), curso);
   el.querySelector("h3").textContent = curso.titulo;
   el.querySelector("p").textContent = curso.descricao;
   return el;
 }
 
+// Card colorido de "Mais Atividades": a capa ocupa o card inteiro por
+// baixo, e um véu da cor do curso entra por cima para o texto continuar
+// legível em qualquer foto.
 function cardExtra(curso) {
   const el = document.createElement("a");
   el.className = "game-card";
   el.href = Rotas.url("atividade", { curso: curso.slug });
-  el.style.background = `linear-gradient(135deg, ${curso.cor}, ${curso.cor}b3)`;
+  el.style.setProperty("--cor", curso.cor);
   el.innerHTML = `
+    <img class="game-capa" alt="" loading="lazy">
     <div class="game-info">
       <h3></h3>
       <span></span>
       <button type="button" tabindex="-1">▶ Inicie</button>
     </div>
-    <img alt="" loading="lazy">
   `;
-  // Nos cards coloridos a imagem é um selo pequeno no canto, então usa o
-  // monograma branco em vez da capa inteira.
-  aplicarImagem(el.querySelector("img"), curso.imagem, `img/icones/${curso.slug}.svg`);
+  aplicarCapa(el.querySelector("img"), curso);
   el.querySelector("h3").textContent = curso.titulo;
   el.querySelector("span").textContent = curso.descricao;
   return el;

@@ -22,10 +22,12 @@
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
 //   grupo     → "cursos" (carrossel de cima) ou "extras" (cards coloridos)
-//   imagem    → capa do card na home (arquivo dentro de img/)
-//   sigla     → 1-2 letras exibidas no cabeçalho da página do curso
-//   cor       → cor tema do curso (cabeçalho da página, ícones)
+//   sigla     → 1-2 letras usadas na capa gerada do curso
+//   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
+//   imagem    → OPCIONAL. Só use se a capa não seguir o padrão. A capa
+//               é procurada sozinha em img/<slug>.jpg e, se não houver
+//               foto, na capa colorida gerada em img/capas/<slug>.svg.
 //
 // ---- CAMPOS DE UM MATERIAL ----
 //   titulo, descricao
@@ -41,7 +43,6 @@ const ATIVIDADES = [
     titulo: "Windows 11",
     descricao: "Modificar do básico ao avançado.",
     grupo: "cursos",
-    imagem: "img/windows11.jpg",
     sigla: "W",
     cor: "#2b579a",
     materiais: [
@@ -94,6 +95,12 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Windows 11/Windows 11 - Escrevendo e usando o Shift.pdf",
       },
+      {
+        titulo: "Lista de Atividades antes da Prova",
+        descricao: "Revisão geral do curso, para praticar antes da avaliação.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Lista de Atividades antes da Prova.pdf",
+      },
     ],
   },
 
@@ -102,7 +109,6 @@ const ATIVIDADES = [
     titulo: "Excel Básico",
     descricao: "Planilhas e fórmulas simples.",
     grupo: "cursos",
-    imagem: "img/excelbackground.jpg",
     sigla: "X",
     cor: "#1d6f42",
     materiais: [
@@ -117,7 +123,21 @@ const ATIVIDADES = [
         titulo: "Cálculo de Empréstimo",
         descricao: "Exercício voltado ao cálculo de juros simples usando Excel.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/ATIVIDADE_CALCULO_EMPRESTIMO_EXCEL.pdf",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADE DE CALCULO DO EMPRESTIMO.pdf",
+      },
+      {
+        titulo: "Formatação Básica",
+        descricao:
+          "Primeiros passos no Excel: formatar células, ajustar colunas e deixar a planilha organizada.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADES BÁSICO FORMATAÇÃO.pdf",
+      },
+      {
+        titulo: "Tabela de Receitas de Bolo",
+        descricao:
+          "Atividade prática montando uma tabela de receitas, trabalhando organização de dados e cálculo de quantidades.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - Tabela de Receitas de Bolo.pdf",
       },
       {
         titulo: "Tabela de Impostos",
@@ -203,31 +223,18 @@ const ATIVIDADES = [
 
   {
     slug: "excel-avancado",
-    titulo: "Excel Avançado II",
-    descricao: "Macros, VBA e automações de planilha.",
+    titulo: "Excel Avançado",
+    descricao: "PROCV, macros e automações de planilha.",
     grupo: "cursos",
-    imagem: "img/excelbackground.jpg",
     sigla: "X+",
     cor: "#0f5132",
     materiais: [
       {
-        titulo: "Usando o VBA com códigos",
-        descricao: "Formatando e organizando planilhas com o VBA.",
+        titulo: "Iniciando com o PROCV",
+        descricao:
+          "Primeira atividade do Excel Avançado: buscar informações em outra tabela com a função PROCV.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/Formatando e Organizando com o VBA - Excel Avançado II.pdf",
-      },
-      {
-        titulo: "Criando e Executando uma Macro Simples",
-        descricao: "Criando e executando uma macro simples com VBA no Excel.",
-        tipo: "pdf",
-        arquivo:
-          "atividades/pdfs/Criando e Executando uma Macro Simples com VBA no Excel - Excel Avançado II.pdf",
-      },
-      {
-        titulo: "Tabela de Prejuízo",
-        descricao: "Tabela de prejuízo no Excel.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Tabela de Prejuízo - Excel.pdf",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO I - INICIANDO COM O PROCV.pdf",
       },
     ],
   },
@@ -237,7 +244,6 @@ const ATIVIDADES = [
     titulo: "Power BI",
     descricao: "Dashboards e análise de dados.",
     grupo: "cursos",
-    imagem: "img/powerbi.jpg",
     sigla: "BI",
     cor: "#c9a227",
     materiais: [
@@ -265,24 +271,6 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Power Bi/Power Bi - Dashboard de Vendas do Atacadão.pdf",
       },
-      {
-        titulo: "Base: Controle de Vendas",
-        descricao: "Planilha de vendas mensal usada nas atividades.",
-        tipo: "planilha",
-        arquivo: "atividades/base dados/Dados_Power_Bi_Atv1.xlsx",
-      },
-      {
-        titulo: "Base: Controle de Estoque",
-        descricao: "Planilha de controle de estoque do Atacadão.",
-        tipo: "planilha",
-        arquivo: "atividades/base dados/Planilha_Atacadão.xlsx",
-      },
-      {
-        titulo: "Logo do Atacadão",
-        descricao: "Imagem usada no dashboard do Atacadão.",
-        tipo: "planilha",
-        arquivo: "atividades/base dados/transferir.png",
-      },
     ],
   },
 
@@ -291,7 +279,6 @@ const ATIVIDADES = [
     titulo: "Word",
     descricao: "Documentos, Normas ABNT e Automações.",
     grupo: "cursos",
-    imagem: "img/wordpapeldeparede.jpg",
     sigla: "W",
     cor: "#2b579a",
     materiais: [
@@ -343,7 +330,6 @@ const ATIVIDADES = [
     titulo: "PowerPoint",
     descricao: "Apresentações Visuais e Profissionais.",
     grupo: "cursos",
-    imagem: "img/powerpointwallpaper.jpg",
     sigla: "P",
     cor: "#d24726",
     materiais: [
@@ -361,7 +347,6 @@ const ATIVIDADES = [
     titulo: "Informática Kids",
     descricao: "Atividades para o Kids.",
     grupo: "cursos",
-    imagem: "img/infokidsbackground.png",
     sigla: "K",
     cor: "#7c4dff",
     materiais: [
@@ -414,11 +399,95 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
       },
+    ],
+  },
+
+  {
+    slug: "redes",
+    titulo: "Redes de Computadores",
+    descricao: "Cisco Packet Tracer, DHCP, VLANs e Wi-Fi.",
+    grupo: "cursos",
+    sigla: "RD",
+    cor: "#0f766e",
+    materiais: [
       {
-        titulo: "Tabela de Prejuízo",
-        descricao: "Tabela de prejuízo no Excel.",
+        titulo: "Fazendo uma conexão usando comandos no Cisco",
+        descricao:
+          "Primeiros comandos no Cisco Packet Tracer para colocar dois equipamentos para se comunicar.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/Tabela de Prejuízo - Excel.pdf",
+        arquivo: "atividades/pdfs/Redes/Redes - Fazendo uma conexão usando comandos no Cisco.pdf",
+      },
+      {
+        titulo: "Implementação de uma Topologia de Redes",
+        descricao:
+          "Montagem de uma topologia completa no Cisco Packet Tracer, ligando switches, roteadores e computadores.",
+        tipo: "pdf",
+        arquivo:
+          "atividades/pdfs/Redes/Redes - Implementação de uma Topologia de Redes com o Cisco Packet Tracer.pdf",
+      },
+      {
+        titulo: "Configuração de Serviço DHCP",
+        descricao: "Atividade prática para configurar a distribuição automática de endereços IP.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Redes/REDES - Configuração de Serviço DHCP.pdf",
+      },
+      {
+        titulo: "Criando um Servidor Web com Cisco Packet Tracer",
+        descricao: "Subir um servidor web dentro da rede simulada e acessá-lo pelos clientes.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Redes/Redes - Criando um Servidor Web com Cisco Packet Tracer.pdf",
+      },
+      {
+        titulo: "Laboratório de VLANs",
+        descricao:
+          "Separação da rede em VLANs no Cisco Packet Tracer, trabalhando segmentação e organização do tráfego.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Redes/REDES - Laboratório de VLANs no Cisco Packet Tracer.pdf",
+      },
+      {
+        titulo: "Configuração de Rede com DHCP, DNS, Web Server e Wi-Fi",
+        descricao:
+          "Atividade completa juntando todos os serviços da rede: endereçamento, nomes, servidor web e rede sem fio.",
+        tipo: "pdf",
+        arquivo:
+          "atividades/pdfs/Redes/REDES - CONFIGURAÇÃO DE REDE COM DHCP, DNS, WEB SERVER E WI-FI.pdf",
+      },
+      {
+        titulo: "Redes Wireless — Prova",
+        descricao: "Avaliação teórica da parte de redes sem fio.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Redes/REDES - WIRELESS - PROVA.pdf",
+      },
+      {
+        titulo: "Redes Wireless — Prova Prática",
+        descricao: "Avaliação prática de redes sem fio, em documento do Word.",
+        tipo: "doc",
+        arquivo: "atividades/pdfs/Redes/Redes Wireless - Prova - Prática.doc",
+      },
+    ],
+  },
+
+  {
+    slug: "seguranca-era-digital",
+    titulo: "Segurança na Era Digital",
+    descricao: "Golpes, e-mails suspeitos e proteção de dados.",
+    grupo: "cursos",
+    sigla: "SD",
+    cor: "#b91c1c",
+    materiais: [
+      {
+        titulo: "Atividade de Segurança",
+        descricao:
+          "Atividade prática sobre os cuidados básicos de segurança no uso do computador e da internet.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Segurança na Era Digital/AtividadeSegurança.pdf",
+      },
+      {
+        titulo: "Identificando E-mails Suspeitos",
+        descricao:
+          "Exercício para reconhecer tentativas de golpe e phishing antes de clicar em qualquer link.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Segurança na Era Digital/EmailsSuspeito.pdf",
       },
     ],
   },
@@ -429,7 +498,6 @@ const ATIVIDADES = [
     titulo: "Programação HTML & CSS",
     descricao: "Atividades de HTML & CSS",
     grupo: "extras",
-    imagem: "img/iconcsshtml.png",
     sigla: "HC",
     cor: "#ff4da6",
     materiais: [
@@ -446,18 +514,6 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Html e CSS/CSS - USANDO O CSS EM SITE.pdf",
       },
-      {
-        titulo: "Layout com Divs",
-        descricao: "Atividade focada na organização de layout usando divs e estilização com CSS.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/HTMLCSS/HTMLCSS - Layout com Divs.pdf",
-      },
-      {
-        titulo: "Estilização com CSS",
-        descricao: "Exercício prático para aplicar cores, fontes, espaçamentos e bordas com CSS.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/HTMLCSS/HTMLCSS - Estilizacao com CSS.pdf",
-      },
     ],
   },
 
@@ -466,7 +522,6 @@ const ATIVIDADES = [
     titulo: "Python",
     descricao: "Atividades de Python",
     grupo: "extras",
-    imagem: "img/iconpython.png",
     sigla: "PY",
     cor: "#ff9f43",
     materiais: [
@@ -509,7 +564,6 @@ const ATIVIDADES = [
     titulo: "Lógica de Programação",
     descricao: "Exercícios práticos",
     grupo: "extras",
-    imagem: "img/programming.png",
     sigla: "LP",
     cor: "#4a69bd",
     materiais: [
@@ -520,22 +574,11 @@ const ATIVIDADES = [
         arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - De inicio na Lógica de Programação.pdf",
       },
       {
-        titulo: "Estruturas Condicionais",
-        descricao: "Exercícios com decisões usando se / senão.",
+        titulo: "Além do Básico — Lógica Avançada",
+        descricao:
+          "Continuação da atividade introdutória, com problemas que exigem mais raciocínio lógico.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica/Logica - Estruturas Condicionais.pdf",
-      },
-      {
-        titulo: "Laços de Repetição",
-        descricao: "Prática de repetição utilizando estruturas de loop.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica/Logica - Lacos de Repeticao.pdf",
-      },
-      {
-        titulo: "Desafios Práticos",
-        descricao: "Problemas simples para aplicar todo o raciocínio lógico aprendido.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica/Logica - Desafios Praticos.pdf",
+        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - Além do Básico Lógica avançada.pdf",
       },
     ],
   },
@@ -545,7 +588,6 @@ const ATIVIDADES = [
     titulo: "Javascript",
     descricao: "Atividades de Javascript",
     grupo: "extras",
-    imagem: "img/iconjs.png",
     sigla: "JS",
     cor: "#9b59b6",
     materiais: [
@@ -585,34 +627,33 @@ const ATIVIDADES = [
     titulo: "Inteligência Artificial",
     descricao: "Atividades de Inteligência Artificial",
     grupo: "extras",
-    imagem: "img/artificial-intelligence.png",
     sigla: "IA",
     cor: "#ff4d4d",
+    // Os PDFs de IA ainda não foram enviados — assim que estiverem em
+    // atividades/pdfs/IA/, é só acrescentar os materiais aqui.
+    materiais: [],
+  },
+
+  {
+    slug: "godot",
+    titulo: "Desenvolvimento de Games",
+    descricao: "Criação de jogos 3D com a Godot",
+    grupo: "extras",
+    sigla: "GD",
+    cor: "#478cbf",
     materiais: [
       {
-        titulo: "Introdução à Inteligência Artificial",
-        descricao: "Conceitos básicos sobre o que é IA e como ela está presente no dia a dia.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/IA/Introducao-IA.pdf",
-      },
-      {
-        titulo: "Ferramentas de Inteligência Artificial",
+        titulo: "Conhecendo o Godot",
         descricao:
-          "Atividade explorando ferramentas como chatbots, geração de imagens e automação.",
+          "Primeiro contato com a Godot: interface, cena, nós e como o projeto é organizado.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/IA/Ferramentas-IA.pdf",
+        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3d - Conhecendo o Godot.pdf",
       },
       {
-        titulo: "Aplicações da Inteligência Artificial",
-        descricao: "Exercícios sobre como a IA é usada em empresas, escolas e tecnologia.",
+        titulo: "Criando o Primeiro Jogo 3D",
+        descricao: "Atividade prática montando um jogo 3D simples do começo ao fim na Godot.",
         tipo: "pdf",
-        arquivo: "atividades/pdfs/IA/Aplicacoes-IA.pdf",
-      },
-      {
-        titulo: "Desafios com Inteligência Artificial",
-        descricao: "Atividade prática para estimular o pensamento crítico usando ferramentas de IA.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/IA/Desafios-IA.pdf",
+        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3D - Criando o Primeiro Jogo.pdf",
       },
     ],
   },
@@ -622,7 +663,6 @@ const ATIVIDADES = [
     titulo: "Banco de Dados | SQL",
     descricao: "Atividades de Banco de Dados",
     grupo: "extras",
-    imagem: "img/logo sql.png",
     sigla: "SQL",
     cor: "#00758f",
     materiais: [

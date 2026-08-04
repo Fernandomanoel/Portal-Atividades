@@ -57,9 +57,21 @@ if (!cursoAtual) {
     visiveis.forEach((material) => lista.appendChild(cardMaterial(material)));
   }
 
-  desenhar();
-  busca.addEventListener("input", (e) => desenhar(e.target.value));
+  if (!materiais.length) {
+    // Curso já cadastrado, mas cujos arquivos ainda não foram enviados.
+    document.getElementById("atividade-barra").classList.add("hidden");
+    lista.innerHTML = `
+      <div class="aviso">
+        <strong>Nenhum material publicado ainda.</strong>
+        <p>Os arquivos deste curso ainda não foram adicionados ao portal.</p>
+        <a class="material-btn" href="${Rotas.url("inicio")}">← Voltar para o início</a>
+      </div>
+    `;
+  } else {
+    desenhar();
+    busca.addEventListener("input", (e) => desenhar(e.target.value));
 
-  // Com poucos materiais o campo de busca só ocupa espaço.
-  if (materiais.length < 5) busca.classList.add("hidden");
+    // Com poucos materiais o campo de busca só ocupa espaço.
+    if (materiais.length < 5) busca.classList.add("hidden");
+  }
 }

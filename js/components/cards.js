@@ -11,12 +11,14 @@
 
 const ICONES_MATERIAL = {
   pdf: "📄",
+  doc: "📝",
   planilha: "📊",
   link: "🔗",
 };
 
 const ROTULOS_MATERIAL = {
   pdf: "PDF",
+  doc: "Word",
   planilha: "Planilha",
   link: "Link",
 };

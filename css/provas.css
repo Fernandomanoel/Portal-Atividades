@@ -119,13 +119,19 @@
   color: #fff;
 }
 
-/* ================= NAVBAR DE CATEGORIAS ================= */
+/* ================= RESUMO E NAVBAR DE CATEGORIAS ================= */
+
+.provas-resumo {
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--apagado);
+}
 
 .provas-nav {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 36px;
 }
 
 .provas-nav-btn {
@@ -151,49 +157,81 @@
   box-shadow: 0 8px 20px rgba(79, 124, 255, 0.35);
 }
 
+/* ================= SEÇÃO DE CATEGORIA ================= */
+
+.provas-categoria {
+  margin-bottom: 42px;
+}
+
+.provas-categoria .section-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.provas-categoria-contagem {
+  font-size: 13px;
+  font-weight: normal;
+  color: var(--apagado);
+}
+
 /* ================= CARDS DE CURSO ================= */
 
 .courses-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  /* sem isto, todo card da linha estica até a altura do maior e sobra um
+     vazio enorme embaixo dos cards com a lista recolhida */
+  align-items: start;
+  gap: 24px;
   min-width: 0;
 }
 
 .course-card {
   background: var(--card);
-  border-radius: var(--raio);
+  border: 1px solid var(--borda);
+  border-radius: 20px;
   padding: 22px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
+  /* nome de arquivo longo é cortado com "..."; sem este min-width o card
+     cresceria até caber o nome inteiro e estouraria a tela no celular */
+  min-width: 0;
   box-shadow: var(--sombra);
-  transition: 0.3s ease;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.course-arquivos,
+.file-list,
+.file-item {
+  min-width: 0;
 }
 
 .course-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
+  border-color: var(--azul);
   box-shadow: var(--sombra-forte);
 }
 
 .course-card-header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .course-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
+  width: 48px;
+  height: 48px;
+  border-radius: 15px;
   background: var(--gradiente-azul);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 18px;
+  font-size: 19px;
   overflow: hidden;
 }
 
@@ -205,15 +243,52 @@
 
 .course-title {
   margin: 0;
-  font-size: 17px;
+  font-size: 16.5px;
+  line-height: 1.35;
   flex: 1;
   min-width: 0;
 }
 
-.provas-count {
-  font-size: 12px;
+/* ================= LISTA RECOLHÍVEL ================= */
+
+.course-arquivos summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border-radius: var(--raio-pequeno);
+  background: var(--suave);
   color: var(--apagado);
-  white-space: nowrap;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  list-style: none;
+  transition: 0.2s ease;
+}
+
+/* tira o triângulo padrão do <details> nos dois motores de navegador */
+.course-arquivos summary::-webkit-details-marker {
+  display: none;
+}
+
+.course-arquivos summary::after {
+  content: "▾";
+  margin-left: auto;
+  font-size: 14px;
+  transition: transform 0.2s ease;
+}
+
+.course-arquivos[open] summary::after {
+  transform: rotate(180deg);
+}
+
+.course-arquivos summary:hover {
+  background: var(--borda);
+  color: var(--azul);
+}
+
+.course-arquivos[open] summary {
+  margin-bottom: 12px;
 }
 
 /* ================= LISTA DE ARQUIVOS ================= */

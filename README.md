@@ -2,9 +2,9 @@
 
 Site estático (sem build, sem dependências, sem servidor) com três páginas:
 
-- **`index.html` — Início**: banner, carrossel de atividades e cards "Mais Atividades".
+- **`index.html` — Início**: grade de cards com todos os cursos (capa, descrição e quantos materiais tem), com busca por nome.
 - **`atividade.html` — uma atividade**: página genérica que serve **todos** os cursos, escolhido pelo endereço (`atividade.html?curso=word`). Lista os PDFs, planilhas e links daquele curso.
-- **`provas.html` — Provas**: protegida por senha, lista os arquivos guardados em `provas/<curso>/`, organizados por categoria. As provas interativas abrem na própria página, com botão para voltar.
+- **`provas.html` — Provas**: protegida por senha. Os 63 cursos ficam agrupados em seções por categoria, com busca por curso ou por nome de arquivo e a lista de arquivos recolhível em cada card. As provas interativas abrem na própria página, com botão para voltar.
 
 Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em `js/data/atividades.js` (editado à mão) e as provas em `js/data/provas-data.js` (gerado por script).
 
@@ -20,7 +20,7 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   ├── main.css                        # única folha que as páginas carregam; junta as de baixo
 │   ├── base.css                        # cores, modo escuro, reset e utilitários
 │   ├── layout.css                      # menu, banner, container, rodapé
-│   ├── components.css                  # cards, carrossel, lista de materiais, busca
+│   ├── components.css                  # cards de curso, busca, lista de materiais
 │   ├── provas.css                      # só a área de provas
 │   └── quiz.css                        # só a prova interativa (independente do resto)
 ├── js/
@@ -29,14 +29,14 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   │   └── tema.js                     # modo claro/escuro (vale para o site inteiro)
 │   ├── components/
 │   │   ├── layout.js                   # <app-navbar>, <app-banner>, <app-footer>
-│   │   └── cards.js                    # cards de curso, cards coloridos e linha de material
+│   │   └── cards.js                    # card de curso e linha de material
 │   ├── data/
 │   │   ├── atividades.js               # CATÁLOGO das atividades — é aqui que se edita conteúdo
 │   │   └── provas-data.js              # gerado — índice de provas/ (não editar à mão)
 │   └── pages/
-│       ├── home.js                     # monta a página inicial
+│       ├── home.js                     # monta a página inicial e a busca
 │       ├── atividade.js                # monta a página de um curso a partir da URL
-│       ├── provas.js                   # senha, listagem e filtro por categoria
+│       ├── provas.js                   # senha, listagem por categoria, busca e filtro
 │       └── quiz.js                     # motor da prova interativa (independente do resto)
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/data/provas-data.js a partir de provas/
@@ -44,7 +44,7 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   ├── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
 │   └── exemplo-standalone.prova.html   # modelo de prova em página HTML autossuficiente
 ├── images/cursos/                      # ícones/capas dos cursos da área de Provas
-├── img/                                # imagens do carrossel e dos cards da página inicial
+├── img/                                # capas dos cursos (ver README da pasta)
 ├── atividades/                         # SÓ ARQUIVOS (PDFs, planilhas) — ver README de lá
 │   ├── pdfs/<curso>/
 │   └── base dados/
@@ -99,7 +99,7 @@ Tudo em **`js/data/atividades.js`** (o arquivo tem as instruções no topo).
 }
 ```
 
-**Um curso novo:** copie um bloco de curso inteiro, troque `slug`, `titulo`, `descricao`, `imagem`, `cor` e os materiais. Ele aparece sozinho na página inicial e já ganha o endereço `atividade.html?curso=<slug>`. Use `grupo: "cursos"` para o carrossel de cima ou `grupo: "extras"` para os cards coloridos.
+**Um curso novo:** copie um bloco de curso inteiro, troque `slug`, `titulo`, `descricao`, `sigla`, `cor` e os materiais. Ele aparece sozinho na página inicial e já ganha o endereço `atividade.html?curso=<slug>`. O campo `grupo` decide em qual das duas seções da home ele entra: `"cursos"` (Atividades disponíveis) ou `"extras"` (Mais Atividades). Rode `python3 scripts/generate-capas.py` para ele já nascer com capa.
 
 ## Adicionando provas (arquivo comum: PDF, DOCX, link, etc.)
 
@@ -122,7 +122,7 @@ Depois de copiar o modelo pra `provas/<curso>/` e editar, rode `python3 scripts/
 
 ## Ícones e imagens
 
-- `img/` — capas do carrossel e dos cards da página inicial (nomes esperados no README da pasta).
+- `img/<slug>.jpg` — a foto de capa de um curso. É só soltar o arquivo com o nome do slug; sem foto, o card usa a capa colorida gerada em `img/capas/` (`python3 scripts/generate-capas.py`).
 - `images/cursos/` — ícones dos cursos da área de Provas: é só soltar um `.png` com o nome do curso, sem mexer em código.
 
 ## Senha da área de provas

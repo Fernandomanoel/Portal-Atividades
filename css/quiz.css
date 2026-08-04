@@ -39,13 +39,18 @@
   white-space: nowrap;
 }
 
+/* Curto de propósito: dentro do card do curso ele divide a linha com o
+   nome do arquivo, e cada pixel a mais aqui é um pedaço a menos do nome. */
 .quiz-badge {
   flex-shrink: 0;
-  font-size: 11px;
+  font-size: 10.5px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
   color: #fff;
   background: var(--azul);
   border-radius: 30px;
-  padding: 4px 12px;
+  padding: 4px 9px;
   white-space: nowrap;
 }
 

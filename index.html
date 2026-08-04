@@ -20,24 +20,24 @@
     <app-banner titulo="Atividades Extras" texto="Escolha uma atividade abaixo para começar.">
     </app-banner>
 
-    <!-- As listas abaixo são preenchidas por js/pages/home.js a partir do
+    <div class="barra">
+      <input type="search" class="busca" id="busca-curso" placeholder="Buscar atividade..."
+        aria-label="Buscar atividade">
+    </div>
+
+    <!-- As grades abaixo são preenchidas por js/pages/home.js a partir do
          catálogo em js/data/atividades.js — não escreva cursos aqui. -->
 
     <h2 class="section-title">Atividades disponíveis</h2>
-
-    <div class="courses-container">
-      <button type="button" class="arrow left" data-rolar="-1" aria-label="Voltar">❮</button>
-
-      <div class="courses-wrapper">
-        <div class="courses" id="lista-cursos"></div>
-      </div>
-
-      <button type="button" class="arrow right" data-rolar="1" aria-label="Avançar">❯</button>
-    </div>
+    <div class="cursos-grid" id="lista-cursos"></div>
 
     <h2 class="section-title">Mais Atividades</h2>
+    <div class="cursos-grid" id="lista-extras"></div>
 
-    <div class="courses games" id="lista-extras"></div>
+    <div class="aviso hidden" id="home-sem-resultado">
+      <strong>Nenhuma atividade encontrada.</strong>
+      <p>Tente procurar por outra palavra — por exemplo "Excel", "Word" ou "Python".</p>
+    </div>
 
   </div>
 

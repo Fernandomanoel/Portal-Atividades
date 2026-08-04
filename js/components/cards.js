@@ -28,17 +28,36 @@ function enderecoDoMaterial(material) {
   return material.tipo === "link" ? material.url : encodeURI(material.arquivo || "");
 }
 
+// ---- Imagem do card -------------------------------------------------
+// Todo curso já tem uma capa gerada (img/capas/<slug>.svg, criada por
+// scripts/generate-capas.py), então nenhum card fica com o quadrado
+// cinza de imagem quebrada. Se o curso tiver o campo `imagem` no
+// catálogo, essa foto é tentada primeiro e a capa gerada só entra caso
+// o arquivo não exista — assim é só soltar a foto em img/ que ela
+// aparece, sem mexer em código.
+function aplicarImagem(img, preferida, reserva) {
+  img.addEventListener(
+    "error",
+    () => {
+      img.src = reserva;
+    },
+    { once: true }
+  );
+  img.src = preferida || reserva;
+}
+
 function cardCurso(curso) {
   const el = document.createElement("a");
   el.className = "course";
   el.href = Rotas.url("atividade", { curso: curso.slug });
   el.innerHTML = `
-    <img src="${curso.imagem}" alt="" loading="lazy">
+    <img alt="" loading="lazy">
     <div class="course-content">
       <h3></h3>
       <p></p>
     </div>
   `;
+  aplicarImagem(el.querySelector("img"), curso.imagem, `img/capas/${curso.slug}.svg`);
   el.querySelector("h3").textContent = curso.titulo;
   el.querySelector("p").textContent = curso.descricao;
   return el;
@@ -55,8 +74,11 @@ function cardExtra(curso) {
       <span></span>
       <button type="button" tabindex="-1">▶ Inicie</button>
     </div>
-    <img src="${curso.imagem}" alt="" loading="lazy">
+    <img alt="" loading="lazy">
   `;
+  // Nos cards coloridos a imagem é um selo pequeno no canto, então usa o
+  // monograma branco em vez da capa inteira.
+  aplicarImagem(el.querySelector("img"), curso.imagem, `img/icones/${curso.slug}.svg`);
   el.querySelector("h3").textContent = curso.titulo;
   el.querySelector("span").textContent = curso.descricao;
   return el;

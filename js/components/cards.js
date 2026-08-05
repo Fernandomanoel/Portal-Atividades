@@ -4,8 +4,8 @@
 // Funções que recebem um objeto de dados e devolvem um elemento pronto pra
 // colocar na tela. São usadas pelas páginas (js/pages/*.js).
 //
-//   cardCurso(curso)        → card com foto, usado no carrossel da home
-//   cardExtra(curso)        → card colorido, usado em "Mais Atividades"
+//   cardCurso(curso)        → card grande de curso, usado nas duas
+//                             seções da página inicial
 //   cardMaterial(material)  → linha de um PDF/planilha/link na página do curso
 // ==========================================================================
 
@@ -13,6 +13,7 @@ const ICONES_MATERIAL = {
   pdf: "📄",
   doc: "📝",
   planilha: "📊",
+  slides: "📽️",
   link: "🔗",
 };
 
@@ -20,6 +21,7 @@ const ROTULOS_MATERIAL = {
   pdf: "PDF",
   doc: "Word",
   planilha: "Planilha",
+  slides: "Slides",
   link: "Link",
 };
 
@@ -52,42 +54,33 @@ function aplicarCapa(img, curso) {
   img.src = tentativas[0];
 }
 
+// Card de curso da página inicial: capa em cima, faixa na cor do curso
+// e, no rodapé, quantos materiais ele tem — o aluno já sabe se vale o
+// clique antes de entrar.
 function cardCurso(curso) {
+  const total = (curso.materiais || []).length;
   const el = document.createElement("a");
-  el.className = "course";
-  el.href = Rotas.url("atividade", { curso: curso.slug });
-  el.innerHTML = `
-    <img alt="" loading="lazy">
-    <div class="course-content">
-      <h3></h3>
-      <p></p>
-    </div>
-  `;
-  aplicarCapa(el.querySelector("img"), curso);
-  el.querySelector("h3").textContent = curso.titulo;
-  el.querySelector("p").textContent = curso.descricao;
-  return el;
-}
-
-// Card colorido de "Mais Atividades": a capa ocupa o card inteiro por
-// baixo, e um véu da cor do curso entra por cima para o texto continuar
-// legível em qualquer foto.
-function cardExtra(curso) {
-  const el = document.createElement("a");
-  el.className = "game-card";
+  el.className = "curso-card";
   el.href = Rotas.url("atividade", { curso: curso.slug });
   el.style.setProperty("--cor", curso.cor);
+  el.dataset.busca = `${curso.titulo} ${curso.descricao || ""}`.toLowerCase();
   el.innerHTML = `
-    <img class="game-capa" alt="" loading="lazy">
-    <div class="game-info">
-      <h3></h3>
-      <span></span>
-      <button type="button" tabindex="-1">▶ Inicie</button>
+    <div class="curso-capa">
+      <img alt="" loading="lazy">
+      <span class="curso-sigla" aria-hidden="true"></span>
+    </div>
+    <div class="curso-info">
+      <h3 class="curso-titulo"></h3>
+      <p class="curso-desc"></p>
+      <span class="curso-contagem"></span>
     </div>
   `;
   aplicarCapa(el.querySelector("img"), curso);
-  el.querySelector("h3").textContent = curso.titulo;
-  el.querySelector("span").textContent = curso.descricao;
+  el.querySelector(".curso-sigla").textContent = curso.sigla || "";
+  el.querySelector(".curso-titulo").textContent = curso.titulo;
+  el.querySelector(".curso-desc").textContent = curso.descricao;
+  el.querySelector(".curso-contagem").textContent =
+    total === 0 ? "Em breve" : total === 1 ? "1 material" : `${total} materiais`;
   return el;
 }
 

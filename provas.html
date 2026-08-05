@@ -19,6 +19,8 @@
     <!-- ================= LISTA DE PROVAS ================= -->
     <section id="view-provas">
 
+      <app-voltar para="inicio" texto="Voltar para o início"></app-voltar>
+
       <app-banner titulo="Provas" texto="Área dos instrutores — avaliações organizadas por curso.">
         <button type="button" id="provas-logout" class="provas-logout hidden" title="Trancar a área de provas">
           <span class="provas-logout-icone" aria-hidden="true">🔒</span>
@@ -36,8 +38,13 @@
       </div>
 
       <div id="provas-content" class="hidden">
+        <div class="barra">
+          <span class="provas-resumo" id="provas-resumo"></span>
+          <input type="search" class="busca" id="provas-busca" placeholder="Buscar curso ou arquivo..."
+            aria-label="Buscar curso ou arquivo">
+        </div>
         <nav id="provas-nav" class="provas-nav"></nav>
-        <div id="courses-provas" class="courses-grid"></div>
+        <div id="courses-provas"></div>
       </div>
 
     </section>
@@ -54,6 +61,12 @@
 
       <div class="quiz-page">
         <button type="button" id="quiz-voltar-btn" class="quiz-voltar-btn">← Voltar para as provas</button>
+        <p id="quiz-aviso-travado" class="quiz-aviso-travado">
+          🔒 Prova em andamento — a saída volta a aparecer depois que você finalizar.
+        </p>
+
+        <!-- A nota fica no topo: é a primeira coisa que aparece ao terminar -->
+        <div id="quiz-nota" class="quiz-nota hidden"></div>
 
         <form id="quiz-form"></form>
         <div id="quiz-result" class="quiz-result hidden"></div>
@@ -67,14 +80,28 @@
 
   <!-- ================= TEMPLATES ================= -->
 
+  <template id="provas-categoria-template">
+    <section class="provas-categoria">
+      <h2 class="section-title">
+        <span class="provas-categoria-nome"></span>
+        <span class="provas-categoria-contagem"></span>
+      </h2>
+      <div class="courses-grid"></div>
+    </section>
+  </template>
+
+  <!-- A lista de arquivos fica dentro de um <details>: com 63 cursos na
+       tela, tudo aberto vira uma página quilométrica. -->
   <template id="provas-course-card-template">
     <article class="course-card">
       <header class="course-card-header">
         <div class="course-icon" aria-hidden="true"></div>
-        <h2 class="course-title"></h2>
-        <span class="provas-count"></span>
+        <h3 class="course-title"></h3>
       </header>
-      <ul class="file-list"></ul>
+      <details class="course-arquivos">
+        <summary><span class="provas-count"></span></summary>
+        <ul class="file-list"></ul>
+      </details>
     </article>
   </template>
 
@@ -94,7 +121,7 @@
         <span class="file-icon" aria-hidden="true">📝</span>
         <span class="file-name"></span>
       </button>
-      <span class="quiz-badge">Prova interativa</span>
+      <span class="quiz-badge">Prova</span>
     </li>
   </template>
 
@@ -104,7 +131,7 @@
         <span class="file-icon" aria-hidden="true">📝</span>
         <span class="file-name"></span>
       </a>
-      <span class="quiz-badge">Prova interativa</span>
+      <span class="quiz-badge">Prova</span>
     </li>
   </template>
 

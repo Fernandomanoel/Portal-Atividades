@@ -2,9 +2,9 @@
 
 Site estático (sem build, sem dependências, sem servidor) com três páginas:
 
-- **`index.html` — Início**: banner, carrossel de atividades e cards "Mais Atividades".
+- **`index.html` — Início**: grade de cards com todos os cursos (capa, descrição e quantos materiais tem), com busca por nome.
 - **`atividade.html` — uma atividade**: página genérica que serve **todos** os cursos, escolhido pelo endereço (`atividade.html?curso=word`). Lista os PDFs, planilhas e links daquele curso.
-- **`provas.html` — Provas**: protegida por senha, lista os arquivos guardados em `provas/<curso>/`, organizados por categoria. As provas interativas abrem na própria página, com botão para voltar.
+- **`provas.html` — Provas**: protegida por senha. Os 63 cursos ficam agrupados em seções por categoria, com busca por curso ou por nome de arquivo e a lista de arquivos recolhível em cada card. As provas interativas abrem na própria página, com botão para voltar.
 
 Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em `js/data/atividades.js` (editado à mão) e as provas em `js/data/provas-data.js` (gerado por script).
 
@@ -20,7 +20,7 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   ├── main.css                        # única folha que as páginas carregam; junta as de baixo
 │   ├── base.css                        # cores, modo escuro, reset e utilitários
 │   ├── layout.css                      # menu, banner, container, rodapé
-│   ├── components.css                  # cards, carrossel, lista de materiais, busca
+│   ├── components.css                  # cards de curso, busca, lista de materiais
 │   ├── provas.css                      # só a área de provas
 │   └── quiz.css                        # só a prova interativa (independente do resto)
 ├── js/
@@ -29,14 +29,14 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   │   └── tema.js                     # modo claro/escuro (vale para o site inteiro)
 │   ├── components/
 │   │   ├── layout.js                   # <app-navbar>, <app-banner>, <app-footer>
-│   │   └── cards.js                    # cards de curso, cards coloridos e linha de material
+│   │   └── cards.js                    # card de curso e linha de material
 │   ├── data/
 │   │   ├── atividades.js               # CATÁLOGO das atividades — é aqui que se edita conteúdo
 │   │   └── provas-data.js              # gerado — índice de provas/ (não editar à mão)
 │   └── pages/
-│       ├── home.js                     # monta a página inicial
+│       ├── home.js                     # monta a página inicial e a busca
 │       ├── atividade.js                # monta a página de um curso a partir da URL
-│       ├── provas.js                   # senha, listagem e filtro por categoria
+│       ├── provas.js                   # senha, listagem por categoria, busca e filtro
 │       └── quiz.js                     # motor da prova interativa (independente do resto)
 ├── scripts/
 │   ├── generate-provas-manifest.py     # gera js/data/provas-data.js a partir de provas/
@@ -44,9 +44,10 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   ├── exemplo-descritiva.prova.js     # modelo de prova descritiva (instrutor avalia depois)
 │   └── exemplo-standalone.prova.html   # modelo de prova em página HTML autossuficiente
 ├── images/cursos/                      # ícones/capas dos cursos da área de Provas
-├── img/                                # imagens do carrossel e dos cards da página inicial
-├── atividades/                         # SÓ ARQUIVOS (PDFs, planilhas) — ver README de lá
+├── img/                                # capas dos cursos (ver README da pasta)
+├── atividades/                         # SÓ ARQUIVOS (PDFs, slides, planilhas) — ver README de lá
 │   ├── pdfs/<curso>/
+│   ├── slides/<curso>/
 │   └── base dados/
 └── provas/<curso>/                     # arquivos reais das provas, organizados por curso
 ```
@@ -94,12 +95,12 @@ Tudo em **`js/data/atividades.js`** (o arquivo tem as instruções no topo).
 {
   titulo: "Nome que aparece no site",
   descricao: "Uma linha explicando a atividade.",
-  tipo: "pdf",                                    // "pdf" | "planilha" | "link"
+  tipo: "pdf",                                    // "pdf" | "doc" | "planilha" | "slides" | "link"
   arquivo: "atividades/pdfs/Word 2021/arquivo.pdf",
 }
 ```
 
-**Um curso novo:** copie um bloco de curso inteiro, troque `slug`, `titulo`, `descricao`, `imagem`, `cor` e os materiais. Ele aparece sozinho na página inicial e já ganha o endereço `atividade.html?curso=<slug>`. Use `grupo: "cursos"` para o carrossel de cima ou `grupo: "extras"` para os cards coloridos.
+**Um curso novo:** copie um bloco de curso inteiro, troque `slug`, `titulo`, `descricao`, `sigla`, `cor` e os materiais. Ele aparece sozinho na página inicial e já ganha o endereço `atividade.html?curso=<slug>`. O campo `grupo` decide em qual das duas seções da home ele entra: `"cursos"` (Atividades disponíveis) ou `"extras"` (Mais Atividades). Rode `python3 scripts/generate-capas.py` para ele já nascer com capa.
 
 ## Adicionando provas (arquivo comum: PDF, DOCX, link, etc.)
 
@@ -112,7 +113,7 @@ Tudo em **`js/data/atividades.js`** (o arquivo tem as instruções no topo).
 
 Guia completo e autossuficiente em **`COMO-CRIAR-PROVAS.md`** — pensado para ser copiado inteiro numa conversa com qualquer IA e gerar uma prova nova sem precisar de mais contexto. Resumo:
 
-- **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora, mostra "X de Y corretas". Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
+- **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora e mostra a nota de 0 a 10 em destaque no topo (verde a partir de 7, vermelha abaixo), sem mostrar o gabarito. Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
 - **Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas. O aluno escreve, envia uma única vez (sem opção de refazer) e a tela de revisão mostra as respostas com um campo "Nota" para o instrutor preencher ali mesmo. Sem indicação automática de certo/errado. A trava contra reenvio é por navegador (`localStorage`), não por aluno — o site não tem login de aluno.
 - **Página HTML autossuficiente** (`scripts/exemplo-standalone.prova.html`) — uma página comum, sem depender de nada do site; o card só faz um link que abre ela numa aba nova. É o formato mais fácil de pedir pra qualquer IA gerar do zero, mas fica por conta da própria página cuidar de correção, estilo e link de volta.
 
@@ -122,11 +123,13 @@ Depois de copiar o modelo pra `provas/<curso>/` e editar, rode `python3 scripts/
 
 ## Ícones e imagens
 
-- `img/` — capas do carrossel e dos cards da página inicial (nomes esperados no README da pasta).
+- `img/<slug>.jpg` — a foto de capa de um curso. É só soltar o arquivo com o nome do slug; sem foto, o card usa a capa colorida gerada em `img/capas/` (`python3 scripts/generate-capas.py`).
 - `images/cursos/` — ícones dos cursos da área de Provas: é só soltar um `.png` com o nome do curso, sem mexer em código.
 
 ## Senha da área de provas
 
-A área fica bloqueada por uma senha (definida em `js/pages/provas.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`), e o botão "Sair" tranca de novo. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte).
+A área fica bloqueada por uma senha (definida em `js/pages/provas.js`, constante `PROVAS_PASSWORD`). A senha é pedida **toda vez que a página carrega** — sair da área, recarregar ou voltar depois de navegar para outra página exige digitar de novo; o botão "Sair" tranca na hora. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte).
+
+Durante uma prova em andamento a página fica travada: menu, rodapé e botão de voltar somem, e o navegador avisa se alguém tentar fechar ou recarregar. A saída só reaparece depois de finalizar.
 
 **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/data/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.

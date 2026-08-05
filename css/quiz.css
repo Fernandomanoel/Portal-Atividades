@@ -39,13 +39,18 @@
   white-space: nowrap;
 }
 
+/* Curto de propósito: dentro do card do curso ele divide a linha com o
+   nome do arquivo, e cada pixel a mais aqui é um pedaço a menos do nome. */
 .quiz-badge {
   flex-shrink: 0;
-  font-size: 11px;
+  font-size: 10.5px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
   color: #fff;
   background: var(--azul);
   border-radius: 30px;
-  padding: 4px 12px;
+  padding: 4px 9px;
   white-space: nowrap;
 }
 
@@ -80,6 +85,102 @@
   background: var(--azul);
   color: #fff;
   transform: translateX(-3px);
+}
+
+/* ---- Prova em andamento: sem saída ---- */
+/* A classe entra no <body> enquanto a prova não foi enviada. Tudo que
+   leva para fora da prova some, e no lugar aparece o aviso abaixo. */
+
+.quiz-aviso-travado {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: rgba(79, 124, 255, 0.1);
+  color: var(--azul);
+  border-radius: 30px;
+  padding: 11px 20px;
+  margin-bottom: 28px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.prova-em-andamento .quiz-aviso-travado {
+  display: flex;
+}
+
+.prova-em-andamento .quiz-voltar-btn,
+.prova-em-andamento .navbar-links,
+.prova-em-andamento .navbar-brand,
+.prova-em-andamento .footer-links,
+.prova-em-andamento .voltar-btn {
+  display: none;
+}
+
+/* ---- Painel da nota (no topo da prova) ---- */
+
+.quiz-nota {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 30px 24px 26px;
+  margin-bottom: 28px;
+  border-radius: 20px;
+  border: 2px solid var(--cor-nota, var(--azul));
+  background: var(--fundo-nota, var(--suave));
+  text-align: center;
+}
+
+.quiz-nota-aprovado {
+  --cor-nota: #16a34a;
+  --fundo-nota: rgba(22, 163, 74, 0.1);
+}
+
+.quiz-nota-reprovado {
+  --cor-nota: #dc2626;
+  --fundo-nota: rgba(220, 38, 38, 0.1);
+}
+
+.quiz-nota-pendente {
+  --cor-nota: var(--azul);
+  --fundo-nota: rgba(79, 124, 255, 0.1);
+}
+
+.quiz-nota-rotulo {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--cor-nota);
+}
+
+.quiz-nota-valor {
+  font-size: 68px;
+  line-height: 1;
+  font-weight: 800;
+  color: var(--cor-nota);
+}
+
+.quiz-nota-detalhe {
+  font-size: 14px;
+  color: var(--apagado);
+}
+
+.quiz-nota-sair {
+  margin-top: 16px;
+  padding: 13px 30px;
+  border-radius: 30px;
+  background: var(--cor-nota);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.3s ease;
+}
+
+.quiz-nota-sair:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
 }
 
 .quiz-question {

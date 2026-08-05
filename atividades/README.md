@@ -21,6 +21,9 @@ atividades/
 │   ├── IA/
 │   ├── Banco de Dados/
 │   └── PowerPoint/
+├── slides/                  # apresentações das aulas (.pptx), por curso
+│   ├── Html e CSS/
+│   └── Javascript/
 └── base dados/              # planilhas usadas nas atividades de Power BI
 ```
 
@@ -33,7 +36,7 @@ atividades/
 {
   titulo: "Nome que aparece no site",
   descricao: "Uma linha explicando a atividade.",
-  tipo: "pdf",                       // "pdf" | "planilha" | "link"
+  tipo: "pdf",                       // "pdf" | "doc" | "planilha" | "slides" | "link"
   arquivo: "atividades/pdfs/Word 2021/nome-do-arquivo.pdf",
 }
 ```

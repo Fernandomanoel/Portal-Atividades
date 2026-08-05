@@ -74,7 +74,54 @@ function mapaCursoCategoria(categorias) {
   return mapa;
 }
 
-function montarNavCategorias(categorias) {
+// Monta a linha de um arquivo dentro do card do curso. Três tipos:
+// prova interativa (.prova.js), prova em página própria (.prova.html) e
+// arquivo comum para baixar.
+function itemDeArquivo(arquivo) {
+  let node;
+
+  if (arquivo.type === "quiz") {
+    node = document.getElementById("provas-quiz-item-template").content.firstElementChild.cloneNode(true);
+    node.querySelector(".quiz-start-btn").addEventListener("click", () => {
+      Quiz.abrir(arquivo.path, arquivo.label);
+    });
+  } else if (arquivo.type === "quiz_html") {
+    // Página autossuficiente: não passa pelo motor de quiz.js, é só um
+    // link — o arquivo cuida da própria tela, correção e volta.
+    node = document.getElementById("provas-quiz-html-item-template").content.firstElementChild.cloneNode(true);
+    node.querySelector(".quiz-start-btn").href = encodeURI(arquivo.path);
+  } else {
+    node = document.getElementById("provas-file-template").content.firstElementChild.cloneNode(true);
+    node.querySelector(".file-link").href = encodeURI(arquivo.path);
+    node.querySelector(".file-icon").textContent = iconeDoArquivo(arquivo.label);
+    node.querySelector(".file-size").textContent = arquivo.size;
+  }
+
+  const nomeEl = node.querySelector(".file-name");
+  nomeEl.textContent = arquivo.label;
+  nomeEl.title = arquivo.label;
+  node.dataset.busca = arquivo.label.toLowerCase();
+  return node;
+}
+
+function cardDoCurso(curso, arquivos) {
+  const card = document
+    .getElementById("provas-course-card-template")
+    .content.firstElementChild.cloneNode(true);
+
+  card.dataset.busca = curso.toLowerCase();
+  card.querySelector(".course-title").textContent = curso;
+  aplicarIconeDoCurso(card.querySelector(".course-icon"), curso);
+  card.querySelector(".provas-count").textContent =
+    arquivos.length === 1 ? "1 arquivo" : `${arquivos.length} arquivos`;
+
+  const lista = card.querySelector(".file-list");
+  arquivos.forEach((arquivo) => lista.appendChild(itemDeArquivo(arquivo)));
+
+  return card;
+}
+
+function montarNavCategorias(categorias, aoTrocar) {
   const nav = document.getElementById("provas-nav");
   const template = document.getElementById("provas-nav-item-template");
   nav.innerHTML = "";
@@ -96,19 +143,14 @@ function montarNavCategorias(categorias) {
     const btn = e.target.closest(".provas-nav-btn");
     if (!btn) return;
     nav.querySelectorAll(".provas-nav-btn").forEach((b) => b.classList.toggle("active", b === btn));
-    const categoria = btn.dataset.category;
-    document.querySelectorAll("#courses-provas .course-card").forEach((card) => {
-      card.classList.toggle("hidden", Boolean(categoria) && card.dataset.category !== categoria);
-    });
+    aoTrocar(btn.dataset.category);
   });
 }
 
 function montarCursosDeProvas() {
   const container = document.getElementById("courses-provas");
-  const cardTemplate = document.getElementById("provas-course-card-template");
-  const arquivoTemplate = document.getElementById("provas-file-template");
-  const quizTemplate = document.getElementById("provas-quiz-item-template");
-  const quizHtmlTemplate = document.getElementById("provas-quiz-html-item-template");
+  const resumo = document.getElementById("provas-resumo");
+  const busca = document.getElementById("provas-busca");
   const manifest = typeof PROVAS_MANIFEST === "object" ? PROVAS_MANIFEST : {};
   const categorias = typeof PROVAS_CATEGORIES === "object" ? PROVAS_CATEGORIES : [];
   const categoriaDoCurso = mapaCursoCategoria(categorias);
@@ -126,57 +168,97 @@ function montarCursosDeProvas() {
     return;
   }
 
-  montarNavCategorias(categorias);
+  // ---- Agrupa os cursos por categoria ----
+  // A ordem das seções segue a ordem das categorias no manifesto; o que
+  // não estiver mapeado cai em "Outros", que fica por último.
+  const porCategoria = new Map(categorias.map((cat) => [cat.name, []]));
+  porCategoria.set("Outros", porCategoria.get("Outros") || []);
 
+  const cursos = Object.keys(manifest).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  cursos.forEach((curso) => {
+    const nome = categoriaDoCurso[curso] || "Outros";
+    if (!porCategoria.has(nome)) porCategoria.set(nome, []);
+    porCategoria.get(nome).push(curso);
+  });
+
+  // ---- Desenha as seções ----
+  const categoriaTemplate = document.getElementById("provas-categoria-template");
   container.innerHTML = "";
-  Object.keys(manifest)
-    .sort((a, b) => a.localeCompare(b, "pt-BR"))
-    .forEach((curso) => {
-      const arquivos = manifest[curso] || [];
-      const card = cardTemplate.content.firstElementChild.cloneNode(true);
-      card.dataset.category = categoriaDoCurso[curso] || "Outros";
-      card.querySelector(".course-title").textContent = curso;
-      aplicarIconeDoCurso(card.querySelector(".course-icon"), curso);
-      card.querySelector(".provas-count").textContent =
-        arquivos.length === 1 ? "1 arquivo" : `${arquivos.length} arquivos`;
+  porCategoria.forEach((cursosDaCategoria, nome) => {
+    if (!cursosDaCategoria.length) return;
 
-      const lista = card.querySelector(".file-list");
-      arquivos.forEach((arquivo) => {
-        if (arquivo.type === "quiz") {
-          const node = quizTemplate.content.firstElementChild.cloneNode(true);
-          const nomeEl = node.querySelector(".file-name");
-          nomeEl.textContent = arquivo.label;
-          nomeEl.title = arquivo.label;
-          node.querySelector(".quiz-start-btn").addEventListener("click", () => {
-            Quiz.abrir(arquivo.path, arquivo.label);
-          });
-          lista.appendChild(node);
-          return;
-        }
-        // Prova em HTML autossuficiente (*.prova.html): não passa pelo motor
-        // de quiz.js, é só um link — o arquivo cuida da própria tela,
-        // correção e navegação de volta.
-        if (arquivo.type === "quiz_html") {
-          const node = quizHtmlTemplate.content.firstElementChild.cloneNode(true);
-          node.querySelector(".quiz-start-btn").href = encodeURI(arquivo.path);
-          const nomeEl = node.querySelector(".file-name");
-          nomeEl.textContent = arquivo.label;
-          nomeEl.title = arquivo.label;
-          lista.appendChild(node);
-          return;
-        }
-        const node = arquivoTemplate.content.firstElementChild.cloneNode(true);
-        node.querySelector(".file-link").href = encodeURI(arquivo.path);
-        node.querySelector(".file-icon").textContent = iconeDoArquivo(arquivo.label);
-        const nomeEl = node.querySelector(".file-name");
-        nomeEl.textContent = arquivo.label;
-        nomeEl.title = arquivo.label;
-        node.querySelector(".file-size").textContent = arquivo.size;
-        lista.appendChild(node);
+    const secao = categoriaTemplate.content.firstElementChild.cloneNode(true);
+    secao.dataset.category = nome;
+    secao.querySelector(".provas-categoria-nome").textContent = nome;
+    secao.querySelector(".provas-categoria-contagem").textContent =
+      cursosDaCategoria.length === 1 ? "1 curso" : `${cursosDaCategoria.length} cursos`;
+
+    const grade = secao.querySelector(".courses-grid");
+    cursosDaCategoria.forEach((curso) => grade.appendChild(cardDoCurso(curso, manifest[curso] || [])));
+    container.appendChild(secao);
+  });
+
+  const totalArquivos = cursos.reduce((soma, curso) => soma + (manifest[curso] || []).length, 0);
+  resumo.textContent = `${cursos.length} cursos · ${totalArquivos} arquivos`;
+
+  // ---- Filtros (categoria + busca) ----
+  // Os dois valem ao mesmo tempo, então um único lugar aplica os dois.
+
+  let categoriaAtiva = "";
+  let termo = "";
+
+  function aplicarFiltros() {
+    let cursosVisiveis = 0;
+
+    container.querySelectorAll(".provas-categoria").forEach((secao) => {
+      const daCategoria = !categoriaAtiva || secao.dataset.category === categoriaAtiva;
+      let visiveisNaSecao = 0;
+
+      secao.querySelectorAll(".course-card").forEach((card) => {
+        const nomeCombina = !termo || card.dataset.busca.includes(termo);
+        let arquivosCombinam = 0;
+
+        // Buscando, os arquivos que não batem somem do card; se o nome do
+        // curso bate, todos ficam (a busca é pelo curso inteiro).
+        card.querySelectorAll(".file-item").forEach((item) => {
+          const combina = !termo || nomeCombina || item.dataset.busca.includes(termo);
+          item.classList.toggle("hidden", !combina);
+          if (combina) arquivosCombinam += 1;
+        });
+
+        const mostrar = daCategoria && (nomeCombina || arquivosCombinam > 0);
+        card.classList.toggle("hidden", !mostrar);
+        if (mostrar) visiveisNaSecao += 1;
+
+        // Com busca ativa o resultado precisa aparecer sem mais um clique.
+        if (termo) card.querySelector(".course-arquivos").open = true;
       });
 
-      container.appendChild(card);
+      secao.classList.toggle("hidden", visiveisNaSecao === 0);
+      cursosVisiveis += visiveisNaSecao;
     });
+
+    if (termo) {
+      resumo.textContent =
+        cursosVisiveis === 0
+          ? "Nenhum curso encontrado"
+          : cursosVisiveis === 1
+          ? "1 curso encontrado"
+          : `${cursosVisiveis} cursos encontrados`;
+    } else {
+      resumo.textContent = `${cursos.length} cursos · ${totalArquivos} arquivos`;
+    }
+  }
+
+  montarNavCategorias(categorias, (nome) => {
+    categoriaAtiva = nome;
+    aplicarFiltros();
+  });
+
+  busca.addEventListener("input", (e) => {
+    termo = e.target.value.trim().toLowerCase();
+    aplicarFiltros();
+  });
 }
 
 // ---- Trava de senha ----
@@ -186,8 +268,11 @@ function montarCursosDeProvas() {
 // Por isso a lista só é montada no DOM depois da senha certa: antes disso,
 // abrir o "Inspecionar elemento" não mostra nenhum curso ou arquivo.
 
+// A senha é pedida TODA vez que esta página carrega. Antes ela ficava
+// destrancada enquanto a aba estivesse aberta (sessionStorage), e dava
+// pra voltar em Provas sem digitar nada — sair da área agora tranca de
+// verdade.
 const PROVAS_PASSWORD = "Instrutores@Cazzo10";
-const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
 
 const provasLock = document.getElementById("provas-lock");
 const provasContent = document.getElementById("provas-content");
@@ -220,7 +305,6 @@ if (provasFaltando.length) {
 }
 
 function destrancarProvas() {
-  sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
   provasLock?.classList.add("hidden");
   provasContent?.classList.remove("hidden");
   provasLogoutBtn?.classList.remove("hidden");
@@ -230,10 +314,8 @@ function destrancarProvas() {
   }
 }
 
-// Volta para a tela de senha. Sem isso, quem já entrou uma vez ficava
-// preso na listagem até fechar o navegador, sem jeito de rever o login.
+// Volta para a tela de senha.
 function trancarProvas() {
-  sessionStorage.removeItem(PROVAS_UNLOCK_KEY);
   provasContent?.classList.add("hidden");
   provasLogoutBtn?.classList.add("hidden");
   provasLock?.classList.remove("hidden");
@@ -255,7 +337,3 @@ provasPasswordForm?.addEventListener("submit", (e) => {
 });
 
 provasLogoutBtn?.addEventListener("click", trancarProvas);
-
-if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {
-  destrancarProvas();
-}

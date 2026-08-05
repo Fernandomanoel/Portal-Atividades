@@ -8,17 +8,19 @@
 // avaliar. Não sabe nada sobre listagem de cursos, categorias ou senha;
 // isso é responsabilidade de js/pages/provas.js.
 //
+// PROVA COMEÇADA NÃO SE ABANDONA
+// Enquanto uma prova está em andamento a página fica travada: o menu, o
+// rodapé e o botão de voltar somem, e o navegador avisa se alguém tentar
+// fechar ou recarregar. A saída só reaparece depois de enviar.
+//
 // COMO ESTE ARQUIVO É ACIONADO
 // Alguém (hoje, js/pages/provas.js) chama Quiz.abrir(caminhoDoArquivo,
-// rotuloDeEspera) quando o usuário clica em "Fazer prova". A partir daí,
-// este arquivo cuida de tudo: carregar a prova, mostrar a tela certa,
-// receber o envio e (se for descritiva) travar contra reenvio.
+// rotuloDeEspera) quando o usuário clica em "Fazer prova".
 //
 // DEPENDÊNCIAS NO provas.html
-// - As seções com id view-provas e view-quiz (a prova ocupa a página
-//   inteira; o botão "Voltar" volta para a lista de provas).
-// - Os elementos com id quiz-title, quiz-form, quiz-result e
-//   quiz-voltar-btn.
+// - As seções com id view-provas e view-quiz.
+// - Os elementos com id quiz-title, quiz-nota, quiz-form, quiz-result,
+//   quiz-aviso-travado e quiz-voltar-btn.
 // - Os <template> com id quiz-question-template, quiz-option-template,
 //   quiz-descritiva-question-template e quiz-descritiva-review-template.
 // Para usar este motor em outro site, basta copiar esses elementos, o
@@ -33,11 +35,37 @@
 // ==========================================================================
 
 const Quiz = (() => {
+  const NOTA_APROVACAO = 7;
+
   const viewProvas = document.getElementById("view-provas");
   const viewQuiz = document.getElementById("view-quiz");
   const quizTitleEl = document.getElementById("quiz-title");
+  const quizNotaEl = document.getElementById("quiz-nota");
   const quizForm = document.getElementById("quiz-form");
   const quizResultEl = document.getElementById("quiz-result");
+  const quizVoltarBtn = document.getElementById("quiz-voltar-btn");
+  const quizAvisoTravado = document.getElementById("quiz-aviso-travado");
+
+  // ---- Trava de saída ----------------------------------------------
+  // Prova aberta e não enviada = não dá pra sair. Some tudo que leva
+  // para fora (menu, rodapé, botão voltar) e o navegador pergunta antes
+  // de fechar ou recarregar a aba.
+
+  function avisarAntesDeSair(e) {
+    e.preventDefault();
+    e.returnValue = "";
+    return "";
+  }
+
+  function travarSaida() {
+    document.body.classList.add("prova-em-andamento");
+    window.addEventListener("beforeunload", avisarAntesDeSair);
+  }
+
+  function liberarSaida() {
+    document.body.classList.remove("prova-em-andamento");
+    window.removeEventListener("beforeunload", avisarAntesDeSair);
+  }
 
   // ---- Troca entre a lista de provas e a prova aberta ----
 
@@ -48,15 +76,50 @@ const Quiz = (() => {
   }
 
   function voltarParaLista() {
+    liberarSaida();
     viewQuiz?.classList.add("hidden");
     viewProvas?.classList.remove("hidden");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // "Voltar" fica sempre visível na página da prova — tanto pra desistir
-  // antes de responder quanto pra sair depois de terminar (já respondida
-  // ou, na descritiva, já revisada/pontuada pelo instrutor).
-  document.getElementById("quiz-voltar-btn")?.addEventListener("click", voltarParaLista);
+  quizVoltarBtn?.addEventListener("click", voltarParaLista);
+
+  // ---- Painel da nota ----------------------------------------------
+  // Fica no topo da prova, antes das perguntas: é a primeira coisa que o
+  // aluno vê ao terminar. Verde a partir de 7, vermelho abaixo disso.
+
+  function formatarNota(nota) {
+    return nota.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  }
+
+  // Aceita "8", "8,5" e "8.5"; devolve null se não for um número.
+  function lerNota(texto) {
+    const numero = Number(String(texto).replace(",", ".").trim());
+    return Number.isFinite(numero) && String(texto).trim() !== "" ? numero : null;
+  }
+
+  function esconderNota() {
+    quizNotaEl.classList.add("hidden");
+    quizNotaEl.innerHTML = "";
+  }
+
+  // nota = número (0 a 10) ou null, quando ainda depende do instrutor.
+  function mostrarNota(nota, detalhe) {
+    const temNota = nota !== null;
+    const aprovado = temNota && nota >= NOTA_APROVACAO;
+
+    quizNotaEl.className = `quiz-nota ${
+      !temNota ? "quiz-nota-pendente" : aprovado ? "quiz-nota-aprovado" : "quiz-nota-reprovado"
+    }`;
+    quizNotaEl.innerHTML = `
+      <span class="quiz-nota-rotulo">${temNota ? "Sua nota" : "Prova enviada"}</span>
+      <strong class="quiz-nota-valor">${temNota ? formatarNota(nota) : "—"}</strong>
+      <span class="quiz-nota-detalhe"></span>
+      <a class="quiz-nota-sair" href="${Rotas.url("inicio")}">Sair e voltar ao início</a>
+    `;
+    quizNotaEl.querySelector(".quiz-nota-detalhe").textContent = detalhe;
+    quizNotaEl.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
 
   // ---- Carregamento do arquivo .prova.js ----
   // O arquivo, ao ser executado pelo navegador, chama
@@ -84,8 +147,9 @@ const Quiz = (() => {
   }
 
   // ---- Tipo "multipla_escolha" (ou tipo ausente/qualquer outro valor) ----
-  // Corrige na hora e mostra "X de Y corretas". Não há persistência:
-  // reabrir a prova gera um formulário novo, em branco.
+  // Corrige na hora e mostra a nota. As perguntas somem depois de
+  // corrigir: sem gabarito na tela, não há como comparar respostas nem
+  // refazer a prova consultando o resultado.
 
   function renderMultiplaEscolha(data) {
     const questionTemplate = document.getElementById("quiz-question-template");
@@ -112,7 +176,7 @@ const Quiz = (() => {
     const submitBtn = document.createElement("button");
     submitBtn.type = "submit";
     submitBtn.className = "quiz-submit-btn";
-    submitBtn.textContent = "Corrigir";
+    submitBtn.textContent = "Finalizar prova";
     quizForm.appendChild(submitBtn);
 
     quizForm.onsubmit = (e) => {
@@ -125,9 +189,15 @@ const Quiz = (() => {
           acertos += 1;
         }
       });
-      quizResultEl.textContent = `Você acertou ${acertos} de ${perguntas.length} perguntas.`;
-      quizResultEl.classList.remove("hidden");
-      quizResultEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+
+      const nota = perguntas.length ? (acertos / perguntas.length) * 10 : 0;
+      quizForm.innerHTML = "";
+      quizForm.onsubmit = null;
+      liberarSaida();
+      mostrarNota(
+        nota,
+        `${acertos} de ${perguntas.length} ${perguntas.length === 1 ? "questão" : "questões"}`
+      );
     };
   }
 
@@ -164,7 +234,10 @@ const Quiz = (() => {
   function renderDescritivaRevisao(perguntas, submissao, path) {
     quizForm.innerHTML = "";
     quizForm.onsubmit = null;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    liberarSaida();
+
+    // Enquanto o instrutor não digitar a nota, o painel fica neutro.
+    mostrarNota(lerNota(submissao.nota), "Corrigida pelo instrutor");
 
     const aviso = document.createElement("p");
     aviso.className = "quiz-descritiva-enviado";
@@ -196,6 +269,8 @@ const Quiz = (() => {
     notaInput.addEventListener("change", () => {
       submissao.nota = notaInput.value;
       salvarEnvio(path, submissao);
+      // O painel lá em cima acompanha o que o instrutor digitou aqui.
+      mostrarNota(lerNota(submissao.nota), "Corrigida pelo instrutor");
     });
 
     notaBloco.appendChild(notaLabel);
@@ -232,7 +307,7 @@ const Quiz = (() => {
     const submitBtn = document.createElement("button");
     submitBtn.type = "submit";
     submitBtn.className = "quiz-submit-btn";
-    submitBtn.textContent = "Enviar respostas";
+    submitBtn.textContent = "Finalizar e enviar";
     quizForm.appendChild(submitBtn);
 
     quizForm.onsubmit = (e) => {
@@ -253,6 +328,16 @@ const Quiz = (() => {
     quizForm.innerHTML = "";
     quizResultEl.classList.add("hidden");
     quizResultEl.textContent = "";
+    esconderNota();
+
+    // Prova descritiva já enviada abre direto na revisão — nesse caso não
+    // há nada em andamento e a saída continua liberada.
+    const jaEnviada = data.tipo === "descritiva" && carregarEnvio(path);
+    if (jaEnviada) {
+      liberarSaida();
+    } else {
+      travarSaida();
+    }
 
     if (data.tipo === "descritiva") {
       renderDescritiva(data, path);
@@ -267,10 +352,12 @@ const Quiz = (() => {
     quizTitleEl.textContent = `Carregando "${rotuloDeEspera}"...`;
     quizForm.innerHTML = "";
     quizResultEl.classList.add("hidden");
+    esconderNota();
 
     carregar(path)
       .then((data) => render(data, path))
       .catch((err) => {
+        liberarSaida();
         quizTitleEl.textContent = rotuloDeEspera;
         quizForm.innerHTML = `<p class="quiz-load-error">${err.message}</p>`;
       });

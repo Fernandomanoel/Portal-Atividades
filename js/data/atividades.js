@@ -21,7 +21,8 @@
 //   slug      → identificador na URL (sem espaço/acento). Ex: "windows-11"
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
-//   grupo     → "cursos" (carrossel de cima) ou "extras" (cards coloridos)
+//   grupo     → em qual seção da home o curso entra: "cursos"
+//               (Atividades disponíveis) ou "extras" (Mais Atividades)
 //   sigla     → 1-2 letras usadas na capa gerada do curso
 //   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
@@ -31,7 +32,7 @@
 //
 // ---- CAMPOS DE UM MATERIAL ----
 //   titulo, descricao
-//   tipo    → "pdf" | "planilha" | "link"
+//   tipo    → "pdf" | "doc" | "planilha" | "slides" | "link"
 //   arquivo → caminho do arquivo (para "pdf" e "planilha")
 //   url     → endereço externo (para "link")
 // ==========================================================================
@@ -317,6 +318,13 @@ const ATIVIDADES = [
         arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Criando um Documento com Mala Direta no Word.pdf",
       },
       {
+        titulo: "Normas ABNT",
+        descricao:
+          "Atividade prática de formatação de trabalho acadêmico no Word seguindo as normas ABNT.",
+        tipo: "pdf",
+        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Normas ABNT.pdf",
+      },
+      {
         titulo: "Atividade interativa (Genially)",
         descricao: "Atividade extra interativa, aberta direto no navegador.",
         tipo: "link",
@@ -514,6 +522,30 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Html e CSS/CSS - USANDO O CSS EM SITE.pdf",
       },
+      {
+        titulo: "Slides — HTML, Parte 1",
+        descricao: "Apresentação da aula: estrutura de uma página e as primeiras tags.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Html e CSS/HTML - Parte 1.pptx",
+      },
+      {
+        titulo: "Slides — HTML, Parte 2",
+        descricao: "Continuação da aula de HTML: listas, links, imagens e tabelas.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Html e CSS/HTML - Parte 2.pptx",
+      },
+      {
+        titulo: "Slides — CSS, Parte 1",
+        descricao: "Apresentação da aula: como o CSS entra na página, seletores e cores.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Html e CSS/CSS - Parte 1.pptx",
+      },
+      {
+        titulo: "Slides — CSS, Parte 2",
+        descricao: "Continuação da aula de CSS: espaçamento, bordas e organização do layout.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Html e CSS/CSS - Parte 2.pptx",
+      },
     ],
   },
 
@@ -618,6 +650,18 @@ const ATIVIDADES = [
           "O aluno cria um jogo em JavaScript que gera um número aleatório entre 1 e 50 e permite até 5 tentativas para adivinhar.",
         tipo: "pdf",
         arquivo: "atividades/pdfs/Javascript/Javascript - Jogo Adivinhaçao.pdf",
+      },
+      {
+        titulo: "Slides — Javascript, Parte 1",
+        descricao: "Apresentação da aula: o que é JavaScript, variáveis e primeiros comandos.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Javascript/Javascript - Parte 1.pptx",
+      },
+      {
+        titulo: "Slides — Javascript, Parte 2",
+        descricao: "Continuação da aula: condições, repetição e interação com o usuário.",
+        tipo: "slides",
+        arquivo: "atividades/slides/Javascript/Javascript - Parte 2.pptx",
       },
     ],
   },

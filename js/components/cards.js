@@ -13,6 +13,7 @@ const ICONES_MATERIAL = {
   pdf: "📄",
   doc: "📝",
   planilha: "📊",
+  slides: "📽️",
   link: "🔗",
 };
 
@@ -20,6 +21,7 @@ const ROTULOS_MATERIAL = {
   pdf: "PDF",
   doc: "Word",
   planilha: "Planilha",
+  slides: "Slides",
   link: "Link",
 };
 

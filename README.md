@@ -45,8 +45,9 @@ Tudo que é conteúdo mora em arquivos de dados, não no HTML: as atividades em 
 │   └── exemplo-standalone.prova.html   # modelo de prova em página HTML autossuficiente
 ├── images/cursos/                      # ícones/capas dos cursos da área de Provas
 ├── img/                                # capas dos cursos (ver README da pasta)
-├── atividades/                         # SÓ ARQUIVOS (PDFs, planilhas) — ver README de lá
+├── atividades/                         # SÓ ARQUIVOS (PDFs, slides, planilhas) — ver README de lá
 │   ├── pdfs/<curso>/
+│   ├── slides/<curso>/
 │   └── base dados/
 └── provas/<curso>/                     # arquivos reais das provas, organizados por curso
 ```
@@ -94,7 +95,7 @@ Tudo em **`js/data/atividades.js`** (o arquivo tem as instruções no topo).
 {
   titulo: "Nome que aparece no site",
   descricao: "Uma linha explicando a atividade.",
-  tipo: "pdf",                                    // "pdf" | "planilha" | "link"
+  tipo: "pdf",                                    // "pdf" | "doc" | "planilha" | "slides" | "link"
   arquivo: "atividades/pdfs/Word 2021/arquivo.pdf",
 }
 ```

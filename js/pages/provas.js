@@ -118,10 +118,6 @@ function cardDoCurso(curso, arquivos) {
   const lista = card.querySelector(".file-list");
   arquivos.forEach((arquivo) => lista.appendChild(itemDeArquivo(arquivo)));
 
-  // Curso com poucos arquivos já abre aberto: recolher 2 itens não
-  // economiza espaço nenhum e só dá um clique a mais.
-  if (arquivos.length <= 3) card.querySelector(".course-arquivos").open = true;
-
   return card;
 }
 
@@ -272,8 +268,11 @@ function montarCursosDeProvas() {
 // Por isso a lista só é montada no DOM depois da senha certa: antes disso,
 // abrir o "Inspecionar elemento" não mostra nenhum curso ou arquivo.
 
+// A senha é pedida TODA vez que esta página carrega. Antes ela ficava
+// destrancada enquanto a aba estivesse aberta (sessionStorage), e dava
+// pra voltar em Provas sem digitar nada — sair da área agora tranca de
+// verdade.
 const PROVAS_PASSWORD = "Instrutores@Cazzo10";
-const PROVAS_UNLOCK_KEY = "portal-provas-unlocked";
 
 const provasLock = document.getElementById("provas-lock");
 const provasContent = document.getElementById("provas-content");
@@ -306,7 +305,6 @@ if (provasFaltando.length) {
 }
 
 function destrancarProvas() {
-  sessionStorage.setItem(PROVAS_UNLOCK_KEY, "1");
   provasLock?.classList.add("hidden");
   provasContent?.classList.remove("hidden");
   provasLogoutBtn?.classList.remove("hidden");
@@ -316,10 +314,8 @@ function destrancarProvas() {
   }
 }
 
-// Volta para a tela de senha. Sem isso, quem já entrou uma vez ficava
-// preso na listagem até fechar o navegador, sem jeito de rever o login.
+// Volta para a tela de senha.
 function trancarProvas() {
-  sessionStorage.removeItem(PROVAS_UNLOCK_KEY);
   provasContent?.classList.add("hidden");
   provasLogoutBtn?.classList.add("hidden");
   provasLock?.classList.remove("hidden");
@@ -341,7 +337,3 @@ provasPasswordForm?.addEventListener("submit", (e) => {
 });
 
 provasLogoutBtn?.addEventListener("click", trancarProvas);
-
-if (sessionStorage.getItem(PROVAS_UNLOCK_KEY) === "1") {
-  destrancarProvas();
-}

@@ -19,6 +19,8 @@
     <!-- ================= LISTA DE PROVAS ================= -->
     <section id="view-provas">
 
+      <app-voltar para="inicio" texto="Voltar para o início"></app-voltar>
+
       <app-banner titulo="Provas" texto="Área dos instrutores — avaliações organizadas por curso.">
         <button type="button" id="provas-logout" class="provas-logout hidden" title="Trancar a área de provas">
           <span class="provas-logout-icone" aria-hidden="true">🔒</span>
@@ -59,6 +61,12 @@
 
       <div class="quiz-page">
         <button type="button" id="quiz-voltar-btn" class="quiz-voltar-btn">← Voltar para as provas</button>
+        <p id="quiz-aviso-travado" class="quiz-aviso-travado">
+          🔒 Prova em andamento — a saída volta a aparecer depois que você finalizar.
+        </p>
+
+        <!-- A nota fica no topo: é a primeira coisa que aparece ao terminar -->
+        <div id="quiz-nota" class="quiz-nota hidden"></div>
 
         <form id="quiz-form"></form>
         <div id="quiz-result" class="quiz-result hidden"></div>

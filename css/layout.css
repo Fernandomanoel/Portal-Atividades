@@ -96,6 +96,38 @@
   padding: 20px;
 }
 
+/* ================= BOTÃO VOLTAR ================= */
+/* Fica acima do banner nas páginas internas, sempre visível — antes o
+   único caminho de volta era o menu do topo. */
+
+app-voltar {
+  display: block;
+  margin-bottom: 18px;
+}
+
+.voltar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  border-radius: 30px;
+  background: var(--card);
+  border: 1px solid var(--borda);
+  color: var(--apagado);
+  font-size: 13.5px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.voltar-btn:hover {
+  background: var(--azul);
+  border-color: var(--azul);
+  color: #fff;
+  transform: translateX(-3px);
+}
+
 /* ================= BANNER ================= */
 
 .banner {

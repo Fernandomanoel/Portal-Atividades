@@ -100,6 +100,30 @@ class AppBanner extends HTMLElement {
   }
 }
 
+// ---- <app-voltar> ----------------------------------------------------
+// Botão "Voltar" das páginas internas. Se o usuário chegou navegando
+// pelo site, volta uma página no histórico (leva de volta exatamente de
+// onde veio); se abriu o link direto, vai para o início.
+//
+//   <app-voltar para="inicio" texto="Voltar para o início"></app-voltar>
+
+class AppVoltar extends HTMLElement {
+  connectedCallback() {
+    const destino = Rotas.url(this.getAttribute("para") || "inicio");
+    const texto = this.getAttribute("texto") || "Voltar";
+
+    this.innerHTML = `<a class="voltar-btn" href="${destino}">← ${textoSeguro(texto)}</a>`;
+
+    this.querySelector("a").addEventListener("click", (e) => {
+      // history.length > 1 = veio de outra página nesta mesma aba.
+      if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+        e.preventDefault();
+        window.history.back();
+      }
+    });
+  }
+}
+
 // ---- <app-footer> ----------------------------------------------------
 
 class AppFooter extends HTMLElement {
@@ -130,4 +154,5 @@ class AppFooter extends HTMLElement {
 
 customElements.define("app-navbar", AppNavbar);
 customElements.define("app-banner", AppBanner);
+customElements.define("app-voltar", AppVoltar);
 customElements.define("app-footer", AppFooter);

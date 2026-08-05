@@ -112,7 +112,7 @@ Tudo em **`js/data/atividades.js`** (o arquivo tem as instruções no topo).
 
 Guia completo e autossuficiente em **`COMO-CRIAR-PROVAS.md`** — pensado para ser copiado inteiro numa conversa com qualquer IA e gerar uma prova nova sem precisar de mais contexto. Resumo:
 
-- **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora, mostra "X de Y corretas". Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
+- **Múltipla escolha** (`scripts/exemplo.prova.js`) — corrige na hora e mostra a nota de 0 a 10 em destaque no topo (verde a partir de 7, vermelha abaixo), sem mostrar o gabarito. Correção 100% no navegador do aluno (sem servidor), então é autoavaliação, não à prova de cola.
 - **Descritiva** (`scripts/exemplo-descritiva.prova.js`) — perguntas abertas. O aluno escreve, envia uma única vez (sem opção de refazer) e a tela de revisão mostra as respostas com um campo "Nota" para o instrutor preencher ali mesmo. Sem indicação automática de certo/errado. A trava contra reenvio é por navegador (`localStorage`), não por aluno — o site não tem login de aluno.
 - **Página HTML autossuficiente** (`scripts/exemplo-standalone.prova.html`) — uma página comum, sem depender de nada do site; o card só faz um link que abre ela numa aba nova. É o formato mais fácil de pedir pra qualquer IA gerar do zero, mas fica por conta da própria página cuidar de correção, estilo e link de volta.
 
@@ -127,6 +127,8 @@ Depois de copiar o modelo pra `provas/<curso>/` e editar, rode `python3 scripts/
 
 ## Senha da área de provas
 
-A área fica bloqueada por uma senha (definida em `js/pages/provas.js`, constante `PROVAS_PASSWORD`) até ser digitada corretamente; depois fica liberada enquanto a aba do navegador estiver aberta (`sessionStorage`), e o botão "Sair" tranca de novo. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte).
+A área fica bloqueada por uma senha (definida em `js/pages/provas.js`, constante `PROVAS_PASSWORD`). A senha é pedida **toda vez que a página carrega** — sair da área, recarregar ou voltar depois de navegar para outra página exige digitar de novo; o botão "Sair" tranca na hora. A lista de cursos/arquivos só é criada no HTML depois do login (antes disso não aparece nem no código-fonte).
+
+Durante uma prova em andamento a página fica travada: menu, rodapé e botão de voltar somem, e o navegador avisa se alguém tentar fechar ou recarregar. A saída só reaparece depois de finalizar.
 
 **Atenção**: como o site é 100% estático, essa senha é só uma trava de interface — não é segurança de verdade. O arquivo `js/data/provas-data.js` com a lista completa ainda é baixado pelo navegador de qualquer forma, e os arquivos dentro de `provas/` continuam acessíveis a quem tiver acesso ao repositório, independente da senha.

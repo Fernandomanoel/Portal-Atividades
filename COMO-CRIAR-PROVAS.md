@@ -47,7 +47,8 @@ Regras:
 - `perguntas` é uma lista de objetos `{ pergunta, opcoes, correta }`.
 - `opcoes` é uma lista de textos (pode ter qualquer quantidade de alternativas, não precisa ser sempre 4).
 - `correta` é o **índice** (começando em 0) da alternativa certa dentro de `opcoes`. Na lista acima, `correta: 2` aponta para `"Brasília"` (posição 0=Rio, 1=São Paulo, 2=Brasília, 3=Salvador).
-- Ao enviar, o aluno vê na hora "Você acertou X de Y perguntas." Não existe tela de revisão nem nota de instrutor nesse formato — é autocorreção simples.
+- Ao enviar, as perguntas somem e no lugar aparece a nota de 0 a 10 em destaque (verde a partir de 7, vermelha abaixo), com "X de Y questões" embaixo e um botão para sair e voltar ao início. O gabarito não é mostrado. Não existe tela de revisão nem nota de instrutor nesse formato — é autocorreção simples.
+- Enquanto a prova não é enviada, a página trava: o menu, o rodapé e o botão de voltar somem, e o navegador avisa se alguém tentar fechar ou recarregar. Isso vale para os dois formatos abaixo também.
 - **Atenção**: a correção roda no navegador do aluno. Qualquer um que souber abrir o código-fonte da página vê o gabarito (o campo `correta`). Não é à prova de cola — use para exercícios de fixação, não para provas de peso.
 
 Modelo pronto para copiar: `scripts/exemplo.prova.js`.

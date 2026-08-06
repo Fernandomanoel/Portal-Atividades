@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Meu Primeiro Relatório - Word e Salvar em PDF</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #123a6b 0%, #2b579a 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 92%;
+            height: 90%;
+            max-width: 1200px;
+            max-height: 780px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 45px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --azul: #2b579a;
+            --azul-claro: #e8eefc;
+            --vermelho: #d9382b;
+            --vermelho-claro: #fdecec;
+            --verde: #1fa855;
+            --verde-claro: #e3f9ec;
+            --amarelo: #ffc400;
+            --cinza: #555;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--azul) 0%, #3a6fc4 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.1em;
+            font-weight: 800;
+        }
+
+        .slide-header p {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        .emoji-large {
+            font-size: 2.6em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-size: 1.15em;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--azul);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 22px;
+            border-radius: 14px;
+            border-left: 8px solid;
+            line-height: 1.7;
+        }
+
+        .box-azul {
+            background: var(--azul-claro);
+            border-left-color: var(--azul);
+        }
+
+        .box-amarelo {
+            background: #fff8e1;
+            border-left-color: var(--amarelo);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .content-box strong {
+            color: var(--azul);
+        }
+
+        .temas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px 0;
+        }
+
+        .tema-tag {
+            background: var(--azul-claro);
+            color: var(--azul);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            border-left: 5px solid var(--azul);
+        }
+
+        .passo-numero {
+            min-width: 44px;
+            height: 44px;
+            background: var(--azul);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        .exemplo-relatorio {
+            background: #fdfdfd;
+            border: 2px dashed var(--azul);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .exemplo-relatorio .titulo-exemplo {
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.3em;
+            color: var(--azul);
+            margin-bottom: 12px;
+        }
+
+        .exemplo-relatorio p {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        /* Checklist clicável */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #f7f9fc;
+            border: 3px solid #d8e0ee;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            border-color: var(--azul);
+        }
+
+        .check-item .icone-programa {
+            font-size: 2.2em;
+            width: 55px;
+            text-align: center;
+        }
+
+        .check-item .texto-programa {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .check-item .selo {
+            font-size: 1.6em;
+            width: 40px;
+            text-align: center;
+        }
+
+        .check-item.feito {
+            background: var(--verde-claro);
+            border-color: var(--verde);
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
+        .contador-missao {
+            text-align: center;
+            font-weight: 700;
+            color: var(--azul);
+            font-size: 1.15em;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        button {
+            background: var(--amarelo);
+            color: #333;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #ffd94d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 196, 0, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 30px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--amarelo);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.5em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 8px 0;
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--azul) 0%, #3a6fc4 100%);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 25px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 2.8em;
+        }
+
+        .slide-capa p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 3.5em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            max-width: 560px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1.4em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 6px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--azul-claro) 0%, white 100%);
+            border: 3px solid var(--azul);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--azul);
+            font-size: 2em;
+            margin-bottom: 18px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        .aviso-adulto {
+            background: var(--vermelho-claro);
+            border-left: 6px solid var(--vermelho);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #7a1c1f;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Voltar</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">8</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">📄✍️</div>
+                        <h1>Missão: Meu Primeiro Relatório!</h1>
+                        <p>Escrevendo no Word e salvando em PDF</p>
+                        <div class="capa-box">
+                            <h2>Hoje você vai aprender a:</h2>
+                            <ul>
+                                <li>1️⃣ Escrever um mini relatório no Word</li>
+                                <li>2️⃣ Deixar o título bonito e organizado</li>
+                                <li>3️⃣ Salvar o arquivo em PDF</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo e escolha do tema
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>O que é um relatório?</h1>
+                            <p>Um texto curto contando sobre um assunto</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600;">
+                            Um <strong>mini relatório</strong> é um texto curto (2 a 3 parágrafos) que explica um assunto para quem for ler.
+                        </div>
+                        <h3 style="color: var(--azul); font-weight: 700;">Escolha um tema que você gosta:</h3>
+                        <div class="temas-list">
+                            <span class="tema-tag">🐶 Meu animal favorito</span>
+                            <span class="tema-tag">⚽ Meu esporte favorito</span>
+                            <span class="tema-tag">🌍 Um lugar que quero visitar</span>
+                            <span class="tema-tag">🎮 Meu jogo favorito</span>
+                            <span class="tema-tag">📚 Um livro que eu li</span>
+                            <span class="tema-tag">🦕 Um animal pré-histórico</span>
+                        </div>
+                        <div class="aviso-adulto">
+                            👨‍👩‍👧 Peça para um adulto ficar por perto enquanto você faz essa atividade!
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Abrir o Word
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📝</div>
+                        <div>
+                            <h1>Passo a Passo: Abrindo o Word</h1>
+                            <p>Preparando a folha em branco</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique no botão <strong>Iniciar</strong> e procure por <strong>Word</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>Documento em branco</strong> para começar do zero.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Pronto! Agora é só começar a escrever na folha branca.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Escrever o relatório com exemplo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✏️</div>
+                        <div>
+                            <h1>Escrevendo o Relatório</h1>
+                            <p>Título + pelo menos 2 parágrafos</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Escreva um <strong>título</strong> na primeira linha (o nome do seu relatório).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Selecione o título, clique em <strong>N</strong> (negrito) e no botão de <strong>centralizar</strong> o texto.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Pule uma linha e escreva pelo menos <strong>2 parágrafos</strong> contando sobre o seu tema.</div>
+                            </div>
+                        </div>
+                        <div class="exemplo-relatorio">
+                            <div class="titulo-exemplo">Meu Animal Favorito: O Golfinho</div>
+                            <p>Eu escolhi o golfinho porque ele é muito inteligente e adora brincar no mar...</p>
+                            <p>Os golfinhos vivem em grupos chamados cardumes e se comunicam usando sons...</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Salvar como PDF
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">💾</div>
+                        <div>
+                            <h1>Passo a Passo: Salvar em PDF</h1>
+                            <p>Transformando o Word em um arquivo PDF</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            <p><strong>PDF</strong> é um tipo de arquivo que qualquer computador consegue abrir, sem mudar o jeito que o texto aparece. É ótimo para enviar trabalhos!</p>
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique em <strong>Arquivo</strong>, no canto superior esquerdo.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>Salvar Como</strong> e escolha o lugar (ex: área de trabalho).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Onde está escrito <strong>Tipo</strong> (ou "Salvar como tipo"), troque para <strong>PDF</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Escreva um nome para o arquivo e clique em <strong>Salvar</strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Conferir o PDF
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🔍</div>
+                        <div>
+                            <h1>Conferindo o Arquivo</h1>
+                            <p>Um probleminha comum e como resolver</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-verde">
+                            <h3>✅ Está tudo certo se...</h3>
+                            <p>O arquivo aparece com um <strong>ícone vermelho</strong> escrito PDF, e ao abrir ele mostra o mesmo texto que você escreveu no Word.</p>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>⚠️ Se não encontrar o arquivo</h3>
+                            <p>Confira se você escolheu o lugar certo (ex: área de trabalho) na hora de salvar. Você pode usar o <strong>Explorador de Arquivos</strong> para procurar.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Checklist prática
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✅</div>
+                        <div>
+                            <h1>Hora de Praticar!</h1>
+                            <p>Faça cada tarefa no computador e marque aqui</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="checklist" id="checklist-relatorio">
+                            <div class="check-item" data-item="titulo">
+                                <div class="icone-programa">🏷️</div>
+                                <div class="texto-programa">Escrevi um título em negrito e centralizado</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="paragrafos">
+                                <div class="icone-programa">📝</div>
+                                <div class="texto-programa">Escrevi pelo menos 2 parágrafos</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="revisao">
+                                <div class="icone-programa">🔎</div>
+                                <div class="texto-programa">Reli o texto pra ver se está tudo certo</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="pdf">
+                                <div class="icone-programa">💾</div>
+                                <div class="texto-programa">Salvei o arquivo em PDF</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                        </div>
+                        <div class="contador-missao" id="contadorRelatorio">0 de 4 concluídas</div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Conclusão
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 16px;">🏆</div>
+                            <h2>Parabéns, Missão Cumprida!</h2>
+                            <p>Você escreveu o seu <span class="destaque">primeiro relatório</span> e aprendeu a <span class="destaque">salvar em PDF</span>.</p>
+                            <p>Agora você pode enviar esse arquivo para qualquer pessoa ler. Mostre para um adulto o que você criou! 🎉</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            ativarChecklists();
+            updateControls();
+        }
+
+        function ativarChecklists() {
+            document.querySelectorAll('.check-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('feito');
+                    const selo = item.querySelector('.selo');
+                    selo.textContent = item.classList.contains('feito') ? '✅' : '⬜';
+                    atualizarContador(item.closest('.checklist'));
+                });
+            });
+        }
+
+        function atualizarContador(checklist) {
+            if (!checklist) return;
+            const total = checklist.querySelectorAll('.check-item').length;
+            const feitos = checklist.querySelectorAll('.check-item.feito').length;
+            const contador = document.getElementById('contadorRelatorio');
+            if (contador) {
+                contador.textContent = `${feitos} de ${total} concluídas`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

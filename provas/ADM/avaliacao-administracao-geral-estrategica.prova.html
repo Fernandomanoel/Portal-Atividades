@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação de Administração - 10 Questões</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #2563eb;
+            height: 100%;
+            width: 10%;
+            transition: width 0.3s ease;
+        }
+
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-left: 6px solid #2563eb;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .question-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.25em;
+        }
+
+        .question-card p {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 14px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-item:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .option-item input[type="radio"] {
+            accent-color: #2563eb;
+            width: 18px;
+            height: 18px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .summary-box {
+            background: #eff6ff;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .summary-box h2 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+        }
+
+        .summary-box p {
+            font-size: 1.1em;
+            color: #334155;
+            margin-bottom: 25px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 Avaliação de Administração Geral e Estratégica</h1>
+            <p>Avaliação técnica, profissionalizante e interativa (10 Questões)</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <form id="adminExamForm">
+            <!-- Questão 1 -->
+            <div class="chapter active" id="q1">
+                <div class="question-card">
+                    <h3>Questão 1 de 10: Teoria Geral da Administração</h3>
+                    <p>Qual é considerada a principal contribuição da Teoria Clássica da Administração, desenvolvida por Henri Fayol?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p1" value="A"> A) Ênfase exclusiva nas tarefas operacionais e nos métodos de linha de montagem.</label>
+                        <label class="option-item"><input type="radio" name="p1" value="B"> B) Foco na estrutura organizacional, nas funções administrativas e nos princípios gerais de gestão.</label>
+                        <label class="option-item"><input type="radio" name="p1" value="C"> C) Priorização absoluta dos aspectos informais e psicológicos dos grupos de trabalho.</label>
+                        <label class="option-item"><input type="radio" name="p1" value="D"> D) Estudo matemático rigoroso da teoria das filas e simulação estocástica.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 2 -->
+            <div class="chapter" id="q2">
+                <div class="question-card">
+                    <h3>Questão 2 de 10: Planejamento Estratégico</h3>
+                    <p>No contexto de análise ambiental corporativa, o método FOFA (ou SWOT) divide os fatores em internos e externos. Qual dos seguintes elementos representa um <strong>fator interno</strong> da organização?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p2" value="A"> A) Oportunidades de expansão para novos mercados internacionais.</label>
+                        <label class="option-item"><input type="radio" name="p2" value="B"> B) Ameaça de novos concorrentes entrantes no setor.</label>
+                        <label class="option-item"><input type="radio" name="p2" value="C"> C) Fraqueza em relação à obsolescência tecnológica do parque fabril.</label>
+                        <label class="option-item"><input type="radio" name="p2" value="D"> D) Alterações na legislação tributária governamental.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 3 -->
+            <div class="chapter" id="q3">
+                <div class="question-card">
+                    <h3>Questão 3 de 10: Gestão de Pessoas e Liderança</h3>
+                    <p>Segundo a Teoria Contingencial da Liderança e os estilos gerenciais, um líder que adota o estilo democrático (ou participativo) caracteriza-se por:</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p3" value="A"> A) Centralizar todas as decisões e impor ordens rígidas sem consulta prévia à equipe.</label>
+                        <label class="option-item"><input type="radio" name="p3" value="B"> B) Conduzir a equipe com total liberdade, abstendo-se de orientar ou participar das tarefas.</label>
+                        <label class="option-item"><input type="radio" name="p3" value="C"> C) Estimular a participação dos colaboradores no processo decisório e compartilhar responsabilidades.</label>
+                        <label class="option-item"><input type="radio" name="p3" value="D"> D) Focar exclusivamente no cumprimento de metas financeiras de curto prazo.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 4 -->
+            <div class="chapter" id="q4">
+                <div class="question-card">
+                    <h3>Questão 4 de 10: Processo Administrativo</h3>
+                    <p>Quas são as quatro funções essenciais que compõem o ciclo básico do processo administrativo clássico?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p4" value="A"> A) Produção, Finanças, Marketing e Recursos Humanos.</label>
+                        <label class="option-item"><input type="radio" name="p4" value="B"> B) Planejar, Organizar, Dirigir e Controlar.</label>
+                        <label class="option-item"><input type="radio" name="p4" value="C"> C) Comprar, Produzir, Vender e Contabilizar.</label>
+                        <label class="option-item"><input type="radio" name="p4" value="D"> D) Estruturar, Treinar, Motivar e Avaliar.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 5 -->
+            <div class="chapter" id="q5">
+                <div class="question-card">
+                    <h3>Questão 5 de 10: Qualidade e Melhoria Contínua</h3>
+                    <p>O ciclo PDCA é uma ferramenta fundamental de gestão para a melhoria contínua dos processos. O que significam as siglas que formam o acrônimo?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p5" value="A"> A) Plan (Planejar), Do (Fazer/Executar), Check (Verificar), Act (Agir/Corrigir).</label>
+                        <label class="option-item"><input type="radio" name="p5" value="B"> B) Predict (Prever), Design (Desenhar), Create (Criar), Analyze (Analisar).</label>
+                        <label class="option-item"><input type="radio" name="p5" value="C"> C) Process (Processar), Direct (Dirigir), Control (Controlar), Audit (Auditar).</label>
+                        <label class="option-item"><input type="radio" name="p5" value="D"> D) People (Pessoas), Data (Dados), Culture (Cultura), Action (Ação).</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 6 -->
+            <div class="chapter" id="q6">
+                <div class="question-card">
+                    <h3>Questão 6 de 10: Estrutura Organizacional</h3>
+                    <p>Em uma estrutura organizacional do tipo <strong>funcional</strong>, qual é a principal característica no relacionamento de autoridade?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p6" value="A"> A) Cada subordinado reporta-se a apenas um único chefe direto (unidade de comando).</label>
+                        <label class="option-item"><input type="radio" name="p6" value="B"> B) Os subordinados recebem orientações de múltiplos especialistas funcionais de acordo com a sua especialidade.</label>
+                        <label class="option-item"><input type="radio" name="p6" value="C"> C) A autoridade é descentralizada por projetos temporários com dupla subordinação.</label>
+                        <label class="option-item"><input type="radio" name="p6" value="D"> D) A organização funciona sem hierarquia formal, baseando-se em redes autônomas.</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Questão 7 -->
+            <div class="question-card chapter" id="q7">
+                <h3>Questão 7 de 10: Finanças Corporativas e Indicadores</h3>
+                <p>O indicador financeiro conhecido como <strong>ROI</strong> (Return on Investment) mede:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) O volume total de vendas brutas realizadas no período fiscal.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) O percentual de lucro líquido em relação aos ativos totais imobilizados.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) A rentabilidade gerada sobre os recursos investidos em um projeto ou negócio.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) A capacidade de liquidez imediata para quitar dívidas de curto prazo.</label>
+                </div>
+            </div>
+
+            <!-- Questão 8 -->
+            <div class="question-card chapter" id="q8">
+                <h3>Questão 8 de 10: Gestão da Produção e Operações</h3>
+                <p>O sistema de produção puxada (pull), amplamente associado ao Sistema Toyota de Produção, baseia-se no conceito de:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Produzir em grandes lotes antecipados para estoques reguladores.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Produzir apenas o que é necessário, na quantidade necessária e no momento necessário, puxado pela demanda real.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Maximizar a utilização das máquinas independentemente de haver pedidos dos clientes.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Terceirizar integralmente a cadeia logística e de suprimentos.</label>
+                </div>
+            </div>
+
+            <!-- Questão 9 -->
+            <div class="question-card chapter" id="q9">
+                <h3>Questão 9 de 10: Ética e Responsabilidade Social</h3>
+                <p>O conceito moderno de <strong>ESG</strong> (Environmental, Social, and Governance) refere-se a pilares fundamentais para avaliar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9" value="A"> A) A conformidade estrita com leis trabalhistas e tributárias básicas.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="B"> B) O desempenho financeiro e a valorização das ações na bolsa de valores.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="C"> C) Práticas ambientais, responsabilidade social e governança corporativa sustentável de uma empresa.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="D"> D) Estratégias agressivas de marketing digital e expansão internacional.</label>
+                </div>
+            </div>
+
+            <!-- Questão 10 -->
+            <div class="question-card chapter" id="q10">
+                <h3>Questão 10 de 10: Inovação e Empreendedorismo Corporativo</h3>
+                <p>O que caracteriza o conceito de <strong>Intraempreendedorismo</strong> dentro de uma organização estabelecida?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10" value="A"> A) A fundação de uma nova startup totalmente independente da empresa mãe.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="B"> B) A atitude empreendedora e inovadora demonstrada por colaboradores dentro de uma empresa já existente.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="C"> C) A aquisição de empresas concorrentes de pequeno porte pelo departamento jurídico.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="D"> D) A terceirização de projetos de pesquisa e desenvolvimento para universidades.</label>
+                </div>
+            </div>
+
+            <!-- Tela de Conclusão / Envio -->
+            <div class="chapter" id="q11">
+                <div class="summary-box">
+                    <h2>🎉 Avaliação Concluída!</h2>
+                    <p>Você respondeu todas as 10 questões da Avaliação de Administração.</p>
+                    <p>Clique no botão abaixo para registrar suas respostas no portal acadêmico.</p>
+                    <button type="button" onclick="submitExam()">Finalizar e Enviar Respostas</button>
+                </div>
+            </div>
+
+            <div class="nav-buttons" id="navButtonsContainer">
+                <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+                <span id="counterDisplay" style="font-weight: 600; color: #1e3a8a;">Questão 1 de 10</span>
+                <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+            </div>
+        </form>
+
+        <footer>
+            <p><strong>Portal Educacional Interativo</strong> | Administração Geral e Estratégica</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 11; // 10 questões + 1 tela final
+
+        function updateView() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const el = document.getElementById('q' + i);
+                if (el) {
+                    if (i === currentStep) {
+                        el.classList.add('active');
+                    } else {
+                        el.classList.remove('active');
+                    }
+                }
+            }
+
+            // Atualizar botões
+            document.getElementById('prevBtn').disabled = (currentStep === 1);
+            
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                document.getElementById('navButtonsContainer').style.display = 'none';
+            } else {
+                nextBtn.style.display = 'block';
+                document.getElementById('navButtonsContainer').style.display = 'flex';
+                if (currentStep === totalSteps - 1) {
+                    nextBtn.textContent = 'Ver Resumo →';
+                } else {
+                    nextBtn.textContent = 'Próximo →';
+                }
+            }
+
+            if (currentStep <= 10) {
+                document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+                const progress = (currentStep / 10) * 100;
+                document.getElementById('progressBar').style.width = progress + '%';
+            } else {
+                document.getElementById('counterDisplay').textContent = 'Revisão Final';
+                document.getElementById('progressBar').style.width = '100%';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeChapter(direction) {
+            if (direction === 1 && currentStep < totalSteps) {
+                currentStep++;
+            } else if (direction === -1 && currentStep > 1) {
+                currentStep--;
+            }
+            updateView();
+        }
+
+        function submitExam() {
+            alert('Respostas enviadas com sucesso para o portal educacional!');
+            location.reload();
+        }
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentStep < totalSteps) {
+                changeChapter(1);
+            } else if (e.key === 'ArrowLeft' && currentStep > 1) {
+                changeChapter(-1);
+            }
+        });
+
+        updateView();
+    </script>
+</body>
+</html>

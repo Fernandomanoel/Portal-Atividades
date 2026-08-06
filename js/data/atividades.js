@@ -106,6 +106,24 @@ const ATIVIDADES = [
   },
 
   {
+    slug: "canva",
+    titulo: "Canva",
+    descricao: "Criação e edição de posts para redes sociais.",
+    grupo: "cursos",
+    sigla: "C",
+    cor: "#6a2c91",
+    materiais: [
+      {
+        titulo: "Avaliação Prática: Post Carrossel com IA",
+        descricao:
+          "Apresentação interativa guiando o aluno a criar um carrossel para Instagram: edição de imagem, geração de vídeo com IA, edição de vídeo e montagem final.",
+        tipo: "link",
+        url: "atividades/paginas/canva-avaliacao-carrossel.html",
+      },
+    ],
+  },
+
+  {
     slug: "excel",
     titulo: "Excel Básico",
     descricao: "Planilhas e fórmulas simples.",
@@ -237,6 +255,27 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO I - INICIANDO COM O PROCV.pdf",
       },
+      {
+        titulo: "Controle de Vendas e Comissões (Cálculo Avançado)",
+        descricao:
+          "Planilha extensa com 40 vendas para praticar fórmulas SE aninhadas, SOMASE, CONT.SE, MÁXIMO e ÍNDICE/CORRESP no cálculo de descontos, comissões e resumo por vendedor.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Controle de Vendas e Comissões.xlsx",
+      },
+      {
+        titulo: "Catálogo de Produtos: Busca e Gráficos",
+        descricao:
+          "Planilha extensa com catálogo de 35 produtos e 70 vendas para praticar PROCV, ÍNDICE+CORRESP em um painel de busca, e montar gráficos de barras, pizza e linha num dashboard.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Catálogo de Produtos com Busca e Gráficos.xlsx",
+      },
+      {
+        titulo: "Notas da Turma e Otimização com Solver",
+        descricao:
+          "Planilha extensa com as notas de 25 alunos (médias ponderadas e situação) e um problema de otimização pronto para resolver com a ferramenta Solver: distribuir horas de estudo para maximizar a média final.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Notas da Turma e Otimização com Solver.xlsx",
+      },
     ],
   },
 
@@ -347,6 +386,27 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/PowerPoint/PowerPoint - Lista de Atividades 01.pdf",
       },
+      {
+        titulo: "Avaliação Prática: Criação e Design de Apresentação",
+        descricao:
+          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 6 slides, aplicando boas práticas de design: estrutura, regra 60/30/10 de cores e consistência visual.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-criacao-e-design.html",
+      },
+      {
+        titulo: "Avaliação Prática: Tabelas e Gráficos",
+        descricao:
+          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 5 slides, incluindo pelo menos uma tabela e um gráfico com dados formatados.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-tabelas-e-graficos.html",
+      },
+      {
+        titulo: "Avaliação Prática: Vídeo, Edição e Transições",
+        descricao:
+          "Atividade guiada para inserir um vídeo em um slide, aplicar recursos de edição de vídeo (cortar, fade) e efeitos de transição entre slides. Inclui vídeo de prática para download.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-video-e-transicoes.html",
+      },
     ],
   },
 
@@ -406,6 +466,34 @@ const ATIVIDADES = [
           "Material prático para crianças aprenderem digitação no Word, organizar textos, criar listas não ordenadas e inserir imagens com os personagens PJ Masks.",
         tipo: "pdf",
         arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
+      },
+      {
+        titulo: "Missão: Computador Arrumado",
+        descricao:
+          "Atividade guiada para crianças aprenderem a desinstalar programas (Adobe, WinRAR, McAfee) pelas Configurações do Windows e a ativar os atalhos padrão da área de trabalho, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-desinstalar-programas-atalhos.html",
+      },
+      {
+        titulo: "Missão: Arquivos Organizados",
+        descricao:
+          "Atividade guiada para crianças aprenderem a criar pastas, mover, recortar/colar (Ctrl+X/Ctrl+V) e compactar arquivos em ZIP, com checklist interativo de prática.",
+        tipo: "link",
+        url: "atividades/paginas/kids-organizando-arquivos.html",
+      },
+      {
+        titulo: "Missão: Meu Primeiro Relatório",
+        descricao:
+          "Atividade guiada para crianças escreverem um mini relatório no Word (título, formatação e parágrafos) e aprenderem a salvar o arquivo em PDF, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-word-mini-relatorio-pdf.html",
+      },
+      {
+        titulo: "Missão: Minha Primeira Apresentação",
+        descricao:
+          "Atividade guiada para crianças criarem uma apresentação no PowerPoint: escolher design, montar slide de capa, adicionar slides com imagens e apresentar com F5, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
       },
     ],
   },
@@ -636,6 +724,13 @@ const ATIVIDADES = [
           "O aluno cria um programa em JavaScript que gera a tabuada de um número informado pelo usuário.",
         tipo: "pdf",
         arquivo: "atividades/pdfs/Javascript/Javascript - SimuladordeTabuadaInteligente.pdf",
+      },
+      {
+        titulo: "Guia: Criando sua Primeira API REST",
+        descricao:
+          "Guia completo com índice navegável para criar uma API REST do zero com Node.js e Express, do básico até deploy em produção.",
+        tipo: "link",
+        url: "atividades/paginas/javascript-guia-api-rest.html",
       },
       {
         titulo: "Simulador de Caixa Eletrônico",

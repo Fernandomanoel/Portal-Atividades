@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Computador Arrumado - Desinstalar Programas e Criar Atalhos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3d7a 0%, #2b6fce 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 92%;
+            height: 90%;
+            max-width: 1200px;
+            max-height: 780px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 45px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --azul: #1a56c4;
+            --azul-claro: #e8f0ff;
+            --amarelo: #ffc400;
+            --verde: #1fa855;
+            --verde-claro: #e3f9ec;
+            --vermelho: #e5484d;
+            --vermelho-claro: #fdecec;
+            --roxo: #7c4dff;
+            --cinza: #555;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--azul) 0%, #3a7bff 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.1em;
+            font-weight: 800;
+        }
+
+        .slide-header p {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        .emoji-large {
+            font-size: 2.6em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-size: 1.15em;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--azul);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 22px;
+            border-radius: 14px;
+            border-left: 8px solid;
+            line-height: 1.7;
+        }
+
+        .box-azul {
+            background: var(--azul-claro);
+            border-left-color: var(--azul);
+        }
+
+        .box-amarelo {
+            background: #fff8e1;
+            border-left-color: var(--amarelo);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .content-box strong {
+            color: var(--azul);
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px;
+            background: #f7f9fc;
+            border-radius: 12px;
+            border-left: 5px solid var(--azul);
+        }
+
+        .passo-numero {
+            min-width: 44px;
+            height: 44px;
+            background: var(--azul);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        /* Checklist clicável */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #f7f9fc;
+            border: 3px solid #d8e0ee;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            border-color: var(--azul);
+        }
+
+        .check-item .icone-programa {
+            font-size: 2.2em;
+            width: 55px;
+            text-align: center;
+        }
+
+        .check-item .texto-programa {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .check-item .selo {
+            font-size: 1.6em;
+            width: 40px;
+            text-align: center;
+        }
+
+        .check-item.feito {
+            background: var(--verde-claro);
+            border-color: var(--verde);
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
+        .contador-missao {
+            text-align: center;
+            font-weight: 700;
+            color: var(--azul);
+            font-size: 1.15em;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        button {
+            background: var(--amarelo);
+            color: #333;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #ffd94d;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 196, 0, 0.4);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 30px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--amarelo);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.5em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 8px 0;
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--azul) 0%, #3a7bff 100%);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 25px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 2.8em;
+        }
+
+        .slide-capa p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 3.5em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            max-width: 560px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1.4em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 6px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--azul-claro) 0%, white 100%);
+            border: 3px solid var(--azul);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--azul);
+            font-size: 2em;
+            margin-bottom: 18px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        .aviso-adulto {
+            background: var(--vermelho-claro);
+            border-left: 6px solid var(--vermelho);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #7a1c1f;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Voltar</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">9</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">🧹💻</div>
+                        <h1>Missão: Computador Arrumado!</h1>
+                        <p>Vamos deixar o computador mais rápido e organizado</p>
+                        <div class="capa-box">
+                            <h2>Hoje você vai aprender a:</h2>
+                            <ul>
+                                <li>1️⃣ Desinstalar programas que não usamos mais</li>
+                                <li>2️⃣ Colocar os atalhos padrão na área de trabalho</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>O que vamos fazer?</h1>
+                            <p>Duas missões para arrumar o computador</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 700;">
+                            🗑️ MISSÃO 1: Desinstalar 3 programas que ninguém está usando.
+                        </div>
+                        <div class="content-box box-verde" style="font-weight: 700;">
+                            ⭐ MISSÃO 2: Colocar de volta os ícones (atalhos) padrão do Windows na área de trabalho.
+                        </div>
+                        <div class="aviso-adulto">
+                            👨‍👩‍👧 Peça para um adulto ficar por perto enquanto você faz essa atividade!
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: O que é desinstalar
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🤔</div>
+                        <div>
+                            <h1>O que é "desinstalar"?</h1>
+                            <p>Antes de começar, vamos entender</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            <p><strong>Desinstalar</strong> é apagar um programa inteirinho do computador. É como jogar fora um brinquedo quebrado que está ocupando espaço na caixa de brinquedos!</p>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>💡 Por que fazemos isso?</h3>
+                            <p>Programas que ninguém usa deixam o computador mais lento e ocupam espaço. Tirar eles ajuda o computador a funcionar melhor.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Passo a passo abrir configurações
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⚙️</div>
+                        <div>
+                            <h1>Passo a Passo: Abrindo o Local Certo</h1>
+                            <p>Onde ficam os programas instalados</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto"><strong>Clique no botão Iniciar</strong> (a bandeirinha do Windows, no canto de baixo da tela).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique no ícone de <strong>engrenagem ⚙️ (Configurações)</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Clique em <strong>Aplicativos</strong> e depois em <strong>Aplicativos instalados</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Vai aparecer uma <strong>lista com todos os programas</strong> do computador!</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Desinstalar os 3 programas (checklist)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🗑️</div>
+                        <div>
+                            <h1>Missão 1: Desinstalar os Programas</h1>
+                            <p>Ache cada um na lista e clique em "Desinstalar"</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600;">
+                            Para cada programa: clique nos <strong>3 pontinhos (⋯)</strong> ao lado do nome dele → clique em <strong>Desinstalar</strong> → confirme.
+                        </div>
+                        <div class="checklist" id="checklist-desinstalar">
+                            <div class="check-item" data-item="adobe">
+                                <div class="icone-programa">📕</div>
+                                <div class="texto-programa">Adobe (Reader/Acrobat)</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="winrar">
+                                <div class="icone-programa">🗂️</div>
+                                <div class="texto-programa">WinRAR</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="mcafee">
+                                <div class="icone-programa">🛡️</div>
+                                <div class="texto-programa">McAfee</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                        </div>
+                        <div class="contador-missao" id="contadorDesinstalar">0 de 3 desinstalados</div>
+                    </div>
+                `
+            },
+
+            // Slide 6: O que são atalhos padrão
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⭐</div>
+                        <div>
+                            <h1>O que são "atalhos padrão"?</h1>
+                            <p>Ícones que ajudam a usar o computador</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            <p><strong>Atalhos</strong> são ícones na área de trabalho que abrem algo rapidinho, com um clique duplo. O Windows já vem com alguns <strong>atalhos padrão</strong> prontos, só precisamos ligá-los!</p>
+                        </div>
+                        <div class="content-box box-verde">
+                            <h3>🖥️ Os 5 atalhos padrão do Windows:</h3>
+                            <p>Este Computador, Arquivos do Usuário, Rede, Lixeira e Painel de Controle.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Passo a passo ativar atalhos
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖱️</div>
+                        <div>
+                            <h1>Passo a Passo: Ligando os Atalhos</h1>
+                            <p>Direto na área de trabalho</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique com o <strong>botão direito do mouse</strong> em um espaço vazio da área de trabalho.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>Personalizar</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Clique em <strong>Temas</strong> e depois em <strong>Configurações de ícones da área de trabalho</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Vai abrir uma <strong>caixinha com quadradinhos</strong> para marcar!</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Marcar os 5 atalhos (checklist)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✅</div>
+                        <div>
+                            <h1>Missão 2: Marcar os Atalhos</h1>
+                            <p>Marque a caixinha ⬜ de cada um e clique em Aplicar → OK</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="checklist" id="checklist-atalhos">
+                            <div class="check-item" data-item="computador">
+                                <div class="icone-programa">💻</div>
+                                <div class="texto-programa">Este Computador</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="arquivos">
+                                <div class="icone-programa">📁</div>
+                                <div class="texto-programa">Arquivos do Usuário</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="rede">
+                                <div class="icone-programa">🌐</div>
+                                <div class="texto-programa">Rede</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="lixeira">
+                                <div class="icone-programa">🗑️</div>
+                                <div class="texto-programa">Lixeira</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="painel">
+                                <div class="icone-programa">⚙️</div>
+                                <div class="texto-programa">Painel de Controle</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                        </div>
+                        <div class="contador-missao" id="contadorAtalhos">0 de 5 marcados</div>
+                    </div>
+                `
+            },
+
+            // Slide 9: Conclusão
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 16px;">🏆</div>
+                            <h2>Parabéns, Missão Cumprida!</h2>
+                            <p>Você desinstalou <span class="destaque">3 programas</span> e colocou os <span class="destaque">5 atalhos padrão</span> na área de trabalho.</p>
+                            <p>Agora o computador está mais rápido e organizado. Mostre para um adulto como ficou! 🎉</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            ativarChecklists();
+            updateControls();
+        }
+
+        function ativarChecklists() {
+            document.querySelectorAll('.check-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('feito');
+                    const selo = item.querySelector('.selo');
+                    selo.textContent = item.classList.contains('feito') ? '✅' : '⬜';
+                    atualizarContador(item.closest('.checklist'));
+                });
+            });
+        }
+
+        function atualizarContador(checklist) {
+            if (!checklist) return;
+            const total = checklist.querySelectorAll('.check-item').length;
+            const feitos = checklist.querySelectorAll('.check-item.feito').length;
+            const contador = checklist.id === 'checklist-desinstalar'
+                ? document.getElementById('contadorDesinstalar')
+                : document.getElementById('contadorAtalhos');
+            if (contador) {
+                const palavra = checklist.id === 'checklist-desinstalar' ? 'desinstalados' : 'marcados';
+                contador.textContent = `${feitos} de ${total} ${palavra}`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

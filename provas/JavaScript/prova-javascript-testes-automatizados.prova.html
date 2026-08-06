@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de JavaScript - Testes Automatizados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #d97706;
+            border-bottom: 3px solid #f59e0b;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #b45309;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #f59e0b;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .question {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .question h4 {
+            color: #b45309;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #f59e0b;
+            box-shadow: 0 0 5px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #d97706;
+        }
+
+        .btn-submit {
+            background: #10b981;
+        }
+
+        .btn-submit:hover {
+            background: #059669;
+        }
+
+        .btn-nav {
+            background: #f59e0b;
+        }
+
+        .btn-nav:hover {
+            background: #d97706;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .result.error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #7f1d1d;
+        }
+
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .test-pass {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 3px solid #10b981;
+        }
+
+        .test-fail {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border-left: 3px solid #ef4444;
+        }
+
+        .box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        .progress {
+            background: #e5e7eb;
+            height: 6px;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #f59e0b;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #f59e0b;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #666;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .score {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Prova de JavaScript</h1>
+            <p>Escreva o código, testes rodam automaticamente</p>
+        </header>
+
+        <div class="progress">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <!-- QUESTÃO 1 -->
+        <section class="chapter active" id="ch1">
+            <h2>Questão 1: Variáveis e console.log (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie variáveis para:</p>
+                <ul>
+                    <li><code>nome</code> = "Maria" (string)</li>
+                    <li><code>idade</code> = 28 (number)</li>
+                    <li><code>ativo</code> = true (boolean)</li>
+                </ul>
+                <p>Use <code>console.log()</code> para exibir: "Maria tem 28 anos"</p>
+
+                <h4>Exemplo de saída esperada:</h4>
+                <div class="code">Maria tem 28 anos</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code1" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion1()">Testar Resposta</button>
+                <div class="result" id="result1"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(0)" disabled>← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(2)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 2 -->
+        <section class="chapter" id="ch2">
+            <h2>Questão 2: Operações Matemáticas (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie uma função chamada <code>calcular</code> que:</p>
+                <ul>
+                    <li>Receba 2 números como parâmetros</li>
+                    <li>Retorne a soma dos números</li>
+                </ul>
+
+                <h4>Exemplo de chamada:</h4>
+                <div class="code">const resultado = calcular(5, 3);
+console.log(resultado); // Saída: 8</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code2" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion2()">Testar Resposta</button>
+                <div class="result" id="result2"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(1)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(3)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 3 -->
+        <section class="chapter" id="ch3">
+            <h2>Questão 3: Condicionais (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie uma função chamada <code>verificarIdade</code> que:</p>
+                <ul>
+                    <li>Receba a idade como parâmetro</li>
+                    <li>Retorne "Maior de idade" se idade >= 18</li>
+                    <li>Retorne "Menor de idade" se idade < 18</li>
+                </ul>
+
+                <h4>Exemplo de chamada:</h4>
+                <div class="code">console.log(verificarIdade(20)); // Saída: Maior de idade
+console.log(verificarIdade(15)); // Saída: Menor de idade</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code3" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion3()">Testar Resposta</button>
+                <div class="result" id="result3"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(2)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(4)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 4 -->
+        <section class="chapter" id="ch4">
+            <h2>Questão 4: Arrays (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um array chamado <code>numeros</code> com os números: 10, 20, 30, 40, 50</p>
+                <ul>
+                    <li>Exiba o primeiro elemento (10)</li>
+                    <li>Exiba o último elemento (50)</li>
+                    <li>Exiba o tamanho do array (5)</li>
+                </ul>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">10
+50
+5</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code4" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion4()">Testar Resposta</button>
+                <div class="result" id="result4"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(3)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(5)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 5 -->
+        <section class="chapter" id="ch5">
+            <h2>Questão 5: Loops - FOR (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Use um loop <code>for</code> para:</p>
+                <ul>
+                    <li>Percorrer um array: [1, 2, 3, 4, 5]</li>
+                    <li>Exibir cada número multiplicado por 2</li>
+                </ul>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">2
+4
+6
+8
+10</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code5" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion5()">Testar Resposta</button>
+                <div class="result" id="result5"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(4)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(6)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 6 -->
+        <section class="chapter" id="ch6">
+            <h2>Questão 6: Objetos (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um objeto chamado <code>pessoa</code> com as propriedades:</p>
+                <ul>
+                    <li><code>nome</code>: "João"</li>
+                    <li><code>idade</code>: 30</li>
+                    <li><code>profissao</code>: "Desenvolvedor"</li>
+                </ul>
+                <p>Exiba os dados: "João, 30 anos, Desenvolvedor"</p>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">João, 30 anos, Desenvolvedor</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code6" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion6()">Testar Resposta</button>
+                <div class="result" id="result6"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(5)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(7)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 7 -->
+        <section class="chapter" id="ch7">
+            <h2>Questão 7: forEach (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Use <code>forEach</code> para:</p>
+                <ul>
+                    <li>Iterar um array: ["maçã", "banana", "laranja"]</li>
+                    <li>Exibir cada fruta com número: "1. maçã", "2. banana", etc</li>
+                </ul>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">1. maçã
+2. banana
+3. laranja</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code7" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion7()">Testar Resposta</button>
+                <div class="result" id="result7"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(6)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(8)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 8 -->
+        <section class="chapter" id="ch8">
+            <h2>Questão 8: Arrow Functions (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie uma arrow function chamada <code>quadrado</code> que:</p>
+                <ul>
+                    <li>Receba um número como parâmetro</li>
+                    <li>Retorne o número elevado ao quadrado</li>
+                </ul>
+
+                <h4>Exemplo de chamada:</h4>
+                <div class="code">console.log(quadrado(5)); // Saída: 25
+console.log(quadrado(7)); // Saída: 49</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code8" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion8()">Testar Resposta</button>
+                <div class="result" id="result8"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(7)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(9)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- RESULTADO FINAL -->
+        <section class="chapter" id="ch9">
+            <h2>🏆 Resultado Final</h2>
+            
+            <div style="text-align: center; padding: 40px;">
+                <p style="font-size: 1.3em; margin-bottom: 20px;">Sua pontuação:</p>
+                <p class="score" id="finalScore" style="font-size: 3em; margin-bottom: 20px;">0 / 12</p>
+                
+                <div id="scoreDetails" style="background: #fef3c7; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <p>Resultado carregando...</p>
+                </div>
+
+                <h3>Desempenho por questão:</h3>
+                <div id="questionsScore" style="margin-top: 20px;"></div>
+
+                <div class="nav" style="margin-top: 40px; justify-content: center;">
+                    <button class="btn btn-nav" onclick="goToChapter(8)">← Voltar</button>
+                    <button class="btn btn-nav" onclick="location.reload()">Recomeçar Prova</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Prova de JavaScript com Testes Automatizados</strong></p>
+            <p>8 questões | 12 pontos | ~1 hora</p>
+        </footer>
+    </div>
+
+    <script>
+        const scores = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        function goToChapter(n) {
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(ch => ch.classList.remove('active'));
+            document.getElementById('ch' + (n + 1)).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgress() {
+            const current = document.querySelector('.chapter.active');
+            const chNum = current.id.replace('ch', '');
+            const progress = (chNum / 9) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function showResult(resultId, passed, message, tests = []) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.classList.add('show');
+            resultDiv.className = passed ? 'result show success' : 'result show error';
+            
+            let html = '';
+            if (passed) {
+                html += '<p style="font-weight: bold; color: #065f46;">✅ Correto!</p>';
+            } else {
+                html += '<p style="font-weight: bold; color: #7f1d1d;">❌ Incorreto</p>';
+            }
+            
+            html += '<p>' + message + '</p>';
+            
+            if (tests.length > 0) {
+                html += '<div style="margin-top: 10px;">';
+                tests.forEach(test => {
+                    const testClass = test.pass ? 'test-pass' : 'test-fail';
+                    const icon = test.pass ? '✓' : '✗';
+                    html += `<div class="test-item ${testClass}">${icon} ${test.message}</div>`;
+                });
+                html += '</div>';
+            }
+            
+            resultDiv.innerHTML = html;
+        }
+
+        function testQuestion1() {
+            const code = document.getElementById('code1').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Variáveis
+            if (code.includes('nome') && code.includes('idade') && code.includes('ativo')) {
+                tests.push({ pass: true, message: 'Variáveis declaradas' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam variáveis' });
+                passed = false;
+            }
+
+            // Testar 2: console.log
+            if (code.includes('console.log')) {
+                tests.push({ pass: true, message: 'console.log() usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta console.log()' });
+                passed = false;
+            }
+
+            // Testar 3: Valores
+            if (code.includes('Maria') && code.includes('28')) {
+                tests.push({ pass: true, message: 'Valores corretos' });
+            } else {
+                tests.push({ pass: false, message: 'Valores incorretos' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[0] = 1.5;
+                showResult('result1', true, 'Parabéns! Você usou variáveis corretamente.', tests);
+            } else {
+                showResult('result1', false, 'Revise: declare as 3 variáveis e use console.log()', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion2() {
+            const code = document.getElementById('code2').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Função
+            if (code.includes('function calcular') || code.includes('const calcular') || code.includes('let calcular')) {
+                tests.push({ pass: true, message: 'Função definida' });
+            } else {
+                tests.push({ pass: false, message: 'Falta função calcular' });
+                passed = false;
+            }
+
+            // Testar 2: Parâmetros
+            if (code.includes('(') && code.includes(')') && code.includes(',')) {
+                tests.push({ pass: true, message: 'Parâmetros implementados' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam parâmetros' });
+                passed = false;
+            }
+
+            // Testar 3: Return e soma
+            if (code.includes('return') && code.includes('+')) {
+                tests.push({ pass: true, message: 'Return e operação de soma' });
+            } else {
+                tests.push({ pass: false, message: 'Falta return ou soma' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[1] = 1.5;
+                showResult('result2', true, 'Excelente! Sua função funciona corretamente.', tests);
+            } else {
+                showResult('result2', false, 'Use function/const com return e +', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion3() {
+            const code = document.getElementById('code3').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Função
+            if (code.includes('verificarIdade')) {
+                tests.push({ pass: true, message: 'Função verificarIdade criada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta função verificarIdade' });
+                passed = false;
+            }
+
+            // Testar 2: if/else
+            if (code.includes('if') && code.includes('else')) {
+                tests.push({ pass: true, message: 'Estrutura if/else' });
+            } else {
+                tests.push({ pass: false, message: 'Falta if/else' });
+                passed = false;
+            }
+
+            // Testar 3: Comparação
+            if (code.includes('>=') || code.includes('<')) {
+                tests.push({ pass: true, message: 'Comparadores usados' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam comparadores' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[2] = 1.5;
+                showResult('result3', true, 'Perfeito! Sua lógica condicional está correta.', tests);
+            } else {
+                showResult('result3', false, 'Use if/else com >= 18', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion4() {
+            const code = document.getElementById('code4').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Array
+            if (code.includes('[') && code.includes(']')) {
+                tests.push({ pass: true, message: 'Array criado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta array' });
+                passed = false;
+            }
+
+            // Testar 2: Acesso aos elementos
+            if (code.includes('[0]') || code.includes('[4]') || code.includes('.length')) {
+                tests.push({ pass: true, message: 'Acesso aos elementos' });
+            } else {
+                tests.push({ pass: false, message: 'Falta acesso aos elementos' });
+                passed = false;
+            }
+
+            // Testar 3: console.log
+            if (code.includes('console.log')) {
+                tests.push({ pass: true, message: 'console.log() usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta console.log()' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[3] = 1.5;
+                showResult('result4', true, 'Ótimo! Você trabalhou com arrays corretamente.', tests);
+            } else {
+                showResult('result4', false, 'Use [] para criar array, [0] para primeiro, .length para tamanho', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion5() {
+            const code = document.getElementById('code5').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: for
+            if (code.includes('for')) {
+                tests.push({ pass: true, message: 'Loop for criado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta for' });
+                passed = false;
+            }
+
+            // Testar 2: Multiplicação
+            if (code.includes('*') && code.includes('2')) {
+                tests.push({ pass: true, message: 'Multiplicação por 2' });
+            } else {
+                tests.push({ pass: false, message: 'Falta multiplicação por 2' });
+                passed = false;
+            }
+
+            // Testar 3: console.log
+            if (code.includes('console.log')) {
+                tests.push({ pass: true, message: 'console.log() usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta console.log()' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[4] = 1.5;
+                showResult('result5', true, 'Excelente! Seu loop for funciona corretamente.', tests);
+            } else {
+                showResult('result5', false, 'Use for para iterar e multiplicar por 2', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion6() {
+            const code = document.getElementById('code6').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Objeto
+            if (code.includes('const pessoa') || code.includes('let pessoa')) {
+                tests.push({ pass: true, message: 'Objeto pessoa criado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta objeto pessoa' });
+                passed = false;
+            }
+
+            // Testar 2: Propriedades
+            if (code.includes('nome') && code.includes('idade') && code.includes('profissao')) {
+                tests.push({ pass: true, message: 'Propriedades corretas' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam propriedades' });
+                passed = false;
+            }
+
+            // Testar 3: console.log
+            if (code.includes('console.log')) {
+                tests.push({ pass: true, message: 'console.log() usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta console.log()' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[5] = 1.5;
+                showResult('result6', true, 'Perfeito! Você criou um objeto corretamente.', tests);
+            } else {
+                showResult('result6', false, 'Use const pessoa = { nome, idade, profissao }', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion7() {
+            const code = document.getElementById('code7').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: forEach
+            if (code.includes('forEach')) {
+                tests.push({ pass: true, message: 'forEach implementado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta forEach' });
+                passed = false;
+            }
+
+            // Testar 2: Array de frutas
+            if (code.includes('maçã') && code.includes('banana') && code.includes('laranja')) {
+                tests.push({ pass: true, message: 'Array de frutas correto' });
+            } else {
+                tests.push({ pass: false, message: 'Array incompleto' });
+                passed = false;
+            }
+
+            // Testar 3: Numeração
+            if (code.includes('index') || code.includes('i') || code.includes('+')) {
+                tests.push({ pass: true, message: 'Numeração implementada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta numeração' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[6] = 1.5;
+                showResult('result7', true, 'Excelente! forEach funcionando perfeitamente.', tests);
+            } else {
+                showResult('result7', false, 'Use forEach(item, index) para numerar', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion8() {
+            const code = document.getElementById('code8').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Arrow function
+            if (code.includes('=>')) {
+                tests.push({ pass: true, message: 'Arrow function criada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta arrow function (=>)' });
+                passed = false;
+            }
+
+            // Testar 2: Função chamada quadrado
+            if (code.includes('quadrado')) {
+                tests.push({ pass: true, message: 'Função quadrado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta função quadrado' });
+                passed = false;
+            }
+
+            // Testar 3: ** ou *
+            if (code.includes('**') || (code.includes('*') && code.includes('n'))) {
+                tests.push({ pass: true, message: 'Operação de quadrado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta operação de quadrado (**) ' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[7] = 1.5;
+                showResult('result8', true, 'Perfeito! Arrow function implementada corretamente.', tests);
+            } else {
+                showResult('result8', false, 'Use const quadrado = n => n ** 2', tests);
+            }
+            updateFinalScore();
+        }
+
+        function updateFinalScore() {
+            const total = scores.reduce((a, b) => a + b, 0);
+            document.getElementById('finalScore').textContent = total.toFixed(1) + ' / 12';
+            
+            let percentage = (total / 12) * 100;
+            let message = '';
+            
+            if (percentage === 100) {
+                message = '🏆 Perfeito! Você acertou todas as questões!';
+            } else if (percentage >= 80) {
+                message = '🌟 Excelente! Desempenho muito bom!';
+            } else if (percentage >= 60) {
+                message = '👍 Bom trabalho! Revise os conceitos que errou.';
+            } else if (percentage >= 40) {
+                message = '📚 Continue estudando! Você está no caminho certo.';
+            } else {
+                message = '💪 Não desista! Pratique mais e tente novamente.';
+            }
+            
+            document.getElementById('scoreDetails').innerHTML = `<p>${message}</p><p>Você acertou ${(percentage).toFixed(1)}% da prova</p>`;
+
+            // Mostrar resultado por questão
+            const details = document.getElementById('questionsScore');
+            let html = '<table><tr><th>Questão</th><th>Pontuação</th><th>Status</th></tr>';
+            
+            const questions = ['Variáveis', 'Operações', 'Condicionais', 'Arrays', 'Loops', 'Objetos', 'forEach', 'Arrow Fn'];
+            questions.forEach((q, i) => {
+                const score = scores[i];
+                const status = score > 0 ? '✅ Correto' : '❌ Não feito';
+                html += `<tr><td>${q}</td><td>${score}</td><td>${status}</td></tr>`;
+            });
+            
+            html += '</table>';
+            details.innerHTML = html;
+        }
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            const current = document.querySelector('.chapter.active');
+            const chNum = parseInt(current.id.replace('ch', ''));
+            
+            if (e.key === 'ArrowRight' && chNum < 9) goToChapter(chNum);
+            if (e.key === 'ArrowLeft' && chNum > 1) goToChapter(chNum - 2);
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>

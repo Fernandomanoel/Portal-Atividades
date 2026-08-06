@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Arquivos Organizados - Pastas, Mover, Recortar e Compactar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a8590a 0%, #f5a623 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 92%;
+            height: 90%;
+            max-width: 1200px;
+            max-height: 780px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 45px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --laranja: #d9770a;
+            --laranja-claro: #fff3e0;
+            --azul: #2563eb;
+            --azul-claro: #e8f0ff;
+            --verde: #1fa855;
+            --verde-claro: #e3f9ec;
+            --vermelho: #e5484d;
+            --vermelho-claro: #fdecec;
+            --cinza: #555;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--laranja) 0%, #f5a623 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.1em;
+            font-weight: 800;
+        }
+
+        .slide-header p {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        .emoji-large {
+            font-size: 2.6em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-size: 1.15em;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--laranja);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 22px;
+            border-radius: 14px;
+            border-left: 8px solid;
+            line-height: 1.7;
+        }
+
+        .box-laranja {
+            background: var(--laranja-claro);
+            border-left-color: var(--laranja);
+        }
+
+        .box-azul {
+            background: var(--azul-claro);
+            border-left-color: var(--azul);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--laranja);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .content-box strong {
+            color: var(--laranja);
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px;
+            background: #f9f7f4;
+            border-radius: 12px;
+            border-left: 5px solid var(--laranja);
+        }
+
+        .passo-numero {
+            min-width: 44px;
+            height: 44px;
+            background: var(--laranja);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        .comparativo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .comparativo-card {
+            padding: 20px;
+            border-radius: 14px;
+            border: 3px solid;
+            text-align: center;
+        }
+
+        .comparativo-card.copiar {
+            border-color: var(--azul);
+            background: var(--azul-claro);
+        }
+
+        .comparativo-card.recortar {
+            border-color: var(--laranja);
+            background: var(--laranja-claro);
+        }
+
+        .comparativo-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .comparativo-card .tecla {
+            display: inline-block;
+            background: #333;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        /* Checklist clicável */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #f9f7f4;
+            border: 3px solid #ecdfc9;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            border-color: var(--laranja);
+        }
+
+        .check-item .icone-programa {
+            font-size: 2.2em;
+            width: 55px;
+            text-align: center;
+        }
+
+        .check-item .texto-programa {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .check-item .selo {
+            font-size: 1.6em;
+            width: 40px;
+            text-align: center;
+        }
+
+        .check-item.feito {
+            background: var(--verde-claro);
+            border-color: var(--verde);
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
+        .contador-missao {
+            text-align: center;
+            font-weight: 700;
+            color: var(--laranja);
+            font-size: 1.15em;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        button {
+            background: #ffd54d;
+            color: #333;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #ffe08a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 213, 77, 0.5);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 30px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #ffd54d;
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.5em;
+            }
+
+            .comparativo {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 8px 0;
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--laranja) 0%, #f5a623 100%);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 25px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 2.8em;
+        }
+
+        .slide-capa p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 3.5em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            max-width: 560px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1.4em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 6px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--laranja-claro) 0%, white 100%);
+            border: 3px solid var(--laranja);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--laranja);
+            font-size: 2em;
+            margin-bottom: 18px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--laranja);
+            font-weight: bold;
+        }
+
+        .aviso-adulto {
+            background: var(--vermelho-claro);
+            border-left: 6px solid var(--vermelho);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #7a1c1f;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Voltar</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">8</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">📁📦</div>
+                        <h1>Missão: Arquivos Organizados!</h1>
+                        <p>Vamos aprender a cuidar dos arquivos do computador</p>
+                        <div class="capa-box">
+                            <h2>Hoje você vai aprender a:</h2>
+                            <ul>
+                                <li>1️⃣ Criar uma pasta nova</li>
+                                <li>2️⃣ Mover arquivos de lugar</li>
+                                <li>3️⃣ Recortar e colar arquivos</li>
+                                <li>4️⃣ Compactar arquivos em um ZIP</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>Por que organizar os arquivos?</h1>
+                            <p>Um computador arrumado é mais fácil de usar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-laranja">
+                            <p>Imagine sua caixa de brinquedos toda bagunçada: fica difícil achar o que você quer! No computador é a mesma coisa — se todos os arquivos ficam soltos e misturados, fica difícil encontrar o que você precisa.</p>
+                        </div>
+                        <div class="content-box box-azul">
+                            <h3>💡 A solução: pastas!</h3>
+                            <p>Pastas são como caixinhas organizadoras. Cada pasta pode guardar um tipo de arquivo (fotos, desenhos, trabalhos da escola) para você achar tudo rapidinho.</p>
+                        </div>
+                        <div class="aviso-adulto">
+                            👨‍👩‍👧 Peça para um adulto ficar por perto enquanto você faz essa atividade!
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Criar uma pasta
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📁</div>
+                        <div>
+                            <h1>Passo a Passo: Criar uma Pasta Nova</h1>
+                            <p>Sua primeira caixinha organizadora</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Abra o <strong>Explorador de Arquivos</strong> ou vá até a área de trabalho.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique com o <strong>botão direito do mouse</strong> em um espaço vazio.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Passe o mouse em <strong>Novo</strong> e clique em <strong>Pasta</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Escreva um <strong>nome</strong> para a pasta (ex: "Meus Desenhos") e aperte <strong>Enter</strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Mover arquivos
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖱️</div>
+                        <div>
+                            <h1>Passo a Passo: Mover Arquivos</h1>
+                            <p>Arrastando com o mouse</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            <p><strong>Mover</strong> é tirar um arquivo de um lugar e colocar em outro — como carregar um brinquedo de um cômodo pra outro.</p>
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique no arquivo e <strong>segure o botão do mouse</strong> (sem soltar).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto"><strong>Arraste</strong> o arquivo até em cima da pasta de destino.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto"><strong>Solte o botão</strong> do mouse. Pronto, o arquivo foi para dentro da pasta!</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Recortar e colar
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✂️</div>
+                        <div>
+                            <h1>Passo a Passo: Recortar e Colar</h1>
+                            <p>Outro jeito de mover arquivos, usando o teclado</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="comparativo">
+                            <div class="comparativo-card copiar">
+                                <h4>📄 Copiar</h4>
+                                <div class="tecla">Ctrl + C</div>
+                                <p>Faz uma <strong>cópia</strong>. O arquivo original continua no mesmo lugar.</p>
+                            </div>
+                            <div class="comparativo-card recortar">
+                                <h4>✂️ Recortar</h4>
+                                <div class="tecla">Ctrl + X</div>
+                                <p>De verdade <strong>move</strong> o arquivo. Ele some do lugar original.</p>
+                            </div>
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique no arquivo para <strong>selecionar</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Aperte <strong>Ctrl + X</strong> para recortar (o ícone fica mais apagado).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Abra a pasta de destino e aperte <strong>Ctrl + V</strong> para colar.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Compactar arquivos
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🗜️</div>
+                        <div>
+                            <h1>Passo a Passo: Compactar Arquivos</h1>
+                            <p>Juntando vários arquivos em um só (ZIP)</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-laranja">
+                            <p><strong>Compactar</strong> é juntar vários arquivos dentro de um "pacotinho" (arquivo ZIP), que fica menor e mais fácil de enviar para alguém, tipo embrulhar vários presentes em uma caixa só.</p>
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Selecione os arquivos: clique no primeiro, segure <strong>Ctrl</strong> e clique nos outros.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique com o <strong>botão direito</strong> em cima da seleção.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Clique em <strong>Compactar para arquivo ZIP</strong> (ou "Enviar para → Pasta compactada").</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Pronto! Aparece um arquivo novo com <strong>ícone de zíper</strong> 🤐.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Checklist prática
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✅</div>
+                        <div>
+                            <h1>Hora de Praticar!</h1>
+                            <p>Faça cada tarefa no computador e marque aqui</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="checklist" id="checklist-arquivos">
+                            <div class="check-item" data-item="pasta">
+                                <div class="icone-programa">📁</div>
+                                <div class="texto-programa">Criei uma pasta nova</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="mover">
+                                <div class="icone-programa">🖱️</div>
+                                <div class="texto-programa">Movi um arquivo arrastando</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="recortar">
+                                <div class="icone-programa">✂️</div>
+                                <div class="texto-programa">Recortei e colei um arquivo (Ctrl+X / Ctrl+V)</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="compactar">
+                                <div class="icone-programa">🗜️</div>
+                                <div class="texto-programa">Compactei arquivos em um ZIP</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                        </div>
+                        <div class="contador-missao" id="contadorArquivos">0 de 4 concluídas</div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Conclusão
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 16px;">🏆</div>
+                            <h2>Parabéns, Missão Cumprida!</h2>
+                            <p>Você aprendeu a <span class="destaque">criar pastas</span>, <span class="destaque">mover</span>, <span class="destaque">recortar</span> e <span class="destaque">compactar</span> arquivos.</p>
+                            <p>Agora seus arquivos estão muito mais organizados. Mostre para um adulto como ficou! 🎉</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            ativarChecklists();
+            updateControls();
+        }
+
+        function ativarChecklists() {
+            document.querySelectorAll('.check-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('feito');
+                    const selo = item.querySelector('.selo');
+                    selo.textContent = item.classList.contains('feito') ? '✅' : '⬜';
+                    atualizarContador(item.closest('.checklist'));
+                });
+            });
+        }
+
+        function atualizarContador(checklist) {
+            if (!checklist) return;
+            const total = checklist.querySelectorAll('.check-item').length;
+            const feitos = checklist.querySelectorAll('.check-item.feito').length;
+            const contador = document.getElementById('contadorArquivos');
+            if (contador) {
+                contador.textContent = `${feitos} de ${total} concluídas`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

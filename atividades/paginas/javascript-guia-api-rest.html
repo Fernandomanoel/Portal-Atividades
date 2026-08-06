@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript API REST - Guia Completo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: #f5f5f5;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 8px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin: 8px 0;
+        }
+
+        .sidebar a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.9em;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .chapter {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        p, li {
+            margin-bottom: 12px;
+            font-size: 1em;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .code-block code {
+            color: inherit;
+        }
+
+        .code-label {
+            background: #2563eb;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px 4px 0 0;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: -5px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #155724;
+        }
+
+        .box {
+            background: #f0f7ff;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .box h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.3s;
+        }
+
+        footer {
+            background: #f5f5f5;
+            border-top: 2px solid #e0e0e0;
+            padding: 30px 50px;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: none;
+                position: static;
+                border-right: none;
+                border-bottom: 2px solid #e0e0e0;
+            }
+
+            .content {
+                padding: 30px;
+                max-height: none;
+            }
+        }
+
+        .syntax-js { color: #9cdcfe; }
+        .syntax-string { color: #ce9178; }
+        .syntax-keyword { color: #569cd6; }
+        .syntax-function { color: #dcdcaa; }
+        .syntax-comment { color: #6a9955; }
+        .syntax-number { color: #b5cea8; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 JavaScript API REST - Guia Completo</h1>
+            <p>Do básico até production: criando APIs profissionais com Node.js e Express</p>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Intermediário a Avançado<br>
+                        <strong>Tempo:</strong> ~8 horas<br>
+                        <strong>Requisitos:</strong> JS básico, Node.js
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+
+                <!-- CHAPTER 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Fundamentos de API REST</h2>
+                    
+                    <h3>O que é uma API?</h3>
+                    <p>Uma <strong>API (Application Programming Interface)</strong> é um conjunto de regras e protocolos que permite que diferentes aplicações se comuniquem. Uma <strong>API REST</strong> usa o protocolo HTTP para operações CRUD (Create, Read, Update, Delete).</p>
+
+                    <h3>Princípios REST</h3>
+                    <ul>
+                        <li><strong>Cliente-Servidor:</strong> Separação clara entre cliente e servidor</li>
+                        <li><strong>Stateless:</strong> Cada requisição contém todas as informações necessárias</li>
+                        <li><strong>Recursos:</strong> Dados são representados como recursos (URLs)</li>
+                        <li><strong>Métodos HTTP:</strong> GET, POST, PUT, DELETE, PATCH</li>
+                        <li><strong>Representação:</strong> Dados geralmente em JSON</li>
+                    </ul>
+
+                    <h3>Métodos HTTP</h3>
+                    <table>
+                        <tr>
+                            <th>Método</th>
+                            <th>Operação</th>
+                            <th>Exemplo</th>
+                        </tr>
+                        <tr>
+                            <td><strong>GET</strong></td>
+                            <td>Obter dados (ler)</td>
+                            <td>GET /api/usuarios/1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>POST</strong></td>
+                            <td>Criar dados</td>
+                            <td>POST /api/usuarios</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PUT</strong></td>
+                            <td>Atualizar dados completo</td>
+                            <td>PUT /api/usuarios/1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PATCH</strong></td>
+                            <td>Atualizar dados parcial</td>
+                            <td>PATCH /api/usuarios/1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>DELETE</strong></td>
+                            <td>Deletar dados</td>
+                            <td>DELETE /api/usuarios/1</td>
+                        </tr>
+                    </table>
+
+                    <div class="box">
+                        <h4>💡 Exemplos de URLs REST</h4>
+                        <p><code>GET /api/usuarios</code> — Lista todos os usuários</p>
+                        <p><code>GET /api/usuarios/123</code> — Pega usuário com ID 123</p>
+                        <p><code>POST /api/usuarios</code> — Cria novo usuário</p>
+                        <p><code>PUT /api/usuarios/123</code> — Atualiza usuário 123</p>
+                        <p><code>DELETE /api/usuarios/123</code> — Deleta usuário 123</p>
+                    </div>
+
+                    <h3>Status HTTP</h3>
+                    <table>
+                        <tr>
+                            <th>Código</th>
+                            <th>Significado</th>
+                            <th>Exemplo</th>
+                        </tr>
+                        <tr>
+                            <td><strong>200</strong></td>
+                            <td>OK - Sucesso</td>
+                            <td>Dados obtidos com sucesso</td>
+                        </tr>
+                        <tr>
+                            <td><strong>201</strong></td>
+                            <td>Created - Criado</td>
+                            <td>Novo recurso criado</td>
+                        </tr>
+                        <tr>
+                            <td><strong>400</strong></td>
+                            <td>Bad Request - Erro do cliente</td>
+                            <td>Dados inválidos enviados</td>
+                        </tr>
+                        <tr>
+                            <td><strong>404</strong></td>
+                            <td>Not Found - Não encontrado</td>
+                            <td>Recurso não existe</td>
+                        </tr>
+                        <tr>
+                            <td><strong>500</strong></td>
+                            <td>Server Error - Erro do servidor</td>
+                            <td>Erro interno no servidor</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <!-- CHAPTER 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Configuração Inicial - Node.js e npm</h2>
+
+                    <h3>Instalando Node.js</h3>
+                    <ol>
+                        <li>Acesse <a href="https://nodejs.org" target="_blank">nodejs.org</a></li>
+                        <li>Baixe a versão LTS (Long Term Support)</li>
+                        <li>Execute o instalador</li>
+                        <li>Verifique a instalação: <code>node --version</code> e <code>npm --version</code></li>
+                    </ol>
+
+                    <h3>Criando seu primeiro projeto</h3>
+                    <p>Abra o terminal no VS Code (Ctrl + `) e execute:</p>
+
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>mkdir minha-api
+cd minha-api
+npm init -y</code></div>
+
+                    <p>Isso criará um arquivo <code>package.json</code> com configurações do projeto.</p>
+
+                    <h3>Instalando dependências</h3>
+                    <p>Você precisa do <strong>Express</strong> (framework web) e <strong>Nodemon</strong> (reinicia servidor automaticamente):</p>
+
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install express
+npm install --save-dev nodemon</code></div>
+
+                    <h3>Configurar script no package.json</h3>
+                    <p>Abra <code>package.json</code> e substitua a linha de "scripts" por:</p>
+
+                    <div class="code-label">package.json</div>
+                    <div class="code-block"><code><span class="syntax-string">"scripts"</span>: {
+  <span class="syntax-string">"start"</span>: <span class="syntax-string">"node index.js"</span>,
+  <span class="syntax-string">"dev"</span>: <span class="syntax-string">"nodemon index.js"</span>
+}</code></div>
+
+                    <div class="success">
+                        ✅ Seu projeto está pronto! Agora vamos criar o servidor.
+                    </div>
+                </section>
+
+                <!-- CHAPTER 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Seu Primeiro Servidor Express</h2>
+
+                    <h3>Criando index.js</h3>
+                    <p>Crie um arquivo chamado <code>index.js</code> na raiz do projeto:</p>
+
+                    <div class="code-label">index.js - Servidor Básico</div>
+                    <div class="code-block"><code><span class="syntax-comment">// Importar Express</span>
+<span class="syntax-keyword">const</span> express = <span class="syntax-function">require</span>(<span class="syntax-string">'express'</span>);
+
+<span class="syntax-comment">// Criar aplicação</span>
+<span class="syntax-keyword">const</span> app = <span class="syntax-function">express</span>();
+
+<span class="syntax-comment">// Middleware: aceitar JSON</span>
+app.<span class="syntax-function">use</span>(express.<span class="syntax-function">json</span>());
+
+<span class="syntax-comment">// Porta do servidor</span>
+<span class="syntax-keyword">const</span> PORT = <span class="syntax-number">3000</span>;
+
+<span class="syntax-comment">// Rota GET simples</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/oi'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ mensagem: <span class="syntax-string">'Olá, API!'</span> });
+});
+
+<span class="syntax-comment">// Iniciar servidor</span>
+app.<span class="syntax-function">listen</span>(PORT, () => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">`Servidor rodando em http://localhost:</span>${PORT}<span class="syntax-string">`</span>);
+});</code></div>
+
+                    <h3>Rodando o servidor</h3>
+                    <p>No terminal, execute:</p>
+
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm run dev</code></div>
+
+                    <p>Você verá: <code>Servidor rodando em http://localhost:3000</code></p>
+
+                    <h3>Testando a API</h3>
+                    <p>Abra o navegador e acesse: <code>http://localhost:3000/api/oi</code></p>
+                    <p>Você verá: <code>{"mensagem":"Olá, API!"}</code></p>
+
+                    <div class="success">
+                        ✅ Parabéns! Seu primeiro servidor Express está rodando!
+                    </div>
+                </section>
+
+                <!-- CHAPTER 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Rotas e Parâmetros</h2>
+
+                    <h3>Diferentes tipos de rotas</h3>
+
+                    <h4>Rota com parâmetro de caminho (path parameter)</h4>
+                    <div class="code-label">index.js</div>
+                    <div class="code-block"><code><span class="syntax-comment">// /:id é um parâmetro</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { id } = <span class="syntax-keyword">req</span>.params;
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ 
+    mensagem: <span class="syntax-string">`Usuário com ID: </span>${id}<span class="syntax-string">`</span>,
+    id: id
+  });
+});</code></div>
+
+                    <p>Teste: <code>http://localhost:3000/api/usuarios/42</code></p>
+                    <p>Resposta: <code>{"mensagem":"Usuário com ID: 42","id":"42"}</code></p>
+
+                    <h4>Rota com query string</h4>
+                    <div class="code-label">index.js</div>
+                    <div class="code-block"><code><span class="syntax-comment">// ?nome=João&idade=25</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/buscar'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { nome, idade } = <span class="syntax-keyword">req</span>.query;
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ nome, idade });
+});</code></div>
+
+                    <p>Teste: <code>http://localhost:3000/api/buscar?nome=João&idade=25</code></p>
+
+                    <h4>POST - Receber dados no corpo</h4>
+                    <div class="code-label">index.js</div>
+                    <div class="code-block"><code>app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { nome, email } = <span class="syntax-keyword">req</span>.body;
+  
+  <span class="syntax-comment">// Validação simples</span>
+  <span class="syntax-keyword">if</span> (!nome || !email) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ 
+      erro: <span class="syntax-string">'Nome e email são obrigatórios'</span> 
+    });
+  }
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">201</span>).<span class="syntax-function">json</span>({ 
+    mensagem: <span class="syntax-string">'Usuário criado!'</span>,
+    usuario: { nome, email }
+  });
+});</code></div>
+
+                    <div class="highlight">
+                        💡 Use ferramentas como <strong>Postman</strong> ou <strong>Insomnia</strong> para testar POST, PUT, DELETE. Ou use <code>curl</code> no terminal!
+                    </div>
+                </section>
+
+                <!-- CHAPTER 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Estrutura de Dados - Banco em Memória</h2>
+
+                    <h3>Criar um banco de dados simples em memória</h3>
+                    <p>Para aprender, vamos usar um array para armazenar dados. Depois aprenderemos banco de dados real.</p>
+
+                    <div class="code-label">index.js - Com dados em memória</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> express = <span class="syntax-function">require</span>(<span class="syntax-string">'express'</span>);
+<span class="syntax-keyword">const</span> app = <span class="syntax-function">express</span>();
+
+app.<span class="syntax-function">use</span>(express.<span class="syntax-function">json</span>());
+
+<span class="syntax-comment">// Simular banco de dados</span>
+<span class="syntax-keyword">let</span> usuarios = [
+  { id: <span class="syntax-number">1</span>, nome: <span class="syntax-string">'João'</span>, email: <span class="syntax-string">'joao@example.com'</span> },
+  { id: <span class="syntax-number">2</span>, nome: <span class="syntax-string">'Maria'</span>, email: <span class="syntax-string">'maria@example.com'</span> }
+];
+
+<span class="syntax-keyword">let</span> proximoId = <span class="syntax-number">3</span>;
+
+<span class="syntax-comment">// GET - Listar todos</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuarios);
+});
+
+<span class="syntax-comment">// GET - Obter um por ID</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> usuario = usuarios.<span class="syntax-function">find</span>(u => u.id === <span class="syntax-number">parseInt</span>(<span class="syntax-keyword">req</span>.params.id));
+  
+  <span class="syntax-keyword">if</span> (!usuario) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">404</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Usuário não encontrado'</span> });
+  }
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuario);
+});
+
+<span class="syntax-comment">// POST - Criar novo</span>
+app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { nome, email } = <span class="syntax-keyword">req</span>.body;
+
+  <span class="syntax-keyword">if</span> (!nome || !email) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ 
+      erro: <span class="syntax-string">'Nome e email obrigatórios'</span> 
+    });
+  }
+
+  <span class="syntax-keyword">const</span> novoUsuario = { id: proximoId++, nome, email };
+  usuarios.<span class="syntax-function">push</span>(novoUsuario);
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">201</span>).<span class="syntax-function">json</span>(novoUsuario);
+});
+
+<span class="syntax-comment">// PUT - Atualizar</span>
+app.<span class="syntax-function">put</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> usuario = usuarios.<span class="syntax-function">find</span>(u => u.id === <span class="syntax-number">parseInt</span>(<span class="syntax-keyword">req</span>.params.id));
+
+  <span class="syntax-keyword">if</span> (!usuario) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">404</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Usuário não encontrado'</span> });
+  }
+
+  <span class="syntax-keyword">if</span> (<span class="syntax-keyword">req</span>.body.nome) usuario.nome = <span class="syntax-keyword">req</span>.body.nome;
+  <span class="syntax-keyword">if</span> (<span class="syntax-keyword">req</span>.body.email) usuario.email = <span class="syntax-keyword">req</span>.body.email;
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuario);
+});
+
+<span class="syntax-comment">// DELETE - Deletar</span>
+app.<span class="syntax-function">delete</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> indice = usuarios.<span class="syntax-function">findIndex</span>(u => u.id === <span class="syntax-number">parseInt</span>(<span class="syntax-keyword">req</span>.params.id));
+
+  <span class="syntax-keyword">if</span> (indice === -<span class="syntax-number">1</span>) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">404</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Usuário não encontrado'</span> });
+  }
+
+  <span class="syntax-keyword">const</span> usuarioDeletado = usuarios.<span class="syntax-function">splice</span>(indice, <span class="syntax-number">1</span>);
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ mensagem: <span class="syntax-string">'Usuário deletado'</span>, usuario: usuarioDeletado[<span class="syntax-number">0</span>] });
+});
+
+app.<span class="syntax-function">listen</span>(<span class="syntax-number">3000</span>, () => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">'Servidor em http://localhost:3000'</span>);
+});</code></div>
+
+                    <h3>Testando com curl</h3>
+                    <p>No terminal, teste seus endpoints:</p>
+
+                    <div class="code-label">Terminal - Testar GET</div>
+                    <div class="code-block"><code>curl http://localhost:3000/api/usuarios</code></div>
+
+                    <div class="code-label">Terminal - Testar POST</div>
+                    <div class="code-block"><code>curl -X POST http://localhost:3000/api/usuarios \
+  -H "Content-Type: application/json" \
+  -d '{"nome":"Pedro","email":"pedro@example.com"}'</code></div>
+
+                    <div class="success">
+                        ✅ Agora você tem uma API CRUD completa funcionando!
+                    </div>
+                </section>
+
+                <!-- CHAPTER 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Banco de Dados - MongoDB com Mongoose</h2>
+
+                    <h3>Por que usar MongoDB?</h3>
+                    <ul>
+                        <li>Banco de dados NoSQL (flexível)</li>
+                        <li>Armazena dados em formato JSON</li>
+                        <li>Fácil de usar com JavaScript</li>
+                        <li>Escalável para aplicações grandes</li>
+                    </ul>
+
+                    <h3>Instalação</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install mongoose</code></div>
+
+                    <h3>Conectar ao MongoDB</h3>
+                    <p>Crie uma conta grátis no <a href="https://www.mongodb.com/cloud/atlas" target="_blank">MongoDB Atlas</a></p>
+
+                    <div class="code-label">index.js - Com MongoDB</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> mongoose = <span class="syntax-function">require</span>(<span class="syntax-string">'mongoose'</span>);
+
+<span class="syntax-comment">// Conectar ao banco</span>
+mongoose.<span class="syntax-function">connect</span>(<span class="syntax-string">'mongodb+srv://usuario:senha@cluster.mongodb.net/meuBanco'</span>, {
+  useNewUrlParser: <span class="syntax-keyword">true</span>,
+  useUnifiedTopology: <span class="syntax-keyword">true</span>
+}).<span class="syntax-function">then</span>(() => console.<span class="syntax-function">log</span>(<span class="syntax-string">'MongoDB conectado'</span>))
+  .<span class="syntax-function">catch</span>(err => console.<span class="syntax-function">log</span>(<span class="syntax-string">'Erro ao conectar:'</span>, err));
+
+<span class="syntax-comment">// Definir esquema (estrutura)</span>
+<span class="syntax-keyword">const</span> usuarioSchema = <span class="syntax-keyword">new</span> mongoose.Schema({
+  nome: { type: <span class="syntax-number">String</span>, required: <span class="syntax-keyword">true</span> },
+  email: { type: <span class="syntax-number">String</span>, required: <span class="syntax-keyword">true</span>, unique: <span class="syntax-keyword">true</span> },
+  idade: <span class="syntax-number">Number</span>,
+  dataCriacao: { type: <span class="syntax-number">Date</span>, default: <span class="syntax-number">Date</span>.now }
+});
+
+<span class="syntax-comment">// Criar modelo</span>
+<span class="syntax-keyword">const</span> Usuario = mongoose.<span class="syntax-function">model</span>(<span class="syntax-string">'Usuario'</span>, usuarioSchema);</code></div>
+
+                    <h3>CRUD com MongoDB</h3>
+                    <div class="code-label">index.js - Rotas com MongoDB</div>
+                    <div class="code-block"><code><span class="syntax-comment">// GET - Listar todos</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> usuarios = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">find</span>();
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuarios);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});
+
+<span class="syntax-comment">// POST - Criar</span>
+app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> novoUsuario = <span class="syntax-keyword">new</span> <span class="syntax-function">Usuario</span>(<span class="syntax-keyword">req</span>.body);
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> novoUsuario.<span class="syntax-function">save</span>();
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">201</span>).<span class="syntax-function">json</span>(usuario);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});
+
+<span class="syntax-comment">// PUT - Atualizar</span>
+app.<span class="syntax-function">put</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">findByIdAndUpdate</span>(
+      <span class="syntax-keyword">req</span>.params.id,
+      <span class="syntax-keyword">req</span>.body,
+      { <span class="syntax-keyword">new</span>: <span class="syntax-keyword">true</span> }
+    );
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuario);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});
+
+<span class="syntax-comment">// DELETE - Deletar</span>
+app.<span class="syntax-function">delete</span>(<span class="syntax-string">'/api/usuarios/:id'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">findByIdAndDelete</span>(<span class="syntax-keyword">req</span>.params.id);
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ mensagem: <span class="syntax-string">'Deletado com sucesso'</span>, usuario });
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});
+</code></div>
+
+                    <div class="highlight">
+                        💡 Note o uso de <code>async/await</code> para operações assíncronas com o banco!
+                    </div>
+                </section>
+
+                <!-- CHAPTER 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Middlewares e Tratamento de Erros</h2>
+
+                    <h3>O que é um Middleware?</h3>
+                    <p>Um middleware é uma função que pode processar requisições e respostas antes de chegar à rota final. Útil para:</p>
+                    <ul>
+                        <li>Validar dados</li>
+                        <li>Autenticação</li>
+                        <li>Logging</li>
+                        <li>Tratamento de erros</li>
+                    </ul>
+
+                    <h3>Middleware simples de logging</h3>
+                    <div class="code-label">index.js</div>
+                    <div class="code-block"><code><span class="syntax-comment">// Middleware que registra todas as requisições</span>
+app.<span class="syntax-function">use</span>((<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>, <span class="syntax-keyword">next</span>) => {
+  <span class="syntax-keyword">const</span> tempo = <span class="syntax-keyword">new</span> <span class="syntax-number">Date</span>().<span class="syntax-function">toLocaleTimeString</span>();
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">`[</span>${tempo}<span class="syntax-string">] </span>${<span class="syntax-keyword">req</span>.method} ${<span class="syntax-keyword">req</span>.path}`);
+  <span class="syntax-keyword">next</span>(); <span class="syntax-comment">// Continua para próxima função</span>
+});</code></div>
+
+                    <h3>Middleware de validação</h3>
+                    <div class="code-label">index.js</div>
+                    <div class="code-block"><code><span class="syntax-comment">// Middleware que valida email</span>
+<span class="syntax-keyword">const</span> <span class="syntax-function">validarEmail</span> = (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>, <span class="syntax-keyword">next</span>) => {
+  <span class="syntax-keyword">const</span> { email } = <span class="syntax-keyword">req</span>.body;
+  <span class="syntax-keyword">const</span> emailRegex = <span class="syntax-string">/^[^@]+@[^@]+\.[^@]+$/</span>;
+
+  <span class="syntax-keyword">if</span> (!emailRegex.<span class="syntax-function">test</span>(email)) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Email inválido'</span> });
+  }
+
+  <span class="syntax-keyword">next</span>();
+};
+
+<span class="syntax-comment">// Usar o middleware em uma rota específica</span>
+app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>, validarEmail, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-comment">// Criar usuário...</span>
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ mensagem: <span class="syntax-string">'Usuário criado'</span> });
+});</code></div>
+
+                    <h3>Tratamento global de erros</h3>
+                    <div class="code-label">index.js - Middleware de erro</div>
+                    <div class="code-block"><code><span class="syntax-comment">// Colocar NO FINAL do arquivo, depois de todas as rotas</span>
+app.<span class="syntax-function">use</span>((<span class="syntax-keyword">err</span>, <span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>, <span class="syntax-keyword">next</span>) => {
+  console.<span class="syntax-function">error</span>(<span class="syntax-string">'Erro:'</span>, <span class="syntax-keyword">err</span>.message);
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ 
+    erro: <span class="syntax-keyword">err</span>.message || <span class="syntax-string">'Erro interno do servidor'</span>
+  });
+});</code></div>
+                </section>
+
+                <!-- CHAPTER 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Autenticação com JWT</h2>
+
+                    <h3>O que é JWT?</h3>
+                    <p><strong>JWT (JSON Web Token)</strong> é um padrão seguro de autenticação. Permite verificar a identidade do usuário sem armazenar sessões no servidor.</p>
+
+                    <h3>Instalando dependências</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install jsonwebtoken bcryptjs dotenv</code></div>
+
+                    <h3>Criar arquivo .env</h3>
+                    <p>Crie um arquivo <code>.env</code> na raiz do projeto:</p>
+
+                    <div class="code-label">.env</div>
+                    <div class="code-block"><code>MONGODB_URI=mongodb+srv://usuario:senha@cluster.mongodb.net/meuBanco
+JWT_SECRET=sua_chave_super_secreta_aqui
+PORT=3000</code></div>
+
+                    <h3>Implementar autenticação</h3>
+                    <div class="code-label">index.js - Autenticação JWT</div>
+                    <div class="code-block"><code><span class="syntax-keyword">require</span>(<span class="syntax-string">'dotenv'</span>).<span class="syntax-function">config</span>();
+<span class="syntax-keyword">const</span> jwt = <span class="syntax-function">require</span>(<span class="syntax-string">'jsonwebtoken'</span>);
+<span class="syntax-keyword">const</span> bcrypt = <span class="syntax-function">require</span>(<span class="syntax-string">'bcryptjs'</span>);
+
+<span class="syntax-comment">// Middleware para verificar token</span>
+<span class="syntax-keyword">const</span> <span class="syntax-function">verificarToken</span> = (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>, <span class="syntax-keyword">next</span>) => {
+  <span class="syntax-keyword">const</span> token = <span class="syntax-keyword">req</span>.headers[<span class="syntax-string">'authorization'</span>]?..<span class="syntax-function">split</span>(<span class="syntax-string">' '</span>)[<span class="syntax-number">1</span>];
+
+  <span class="syntax-keyword">if</span> (!token) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">401</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Token não fornecido'</span> });
+  }
+
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> decodificado = jwt.<span class="syntax-function">verify</span>(token, process.env.JWT_SECRET);
+    <span class="syntax-keyword">req</span>.usuarioId = decodificado.id;
+    <span class="syntax-keyword">next</span>();
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">401</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Token inválido'</span> });
+  }
+};
+
+<span class="syntax-comment">// Rota de login</span>
+app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/login'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> { email, senha } = <span class="syntax-keyword">req</span>.body;
+    
+    <span class="syntax-comment">// Encontrar usuário</span>
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">findOne</span>({ email });
+    <span class="syntax-keyword">if</span> (!usuario) {
+      <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Usuário não encontrado'</span> });
+    }
+
+    <span class="syntax-comment">// Verificar senha</span>
+    <span class="syntax-keyword">const</span> senhaCorreta = <span class="syntax-keyword">await</span> bcrypt.<span class="syntax-function">compare</span>(senha, usuario.senha);
+    <span class="syntax-keyword">if</span> (!senhaCorreta) {
+      <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: <span class="syntax-string">'Senha incorreta'</span> });
+    }
+
+    <span class="syntax-comment">// Criar token</span>
+    <span class="syntax-keyword">const</span> token = jwt.<span class="syntax-function">sign</span>(
+      { id: usuario._id },
+      process.env.JWT_SECRET,
+      { expiresIn: <span class="syntax-string">'7d'</span> }
+    );
+
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({ token, usuario: { id: usuario._id, email: usuario.email } });
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});
+
+<span class="syntax-comment">// Rota protegida - só acessa com token válido</span>
+app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/perfil'</span>, verificarToken, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">findById</span>(<span class="syntax-keyword">req</span>.usuarioId);
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuario);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+});</code></div>
+
+                    <div class="highlight">
+                        💡 Sempre use HTTPS em produção para proteger tokens!
+                    </div>
+                </section>
+
+                <!-- CHAPTER 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Organização - Estrutura em Pastas</h2>
+
+                    <h3>Estrutura recomendada para APIs maiores</h3>
+                    <div class="code-label">Estrutura de Pastas</div>
+                    <div class="code-block"><code>minha-api/
+├── models/
+│   └── Usuario.js
+├── routes/
+│   ├── usuarios.js
+│   └── auth.js
+├── middlewares/
+│   ├── autenticacao.js
+│   └── validacao.js
+├── controllers/
+│   ├── usuarioController.js
+│   └── authController.js
+├── .env
+├── index.js
+├── package.json
+└── README.md</code></div>
+
+                    <h3>models/Usuario.js</h3>
+                    <div class="code-label">models/Usuario.js</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> mongoose = <span class="syntax-function">require</span>(<span class="syntax-string">'mongoose'</span>);
+
+<span class="syntax-keyword">const</span> usuarioSchema = <span class="syntax-keyword">new</span> mongoose.Schema({
+  nome: { type: <span class="syntax-number">String</span>, required: <span class="syntax-keyword">true</span> },
+  email: { type: <span class="syntax-number">String</span>, required: <span class="syntax-keyword">true</span>, unique: <span class="syntax-keyword">true</span> },
+  senha: { type: <span class="syntax-number">String</span>, required: <span class="syntax-keyword">true</span> },
+  dataCriacao: { type: <span class="syntax-number">Date</span>, default: <span class="syntax-number">Date</span>.now }
+});
+
+<span class="syntax-keyword">module</span>.exports = mongoose.<span class="syntax-function">model</span>(<span class="syntax-string">'Usuario'</span>, usuarioSchema);</code></div>
+
+                    <h3>routes/usuarios.js</h3>
+                    <div class="code-label">routes/usuarios.js</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> express = <span class="syntax-function">require</span>(<span class="syntax-string">'express'</span>);
+<span class="syntax-keyword">const</span> router = express.Router();
+<span class="syntax-keyword">const</span> usuarioController = <span class="syntax-function">require</span>(<span class="syntax-string">'../controllers/usuarioController'</span>);
+<span class="syntax-keyword">const</span> verificarToken = <span class="syntax-function">require</span>(<span class="syntax-string">'../middlewares/autenticacao'</span>);
+
+router.<span class="syntax-function">get</span>(<span class="syntax-string">'/'</span>, usuarioController.listarUsuarios);
+router.<span class="syntax-function">get</span>(<span class="syntax-string">'/:id'</span>, usuarioController.obterUsuario);
+router.<span class="syntax-function">post</span>(<span class="syntax-string">'/'</span>, usuarioController.criarUsuario);
+router.<span class="syntax-function">put</span>(<span class="syntax-string">'/:id'</span>, verificarToken, usuarioController.atualizarUsuario);
+router.<span class="syntax-function">delete</span>(<span class="syntax-string">'/:id'</span>, verificarToken, usuarioController.deletarUsuario);
+
+<span class="syntax-keyword">module</span>.exports = router;</code></div>
+
+                    <h3>controllers/usuarioController.js</h3>
+                    <div class="code-label">controllers/usuarioController.js</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> Usuario = <span class="syntax-function">require</span>(<span class="syntax-string">'../models/Usuario'</span>);
+
+exports.<span class="syntax-function">listarUsuarios</span> = <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> usuarios = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">find</span>();
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuarios);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">500</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+};
+
+exports.<span class="syntax-function">criarUsuario</span> = <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">try</span> {
+    <span class="syntax-keyword">const</span> novoUsuario = <span class="syntax-keyword">new</span> <span class="syntax-function">Usuario</span>(<span class="syntax-keyword">req</span>.body);
+    <span class="syntax-keyword">const</span> usuario = <span class="syntax-keyword">await</span> novoUsuario.<span class="syntax-function">save</span>();
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">201</span>).<span class="syntax-function">json</span>(usuario);
+  } <span class="syntax-keyword">catch</span> (err) {
+    <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: err.message });
+  }
+};</code></div>
+
+                    <h3>index.js - Usando as rotas</h3>
+                    <div class="code-label">index.js - Versão limpa</div>
+                    <div class="code-block"><code><span class="syntax-keyword">require</span>(<span class="syntax-string">'dotenv'</span>).<span class="syntax-function">config</span>();
+<span class="syntax-keyword">const</span> express = <span class="syntax-function">require</span>(<span class="syntax-string">'express'</span>);
+<span class="syntax-keyword">const</span> mongoose = <span class="syntax-function">require</span>(<span class="syntax-string">'mongoose'</span>);
+
+<span class="syntax-keyword">const</span> app = <span class="syntax-function">express</span>();
+
+<span class="syntax-comment">// Middlewares</span>
+app.<span class="syntax-function">use</span>(express.<span class="syntax-function">json</span>());
+
+<span class="syntax-comment">// Conectar ao banco</span>
+mongoose.<span class="syntax-function">connect</span>(process.env.MONGODB_URI)
+  .<span class="syntax-function">then</span>(() => console.<span class="syntax-function">log</span>(<span class="syntax-string">'MongoDB conectado'</span>))
+  .<span class="syntax-function">catch</span>(err => console.<span class="syntax-function">log</span>(<span class="syntax-string">'Erro no banco:'</span>, err));
+
+<span class="syntax-comment">// Importar rotas</span>
+<span class="syntax-keyword">const</span> usuariosRoutes = <span class="syntax-function">require</span>(<span class="syntax-string">'./routes/usuarios'</span>);
+
+<span class="syntax-comment">// Usar rotas</span>
+app.<span class="syntax-function">use</span>(<span class="syntax-string">'/api/usuarios'</span>, usuariosRoutes);
+
+<span class="syntax-comment">// Iniciar servidor</span>
+app.<span class="syntax-function">listen</span>(process.env.PORT || <span class="syntax-number">3000</span>, () => {
+  console.<span class="syntax-function">log</span>(<span class="syntax-string">`Servidor em porta </span>${process.env.PORT || <span class="syntax-number">3000</span>}<span class="syntax-string">`</span>);
+});</code></div>
+                </section>
+
+                <!-- CHAPTER 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Deploy - Colocando a API em Produção</h2>
+
+                    <h3>Opções de Deploy</h3>
+                    <ul>
+                        <li><strong>Heroku:</strong> Gratuito, fácil (deixou de ser 100% grátis)</li>
+                        <li><strong>Railway:</strong> Alternativa ao Heroku, gratuita</li>
+                        <li><strong>Render:</strong> Fácil e gratuito</li>
+                        <li><strong>AWS/Google Cloud:</strong> Profissional e escalável</li>
+                    </ul>
+
+                    <h3>Deploy no Render (recomendado)</h3>
+                    <ol>
+                        <li>Crie conta em <a href="https://render.com" target="_blank">render.com</a></li>
+                        <li>Conecte seu repositório GitHub</li>
+                        <li>Clique em "New" → "Web Service"</li>
+                        <li>Selecione seu repositório</li>
+                        <li>Configure:
+                            <ul>
+                                <li>Build Command: <code>npm install</code></li>
+                                <li>Start Command: <code>npm start</code></li>
+                            </ul>
+                        </li>
+                        <li>Adicione variáveis de ambiente (.env)</li>
+                        <li>Deploy automático ao fazer push no Git</li>
+                    </ol>
+
+                    <h3>Preparar para produção</h3>
+                    <p>Adicione no seu <code>package.json</code>:</p>
+
+                    <div class="code-label">package.json</div>
+                    <div class="code-block"><code>"scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+},
+"engines": {
+  "node": "18.x"
+}</code></div>
+
+                    <h3>Checklist de produção</h3>
+                    <div class="box">
+                        <h4>✓ Antes de fazer deploy:</h4>
+                        <ul class="lista-bullets">
+                            <li>✅ HTTPS configurado</li>
+                            <li>✅ Variáveis sensíveis em .env</li>
+                            <li>✅ Tratamento de erros implementado</li>
+                            <li>✅ Autenticação JWT funcionando</li>
+                            <li>✅ CORS configurado (se necessário)</li>
+                            <li>✅ Rate limiting implementado</li>
+                            <li>✅ Logs configurados</li>
+                            <li>✅ Testes automatizados</li>
+                            <li>✅ .env não committed no Git</li>
+                            <li>✅ Banco de dados em produção</li>
+                        </ul>
+                    </div>
+
+                    <h3>Configurar CORS</h3>
+                    <div class="code-label">index.js - CORS</div>
+                    <div class="code-block"><code"><span class="syntax-keyword">const</span> cors = <span class="syntax-function">require</span>(<span class="syntax-string">'cors'</span>);
+
+app.<span class="syntax-function">use</span>(<span class="syntax-function">cors</span>({
+  origin: <span class="syntax-string">'https://meu-frontend.vercel.app'</span>,
+  credentials: <span class="syntax-keyword">true</span>
+}));</code></div>
+
+                    <p>Primeiro instale: <code>npm install cors</code></p>
+                </section>
+
+                <!-- CHAPTER 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Testes Automatizados</h2>
+
+                    <h3>Instalando Jest (framework de testes)</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install --save-dev jest supertest</code></div>
+
+                    <h3>Exemplo de teste</h3>
+                    <div class="code-label">__tests__/usuarios.test.js</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> request = <span class="syntax-function">require</span>(<span class="syntax-string">'supertest'</span>);
+<span class="syntax-keyword">const</span> app = <span class="syntax-function">require</span>(<span class="syntax-string">'../index'</span>);
+
+<span class="syntax-function">describe</span>(<span class="syntax-string">'GET /api/usuarios'</span>, () => {
+  <span class="syntax-function">it</span>(<span class="syntax-string">'deve retornar lista de usuários'</span>, <span class="syntax-keyword">async</span> () => {
+    <span class="syntax-keyword">const</span> res = <span class="syntax-keyword">await</span> <span class="syntax-function">request</span>(app)
+      .<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios'</span>);
+    
+    <span class="syntax-function">expect</span>(res.statusCode).<span class="syntax-function">toBe</span>(<span class="syntax-number">200</span>);
+    <span class="syntax-function">expect</span>(<span class="syntax-number">Array</span>.<span class="syntax-function">isArray</span>(res.body)).<span class="syntax-function">toBe</span>(<span class="syntax-keyword">true</span>);
+  });
+});
+
+<span class="syntax-function">describe</span>(<span class="syntax-string">'POST /api/usuarios'</span>, () => {
+  <span class="syntax-function">it</span>(<span class="syntax-string">'deve criar novo usuário'</span>, <span class="syntax-keyword">async</span> () => {
+    <span class="syntax-keyword">const</span> res = <span class="syntax-keyword">await</span> <span class="syntax-function">request</span>(app)
+      .<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>)
+      .<span class="syntax-function">send</span>({
+        nome: <span class="syntax-string">'Test User'</span>,
+        email: <span class="syntax-string">'test@example.com'</span>
+      });
+    
+    <span class="syntax-function">expect</span>(res.statusCode).<span class="syntax-function">toBe</span>(<span class="syntax-number">201</span>);
+  });
+});</code></div>
+
+                    <h3>Rodar testes</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm test</code></div>
+                </section>
+
+                <!-- CHAPTER 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Recursos Avançados e Melhores Práticas</h2>
+
+                    <h3>Paginação</h3>
+                    <div class="code-label">index.js - Paginação</div>
+                    <div class="code-block"><code>app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> page = <span class="syntax-number">parseInt</span>(<span class="syntax-keyword">req</span>.query.page) || <span class="syntax-number">1</span>;
+  <span class="syntax-keyword">const</span> limit = <span class="syntax-number">10</span>;
+  <span class="syntax-keyword">const</span> skip = (page - <span class="syntax-number">1</span>) * limit;
+
+  <span class="syntax-keyword">const</span> usuarios = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">find</span>()
+    .<span class="syntax-function">skip</span>(skip)
+    .<span class="syntax-function">limit</span>(limit);
+
+  <span class="syntax-keyword">const</span> total = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">countDocuments</span>();
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>({
+    usuarios,
+    paginaAtual: page,
+    totalPaginas: <span class="syntax-number">Math</span>.<span class="syntax-function">ceil</span>(total / limit),
+    total
+  });
+});</code></div>
+
+                    <h3>Busca e filtro</h3>
+                    <div class="code-label">index.js - Busca</div>
+                    <div class="code-block"><code>app.<span class="syntax-function">get</span>(<span class="syntax-string">'/api/usuarios/busca'</span>, <span class="syntax-keyword">async</span> (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { nome } = <span class="syntax-keyword">req</span>.query;
+
+  <span class="syntax-keyword">const</span> usuarios = <span class="syntax-keyword">await</span> Usuario.<span class="syntax-function">find</span>({
+    nome: { $regex: nome, $options: <span class="syntax-string">'i'</span> } <span class="syntax-comment">// Case-insensitive</span>
+  });
+
+  <span class="syntax-keyword">res</span>.<span class="syntax-function">json</span>(usuarios);
+});</code></div>
+
+                    <h3>Rate Limiting (proteção contra ataques)</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install express-rate-limit</code></div>
+
+                    <div class="code-label">index.js - Rate Limit</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> rateLimit = <span class="syntax-function">require</span>(<span class="syntax-string">'express-rate-limit'</span>);
+
+<span class="syntax-keyword">const</span> limiter = <span class="syntax-function">rateLimit</span>({
+  windowMs: <span class="syntax-number">15</span> * <span class="syntax-number">60</span> * <span class="syntax-number">1000</span>, <span class="syntax-comment">// 15 minutos</span>
+  max: <span class="syntax-number">100</span> <span class="syntax-comment">// máximo 100 requisições</span>
+});
+
+app.<span class="syntax-function">use</span>(<span class="syntax-string">'/api/'</span>, limiter);</code></div>
+
+                    <h3>Validação com Joi</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install joi</code></div>
+
+                    <div class="code-label">index.js - Validação Joi</div>
+                    <div class="code-block"><code"><span class="syntax-keyword">const</span> Joi = <span class="syntax-function">require</span>(<span class="syntax-string">'joi'</span>);
+
+<span class="syntax-keyword">const</span> schema = Joi.<span class="syntax-function">object</span>({
+  nome: Joi.<span class="syntax-function">string</span>().<span class="syntax-function">min</span>(<span class="syntax-number">3</span>).<span class="syntax-function">required</span>(),
+  email: Joi.<span class="syntax-function">string</span>().<span class="syntax-function">email</span>().<span class="syntax-function">required</span>(),
+  idade: Joi.<span class="syntax-function">number</span>().<span class="syntax-function">min</span>(<span class="syntax-number">18</span>)
+});
+
+app.<span class="syntax-function">post</span>(<span class="syntax-string">'/api/usuarios'</span>, (<span class="syntax-keyword">req</span>, <span class="syntax-keyword">res</span>) => {
+  <span class="syntax-keyword">const</span> { error, value } = schema.<span class="syntax-function">validate</span>(<span class="syntax-keyword">req</span>.body);
+
+  <span class="syntax-keyword">if</span> (error) {
+    <span class="syntax-keyword">return</span> <span class="syntax-keyword">res</span>.<span class="syntax-function">status</span>(<span class="syntax-number">400</span>).<span class="syntax-function">json</span>({ erro: error.details[<span class="syntax-number">0</span>].message });
+  }
+
+  <span class="syntax-comment">// Criar usuário...</span>
+});</code></div>
+
+                    <h3>Documentação com Swagger</h3>
+                    <div class="code-label">Terminal</div>
+                    <div class="code-block"><code>npm install swagger-jsdoc swagger-ui-express</code></div>
+
+                    <div class="code-label">index.js - Swagger Setup</div>
+                    <div class="code-block"><code><span class="syntax-keyword">const</span> swaggerJsdoc = <span class="syntax-function">require</span>(<span class="syntax-string">'swagger-jsdoc'</span>);
+<span class="syntax-keyword">const</span> swaggerUi = <span class="syntax-function">require</span>(<span class="syntax-string">'swagger-ui-express'</span>);
+
+<span class="syntax-keyword">const</span> specs = <span class="syntax-function">swaggerJsdoc</span>({
+  definition: {
+    openapi: <span class="syntax-string">'3.0.0'</span>,
+    info: {
+      title: <span class="syntax-string">'Minha API'</span>,
+      version: <span class="syntax-string">'1.0.0'</span>
+    },
+    servers: [
+      { url: <span class="syntax-string">'http://localhost:3000'</span> }
+    ]
+  },
+  apis: [<span class="syntax-string">'./routes/*.js'</span>]
+});
+
+app.<span class="syntax-function">use</span>(<span class="syntax-string">'/api-docs'</span>, swaggerUi.<span class="syntax-function">serve</span>, swaggerUi.<span class="syntax-function">setup</span>(specs));</code></div>
+
+                    <p>Acesse: <code>http://localhost:3000/api-docs</code></p>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>JavaScript API REST - Guia Completo</strong> | 12 capítulos | ~8 horas de aprendizado</p>
+            <p>Desenvolvido para desenvolvedores que querem criar APIs profissionais com Node.js e Express</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 12;
+
+        const chapters = [
+            "Fundamentos de API REST",
+            "Configuração Inicial",
+            "Primeiro Servidor Express",
+            "Rotas e Parâmetros",
+            "Estrutura de Dados",
+            "Banco de Dados - MongoDB",
+            "Middlewares e Erros",
+            "Autenticação JWT",
+            "Organização em Pastas",
+            "Deploy em Produção",
+            "Testes Automatizados",
+            "Recursos Avançados"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(ch => ch.classList.remove('active'));
+            chapters[n - 1].classList.add('active');
+
+            updateTOC();
+            updateButtons();
+            updateProgress();
+
+            // Scroll para o topo
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                currentChapter++;
+                showChapter(currentChapter);
+            }
+        }
+
+        function previousChapter() {
+            if (currentChapter > 1) {
+                currentChapter--;
+                showChapter(currentChapter);
+            }
+        }
+
+        function goToChapter(n) {
+            currentChapter = n;
+            showChapter(currentChapter);
+        }
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        // Inicializar
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

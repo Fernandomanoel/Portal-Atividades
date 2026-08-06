@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática de PowerPoint - Tabelas e Gráficos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            height: 90%;
+            max-width: 1400px;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 50px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --laranja: #d24726;
+            --laranja-claro: #fdece6;
+            --azul: #2563eb;
+            --azul-claro: #e8f0ff;
+            --amarelo: #e0a800;
+            --cinza: #555555;
+            --verde: #1b6b3a;
+            --verde-claro: #e6f4ec;
+            --roxo: #7c3aed;
+            --roxo-claro: #f3e8ff;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--laranja) 0%, #e8703f 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .slide-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .emoji-large {
+            font-size: 2.5em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--laranja);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .box-laranja {
+            background: var(--laranja-claro);
+            border-left-color: var(--laranja);
+        }
+
+        .box-azul {
+            background: var(--azul-claro);
+            border-left-color: var(--azul);
+        }
+
+        .box-amarelo {
+            background: #fff3e0;
+            border-left-color: var(--amarelo);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--laranja);
+            margin-bottom: 15px;
+            font-size: 1.15em;
+        }
+
+        .content-box strong {
+            color: var(--laranja);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card h4 {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .card-laranja {
+            border-color: var(--laranja);
+        }
+
+        .card-laranja h4 {
+            color: var(--laranja);
+        }
+
+        .card-verde {
+            border-color: var(--verde);
+        }
+
+        .card-verde h4 {
+            color: var(--verde);
+        }
+
+        .card-azul {
+            border-color: var(--azul);
+        }
+
+        .card-azul h4 {
+            color: var(--azul);
+        }
+
+        .card-roxo {
+            border-color: var(--roxo);
+        }
+
+        .card-roxo h4 {
+            color: var(--roxo);
+        }
+
+        .lista-bullets {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .lista-bullets li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .lista-bullets li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--laranja);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--laranja);
+        }
+
+        .passo-numero {
+            min-width: 40px;
+            height: 40px;
+            background: var(--laranja);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        .temas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .tema-tag {
+            background: var(--laranja-claro);
+            color: var(--laranja);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        /* Tabela de exemplo */
+        table.exemplo {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table.exemplo th {
+            background: var(--laranja);
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table.exemplo td {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        table.exemplo tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: var(--laranja);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #e8703f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(210, 71, 38, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--azul);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 35px;
+            }
+
+            .slide-header h1 {
+                font-size: 2em;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.6em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .slide-counter {
+                font-size: 0.9em;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--laranja) 0%, #e8703f 100%);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 3.5em;
+        }
+
+        .slide-capa p {
+            font-size: 1.5em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 4em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 8px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--laranja-claro) 0%, white 100%);
+            border: 3px solid var(--laranja);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--laranja);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--laranja);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Anterior</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">9</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">📊📈</div>
+                        <h1>Tabelas e Gráficos</h1>
+                        <p>Avaliação Prática de PowerPoint</p>
+                        <div class="capa-box">
+                            <h2>O desafio:</h2>
+                            <ul>
+                                <li>📌 Tema livre — pode usar dados fictícios</li>
+                                <li>📌 Mínimo de <strong>5 slides</strong></li>
+                                <li>📌 Pelo menos <strong>1 tabela</strong> e <strong>1 gráfico</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>Objetivo</h1>
+                            <p>Apresentando dados de forma visual</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600; font-size: 1.1em;">
+                            Criar uma apresentação com no mínimo 5 slides que mostre dados usando pelo menos UMA TABELA e UM GRÁFICO.
+                        </div>
+
+                        <h3 style="color: var(--laranja); font-weight: 700;">Temas sugeridos (os dados podem ser inventados):</h3>
+                        <div class="temas-list">
+                            <span class="tema-tag">🛒 Vendas mensais de uma loja</span>
+                            <span class="tema-tag">💰 Gastos do mês organizados por categoria</span>
+                            <span class="tema-tag">📋 Resultado de uma pesquisa com amigos</span>
+                            <span class="tema-tag">⚽ Placar de um campeonato</span>
+                            <span class="tema-tag">🌡️ Temperatura da semana</span>
+                            <span class="tema-tag">🎬 Notas de filmes favoritos</span>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Inserindo uma tabela
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📋</div>
+                        <div>
+                            <h1>Passo a Passo: Inserindo uma Tabela</h1>
+                            <p>Organizando os dados em linhas e colunas</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Vá em <strong>Inserir → Tabela</strong> e escolha o número de linhas e colunas.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Preencha a <strong>primeira linha</strong> com os títulos das colunas (ex: Mês, Vendas).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Preencha as demais linhas com os dados.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Use a aba <strong>Design da Tabela</strong> para escolher um estilo de cores.</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-azul">
+                            <h3>Exemplo:</h3>
+                            <table class="exemplo">
+                                <tr><th>Mês</th><th>Vendas (R$)</th></tr>
+                                <tr><td>Janeiro</td><td>4.500</td></tr>
+                                <tr><td>Fevereiro</td><td>5.200</td></tr>
+                                <tr><td>Março</td><td>6.100</td></tr>
+                            </table>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Tipos de gráfico
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📈</div>
+                        <div>
+                            <h1>Qual Gráfico Usar?</h1>
+                            <p>Cada tipo conta uma história diferente</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-3">
+                            <div class="card card-laranja">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">📊</p>
+                                <h4>BARRAS</h4>
+                                <p style="font-size: 0.9em;">Comparar valores entre categorias diferentes</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">🥧</p>
+                                <h4>PIZZA</h4>
+                                <p style="font-size: 0.9em;">Mostrar a proporção de cada parte em um total</p>
+                            </div>
+                            <div class="card card-azul">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">📉</p>
+                                <h4>LINHA</h4>
+                                <p style="font-size: 0.9em;">Mostrar a evolução de algo ao longo do tempo</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Inserindo um gráfico
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖥️</div>
+                        <div>
+                            <h1>Passo a Passo: Inserindo um Gráfico</h1>
+                            <p>Transformando números em imagem</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Vá em <strong>Inserir → Gráfico</strong> e escolha o tipo (Barras, Pizza ou Linha).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Uma <strong>planilha do Excel</strong> vai abrir automaticamente.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Apague os dados de exemplo e digite os <strong>seus dados</strong> (mesma estrutura da tabela).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Feche a planilha — o gráfico no slide atualiza sozinho!</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Formatando o gráfico
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖌️</div>
+                        <div>
+                            <h1>Formatando e Destacando</h1>
+                            <p>Deixando o gráfico fácil de entender</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="content-box box-verde">
+                                <h3>Título do gráfico</h3>
+                                <p>Clique no gráfico → <strong>Elementos do Gráfico (+)</strong> → marque "Título do Gráfico". Escreva algo claro, tipo "Vendas por Mês".</p>
+                            </div>
+                            <div class="content-box box-azul">
+                                <h3>Rótulos de dados</h3>
+                                <p>Em <strong>Elementos do Gráfico (+)</strong>, marque "Rótulos de Dados" para mostrar os números em cima das barras/fatias.</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>💡 Cores</h3>
+                            <p>Use a aba <strong>Design do Gráfico</strong> para trocar as cores e combinar com o resto da apresentação.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Estrutura sugerida
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🧱</div>
+                        <div>
+                            <h1>Estrutura dos 5+ Slides</h1>
+                            <p>Uma sequência que faz sentido</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-3">
+                            <div class="card card-laranja">
+                                <h4>SLIDE 1</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📌</p>
+                                <p><strong>CAPA</strong></p>
+                            </div>
+                            <div class="card card-verde">
+                                <h4>SLIDE 2</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📋</p>
+                                <p><strong>TABELA</strong> com os dados</p>
+                            </div>
+                            <div class="card card-azul">
+                                <h4>SLIDES 3-4</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📊</p>
+                                <p><strong>GRÁFICOS</strong> (um ou mais tipos)</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-laranja" style="margin-top: 20px;">
+                            <h3>✓ ÚLTIMO SLIDE:</h3>
+                            <p>Uma conclusão simples: o que os dados mostram? (ex: "As vendas cresceram 35% no trimestre")</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Erros comuns
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⚠️</div>
+                        <div>
+                            <h1>Erros Comuns</h1>
+                            <p>Fique de olho nisso</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo">
+                            <h3>Gráfico sem título</h3>
+                            <p>Quem olha o slide precisa entender do que se trata sem precisar perguntar.</p>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>Tabela com informação demais</h3>
+                            <p>Se a tabela tem muitas linhas/colunas, considere resumir só o essencial no slide.</p>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>Tipo de gráfico errado</h3>
+                            <p>Não use gráfico de pizza pra mostrar evolução no tempo — use gráfico de linha.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 9: Checklist de entrega
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 20px;">✅</div>
+                            <h2>Checklist Antes de Entregar</h2>
+                            <p style="text-align: left; max-width: 500px; margin: 0 auto;">
+                                ☐ Pelo menos <span class="destaque">5 slides</span><br>
+                                ☐ Pelo menos <span class="destaque">1 tabela</span> formatada<br>
+                                ☐ Pelo menos <span class="destaque">1 gráfico</span> com título<br>
+                                ☐ Tipo de gráfico combina com os dados<br>
+                                ☐ Slide de capa e slide de conclusão
+                            </p>
+                            <p style="margin-top: 25px; font-size: 1.2em; color: var(--laranja); font-weight: 700;">📊 Boa sorte com os números!</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            updateControls();
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

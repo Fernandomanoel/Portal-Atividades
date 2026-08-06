@@ -3,6 +3,12 @@
 const PROVAS_MANIFEST = {
   "ADM": [
     {
+      "type": "quiz_html",
+      "label": "Avaliacao administracao geral estrategica",
+      "path": "provas/ADM/avaliacao-administracao-geral-estrategica.prova.html",
+      "size": "19.9 KB"
+    },
+    {
       "type": "quiz",
       "label": "Avaliação Descritiva Assistente Administrativo I",
       "path": "provas/ADM/Avaliação Descritiva - Assistente Administrativo I.prova.js",
@@ -229,6 +235,14 @@ const PROVAS_MANIFEST = {
       "label": "Link - Avaliação c# II.txt",
       "path": "provas/C#/Link - Avaliação c# II.txt",
       "size": "110 B"
+    }
+  ],
+  "Canva": [
+    {
+      "type": "quiz_html",
+      "label": "Prova canva avaliacao teorica",
+      "path": "provas/Canva/prova-canva-avaliacao-teorica.prova.html",
+      "size": "18.1 KB"
     }
   ],
   "Compras e Estoque": [
@@ -717,7 +731,14 @@ const PROVAS_MANIFEST = {
       "size": "255.4 KB"
     }
   ],
-  "JavaScript": [],
+  "JavaScript": [
+    {
+      "type": "quiz_html",
+      "label": "Prova javascript testes automatizados",
+      "path": "provas/JavaScript/prova-javascript-testes-automatizados.prova.html",
+      "size": "32.2 KB"
+    }
+  ],
   "KIDS": [
     {
       "type": "file",
@@ -864,6 +885,14 @@ const PROVAS_MANIFEST = {
       "label": "Prova Prática – Microsoft PowerPoint 02 (1).pdf",
       "path": "provas/Power Point/Prova Prática – Microsoft PowerPoint 02 (1).pdf",
       "size": "304.2 KB"
+    }
+  ],
+  "Python": [
+    {
+      "type": "quiz_html",
+      "label": "Prova python testes automatizados",
+      "path": "provas/Python/prova-python-testes-automatizados.prova.html",
+      "size": "32.6 KB"
     }
   ],
   "Recepcionista de saúde": [
@@ -1205,6 +1234,7 @@ const PROVAS_CATEGORIES = [
       "Adobe Photoshop II",
       "Adobe Photoshop III",
       "Adobe Premiere",
+      "Canva",
       "CorelDraw I",
       "CorelDraw II",
       "Design Gráfico"
@@ -1230,7 +1260,8 @@ const PROVAS_CATEGORIES = [
       "Banco de Dados",
       "C#",
       "Inteligência Artificial",
-      "Lógica de Programação"
+      "Lógica de Programação",
+      "Python"
     ]
   },
   {

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de Canva - 10 Questões</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a2c91 0%, #9b3cb8 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        header {
+            background: linear-gradient(135deg, #6a2c91 0%, #9b3cb8 100%);
+            color: white;
+            padding: 35px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .progress-container {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #6a2c91;
+            height: 100%;
+            width: 10%;
+            transition: width 0.3s ease;
+        }
+
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question-card {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-left: 6px solid #6a2c91;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .question-card h3 {
+            color: #6a2c91;
+            margin-bottom: 15px;
+            font-size: 1.25em;
+        }
+
+        .question-card p {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-item {
+            background: white;
+            border: 2px solid #cbd5e1;
+            padding: 14px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .option-item:hover {
+            border-color: #6a2c91;
+            background: #f3e8ff;
+        }
+
+        .option-item input[type="radio"] {
+            accent-color: #6a2c91;
+            width: 18px;
+            height: 18px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        button {
+            background: #6a2c91;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #58227a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(106, 44, 145, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .summary-box {
+            background: #f3e8ff;
+            border: 2px solid #6a2c91;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .summary-box h2 {
+            color: #6a2c91;
+            margin-bottom: 15px;
+        }
+
+        .score-display {
+            font-size: 3.5em;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+
+        .score-pass {
+            color: #10b981;
+        }
+
+        .score-fail {
+            color: #ef4444;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Prova de Canva</h1>
+            <p>Avaliação teórica sobre a atividade prática (10 Questões)</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <form id="canvaExamForm">
+            <div class="chapter active" id="q1">
+                <div class="question-card">
+                    <h3>Questão 1 de 10</h3>
+                    <p>Qual ferramenta do Canva permite remover o fundo de uma imagem automaticamente?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p1" value="A"> A) Cortar (Crop)</label>
+                        <label class="option-item"><input type="radio" name="p1" value="B"> B) Remover fundo</label>
+                        <label class="option-item"><input type="radio" name="p1" value="C"> C) Moldura</label>
+                        <label class="option-item"><input type="radio" name="p1" value="D"> D) Grade</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q2">
+                <div class="question-card">
+                    <h3>Questão 2 de 10</h3>
+                    <p>Para gerar um clipe de vídeo a partir da descrição de uma cena em texto, qual recurso do Canva deve ser usado?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p2" value="A"> A) Magic Media</label>
+                        <label class="option-item"><input type="radio" name="p2" value="B"> B) Magic Write</label>
+                        <label class="option-item"><input type="radio" name="p2" value="C"> C) Magic Eraser</label>
+                        <label class="option-item"><input type="radio" name="p2" value="D"> D) Magic Resize</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q3">
+                <div class="question-card">
+                    <h3>Questão 3 de 10</h3>
+                    <p>Na regra de cores 60/30/10 usada para deixar um design harmônico, o que representa o "10%"?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p3" value="A"> A) A cor principal, usada no fundo e textos</label>
+                        <label class="option-item"><input type="radio" name="p3" value="B"> B) A cor secundária, usada em elementos de apoio</label>
+                        <label class="option-item"><input type="radio" name="p3" value="C"> C) A cor de destaque, usada em botões e CTAs</label>
+                        <label class="option-item"><input type="radio" name="p3" value="D"> D) A cor de fundo da capa apenas</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q4">
+                <div class="question-card">
+                    <h3>Questão 4 de 10</h3>
+                    <p>Segundo as boas práticas ensinadas na atividade, qual é o número mínimo de slides recomendado para um carrossel de Instagram?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p4" value="A"> A) 2</label>
+                        <label class="option-item"><input type="radio" name="p4" value="B"> B) 4</label>
+                        <label class="option-item"><input type="radio" name="p4" value="C"> C) 8</label>
+                        <label class="option-item"><input type="radio" name="p4" value="D"> D) 12</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q5">
+                <div class="question-card">
+                    <h3>Questão 5 de 10</h3>
+                    <p>Qual é a função da ferramenta "Magic Grab" no Canva?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p5" value="A"> A) Selecionar e mover um objeto específico dentro de uma imagem ou vídeo</label>
+                        <label class="option-item"><input type="radio" name="p5" value="B"> B) Compactar o arquivo final em ZIP</label>
+                        <label class="option-item"><input type="radio" name="p5" value="C"> C) Traduzir textos automaticamente</label>
+                        <label class="option-item"><input type="radio" name="p5" value="D"> D) Criar gráficos e tabelas</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q6">
+                <div class="question-card">
+                    <h3>Questão 6 de 10</h3>
+                    <p>Para um carrossel parecer profissional, o que deve se manter consistente em todos os slides?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p6" value="A"> A) O tema de cada slide deve ser diferente</label>
+                        <label class="option-item"><input type="radio" name="p6" value="B"> B) As mesmas cores e fontes</label>
+                        <label class="option-item"><input type="radio" name="p6" value="C"> C) Apenas o tamanho da fonte</label>
+                        <label class="option-item"><input type="radio" name="p6" value="D"> D) Não precisa manter nada consistente</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q7">
+                <div class="question-card">
+                    <h3>Questão 7 de 10</h3>
+                    <p>Qual formato de arquivo é indicado para baixar o vídeo editado no Canva?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p7" value="A"> A) MP4</label>
+                        <label class="option-item"><input type="radio" name="p7" value="B"> B) PSD</label>
+                        <label class="option-item"><input type="radio" name="p7" value="C"> C) DOCX</label>
+                        <label class="option-item"><input type="radio" name="p7" value="D"> D) XLSX</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q8">
+                <div class="question-card">
+                    <h3>Questão 8 de 10</h3>
+                    <p>Se o Magic Media não estiver disponível na conta (ex: contas gratuitas ou de educação), qual é o "Plano B" ensinado na atividade?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p8" value="A"> A) Desistir da etapa de vídeo</label>
+                        <label class="option-item"><input type="radio" name="p8" value="B"> B) Usar Texto para Imagem e animar, ou pegar um vídeo pronto em Elementos</label>
+                        <label class="option-item"><input type="radio" name="p8" value="C"> C) Comprar obrigatoriamente o Canva Pro</label>
+                        <label class="option-item"><input type="radio" name="p8" value="D"> D) Deixar o slide totalmente em branco</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q9">
+                <div class="question-card">
+                    <h3>Questão 9 de 10</h3>
+                    <p>O que é recomendado incluir no último slide de um carrossel?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p9" value="A"> A) Uma nova introdução do tema</label>
+                        <label class="option-item"><input type="radio" name="p9" value="B"> B) Uma chamada para ação (CTA), como "Salve" ou "Siga"</label>
+                        <label class="option-item"><input type="radio" name="p9" value="C"> C) Um preço aleatório</label>
+                        <label class="option-item"><input type="radio" name="p9" value="D"> D) O slide deve ficar em branco</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q10">
+                <div class="question-card">
+                    <h3>Questão 10 de 10</h3>
+                    <p>Qual das opções abaixo NÃO faz parte das 4 etapas da avaliação prática de carrossel (edição de imagem, geração de vídeo com IA, edição do vídeo e montagem do carrossel)?</p>
+                    <div class="options-list">
+                        <label class="option-item"><input type="radio" name="p10" value="A"> A) Editar uma imagem com pelo menos 2 ferramentas</label>
+                        <label class="option-item"><input type="radio" name="p10" value="B"> B) Gerar um vídeo com Inteligência Artificial</label>
+                        <label class="option-item"><input type="radio" name="p10" value="C"> C) Programar um jogo em JavaScript</label>
+                        <label class="option-item"><input type="radio" name="p10" value="D"> D) Montar o carrossel final com capa e CTA</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chapter" id="q11">
+                <div class="summary-box">
+                    <h2 id="resultTitle">🎉 Prova Concluída!</h2>
+                    <div class="score-display" id="scoreDisplay">0 / 10</div>
+                    <p id="resultMessage">Calculando seu resultado...</p>
+                </div>
+            </div>
+
+            <div class="nav-buttons" id="navButtonsContainer">
+                <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+                <span id="counterDisplay" style="font-weight: 600; color: #6a2c91;">Questão 1 de 10</span>
+                <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+            </div>
+        </form>
+
+        <footer>
+            <p><strong>Portal Educacional Interativo</strong> | Prova de Canva</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 11; // 10 questões + 1 tela final
+
+        const gabarito = {
+            p1: "B", p2: "A", p3: "C", p4: "B", p5: "A",
+            p6: "B", p7: "A", p8: "B", p9: "B", p10: "C",
+        };
+
+        function updateView() {
+            for (let i = 1; i <= totalSteps; i++) {
+                const el = document.getElementById('q' + i);
+                if (el) {
+                    el.classList.toggle('active', i === currentStep);
+                }
+            }
+
+            document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStep === totalSteps) {
+                document.getElementById('navButtonsContainer').style.display = 'none';
+                calcularResultado();
+            } else {
+                document.getElementById('navButtonsContainer').style.display = 'flex';
+                nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Ver Resultado →' : 'Próximo →';
+            }
+
+            if (currentStep <= 10) {
+                document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+                document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+            } else {
+                document.getElementById('counterDisplay').textContent = 'Resultado Final';
+                document.getElementById('progressBar').style.width = '100%';
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function changeChapter(direction) {
+            if (direction === 1 && currentStep < totalSteps) {
+                currentStep++;
+            } else if (direction === -1 && currentStep > 1) {
+                currentStep--;
+            }
+            updateView();
+        }
+
+        function calcularResultado() {
+            const form = document.getElementById('canvaExamForm');
+            let acertos = 0;
+            for (const pergunta in gabarito) {
+                const selecionado = form.querySelector(`input[name="${pergunta}"]:checked`);
+                if (selecionado && selecionado.value === gabarito[pergunta]) {
+                    acertos++;
+                }
+            }
+
+            const nota = acertos;
+            const scoreEl = document.getElementById('scoreDisplay');
+            scoreEl.textContent = `${nota} / 10`;
+            scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+            const msg = document.getElementById('resultMessage');
+            if (nota === 10) {
+                msg.textContent = 'Perfeito! Você acertou todas as questões sobre Canva!';
+            } else if (nota >= 7) {
+                msg.textContent = 'Muito bem! Você foi aprovado(a) na prova de Canva.';
+            } else if (nota >= 5) {
+                msg.textContent = 'Quase lá! Revise os conceitos de design e as ferramentas do Canva.';
+            } else {
+                msg.textContent = 'Reveja a atividade de Canva e tente novamente para melhorar sua nota.';
+            }
+        }
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+            if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+        });
+
+        updateView();
+    </script>
+</body>
+</html>

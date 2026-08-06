@@ -53,6 +53,7 @@ CATEGORY_MAP = {
     "Adobe Photoshop II": "Design Gráfico",
     "Adobe Photoshop III": "Design Gráfico",
     "Adobe Premiere": "Design Gráfico",
+    "Canva": "Design Gráfico",
     "CorelDraw I": "Design Gráfico",
     "CorelDraw II": "Design Gráfico",
     "Design Gráfico": "Design Gráfico",
@@ -71,6 +72,7 @@ CATEGORY_MAP = {
     "C#": "Programação e Dados",
     "Inteligência Artificial": "Programação e Dados",
     "Lógica de Programação": "Programação e Dados",
+    "Python": "Programação e Dados",
 
     "Desenvolvimento de Games": "Games",
 

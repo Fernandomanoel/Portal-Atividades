@@ -255,6 +255,27 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO I - INICIANDO COM O PROCV.pdf",
       },
+      {
+        titulo: "Controle de Vendas e Comissões (Cálculo Avançado)",
+        descricao:
+          "Planilha extensa com 40 vendas para praticar fórmulas SE aninhadas, SOMASE, CONT.SE, MÁXIMO e ÍNDICE/CORRESP no cálculo de descontos, comissões e resumo por vendedor.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Controle de Vendas e Comissões.xlsx",
+      },
+      {
+        titulo: "Catálogo de Produtos: Busca e Gráficos",
+        descricao:
+          "Planilha extensa com catálogo de 35 produtos e 70 vendas para praticar PROCV, ÍNDICE+CORRESP em um painel de busca, e montar gráficos de barras, pizza e linha num dashboard.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Catálogo de Produtos com Busca e Gráficos.xlsx",
+      },
+      {
+        titulo: "Notas da Turma e Otimização com Solver",
+        descricao:
+          "Planilha extensa com as notas de 25 alunos (médias ponderadas e situação) e um problema de otimização pronto para resolver com a ferramenta Solver: distribuir horas de estudo para maximizar a média final.",
+        tipo: "planilha",
+        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO - Notas da Turma e Otimização com Solver.xlsx",
+      },
     ],
   },
 

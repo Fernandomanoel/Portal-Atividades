@@ -446,6 +446,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-word-mini-relatorio-pdf.html",
       },
+      {
+        titulo: "Missão: Minha Primeira Apresentação",
+        descricao:
+          "Atividade guiada para crianças criarem uma apresentação no PowerPoint: escolher design, montar slide de capa, adicionar slides com imagens e apresentar com F5, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
+      },
     ],
   },
 

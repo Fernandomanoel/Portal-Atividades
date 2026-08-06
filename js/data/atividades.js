@@ -365,6 +365,27 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/PowerPoint/PowerPoint - Lista de Atividades 01.pdf",
       },
+      {
+        titulo: "Avaliação Prática: Criação e Design de Apresentação",
+        descricao:
+          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 6 slides, aplicando boas práticas de design: estrutura, regra 60/30/10 de cores e consistência visual.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-criacao-e-design.html",
+      },
+      {
+        titulo: "Avaliação Prática: Tabelas e Gráficos",
+        descricao:
+          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 5 slides, incluindo pelo menos uma tabela e um gráfico com dados formatados.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-tabelas-e-graficos.html",
+      },
+      {
+        titulo: "Avaliação Prática: Vídeo, Edição e Transições",
+        descricao:
+          "Atividade guiada para inserir um vídeo em um slide, aplicar recursos de edição de vídeo (cortar, fade) e efeitos de transição entre slides. Inclui vídeo de prática para download.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-video-e-transicoes.html",
+      },
     ],
   },
 

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática de PowerPoint - Criação e Design de Apresentação</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            height: 90%;
+            max-width: 1400px;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 50px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --laranja: #d24726;
+            --laranja-claro: #fdece6;
+            --azul: #2563eb;
+            --azul-claro: #e8f0ff;
+            --amarelo: #e0a800;
+            --cinza: #555555;
+            --verde: #1b6b3a;
+            --verde-claro: #e6f4ec;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--laranja) 0%, #e8703f 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .slide-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .emoji-large {
+            font-size: 2.5em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--laranja);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .box-laranja {
+            background: var(--laranja-claro);
+            border-left-color: var(--laranja);
+        }
+
+        .box-azul {
+            background: var(--azul-claro);
+            border-left-color: var(--azul);
+        }
+
+        .box-amarelo {
+            background: #fff3e0;
+            border-left-color: var(--amarelo);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--laranja);
+            margin-bottom: 15px;
+            font-size: 1.15em;
+        }
+
+        .content-box strong {
+            color: var(--laranja);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card h4 {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .card-laranja {
+            border-color: var(--laranja);
+        }
+
+        .card-laranja h4 {
+            color: var(--laranja);
+        }
+
+        .card-verde {
+            border-color: var(--verde);
+        }
+
+        .card-verde h4 {
+            color: var(--verde);
+        }
+
+        .card-azul {
+            border-color: var(--azul);
+        }
+
+        .card-azul h4 {
+            color: var(--azul);
+        }
+
+        .cores-blocos {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cor-bloco {
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .cor-visual {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cor-bloco p {
+            font-weight: 600;
+            color: var(--laranja);
+            font-size: 0.9em;
+        }
+
+        .lista-bullets {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .lista-bullets li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .lista-bullets li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--laranja);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--laranja);
+        }
+
+        .passo-numero {
+            min-width: 40px;
+            height: 40px;
+            background: var(--laranja);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        .temas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .tema-tag {
+            background: var(--laranja-claro);
+            color: var(--laranja);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: var(--laranja);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #e8703f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(210, 71, 38, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--azul);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 35px;
+            }
+
+            .slide-header h1 {
+                font-size: 2em;
+            }
+
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .cor-visual {
+                width: 80px;
+                height: 80px;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.6em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .slide-counter {
+                font-size: 0.9em;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--laranja) 0%, #e8703f 100%);
+            color: white;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 3.5em;
+        }
+
+        .slide-capa p {
+            font-size: 1.5em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 4em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 8px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--laranja-claro) 0%, white 100%);
+            border: 3px solid var(--laranja);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--laranja);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--laranja);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Anterior</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">8</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">🎨📊</div>
+                        <h1>Criação e Design de Apresentação</h1>
+                        <p>Avaliação Prática de PowerPoint</p>
+                        <div class="capa-box">
+                            <h2>O desafio:</h2>
+                            <ul>
+                                <li>📌 Tema livre — escolha algo que você domine ou goste</li>
+                                <li>📌 Mínimo de <strong>6 slides</strong></li>
+                                <li>📌 Aplicar boas práticas de design visual</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>Objetivo</h1>
+                            <p>O que você vai entregar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600; font-size: 1.1em;">
+                            Criar uma APRESENTAÇÃO com no mínimo 6 slides, sobre um tema à sua escolha, aplicando boas práticas de design.
+                        </div>
+
+                        <h3 style="color: var(--laranja); font-weight: 700;">Temas sugeridos:</h3>
+                        <div class="temas-list">
+                            <span class="tema-tag">🏢 Apresentação de uma empresa fictícia</span>
+                            <span class="tema-tag">🌎 Um lugar para viajar</span>
+                            <span class="tema-tag">📱 Lançamento de um produto</span>
+                            <span class="tema-tag">🎓 Um curso ou hobby</span>
+                            <span class="tema-tag">🍽️ Um cardápio de restaurante</span>
+                            <span class="tema-tag">⚽ Um time ou esporte</span>
+                        </div>
+
+                        <div class="content-box box-azul">
+                            <h3>💡 Dica: escolha algo que você conhece bem!</h3>
+                            <p>Fica mais fácil pensar no conteúdo quando o tema já faz sentido pra você.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Preparação
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⚙️</div>
+                        <div>
+                            <h1>Preparação</h1>
+                            <p>Antes de abrir o PowerPoint</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="card card-verde">
+                                <h4>PASSO 1</h4>
+                                <p>No papel ou em um documento, defina:</p>
+                                <ul class="lista-bullets" style="text-align: left; font-size: 0.9em;">
+                                    <li>Qual é a MENSAGEM principal?</li>
+                                    <li>Quem vai assistir a apresentação?</li>
+                                </ul>
+                            </div>
+                            <div class="card card-laranja">
+                                <h4>PASSO 2</h4>
+                                <p>Liste os TÓPICOS que você quer cobrir (um por slide, mais ou menos).</p>
+                                <p style="margin-top: 10px; font-size: 0.85em; font-style: italic;">Exemplo: se o tema é "viagem", os tópicos podem ser: destino, hospedagem, passeios, orçamento.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Estrutura sugerida
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🧱</div>
+                        <div>
+                            <h1>Estrutura dos 6+ Slides</h1>
+                            <p>Uma sequência que faz sentido</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-3">
+                            <div class="card card-laranja">
+                                <h4>SLIDE 1</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📌</p>
+                                <p><strong>CAPA</strong></p>
+                                <p style="font-size: 0.85em;">Título da apresentação e seu nome</p>
+                            </div>
+                            <div class="card card-azul">
+                                <h4>SLIDE 2</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">🗂️</p>
+                                <p><strong>AGENDA</strong></p>
+                                <p style="font-size: 0.85em;">O que será apresentado (sumário)</p>
+                            </div>
+                            <div class="card card-verde">
+                                <h4>SLIDES 3-5</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📄</p>
+                                <p><strong>CONTEÚDO</strong></p>
+                                <p style="font-size: 0.85em;">Um tópico por slide, com texto e imagem</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-laranja" style="margin-top: 20px;">
+                            <h3>✓ ÚLTIMO SLIDE (6º ou mais):</h3>
+                            <p>Encerramento com um resumo ou uma chamada para ação (ex: "Dúvidas?", "Vamos conversar!").</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Regra 60/30/10
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎨</div>
+                        <div>
+                            <h1>Regra 60/30/10</h1>
+                            <p>Paleta de cores profissional</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--laranja); font-weight: 600; margin-bottom: 30px;">Use estas proporções de cor para deixar os slides HARMÔNICOS:</p>
+
+                        <div class="cores-blocos">
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--laranja);">60%</div>
+                                <p>Cor Principal</p>
+                            </div>
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--azul);">30%</div>
+                                <p>Cor Secundária</p>
+                            </div>
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--amarelo);">10%</div>
+                                <p>Cor de Destaque</p>
+                            </div>
+                        </div>
+
+                        <div class="content-box box-laranja" style="margin-top: 30px; text-align: center;">
+                            <p style="font-size: 1.1em;">
+                                <strong>60%</strong> = fundo e textos principais &nbsp;•&nbsp;
+                                <strong>30%</strong> = elementos secundários &nbsp;•&nbsp;
+                                <strong>10%</strong> = botões e destaques
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Regra 6x6 e consistência
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📏</div>
+                        <div>
+                            <h1>Menos é Mais</h1>
+                            <p>Boas práticas de texto e consistência</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="content-box box-azul">
+                                <h3>Regra 6x6</h3>
+                                <p>No máximo <strong>6 linhas por slide</strong>, com no máximo <strong>6 palavras por linha</strong>. O slide é um apoio visual, não um texto para ser lido palavra por palavra.</p>
+                            </div>
+                            <div class="content-box box-verde">
+                                <h3>Consistência</h3>
+                                <p>Use a <strong>mesma fonte</strong> e as <strong>mesmas cores</strong> em todos os slides. Isso passa profissionalismo.</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>💡 Dica: use o Design do PowerPoint</h3>
+                            <p>Na aba <strong>Design</strong>, escolha um tema pronto — ele já aplica cores e fontes consistentes em todos os slides automaticamente.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Passo a passo aplicar o design
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖌️</div>
+                        <div>
+                            <h1>Passo a Passo: Aplicando o Design</h1>
+                            <p>Deixando tudo consistente</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Abra o PowerPoint e crie uma <strong>Apresentação em branco</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Vá na aba <strong>Design</strong> e escolha um tema que combine com o seu assunto.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Use <strong>Novo Slide</strong> (aba Página Inicial) para adicionar cada slide da sua estrutura.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Insira imagens em <strong>Inserir → Imagens</strong> para ilustrar os slides de conteúdo.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Checklist de entrega
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 20px;">✅</div>
+                            <h2>Checklist Antes de Entregar</h2>
+                            <p style="text-align: left; max-width: 500px; margin: 0 auto;">
+                                ☐ Pelo menos <span class="destaque">6 slides</span><br>
+                                ☐ Slide de capa e slide de encerramento<br>
+                                ☐ Tema/design aplicado a todos os slides<br>
+                                ☐ Cores e fontes consistentes<br>
+                                ☐ Pelo menos uma imagem inserida<br>
+                                ☐ Textos curtos e diretos (regra 6x6)
+                            </p>
+                            <p style="margin-top: 25px; font-size: 1.2em; color: var(--laranja); font-weight: 700;">🎨 Boa sorte! Capriche no visual!</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            updateControls();
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

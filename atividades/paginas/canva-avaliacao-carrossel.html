@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática de Canva - Apresentação Interativa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 90%;
+            height: 90%;
+            max-width: 1400px;
+            max-height: 800px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 50px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide.prev {
+            transform: translateX(-100px) scale(0.95);
+        }
+
+        /* Cores tema */
+        :root {
+            --roxo: #6a2c91;
+            --roxo-claro: #efe7f5;
+            --azul: #00c4cc;
+            --amarelo: #e0a800;
+            --cinza: #555555;
+            --verde: #1b6b3a;
+            --branco: #ffffff;
+        }
+
+        /* Headers dos slides */
+        .slide-header {
+            background: linear-gradient(90deg, var(--roxo) 0%, #9b3cb8 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .slide-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .emoji-large {
+            font-size: 2.5em;
+        }
+
+        /* Conteúdo dos slides */
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--roxo);
+            border-radius: 10px;
+        }
+
+        /* Caixas de conteúdo */
+        .content-box {
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid;
+            font-size: 1em;
+            line-height: 1.7;
+        }
+
+        .box-roxo {
+            background: var(--roxo-claro);
+            border-left-color: var(--roxo);
+        }
+
+        .box-azul {
+            background: #e8fbfc;
+            border-left-color: var(--azul);
+        }
+
+        .box-amarelo {
+            background: #fff3e0;
+            border-left-color: var(--amarelo);
+        }
+
+        .box-verde {
+            background: #e6f4ec;
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--roxo);
+            margin-bottom: 15px;
+            font-size: 1.15em;
+        }
+
+        .content-box strong {
+            color: var(--roxo);
+        }
+
+        /* Grid de caixas */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card h4 {
+            margin-bottom: 15px;
+            font-size: 1em;
+        }
+
+        .card-roxo {
+            border-color: var(--roxo);
+        }
+
+        .card-roxo h4 {
+            color: var(--roxo);
+        }
+
+        .card-verde {
+            border-color: var(--verde);
+        }
+
+        .card-verde h4 {
+            color: var(--verde);
+        }
+
+        .card-azul {
+            border-color: var(--azul);
+        }
+
+        .card-azul h4 {
+            color: var(--azul);
+        }
+
+        .card-amarelo {
+            border-color: var(--amarelo);
+        }
+
+        .card-amarelo h4 {
+            color: var(--roxo);
+        }
+
+        /* Cores blocos */
+        .cores-blocos {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cor-bloco {
+            text-align: center;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .cor-visual {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.5em;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .cor-bloco p {
+            font-weight: 600;
+            color: var(--roxo);
+            font-size: 0.9em;
+        }
+
+        /* Listas */
+        .lista-bullets {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .lista-bullets li {
+            padding-left: 30px;
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .lista-bullets li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--roxo);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* Passos numerados */
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--roxo);
+        }
+
+        .passo-numero {
+            min-width: 40px;
+            height: 40px;
+            background: var(--roxo);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        /* Tema sugerido */
+        .temas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .tema-tag {
+            background: var(--roxo-claro);
+            color: var(--roxo);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        /* Controles de navegação */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: var(--roxo);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #9b3cb8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(106, 44, 145, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            margin: 0 30px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--azul);
+            transition: width 0.3s;
+        }
+
+        /* Responsivo */
+        @media (max-width: 1024px) {
+            .slide {
+                padding: 35px;
+            }
+
+            .slide-header h1 {
+                font-size: 2em;
+            }
+
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .cor-visual {
+                width: 80px;
+                height: 80px;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.6em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 10px 0;
+                width: 100%;
+            }
+
+            .slide-counter {
+                font-size: 0.9em;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        /* Slide específico: Capa */
+        .slide-capa {
+            background: linear-gradient(135deg, var(--roxo) 0%, #9b3cb8 100%);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 30px;
+        }
+
+        .slide-capa .slide-header {
+            background: none;
+            margin-bottom: 0;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 3.5em;
+        }
+
+        .slide-capa p {
+            font-size: 1.5em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 4em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 8px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        /* Slide final de motivação */
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--roxo-claro) 0%, white 100%);
+            border: 3px solid var(--roxo);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--roxo);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--roxo);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Anterior</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">12</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">🎨</div>
+                        <h1>Avaliação Prática de Canva</h1>
+                        <p>Criação de um Post Carrossel:<br>Imagem, Vídeo com IA e Edição</p>
+                        <p style="font-size: 1.2em; margin-top: 30px;">Tema livre • Criatividade sem limites</p>
+                        <div class="capa-box">
+                            <h2>4 Etapas:</h2>
+                            <ul>
+                                <li>1️⃣ Edição de imagem</li>
+                                <li>2️⃣ Gerar vídeo com IA</li>
+                                <li>3️⃣ Editar o vídeo</li>
+                                <li>4️⃣ Montar o carrossel</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Objetivo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>Objetivo</h1>
+                            <p>O que você vai fazer</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600; font-size: 1.1em;">
+                            Criar uma POSTAGEM EM CARROSSEL (vários slides) com tema à sua escolha
+                        </div>
+
+                        <h3 style="color: var(--roxo); font-weight: 700;">Temas sugeridos:</h3>
+                        <div class="temas-list">
+                            <span class="tema-tag">☕ Cafeteria</span>
+                            <span class="tema-tag">💪 Academia</span>
+                            <span class="tema-tag">✈️ Viagem</span>
+                            <span class="tema-tag">🐾 Pet shop</span>
+                            <span class="tema-tag">💅 Beleza</span>
+                            <span class="tema-tag">💻 Tecnologia</span>
+                            <span class="tema-tag">🍳 Receita</span>
+                            <span class="tema-tag">📚 Estudo</span>
+                        </div>
+
+                        <div class="content-box box-azul">
+                            <h3>💡 Dica: escolha algo que você GOSTA!</h3>
+                            <ul class="lista-bullets">
+                                <li>Você pode pegar imagens da internet</li>
+                                <li>Clique direito > Copiar imagem > Ctrl+V no Canva</li>
+                                <li>Ou use a aba <strong>Uploads > Enviar arquivos</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Preparação
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⚙️</div>
+                        <div>
+                            <h1>Preparação</h1>
+                            <p>Começar o projeto</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="card card-verde">
+                                <h4>PASSO 1</h4>
+                                <p>No Canva, clique em:</p>
+                                <p><strong>Criar um design</strong></p>
+                                <p style="margin: 10px 0;">↓</p>
+                                <p><strong>Carrossel do Instagram</strong></p>
+                                <p style="margin: 10px 0; font-size: 0.9em;">(ou Post do Instagram 1080 x 1080)</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <h4>PASSO 2</h4>
+                                <p>Defina no papel:</p>
+                                <ul class="lista-bullets" style="text-align: left; font-size: 0.9em;">
+                                    <li>Qual é a MENSAGEM?</li>
+                                    <li>Quantos SLIDES? (mínimo 4)</li>
+                                </ul>
+                                <p style="margin-top: 15px; font-size: 0.85em; font-style: italic;">Exemplo: Cafeteria → 4 slides sobre dicas de café</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: Etapa 1 - Edição
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">1️⃣</div>
+                        <div>
+                            <h1>Edição de Imagem</h1>
+                            <p>Trazer e editar uma imagem</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600; font-size: 1em;">O que fazer: editar pelo menos UMA imagem usando <strong>2+ ferramentas</strong> do Canva</p>
+                        
+                        <div class="grid-2">
+                            <div class="content-box box-azul">
+                                <h3>🛠️ FERRAMENTAS</h3>
+                                <ul class="lista-bullets" style="text-align: left;">
+                                    <li>Remover fundo</li>
+                                    <li>Ajustes (brilho, contraste)</li>
+                                    <li>Filtros</li>
+                                    <li>Efeitos (sombra, Magic Grab)</li>
+                                    <li>Cortar (Crop)</li>
+                                </ul>
+                            </div>
+                            <div class="content-box box-amarelo">
+                                <h3>💡 EXEMPLO</h3>
+                                <p>Se você escolheu <strong>CAFÉ</strong>:</p>
+                                <ol style="text-align: left; padding-left: 20px;">
+                                    <li>Pegue uma foto de xícara</li>
+                                    <li>Use 'Ajustes' para brilho</li>
+                                    <li>Use 'Filtro' para cores quentes</li>
+                                    <li>Coloque em Moldura</li>
+                                </ol>
+                                <p style="margin-top: 10px; font-weight: 600;">Resultado: imagem profissional!</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Etapa 2 - IA
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">2️⃣</div>
+                        <div>
+                            <h1>Gerar Vídeo com IA</h1>
+                            <p>Magic Media do Canva</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600;">O que fazer: criar um clipe de vídeo descrevendo uma cena em <strong>TEXTO</strong></p>
+                        
+                        <div class="grid-3">
+                            <div class="card card-verde">
+                                <h4>1. Magic Media</h4>
+                                <p style="font-size: 0.9em;">Aba Elementos</p>
+                                <p style="margin: 8px 0;">↓</p>
+                                <p style="font-size: 0.9em;">Magic Media</p>
+                                <p style="margin: 8px 0;">↓</p>
+                                <p style="font-size: 0.9em;">Vídeo</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <h4>2. Escreva Prompt</h4>
+                                <p style="text-align: left; font-size: 0.9em;">
+                                    Descreva:<br>
+                                    • LUGAR<br>
+                                    • CORES<br>
+                                    • MOVIMENTO
+                                </p>
+                            </div>
+                            <div class="card card-amarelo">
+                                <h4>3. Gerar & Escolher</h4>
+                                <p style="font-size: 0.9em;">Clique em GERAR</p>
+                                <p style="margin: 8px 0;">↓</p>
+                                <p style="font-size: 0.9em;">Aguarde</p>
+                                <p style="margin: 8px 0;">↓</p>
+                                <p style="font-size: 0.9em;">Escolha o melhor</p>
+                            </div>
+                        </div>
+
+                        <div class="content-box box-roxo" style="margin-top: 15px;">
+                            <h3>📝 EXEMPLO DE PROMPT:</h3>
+                            <p style="font-style: italic; margin: 10px 0;">"Xícara de café fumegante sobre mesa de madeira, luz suave da manhã, câmera se aproximando devagar."</p>
+                            <p style="font-weight: 600; color: var(--verde);">💡 Prompts curtos e concretos funcionam melhor!</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Plano B
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">2️⃣</div>
+                        <div>
+                            <h1>Plano B</h1>
+                            <p>Se o Magic Media não funcionar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo" style="font-weight: 600;">
+                            ⚠️ O Magic Media tem usos LIMITADOS na conta gratuita e pode não estar liberado em Canva para Educação.
+                        </div>
+
+                        <p style="color: var(--roxo); font-weight: 700; margin-top: 15px;">Se não conseguir gerar o vídeo, use o PLANO B:</p>
+
+                        <div class="grid-2">
+                            <div class="content-box box-verde">
+                                <h3>Opção 1: Imagem por IA</h3>
+                                <p>Use <strong>Texto para Imagem</strong> (4 imagens). Escolha 1. Depois anime com <strong>Elementos > Animação</strong>.</p>
+                            </div>
+                            <div class="content-box box-verde">
+                                <h3>Opção 2: Vídeo Pronto</h3>
+                                <p>Vá em <strong>Elementos > Vídeos</strong>. Procure por vídeo que encaixe no seu tema. Use e edite.</p>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-top: 20px; padding: 15px; background: #e6f4ec; border-radius: 10px; border-left: 5px solid var(--verde);">
+                            <p style="color: var(--verde); font-weight: 600; font-size: 1.05em;">⭐ As duas opções valem! Professor entenderá.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Etapa 3 - Editar Vídeo
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">3️⃣</div>
+                        <div>
+                            <h1>Editar o Vídeo</h1>
+                            <p>Deixar pronto para postar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600; margin-bottom: 15px;">O que fazer: cortar, adicionar texto e música</p>
+
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">
+                                    <strong>Cortar:</strong> Arraste as bordas na LINHA DO TEMPO. Deixe curto e direto.
+                                </div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">
+                                    <strong>Duração:</strong> Ajuste o tempo. Ideal: 3-5 segundos para redes sociais.
+                                </div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">
+                                    <strong>Texto:</strong> Aba Texto > adicione legenda. Aplique Animação.
+                                </div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">
+                                    <strong>Áudio:</strong> Aba Elementos > Áudio. Se tiver Beat Sync, use para sincronizar!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Etapa 4 - Carrossel
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">4️⃣</div>
+                        <div>
+                            <h1>Montar o Carrossel</h1>
+                            <p>Organizar os slides</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600; margin-bottom: 15px;">Mínimo 4 slides com sequência que faça SENTIDO:</p>
+
+                        <div class="grid-4">
+                            <div class="card card-amarelo">
+                                <h4>SLIDE 1</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">📱</p>
+                                <p><strong>CAPA</strong></p>
+                                <p style="font-size: 0.85em;">Título chamativo que desperte interesse</p>
+                            </div>
+                            <div class="card card-verde">
+                                <h4>SLIDES 2-3</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">🖼️</p>
+                                <p><strong>CONTEÚDO</strong></p>
+                                <p style="font-size: 0.85em;">Imagem editada + texto</p>
+                            </div>
+                            <div class="card card-azul">
+                                <h4>UM DOS SLIDES</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">🎬</p>
+                                <p><strong>VÍDEO</strong></p>
+                                <p style="font-size: 0.85em;">O vídeo gerado com IA</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <h4>ÚLTIMO SLIDE</h4>
+                                <p style="font-size: 2em; margin: 10px 0;">✨</p>
+                                <p><strong>CTA</strong></p>
+                                <p style="font-size: 0.85em;">Chamada para ação (Salve, Siga, Comente)</p>
+                            </div>
+                        </div>
+
+                        <div class="content-box box-roxo" style="margin-top: 20px;">
+                            <h3>✓ Identidade Visual:</h3>
+                            <p>Mantenha as <strong>MESMAS cores</strong> e <strong>MESMAS fontes</strong> em todos os slides para ficar profissional.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 9: Regra 60/30/10
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎨</div>
+                        <div>
+                            <h1>Regra 60/30/10</h1>
+                            <p>Paleta de cores profissional</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600; margin-bottom: 30px;">Use estas proporções de cor para deixar o carrossel HARMÔNICO:</p>
+
+                        <div class="cores-blocos">
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--roxo);">60%</div>
+                                <p>Cor Principal</p>
+                            </div>
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--azul);">30%</div>
+                                <p>Cor Secundária</p>
+                            </div>
+                            <div class="cor-bloco">
+                                <div class="cor-visual" style="background: var(--amarelo);">10%</div>
+                                <p>Cor de Destaque</p>
+                            </div>
+                        </div>
+
+                        <div class="content-box box-roxo" style="margin-top: 30px; text-align: center;">
+                            <p style="font-size: 1.1em;">
+                                <strong>60%</strong> = usada na maioria (fundo, textos principais)<br>
+                                <strong>30%</strong> = usada em elementos secundários<br>
+                                <strong>10%</strong> = usada para destacar o importante (botões, CTA)
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 10: Entrega
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✅</div>
+                        <div>
+                            <h1>Entrega</h1>
+                            <p>Como entregar seu trabalho</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <p style="color: var(--roxo); font-weight: 600; margin-bottom: 20px;">3 passos finais:</p>
+
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">
+                                    <strong>Baixar:</strong> Compartilhar > Baixar > MP4 (ou PNG + MP4)
+                                </div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">
+                                    <strong>Compartilhar:</strong> Compartilhe o LINK do design (view access) com o professor
+                                </div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">
+                                    <strong>Entregar:</strong> Envie o ARQUIVO + LINK ao professor
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="content-box box-roxo" style="margin-top: 25px;">
+                            <h3>✓ CHECKLIST ANTES DE ENTREGAR:</h3>
+                            <p style="text-align: left;">
+                                ☐ 4+ slides &nbsp;&nbsp;&nbsp; ☐ Imagem editada &nbsp;&nbsp;&nbsp; ☐ Vídeo<br>
+                                ☐ Capa e CTA &nbsp;&nbsp;&nbsp; ☐ Cores padronizadas &nbsp;&nbsp;&nbsp; ☐ Arquivo + link
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 11: Resumo Visual
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📊</div>
+                        <div>
+                            <h1>Resumo das 4 Etapas</h1>
+                            <p>Tudo o que você precisa fazer</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-4">
+                            <div class="card card-roxo">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">🖼️</p>
+                                <h4>EDIÇÃO</h4>
+                                <p style="font-size: 0.9em;">2+ ferramentas na imagem</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">🎬</p>
+                                <h4>VÍDEO IA</h4>
+                                <p style="font-size: 0.9em;">Magic Media ou plano B</p>
+                            </div>
+                            <div class="card card-azul">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">✂️</p>
+                                <h4>EDITAR</h4>
+                                <p style="font-size: 0.9em;">Cortar + texto + som</p>
+                            </div>
+                            <div class="card card-amarelo">
+                                <p style="font-size: 2.5em; margin-bottom: 10px;">🎨</p>
+                                <h4>CARROSSEL</h4>
+                                <p style="font-size: 0.9em;">4+ slides + cores</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 30px; text-align: center; font-size: 1.2em; color: var(--roxo); font-weight: 600;">
+                            ↓ Você consegue! ↓
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 12: Motivação Final
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 4em; margin-bottom: 20px;">🚀</div>
+                            <h2>Dica Final: Você consegue!</h2>
+                            <p>Tema é <span class="destaque">LIVRE</span> — não existe certo ou errado!</p>
+                            <p>Escolha algo que <span class="destaque">VOCÊ GOSTA</span> e deixa isso transparecer no carrossel.</p>
+                            <p style="margin-top: 25px; margin-bottom: 25px;">Se aparecer erro ou limitação de ferramentas, use o <span class="destaque">PLANO B</span> — o professor vai entender!</p>
+                            <p style="font-size: 1.3em; color: var(--roxo); font-weight: 700;">💜 Boa sorte! Aproveite o processo criativo! 🎨</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+            
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            updateControls();
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+            
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        // Teclado
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        // Iniciar
+        initPresentation();
+    </script>
+</body>
+</html>

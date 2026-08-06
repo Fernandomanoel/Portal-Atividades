@@ -106,6 +106,24 @@ const ATIVIDADES = [
   },
 
   {
+    slug: "canva",
+    titulo: "Canva",
+    descricao: "Criação e edição de posts para redes sociais.",
+    grupo: "cursos",
+    sigla: "C",
+    cor: "#6a2c91",
+    materiais: [
+      {
+        titulo: "Avaliação Prática: Post Carrossel com IA",
+        descricao:
+          "Apresentação interativa guiando o aluno a criar um carrossel para Instagram: edição de imagem, geração de vídeo com IA, edição de vídeo e montagem final.",
+        tipo: "link",
+        url: "atividades/paginas/canva-avaliacao-carrossel.html",
+      },
+    ],
+  },
+
+  {
     slug: "excel",
     titulo: "Excel Básico",
     descricao: "Planilhas e fórmulas simples.",
@@ -636,6 +654,13 @@ const ATIVIDADES = [
           "O aluno cria um programa em JavaScript que gera a tabuada de um número informado pelo usuário.",
         tipo: "pdf",
         arquivo: "atividades/pdfs/Javascript/Javascript - SimuladordeTabuadaInteligente.pdf",
+      },
+      {
+        titulo: "Guia: Criando sua Primeira API REST",
+        descricao:
+          "Guia completo com índice navegável para criar uma API REST do zero com Node.js e Express, do básico até deploy em produção.",
+        tipo: "link",
+        url: "atividades/paginas/javascript-guia-api-rest.html",
       },
       {
         titulo: "Simulador de Caixa Eletrônico",

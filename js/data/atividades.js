@@ -432,6 +432,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-desinstalar-programas-atalhos.html",
       },
+      {
+        titulo: "Missão: Arquivos Organizados",
+        descricao:
+          "Atividade guiada para crianças aprenderem a criar pastas, mover, recortar/colar (Ctrl+X/Ctrl+V) e compactar arquivos em ZIP, com checklist interativo de prática.",
+        tipo: "link",
+        url: "atividades/paginas/kids-organizando-arquivos.html",
+      },
     ],
   },
 

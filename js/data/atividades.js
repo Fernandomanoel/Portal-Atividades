@@ -439,6 +439,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-organizando-arquivos.html",
       },
+      {
+        titulo: "Missão: Meu Primeiro Relatório",
+        descricao:
+          "Atividade guiada para crianças escreverem um mini relatório no Word (título, formatação e parágrafos) e aprenderem a salvar o arquivo em PDF, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-word-mini-relatorio-pdf.html",
+      },
     ],
   },
 

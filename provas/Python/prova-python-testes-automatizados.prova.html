@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova de Python - Testes Automatizados</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            border-bottom: 3px solid #7c3aed;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #5b21b6;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            font-size: 1.05em;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 20px;
+        }
+
+        .code {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border-left: 4px solid #7c3aed;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .question {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 6px;
+        }
+
+        .question h4 {
+            color: #5b21b6;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-bottom: 10px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 5px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn {
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn:hover {
+            background: #6d28d9;
+        }
+
+        .btn-submit {
+            background: #10b981;
+        }
+
+        .btn-submit:hover {
+            background: #059669;
+        }
+
+        .btn-nav {
+            background: #7c3aed;
+        }
+
+        .btn-nav:hover {
+            background: #6d28d9;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result.success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            color: #065f46;
+        }
+
+        .result.error {
+            background: #fee2e2;
+            border-left: 4px solid #ef4444;
+            color: #7f1d1d;
+        }
+
+        .test-item {
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .test-pass {
+            background: #d1fae5;
+            color: #065f46;
+            border-left: 3px solid #10b981;
+        }
+
+        .test-fail {
+            background: #fee2e2;
+            color: #7f1d1d;
+            border-left: 3px solid #ef4444;
+        }
+
+        .box {
+            background: #f3e8ff;
+            border-left: 4px solid #ec4899;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .chapter {
+            display: none;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        .progress {
+            background: #e5e7eb;
+            height: 6px;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #7c3aed;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #7c3aed;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #666;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .score {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Prova de Python</h1>
+            <p>Escreva o código, testes rodam automaticamente</p>
+        </header>
+
+        <div class="progress">
+            <div class="progress-bar" id="progress"></div>
+        </div>
+
+        <!-- QUESTÃO 1 -->
+        <section class="chapter active" id="ch1">
+            <h2>Questão 1: Variáveis e Tipos (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie variáveis para armazenar:</p>
+                <ul>
+                    <li><code>nome</code> = "João" (string)</li>
+                    <li><code>idade</code> = 25 (inteiro)</li>
+                    <li><code>altura</code> = 1.75 (float)</li>
+                    <li><code>ativo</code> = True (booleano)</li>
+                </ul>
+                <p>Depois exiba uma mensagem usando print()</p>
+
+                <h4>Exemplo de saída esperada:</h4>
+                <div class="code">João tem 25 anos, mede 1.75m e está ativo</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code1" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion1()">Testar Resposta</button>
+                <div class="result" id="result1"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(0)" disabled>← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(2)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 2 -->
+        <section class="chapter" id="ch2">
+            <h2>Questão 2: Operações Matemáticas (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que:</p>
+                <ul>
+                    <li>Receba dois números do usuário</li>
+                    <li>Calcule e mostre: soma, subtração, multiplicação, divisão e resto</li>
+                </ul>
+
+                <h4>Exemplo de entrada/saída:</h4>
+                <div class="code">Digite o primeiro número: 10
+Digite o segundo número: 3
+
+Soma: 13
+Subtração: 7
+Multiplicação: 30
+Divisão: 3.33
+Resto: 1</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code2" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion2()">Testar Resposta</button>
+                <div class="result" id="result2"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(1)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(3)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 3 -->
+        <section class="chapter" id="ch3">
+            <h2>Questão 3: Condicionais (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que:</p>
+                <ul>
+                    <li>Receba uma nota (0-10)</li>
+                    <li>Mostre se foi "Aprovado" (≥7), "Recuperação" (5-6) ou "Reprovado" (&lt;5)</li>
+                </ul>
+
+                <h4>Exemplo de entrada/saída:</h4>
+                <div class="code">Digite a nota: 7.5
+Resultado: Aprovado
+
+Digite a nota: 5.5
+Resultado: Recuperação
+
+Digite a nota: 3
+Resultado: Reprovado</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code3" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion3()">Testar Resposta</button>
+                <div class="result" id="result3"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(2)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(4)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 4 -->
+        <section class="chapter" id="ch4">
+            <h2>Questão 4: Loops - FOR (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que mostre a tabuada de um número usando for</p>
+
+                <h4>Exemplo de entrada/saída (tabuada do 5):</h4>
+                <div class="code">Digite um número: 5
+
+5 x 1 = 5
+5 x 2 = 10
+5 x 3 = 15
+5 x 4 = 20
+5 x 5 = 25
+5 x 6 = 30
+5 x 7 = 35
+5 x 8 = 40
+5 x 9 = 45
+5 x 10 = 50</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code4" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion4()">Testar Resposta</button>
+                <div class="result" id="result4"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(3)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(5)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 5 -->
+        <section class="chapter" id="ch5">
+            <h2>Questão 5: Listas (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que:</p>
+                <ul>
+                    <li>Crie uma lista com 5 nomes</li>
+                    <li>Mostre cada nome numerado</li>
+                    <li>Mostre quantos nomes tem</li>
+                </ul>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">1. João
+2. Maria
+3. Pedro
+4. Ana
+5. Carlos
+
+Total de nomes: 5</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code5" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion5()">Testar Resposta</button>
+                <div class="result" id="result5"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(4)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(6)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 6 -->
+        <section class="chapter" id="ch6">
+            <h2>Questão 6: Funções (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie uma função chamada <code>calcular_imc</code> que:</p>
+                <ul>
+                    <li>Receba peso (kg) e altura (m) como parâmetros</li>
+                    <li>Calcule IMC = peso / (altura²)</li>
+                    <li>Retorne o resultado arredondado a 2 casas decimais</li>
+                </ul>
+
+                <h4>Exemplo de chamada:</h4>
+                <div class="code">resultado = calcular_imc(70, 1.75)
+print(f"IMC: {resultado}")
+# Saída: IMC: 22.86</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code6" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion6()">Testar Resposta</button>
+                <div class="result" id="result6"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(5)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(7)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 7 -->
+        <section class="chapter" id="ch7">
+            <h2>Questão 7: Dicionários (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que:</p>
+                <ul>
+                    <li>Crie um dicionário com dados de uma pessoa (nome, idade, email)</li>
+                    <li>Mostre todas as informações de forma legível</li>
+                </ul>
+
+                <h4>Exemplo de saída:</h4>
+                <div class="code">Nome: João
+Idade: 25
+Email: joao@example.com</div>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code7" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion7()">Testar Resposta</button>
+                <div class="result" id="result7"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(6)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(8)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- QUESTÃO 8 -->
+        <section class="chapter" id="ch8">
+            <h2>Questão 8: Tratamento de Erros (1,5 pts)</h2>
+            
+            <div class="question">
+                <h4>📝 Tarefa:</h4>
+                <p>Crie um programa que:</p>
+                <ul>
+                    <li>Receba um número do usuário</li>
+                    <li>Tente converter para inteiro</li>
+                    <li>Se der erro, mostre "Entrada inválida. Digite um número!"</li>
+                    <li>Se funcionar, mostre "Número recebido: X"</li>
+                </ul>
+
+                <h4>Use try/except</h4>
+
+                <h4>Escreva seu código:</h4>
+                <textarea id="code8" placeholder="Escreva seu código aqui..."></textarea>
+                <button class="btn btn-submit" onclick="testQuestion8()">Testar Resposta</button>
+                <div class="result" id="result8"></div>
+            </div>
+
+            <div class="nav">
+                <button class="btn btn-nav" onclick="goToChapter(7)">← Anterior</button>
+                <button class="btn btn-nav" onclick="goToChapter(9)">Próximo →</button>
+            </div>
+        </section>
+
+        <!-- RESULTADO FINAL -->
+        <section class="chapter" id="ch9">
+            <h2>🏆 Resultado Final</h2>
+            
+            <div style="text-align: center; padding: 40px;">
+                <p style="font-size: 1.3em; margin-bottom: 20px;">Sua pontuação:</p>
+                <p class="score" id="finalScore" style="font-size: 3em; margin-bottom: 20px;">0 / 12</p>
+                
+                <div id="scoreDetails" style="background: #f3e8ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                    <p>Resultado carregando...</p>
+                </div>
+
+                <h3>Desempenho por questão:</h3>
+                <div id="questionsScore" style="margin-top: 20px;"></div>
+
+                <div class="nav" style="margin-top: 40px; justify-content: center;">
+                    <button class="btn btn-nav" onclick="goToChapter(8)">← Voltar</button>
+                    <button class="btn btn-nav" onclick="location.reload()">Recomeçar Prova</button>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>Prova de Python com Testes Automatizados</strong></p>
+            <p>8 questões | 12 pontos | ~1 hora</p>
+        </footer>
+    </div>
+
+    <script>
+        const scores = [0, 0, 0, 0, 0, 0, 0, 0];
+
+        function goToChapter(n) {
+            const chapters = document.querySelectorAll('.chapter');
+            chapters.forEach(ch => ch.classList.remove('active'));
+            document.getElementById('ch' + (n + 1)).classList.add('active');
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function updateProgress() {
+            const current = document.querySelector('.chapter.active');
+            const chNum = current.id.replace('ch', '');
+            const progress = (chNum / 9) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function showResult(resultId, passed, message, tests = []) {
+            const resultDiv = document.getElementById(resultId);
+            resultDiv.classList.add('show');
+            resultDiv.className = passed ? 'result show success' : 'result show error';
+            
+            let html = '';
+            if (passed) {
+                html += '<p style="font-weight: bold; color: #065f46;">✅ Correto!</p>';
+            } else {
+                html += '<p style="font-weight: bold; color: #7f1d1d;">❌ Incorreto</p>';
+            }
+            
+            html += '<p>' + message + '</p>';
+            
+            if (tests.length > 0) {
+                html += '<div style="margin-top: 10px;">';
+                tests.forEach(test => {
+                    const testClass = test.pass ? 'test-pass' : 'test-fail';
+                    const icon = test.pass ? '✓' : '✗';
+                    html += `<div class="test-item ${testClass}">${icon} ${test.message}</div>`;
+                });
+                html += '</div>';
+            }
+            
+            resultDiv.innerHTML = html;
+        }
+
+        function testQuestion1() {
+            const code = document.getElementById('code1').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Tem as variáveis
+            if (code.includes('nome') && code.includes('idade') && code.includes('altura') && code.includes('ativo')) {
+                tests.push({ pass: true, message: 'Variáveis declaradas corretamente' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam variáveis' });
+                passed = false;
+            }
+
+            // Testar 2: Tem print
+            if (code.includes('print')) {
+                tests.push({ pass: true, message: 'Função print() usada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta print()' });
+                passed = false;
+            }
+
+            // Testar 3: Valores corretos
+            if (code.includes('25') && code.includes('1.75') && code.includes('True')) {
+                tests.push({ pass: true, message: 'Valores corretos' });
+            } else {
+                tests.push({ pass: false, message: 'Valores incorretos' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[0] = 1.5;
+                showResult('result1', true, 'Parabéns! Você usou variáveis e tipos corretamente.', tests);
+            } else {
+                showResult('result1', false, 'Revise seu código. Verifique as variáveis e print().', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion2() {
+            const code = document.getElementById('code2').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: input
+            if (code.includes('input')) {
+                tests.push({ pass: true, message: 'Função input() usada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta input()' });
+                passed = false;
+            }
+
+            // Testar 2: Operações
+            if (code.includes('+') && code.includes('-') && code.includes('*') && code.includes('/') && code.includes('%')) {
+                tests.push({ pass: true, message: 'Todas operações implementadas' });
+            } else {
+                tests.push({ pass: false, message: 'Faltam operações' });
+                passed = false;
+            }
+
+            // Testar 3: Conversão de tipo
+            if (code.includes('int(') || code.includes('float(')) {
+                tests.push({ pass: true, message: 'Conversão de tipo usada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta conversão de tipo' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[1] = 1.5;
+                showResult('result2', true, 'Excelente! Você implementou todas as operações matemáticas.', tests);
+            } else {
+                showResult('result2', false, 'Revise: use input(), int/float e as 5 operações.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion3() {
+            const code = document.getElementById('code3').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: if/elif/else
+            if (code.includes('if') && code.includes('elif') && code.includes('else')) {
+                tests.push({ pass: true, message: 'Estrutura if/elif/else correta' });
+            } else {
+                tests.push({ pass: false, message: 'Falta estrutura condicional completa' });
+                passed = false;
+            }
+
+            // Testar 2: Comparações
+            if ((code.includes('>=') || code.includes('> 6')) && code.includes('<')) {
+                tests.push({ pass: true, message: 'Comparadores usados corretamente' });
+            } else {
+                tests.push({ pass: false, message: 'Comparadores incorretos' });
+                passed = false;
+            }
+
+            // Testar 3: Mensagens
+            if (code.includes('Aprovado') && code.includes('Recuperação') && code.includes('Reprovado')) {
+                tests.push({ pass: true, message: 'Mensagens corretas' });
+            } else {
+                tests.push({ pass: false, message: 'Mensagens incorretas' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[2] = 1.5;
+                showResult('result3', true, 'Perfeito! Sua lógica condicional está correta.', tests);
+            } else {
+                showResult('result3', false, 'Use if/elif/else com os valores 7, 5 e 0 como limites.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion4() {
+            const code = document.getElementById('code4').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: for loop
+            if (code.includes('for') && (code.includes('range') || code.includes('in'))) {
+                tests.push({ pass: true, message: 'Loop for com range() usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta loop for ou range' });
+                passed = false;
+            }
+
+            // Testar 2: Multiplicação
+            if (code.includes('*')) {
+                tests.push({ pass: true, message: 'Operador de multiplicação usado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta multiplicação' });
+                passed = false;
+            }
+
+            // Testar 3: Formato
+            if (code.includes('x') && code.includes('=')) {
+                tests.push({ pass: true, message: 'Formato de saída correto' });
+            } else {
+                tests.push({ pass: false, message: 'Formato incorreto' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[3] = 1.5;
+                showResult('result4', true, 'Ótimo! Seu loop for está funcionando corretamente.', tests);
+            } else {
+                showResult('result4', false, 'Use for com range(1, 11) para a tabuada.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion5() {
+            const code = document.getElementById('code5').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Lista
+            if (code.includes('[') && code.includes(']')) {
+                tests.push({ pass: true, message: 'Lista criada corretamente' });
+            } else {
+                tests.push({ pass: false, message: 'Falta lista' });
+                passed = false;
+            }
+
+            // Testar 2: Loop for
+            if (code.includes('for')) {
+                tests.push({ pass: true, message: 'Loop para iterar lista' });
+            } else {
+                tests.push({ pass: false, message: 'Falta loop for' });
+                passed = false;
+            }
+
+            // Testar 3: len()
+            if (code.includes('len(')) {
+                tests.push({ pass: true, message: 'Função len() usada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta len()' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[4] = 1.5;
+                showResult('result5', true, 'Excelente! Você manipulou listas corretamente.', tests);
+            } else {
+                showResult('result5', false, 'Use uma lista, loop for e len() para contar elementos.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion6() {
+            const code = document.getElementById('code6').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Função def
+            if (code.includes('def calcular_imc')) {
+                tests.push({ pass: true, message: 'Função definida corretamente' });
+            } else {
+                tests.push({ pass: false, message: 'Falta def calcular_imc' });
+                passed = false;
+            }
+
+            // Testar 2: Parâmetros
+            if (code.includes('peso') && code.includes('altura')) {
+                tests.push({ pass: true, message: 'Parâmetros corretos' });
+            } else {
+                tests.push({ pass: false, message: 'Parâmetros incorretos' });
+                passed = false;
+            }
+
+            // Testar 3: Cálculo e return
+            if (code.includes('return') && (code.includes('**') || code.includes('pow'))) {
+                tests.push({ pass: true, message: 'Cálculo e return implementados' });
+            } else {
+                tests.push({ pass: false, message: 'Falta return ou cálculo correto' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[5] = 1.5;
+                showResult('result6', true, 'Perfeito! Sua função está bem estruturada.', tests);
+            } else {
+                showResult('result6', false, 'Use def com return e ** para potência.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion7() {
+            const code = document.getElementById('code7').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: Dicionário
+            if (code.includes('{') && code.includes(':')) {
+                tests.push({ pass: true, message: 'Dicionário criado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta dicionário' });
+                passed = false;
+            }
+
+            // Testar 2: Chaves
+            if (code.includes('nome') && code.includes('idade') && code.includes('email')) {
+                tests.push({ pass: true, message: 'Chaves corretas (nome, idade, email)' });
+            } else {
+                tests.push({ pass: false, message: 'Chaves incorretas' });
+                passed = false;
+            }
+
+            // Testar 3: Print com acesso
+            if (code.includes('print') && (code.includes('[') || code.includes('.'))) {
+                tests.push({ pass: true, message: 'Acesso às chaves implementado' });
+            } else {
+                tests.push({ pass: false, message: 'Falta acesso às chaves' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[6] = 1.5;
+                showResult('result7', true, 'Ótimo! Você usou dicionários corretamente.', tests);
+            } else {
+                showResult('result7', false, 'Use {} com chaves e print() para exibir valores.', tests);
+            }
+            updateFinalScore();
+        }
+
+        function testQuestion8() {
+            const code = document.getElementById('code8').value;
+            const tests = [];
+            let passed = true;
+
+            // Testar 1: try/except
+            if (code.includes('try') && code.includes('except')) {
+                tests.push({ pass: true, message: 'Blocos try/except usados' });
+            } else {
+                tests.push({ pass: false, message: 'Falta try/except' });
+                passed = false;
+            }
+
+            // Testar 2: ValueError ou Exception
+            if (code.includes('ValueError') || code.includes('except') && code.includes(':')) {
+                tests.push({ pass: true, message: 'Tratamento de exceção correto' });
+            } else {
+                tests.push({ pass: false, message: 'Exceção não tratada' });
+                passed = false;
+            }
+
+            // Testar 3: int()
+            if (code.includes('int(')) {
+                tests.push({ pass: true, message: 'Conversão com int() usada' });
+            } else {
+                tests.push({ pass: false, message: 'Falta int()' });
+                passed = false;
+            }
+
+            if (passed) {
+                scores[7] = 1.5;
+                showResult('result8', true, 'Excelente! Seu tratamento de erros está correto.', tests);
+            } else {
+                showResult('result8', false, 'Use try/except com ValueError e int().', tests);
+            }
+            updateFinalScore();
+        }
+
+        function updateFinalScore() {
+            const total = scores.reduce((a, b) => a + b, 0);
+            document.getElementById('finalScore').textContent = total.toFixed(1) + ' / 12';
+            
+            let percentage = (total / 12) * 100;
+            let message = '';
+            
+            if (percentage === 100) {
+                message = '🏆 Perfeito! Você acertou todas as questões!';
+            } else if (percentage >= 80) {
+                message = '🌟 Excelente! Desempenho muito bom!';
+            } else if (percentage >= 60) {
+                message = '👍 Bom trabalho! Revise os conceitos que errou.';
+            } else if (percentage >= 40) {
+                message = '📚 Continue estudando! Você está no caminho certo.';
+            } else {
+                message = '💪 Não desista! Pratique mais e tente novamente.';
+            }
+            
+            document.getElementById('scoreDetails').innerHTML = `<p>${message}</p><p>Você acertou ${(percentage).toFixed(1)}% da prova</p>`;
+
+            // Mostrar resultado por questão
+            const details = document.getElementById('questionsScore');
+            let html = '<table><tr><th>Questão</th><th>Pontuação</th><th>Status</th></tr>';
+            
+            const questions = ['Variáveis', 'Operações', 'Condicionais', 'Loops', 'Listas', 'Funções', 'Dicionários', 'Erros'];
+            questions.forEach((q, i) => {
+                const score = scores[i];
+                const status = score > 0 ? '✅ Correto' : '❌ Não feito';
+                html += `<tr><td>${q}</td><td>${score}</td><td>${status}</td></tr>`;
+            });
+            
+            html += '</table>';
+            details.innerHTML = html;
+        }
+
+        // Atalhos de teclado
+        document.addEventListener('keydown', (e) => {
+            const current = document.querySelector('.chapter.active');
+            const chNum = parseInt(current.id.replace('ch', ''));
+            
+            if (e.key === 'ArrowRight' && chNum < 9) goToChapter(chNum);
+            if (e.key === 'ArrowLeft' && chNum > 1) goToChapter(chNum - 2);
+        });
+
+        updateProgress();
+    </script>
+</body>
+</html>

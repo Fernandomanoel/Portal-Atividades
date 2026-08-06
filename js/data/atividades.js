@@ -425,6 +425,13 @@ const ATIVIDADES = [
         tipo: "pdf",
         arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
       },
+      {
+        titulo: "Missão: Computador Arrumado",
+        descricao:
+          "Atividade guiada para crianças aprenderem a desinstalar programas (Adobe, WinRAR, McAfee) pelas Configurações do Windows e a ativar os atalhos padrão da área de trabalho, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-desinstalar-programas-atalhos.html",
+      },
     ],
   },
 

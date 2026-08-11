@@ -495,6 +495,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
       },
+      {
+        titulo: "Sonic Digital Pro — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-sonic-digitacao.html",
+      },
     ],
   },
 

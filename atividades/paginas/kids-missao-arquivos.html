@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Minha Grande Aventura no Windows 11</title>
+<title>Missão Arquivos e Pastas</title>
 <style>
     /* ==========================================================
-       MINHA GRANDE AVENTURA NO WINDOWS 11
-       Versão interativa do livro de atividades.
+       MISSÃO ARQUIVOS E PASTAS
+       Mesmo modelo da "Aventura no Windows 11", com outro assunto:
+       organizar arquivos, criar pastas, compactar e extrair.
        Feito para criança de ~8 anos: textos curtos, botões grandes,
        tudo por clique/toque. Funciona em celular, tablet e PC.
        ========================================================== */
@@ -327,6 +328,11 @@
     .cartao .icone { font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1; }
     .cartao:hover:not(:disabled) { transform: translateY(-4px); border-color: var(--roxo); }
     .cartao.certo  { border-color: var(--verde); background: var(--verde-claro); }
+    .contador-pasta {
+        font-size: clamp(.6rem, 2.2vw, .72rem);
+        color: var(--cinza); font-weight: 600;
+        background: var(--roxo-claro); border-radius: 999px; padding: 2px 9px;
+    }
     .cartao.errado { border-color: var(--vermelho); background: #fee2e2; opacity: .75; }
     .cartao:disabled { cursor: default; }
 
@@ -625,7 +631,7 @@
 
 <div class="app">
     <div class="topo">
-        <div class="titulo-etapa" id="tituloEtapa">Minha Grande Aventura no Windows 11</div>
+        <div class="titulo-etapa" id="tituloEtapa">Missão Arquivos e Pastas</div>
         <div class="estrelas-hud">⭐ <span id="hudEstrelas">0</span></div>
     </div>
     <div class="barra-progresso"><span id="barraProgresso"></span></div>
@@ -633,10 +639,10 @@
     <!-- ============ TELA 0: CAPA ============ -->
     <section class="tela ativa" id="tela-capa">
         <div class="capa">
-            <div class="pc-grande">✨🖥️✨</div>
-            <h1>Minha Grande Aventura no</h1>
-            <span class="win">WINDOWS 11</span>
-            <p class="subtitulo">Vamos lembrar tudo o que você já aprendeu!</p>
+            <div class="pc-grande">📁✨📦</div>
+            <h1>Missão</h1>
+            <span class="win">ARQUIVOS E PASTAS</span>
+            <p class="subtitulo">Vamos deixar o computador todo organizado!</p>
 
             <div class="instrucao">
                 ✏️ Escreva seu nome
@@ -684,9 +690,9 @@
         <div class="diploma">
             <div class="medalha">🏆</div>
             <h2>PARABÉNS!</h2>
-            <p>Diploma de Exploradora do Windows 11</p>
+            <p>Diploma de Organizadora de Arquivos</p>
             <div class="nome-diploma" id="nomeDiploma">—</div>
-            <p id="textoDiploma">Eu aprendi a excluir apps, trocar o idioma, mudar o plano de fundo,<br>criar pastas e extrair pastas zipadas! 🎉</p>
+            <p id="textoDiploma">Eu aprendi a criar pastas, renomear arquivos, conhecer os tipos,<br>compactar em ZIP e extrair pacotes! 🎉</p>
 
             <div class="resumo-final" id="resumoFinal"></div>
 
@@ -699,7 +705,7 @@
         </div>
     </section>
 
-    <footer>Baseado no livro <strong>Minha Grande Aventura no Windows 11</strong></footer>
+    <footer>Continuação de <strong>Minha Grande Aventura no Windows 11</strong> — agora sobre arquivos e pastas</footer>
 </div>
 
 <script>
@@ -708,45 +714,45 @@
    ================================================================== */
 
 const ASSUNTOS = [
-    { icone: "🗑️", nome: "Excluir um app" },
-    { icone: "🌍", nome: "Trocar o idioma" },
-    { icone: "🖼️", nome: "Mudar o plano de fundo" },
     { icone: "📁", nome: "Criar uma pasta" },
-    { icone: "🤐", nome: "Extrair pasta zipada" }
+    { icone: "✏️", nome: "Renomear um arquivo" },
+    { icone: "📄", nome: "Conhecer os tipos de arquivo" },
+    { icone: "📦", nome: "Compactar (fazer um ZIP)" },
+    { icone: "🤐", nome: "Extrair (abrir o ZIP)" }
 ];
 
 const PALETA = ["#ef4444", "#f59e0b", "#fbbf24", "#22c55e", "#0ea5e9", "#7c3aed", "#e6399b", "#78350f", "#1f2937", "#ffffff"];
 
 /* Desenhos para pintar (SVG simples, cada parte é clicável) */
 const DESENHOS = {
-    lixeira: `
-        <svg viewBox="0 0 200 220">
-            <rect class="pintavel" x="52" y="60" width="96" height="130" rx="12" fill="#e5e7eb" stroke="#3b2f4a" stroke-width="5"/>
-            <rect class="pintavel" x="36" y="34" width="128" height="28" rx="11" fill="#d1d5db" stroke="#3b2f4a" stroke-width="5"/>
-            <rect class="pintavel" x="78" y="8" width="44" height="26" rx="8" fill="#d1d5db" stroke="#3b2f4a" stroke-width="5"/>
-            <rect class="pintavel" x="66" y="82" width="28" height="90" rx="12" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
-            <rect class="pintavel" x="106" y="82" width="28" height="90" rx="12" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
-        </svg>`,
-    planeta: `
-        <svg viewBox="0 0 200 200">
-            <circle class="pintavel" cx="100" cy="100" r="80" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="5"/>
-            <ellipse class="pintavel" cx="70" cy="66" rx="34" ry="22" fill="#bbf7d0" stroke="#3b2f4a" stroke-width="4"/>
-            <ellipse class="pintavel" cx="136" cy="92" rx="30" ry="24" fill="#bbf7d0" stroke="#3b2f4a" stroke-width="4"/>
-            <ellipse class="pintavel" cx="76" cy="140" rx="36" ry="24" fill="#fef3c7" stroke="#3b2f4a" stroke-width="4"/>
-        </svg>`,
-    paisagem: `
-        <svg viewBox="0 0 220 170">
-            <rect class="pintavel" x="4" y="4" width="212" height="104" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="4"/>
-            <circle class="pintavel" cx="182" cy="34" r="20" fill="#fef3c7" stroke="#3b2f4a" stroke-width="4"/>
-            <path class="pintavel" d="M4 108 L64 40 L124 108 Z" fill="#e5e7eb" stroke="#3b2f4a" stroke-width="4"/>
-            <path class="pintavel" d="M84 108 L140 52 L196 108 Z" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
-            <rect class="pintavel" x="4" y="106" width="212" height="60" fill="#dcfce7" stroke="#3b2f4a" stroke-width="4"/>
-        </svg>`,
     pasta: `
         <svg viewBox="0 0 210 170">
             <path class="pintavel" d="M14 40h64l16 18h102c7 0 12 5 12 12v78c0 7-5 12-12 12H14c-7 0-12-5-12-12V52c0-7 5-12 12-12z"
                   fill="#fde68a" stroke="#3b2f4a" stroke-width="5"/>
             <path class="pintavel" d="M2 78h206v72c0 7-5 12-12 12H14c-7 0-12-5-12-12z" fill="#fcd34d" stroke="#3b2f4a" stroke-width="5"/>
+        </svg>`,
+    arquivo: `
+        <svg viewBox="0 0 170 210">
+            <path class="pintavel" d="M22 8h84l46 46v148c0 6-5 10-10 10H22c-6 0-10-4-10-10V18c0-6 4-10 10-10z"
+                  fill="#f8fafc" stroke="#3b2f4a" stroke-width="5"/>
+            <path class="pintavel" d="M106 8l46 46h-46z" fill="#cbd5e1" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="34" y="92" width="102" height="20" rx="10" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="4"/>
+            <rect class="pintavel" x="34" y="126" width="102" height="20" rx="10" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="4"/>
+            <rect class="pintavel" x="34" y="160" width="66" height="20" rx="10" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="4"/>
+        </svg>`,
+    caixazip: `
+        <svg viewBox="0 0 210 190">
+            <path class="pintavel" d="M12 56h186v112c0 7-5 12-12 12H24c-7 0-12-5-12-12z" fill="#fcd34d" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="4" y="24" width="202" height="36" rx="10" fill="#fbbf24" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="86" y="24" width="38" height="156" fill="#f59e0b" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="88" y="88" width="34" height="34" rx="8" fill="#e5e7eb" stroke="#3b2f4a" stroke-width="4"/>
+        </svg>`,
+    pastaAberta: `
+        <svg viewBox="0 0 220 180">
+            <path class="pintavel" d="M14 42h62l16 18h96c7 0 12 5 12 12v20H14z" fill="#fbbf24" stroke="#3b2f4a" stroke-width="5"/>
+            <path class="pintavel" d="M4 92h180l30 62c2 6-2 12-9 12H22c-7 0-12-5-12-12z" fill="#fde68a" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="62" y="10" width="46" height="34" rx="7" fill="#f8fafc" stroke="#3b2f4a" stroke-width="4"/>
+            <rect class="pintavel" x="118" y="10" width="46" height="34" rx="7" fill="#f8fafc" stroke="#3b2f4a" stroke-width="4"/>
         </svg>`
 };
 
@@ -754,116 +760,16 @@ const DESENHOS = {
 const MISSOES = [
     {
         id: "m1",
-        titulo: "Missão 1 — Excluir um app",
-        emoji: "🗑️",
-        desenho: "lixeira",
-        pinteTexto: "Pinte a lixeira!",
-        etapas: [
-            {
-                tipo: "ordenar",
-                instrucao: "👉 Clique nos passos na ordem certa",
-                falar: "Clique nos passos na ordem certa para desinstalar um aplicativo.",
-                exemplo: "Primeiro o que vem antes, depois o que vem no meio, e por último o fim.",
-                passos: [
-                    { icone: "🪟", texto: "Clicar no Iniciar" },
-                    { icone: "🖱️", texto: "Botão direito no app" },
-                    { icone: "🗑️", texto: "Escolher Desinstalar" }
-                ]
-            },
-            {
-                tipo: "escolha",
-                instrucao: "🤔 Qual botão do mouse eu uso para apagar um app?",
-                falar: "Qual botão do mouse eu uso para apagar um aplicativo?",
-                opcoes: [
-                    { icone: "🖱️", texto: "ESQUERDO" },
-                    { icone: "🖱️", texto: "DIREITO" },
-                    { icone: "🖱️", texto: "DO MEIO" }
-                ],
-                correta: 1,
-                dica: "💡 É o mesmo botão que abre o menuzinho de opções!",
-                explica: "Isso! Com o botão DIREITO aparece o menu com 'Desinstalar'."
-            }
-        ]
-    },
-    {
-        id: "m2",
-        titulo: "Missão 2 — Trocar o idioma",
-        emoji: "🌍",
-        desenho: "planeta",
-        pinteTexto: "Pinte o planeta!",
-        etapas: [
-            {
-                tipo: "completar-palavra",
-                instrucao: "🧩 Complete a palavra",
-                falar: "Complete a palavra Configurações clicando nas letras que faltam.",
-                exemplo: "É o lugar com o desenho de uma engrenagem ⚙️",
-                palavra: "CONFIGURACOES",
-                mostrar: "C O _ F I G _ R A _ _ E S",
-                bonus: ["N", "U", "C", "O"]
-            },
-            {
-                tipo: "ligar",
-                instrucao: "🔗 Ligue a bandeira ao seu 'olá'",
-                falar: "Ligue cada bandeira ao seu jeito de falar olá.",
-                esquerda: [
-                    { icone: "🇧🇷", texto: "Português" },
-                    { icone: "🇺🇸", texto: "Inglês" },
-                    { icone: "🇪🇸", texto: "Espanhol" }
-                ],
-                direita: [
-                    { icone: "👋", texto: "Hello!" },
-                    { icone: "👋", texto: "Olá!" },
-                    { icone: "👋", texto: "¡Hola!" }
-                ],
-                pares: { 0: 1, 1: 0, 2: 2 }
-            }
-        ]
-    },
-    {
-        id: "m3",
-        titulo: "Missão 3 — Plano de fundo",
-        emoji: "🖼️",
-        desenho: "paisagem",
-        pinteTexto: "Pinte a paisagem!",
-        etapas: [
-            {
-                tipo: "ordenar",
-                instrucao: "👉 Clique nos passos na ordem certa",
-                falar: "Clique nos passos na ordem certa para trocar o plano de fundo.",
-                exemplo: "Comece clicando na área de trabalho com o botão direito.",
-                passos: [
-                    { icone: "🖱️", texto: "Botão direito na tela" },
-                    { icone: "🎨", texto: "Clicar em Personalizar" },
-                    { icone: "🖼️", texto: "Escolher a imagem" }
-                ]
-            },
-            {
-                tipo: "fundo",
-                instrucao: "🌈 Escolha o plano de fundo dos seus sonhos",
-                falar: "Escolha uma imagem para o plano de fundo do computador.",
-                opcoes: [
-                    { icone: "🌈", nome: "Arco-íris", cor: "linear-gradient(160deg,#f472b6,#facc15,#4ade80,#38bdf8)" },
-                    { icone: "🐱", nome: "Gatinho",   cor: "linear-gradient(160deg,#fdba74,#fbbf24)" },
-                    { icone: "🚀", nome: "Espaço",    cor: "linear-gradient(160deg,#1e1b4b,#4c1d95,#0ea5e9)" },
-                    { icone: "🏖️", nome: "Praia",     cor: "linear-gradient(160deg,#38bdf8,#fde68a)" },
-                    { icone: "🌸", nome: "Flores",    cor: "linear-gradient(160deg,#f9a8d4,#c084fc)" },
-                    { icone: "🦄", nome: "Unicórnio", cor: "linear-gradient(160deg,#e9d5ff,#f9a8d4,#a5f3fc)" }
-                ]
-            }
-        ]
-    },
-    {
-        id: "m4",
-        titulo: "Missão 4 — Pastas",
+        titulo: "Missão 1 — Criar uma pasta",
         emoji: "📁",
         desenho: "pasta",
         pinteTexto: "Pinte a pasta!",
         etapas: [
             {
                 tipo: "ordenar",
-                instrucao: "👉 Como criar uma pasta? Clique na ordem certa",
+                instrucao: "👉 Clique nos passos na ordem certa",
                 falar: "Clique nos passos na ordem certa para criar uma pasta nova.",
-                exemplo: "Primeiro clique com o botão direito num espaço vazio.",
+                exemplo: "Comece clicando com o <b>botão direito</b> num espaço vazio.",
                 passos: [
                     { icone: "🖱️", texto: "Botão direito no vazio" },
                     { icone: "✨", texto: "Escolher Novo" },
@@ -871,20 +777,165 @@ const MISSOES = [
                 ]
             },
             {
+                tipo: "escolha",
+                instrucao: "🤔 Qual tecla serve para RENOMEAR (trocar o nome)?",
+                falar: "Qual tecla serve para trocar o nome de um arquivo ou pasta?",
+                opcoes: [
+                    { icone: "⌨️", texto: "F2" },
+                    { icone: "⌨️", texto: "F5" },
+                    { icone: "⌨️", texto: "Esc" }
+                ],
+                correta: 0,
+                dica: "💡 É uma tecla F lá em cima do teclado.",
+                explica: "Isso! Clique no arquivo e aperte F2 para trocar o nome."
+            },
+            {
+                tipo: "escolha",
+                instrucao: "📛 Qual é o melhor nome para uma pasta de fotos?",
+                falar: "Qual é o melhor nome para uma pasta com as suas fotos?",
+                opcoes: [
+                    { icone: "📁", texto: "Nova pasta" },
+                    { icone: "📁", texto: "Minhas Fotos" },
+                    { icone: "📁", texto: "asdfgh" }
+                ],
+                correta: 1,
+                dica: "💡 Um bom nome diz o que tem dentro.",
+                explica: "Perfeito! Nome bom = você acha rapidinho depois."
+            }
+        ]
+    },
+    {
+        id: "m2",
+        titulo: "Missão 2 — Tipos de arquivo",
+        emoji: "📄",
+        desenho: "arquivo",
+        pinteTexto: "Pinte o arquivo!",
+        etapas: [
+            {
+                tipo: "ligar",
+                instrucao: "🔗 Ligue o arquivo ao que ele é",
+                falar: "Ligue cada arquivo ao tipo dele.",
+                esquerda: [
+                    { icone: "🖼️", texto: "foto.jpg" },
+                    { icone: "🎵", texto: "musica.mp3" },
+                    { icone: "📝", texto: "texto.docx" }
+                ],
+                direita: [
+                    { icone: "🎧", texto: "É uma música" },
+                    { icone: "📷", texto: "É uma imagem" },
+                    { icone: "✍️", texto: "É um texto do Word" }
+                ],
+                pares: { 0: 1, 1: 0, 2: 2 }
+            },
+            {
+                tipo: "classificar",
+                instrucao: "🗂️ Guarde cada arquivo na pasta certa",
+                falar: "Clique num arquivo e depois clique na pasta certa para guardar.",
+                exemplo: "Clique no <b>arquivo</b> 👉 depois na <b>pasta</b>.",
+                pastas: [
+                    { icone: "🖼️", nome: "Fotos" },
+                    { icone: "🎵", nome: "Músicas" },
+                    { icone: "📄", nome: "Documentos" }
+                ],
+                arquivos: [
+                    { icone: "🖼️", nome: "praia.jpg", pasta: 0 },
+                    { icone: "🎵", nome: "samba.mp3", pasta: 1 },
+                    { icone: "📄", nome: "dever.docx", pasta: 2 },
+                    { icone: "🖼️", nome: "gato.png", pasta: 0 },
+                    { icone: "🎵", nome: "funk.mp3", pasta: 1 },
+                    { icone: "📄", nome: "receita.pdf", pasta: 2 }
+                ]
+            }
+        ]
+    },
+    {
+        id: "m3",
+        titulo: "Missão 3 — Compactar (ZIP)",
+        emoji: "📦",
+        desenho: "caixazip",
+        pinteTexto: "Pinte a caixa zipada!",
+        etapas: [
+            {
+                tipo: "escolha",
+                instrucao: "🤔 Para que serve COMPACTAR?",
+                falar: "Para que serve compactar arquivos?",
+                opcoes: [
+                    { icone: "🗑️", texto: "Apagar tudo" },
+                    { icone: "📦", texto: "Juntar tudo num pacote menor" },
+                    { icone: "🎨", texto: "Pintar o arquivo" }
+                ],
+                correta: 1,
+                dica: "💡 Pense numa caixa: você põe várias coisas dentro de uma só.",
+                explica: "Isso! Vira 1 arquivo só, menor e fácil de enviar."
+            },
+            {
+                tipo: "ordenar",
+                instrucao: "👉 Como fazer um ZIP? Clique na ordem certa",
+                falar: "Clique nos passos na ordem certa para compactar arquivos.",
+                exemplo: "Primeiro você <b>escolhe</b> os arquivos que vão na caixa.",
+                passos: [
+                    { icone: "👆", texto: "Selecionar os arquivos" },
+                    { icone: "🖱️", texto: "Botão direito neles" },
+                    { icone: "📦", texto: "Compactar para ZIP" }
+                ]
+            },
+            {
+                tipo: "completar-palavra",
+                instrucao: "🧩 Complete a palavra",
+                falar: "Complete a palavra compactar clicando nas letras que faltam.",
+                exemplo: "É o que a gente faz para virar um pacotinho 📦",
+                palavra: "COMPACTAR",
+                mostrar: "C O _ P _ C T _ R",
+                bonus: ["T", "R", "S"]
+            }
+        ]
+    },
+    {
+        id: "m4",
+        titulo: "Missão 4 — Extrair o ZIP",
+        emoji: "🤐",
+        desenho: "pastaAberta",
+        pinteTexto: "Pinte a pasta aberta!",
+        etapas: [
+            {
+                tipo: "escolha",
+                instrucao: "🤐 Como eu sei que a pasta está compactada?",
+                falar: "Como eu sei que uma pasta está compactada?",
+                opcoes: [
+                    { icone: "🤐", texto: "Ela tem um zíper" },
+                    { icone: "🌈", texto: "Ela é colorida" },
+                    { icone: "🔊", texto: "Ela faz barulho" }
+                ],
+                correta: 0,
+                dica: "💡 Olhe bem o desenho do ícone da pasta.",
+                explica: "Isso! O ziperzinho 🤐 mostra que ela está compactada."
+            },
+            {
+                tipo: "ordenar",
+                instrucao: "👉 Como abrir o ZIP? Clique na ordem certa",
+                falar: "Clique nos passos na ordem certa para extrair uma pasta compactada.",
+                exemplo: "Comece clicando com o <b>botão direito</b> na pasta com zíper.",
+                passos: [
+                    { icone: "🖱️", texto: "Botão direito no ZIP" },
+                    { icone: "📤", texto: "Extrair tudo" },
+                    { icone: "✅", texto: "Escolher onde salvar" }
+                ]
+            },
+            {
                 tipo: "ligar",
                 instrucao: "🔗 Ligue a ação ao que ela faz",
                 falar: "Ligue cada ação ao seu resultado.",
                 esquerda: [
-                    { icone: "📁", texto: "Novo > Pasta" },
-                    { icone: "🗑️", texto: "Excluir" },
-                    { icone: "🤐", texto: "Extrair tudo" }
+                    { icone: "📦", texto: "Compactar" },
+                    { icone: "📤", texto: "Extrair" },
+                    { icone: "✏️", texto: "Renomear (F2)" }
                 ],
                 direita: [
-                    { icone: "📦", texto: "Abre o pacotinho zipado" },
-                    { icone: "✨", texto: "Cria uma pasta nova" },
-                    { icone: "💨", texto: "Apaga a pasta" }
+                    { icone: "🤐", texto: "Tira tudo de dentro do pacote" },
+                    { icone: "📛", texto: "Troca o nome" },
+                    { icone: "🎁", texto: "Junta tudo num pacote" }
                 ],
-                pares: { 0: 1, 1: 2, 2: 0 }
+                pares: { 0: 2, 1: 0, 2: 1 }
             }
         ]
     },
@@ -899,25 +950,25 @@ const MISSOES = [
                 falar: "Clique na primeira letra e depois na última letra da palavra.",
                 exemplo: "Clique na <b>primeira</b> letra e depois na <b>última</b>.",
                 grade: [
-                    "BQGBCNNCHCRNB", "SDHUIDIOMAUSB", "SSMBHBREJNERD",
-                    "SJPINTARRVFDS", "SUGLDPASTARWC", "SBTGPVRNYEKOS",
-                    "WINDOWSOLXJHZ", "FWYHCSJQPCKXO", "JTCDQNFYKLEPN",
-                    "BVCYRSZKKUWLT", "PSZOEXTRAIRCA", "CIPWVCBXWRJUP",
-                    "FUNDOSVOJWMVP"
+                    "UWOVPWRIRMVNJ", "RZUPARQUIVOOQ", "WPIZMNGJIABMR",
+                    "EZUTOZQPLGIEW", "POQYPZNRVBVAJ", "KOZDOWWZQORIO",
+                    "FNXPCUIPMILDG", "EXTRAIRXENEOA", "CAOSRCTXPASTA",
+                    "ZGHDTBIYRIVYU", "LEAKVLSSYPWXE", "RHPSECOPIARTW",
+                    "QJCNVFEZZSJQN"
                 ],
-                palavras: ["EXCLUIR", "IDIOMA", "PASTA", "FUNDO", "WINDOWS", "EXTRAIR", "APP", "PINTAR"]
+                palavras: ["PASTA", "ARQUIVO", "EXTRAIR", "COPIAR", "MOVER", "NOME", "LIXEIRA", "ZIP"]
             },
             {
                 tipo: "verdadeiro-falso",
                 instrucao: "✅ É verdade ou é mentira?",
                 falar: "Leia a frase e escolha: é verdade ou é mentira?",
                 frases: [
-                    { texto: "Para apagar um app eu clico com o botão DIREITO. 🖱️", v: true },
-                    { texto: "O plano de fundo é a imagem atrás da tela. 🖼️", v: true },
                     { texto: "Pasta compactada tem desenho de zíper. 🤐", v: true },
-                    { texto: "Para trocar o idioma eu vou em Configurações. ⚙️", v: true },
-                    { texto: "\"Extrair\" quer dizer jogar a pasta no lixo. 🗑️", v: false },
-                    { texto: "Posso escolher qualquer imagem de plano de fundo. 🌈", v: true }
+                    { texto: "F2 serve para trocar o nome do arquivo. ✏️", v: true },
+                    { texto: "Compactar deixa os arquivos MAIORES. 📦", v: false },
+                    { texto: "Dentro de uma pasta cabem outras pastas. 📁", v: true },
+                    { texto: "\"Extrair\" é jogar a pasta no lixo. 🗑️", v: false },
+                    { texto: "Um bom nome de pasta ajuda a achar depois. 🔎", v: true }
                 ]
             },
             {
@@ -925,13 +976,13 @@ const MISSOES = [
                 instrucao: "🧠 Complete as frases",
                 falar: "Clique numa palavra e depois clique no espaço onde ela entra.",
                 exemplo: "Clique na <b>palavra</b> e depois no <b>espaço vazio</b>.",
-                banco: ["excluir", "idioma", "extrair", "personalizar", "pasta"],
+                banco: ["pasta", "compactar", "extrair", "renomear", "arquivo"],
                 frases: [
-                    { antes: "Não quero mais o app, vou", depois: "ele. 🗑️", resposta: "excluir" },
-                    { antes: "Para mudar a língua, troco o", depois: ". 🌍", resposta: "idioma" },
-                    { antes: "Para tirar arquivos do pacote zipado, vou", depois: ". 🤐", resposta: "extrair" },
-                    { antes: "Botão direito na tela e escolho", depois: ". 🎨", resposta: "personalizar" },
-                    { antes: "Para guardar organizado, eu crio uma", depois: ". 📁", resposta: "pasta" }
+                    { antes: "Para guardar tudo junto eu crio uma", depois: ". 📁", resposta: "pasta" },
+                    { antes: "Para juntar tudo num pacote eu vou", depois: ". 📦", resposta: "compactar" },
+                    { antes: "Para tirar as coisas do pacote eu vou", depois: ". 📤", resposta: "extrair" },
+                    { antes: "Para trocar o nome eu aperto F2 e vou", depois: ". ✏️", resposta: "renomear" },
+                    { antes: "Uma foto salva no computador é um", depois: ". 🖼️", resposta: "arquivo" }
                 ]
             }
         ]
@@ -954,7 +1005,6 @@ const estado = {
     missaoAtual: 0,
     etapaAtual: 0,
     corAtual: PALETA[0],
-    fundoEscolhido: null,
     totalEtapas: MISSOES.reduce((t, m) => t + m.etapas.length + (m.desenho ? 1 : 0), 0),
     etapasFeitas: 0
 };
@@ -1208,7 +1258,7 @@ function montarEtapa(missao, etapa) {
         "escolha": montarEscolha,
         "completar-palavra": montarCompletarPalavra,
         "ligar": montarLigar,
-        "fundo": montarFundo,
+        "classificar": montarClassificar,
         "caca-palavras": montarCacaPalavras,
         "verdadeiro-falso": montarVerdadeiroFalso,
         "completar-frases": montarCompletarFrases
@@ -1444,38 +1494,74 @@ function montarLigar(missao, etapa, tela) {
     $("btnProx").addEventListener("click", avancar);
 }
 
-/* ---------- ESCOLHER PLANO DE FUNDO ---------- */
-function montarFundo(missao, etapa, tela) {
+/* ---------- CLASSIFICAR ARQUIVOS NAS PASTAS ---------- */
+function montarClassificar(missao, etapa, tela) {
     tela.innerHTML =
-        baseEtapa(missao, etapa.instrucao, etapa.falar,
-                  "Clique numa imagem e veja ela aparecer no computador!") +
-        `<div class="monitor">
-            <div class="tela-pc" id="telaPC">🗑️</div>
-         </div>
-         <div class="base" style="width:80px;height:9px;background:#64748b;border-radius:0 0 8px 8px;margin:-10px auto 14px"></div>
-         <div class="opcoes-grid" id="opcoesFundo"></div>
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.exemplo) +
+        `<div class="opcoes-grid" id="arquivosSoltos"></div>
+         <div class="setinha" style="margin:4px 0 10px">⬇️</div>
+         <div class="opcoes-grid" id="pastasDestino"></div>
          ${caixaFeedback()}
          <div class="rodape-botoes">
             <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
          </div>`;
 
-    const box = $("opcoesFundo"), pc = $("telaPC");
-    etapa.opcoes.forEach(o => {
+    const caixaArq = $("arquivosSoltos"), caixaPasta = $("pastasDestino");
+    let escolhido = null, guardados = 0;
+
+    // contador de quantos arquivos já foram para cada pasta
+    const contagem = etapa.pastas.map(() => 0);
+
+    etapa.arquivos.forEach((a, i) => {
         const b = document.createElement("button");
         b.className = "cartao";
         b.type = "button";
-        b.innerHTML = `<span class="icone">${o.icone}</span><span>${o.nome}</span>`;
+        b.dataset.i = i;
+        b.innerHTML = `<span class="icone">${a.icone}</span><span>${a.nome}</span>`;
         b.addEventListener("click", () => {
-            box.querySelectorAll(".cartao").forEach(x => x.classList.remove("certo"));
+            caixaArq.querySelectorAll(".cartao").forEach(x => x.classList.remove("certo"));
             b.classList.add("certo");
-            pc.style.background = o.cor;
-            pc.textContent = o.icone;
-            estado.fundoEscolhido = o.nome;
-            mostrarFeedback(true, `🌈 Que lindo! Seu fundo é ${o.nome}.`);
-            if ($("btnProx").disabled) { ganharEstrela(); soltarConfete(); }
-            $("btnProx").disabled = false;
+            escolhido = { i, el: b };
+            mostrarFeedback(true, `👇 Agora clique na pasta certa para "${a.nome}".`);
         });
-        box.appendChild(b);
+        caixaArq.appendChild(b);
+    });
+
+    etapa.pastas.forEach((p, j) => {
+        const b = document.createElement("button");
+        b.className = "cartao";
+        b.type = "button";
+        b.innerHTML = `<span class="icone">📁</span><span>${p.icone} ${p.nome}</span>
+                       <span class="contador-pasta">vazia</span>`;
+        b.addEventListener("click", () => {
+            if (!escolhido) { mostrarFeedback(false, "👆 Escolha primeiro um arquivo."); return; }
+            const arq = etapa.arquivos[escolhido.i];
+
+            if (arq.pasta === j) {
+                escolhido.el.remove();
+                escolhido = null;
+                guardados++;
+                contagem[j]++;
+                b.querySelector(".contador-pasta").textContent =
+                    contagem[j] + (contagem[j] === 1 ? " arquivo" : " arquivos");
+                b.classList.add("certo");
+                setTimeout(() => b.classList.remove("certo"), 600);
+
+                if (guardados === etapa.arquivos.length) {
+                    mostrarFeedback(true, elogio() + " Tudo organizado! 🗂️");
+                    ganharEstrela();
+                    soltarConfete();
+                    $("btnProx").disabled = false;
+                } else {
+                    mostrarFeedback(true, "👍 Guardou! Faltam " + (etapa.arquivos.length - guardados) + ".");
+                }
+            } else {
+                b.classList.add("errado");
+                setTimeout(() => b.classList.remove("errado"), 500);
+                mostrarFeedback(false, incentivo() + " Olhe o desenho do arquivo.");
+            }
+        });
+        caixaPasta.appendChild(b);
     });
 
     $("btnProx").addEventListener("click", avancar);
@@ -1712,7 +1798,7 @@ function mostrarDiploma() {
     $("resumoFinal").innerHTML = `
         <div class="resumo-item"><div class="num">⭐ ${estado.estrelas}</div><div class="rot">Estrelas</div></div>
         <div class="resumo-item"><div class="num">${MISSOES.length}</div><div class="rot">Missões</div></div>
-        <div class="resumo-item"><div class="num">${estado.fundoEscolhido || "🌈"}</div><div class="rot">Meu fundo</div></div>
+        <div class="resumo-item"><div class="num">🗂️ 6</div><div class="rot">Arquivos organizados</div></div>
         <div class="resumo-item"><div class="num">${media2 > media1 ? "📈" : "😀"}</div><div class="rot">${media2 > media1 ? "Você melhorou!" : "Mandou bem!"}</div></div>
     `;
 
@@ -1739,7 +1825,6 @@ $("btnDeNovo").addEventListener("click", () => {
     estado.etapasFeitas = 0;
     estado.termometro1 = [0, 0, 0, 0, 0];
     estado.termometro2 = [0, 0, 0, 0, 0];
-    estado.fundoEscolhido = null;
     atualizarProgresso();
     mostrarTela("tela-capa", "Minha Grande Aventura no Windows 11");
 });

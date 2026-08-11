@@ -503,6 +503,13 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-sonic-digitacao.html",
       },
       {
+        titulo: "Missão Arquivos e Pastas",
+        descricao:
+          "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
+        tipo: "link",
+        url: "atividades/paginas/kids-missao-arquivos.html",
+      },
+      {
         titulo: "Minha Grande Aventura no Windows 11",
         descricao:
           "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",

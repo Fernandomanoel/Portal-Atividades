@@ -503,6 +503,13 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-sonic-digitacao.html",
       },
       {
+        titulo: "Minha Grande Aventura no Windows 11",
+        descricao:
+          "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
+        tipo: "link",
+        url: "atividades/paginas/kids-aventura-windows11.html",
+      },
+      {
         titulo: "Super Mario do Teclado — Atalhos e Pontuação",
         descricao:
           "Jogo com 9 mundos e 62 desafios em que o aluno pressiona as teclas de verdade: teclas especiais, atalhos do Ctrl, atalhos do Windows, pontuação, símbolos com Shift, acentos e uso da vírgula.",

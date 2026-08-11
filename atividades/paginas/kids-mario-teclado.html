@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Super Mario do Teclado — Atalhos e Pontuação</title>
+<style>
+    /* ==========================================================
+       SUPER MARIO DO TECLADO
+       Treino de atalhos, teclas especiais e pontuação.
+       Layout responsivo: celular, tablet e computador.
+       ========================================================== */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --vermelho: #e52521;
+        --vermelho-escuro: #a81713;
+        --azul: #049cd8;
+        --azul-escuro: #0369a1;
+        --amarelo: #fbd000;
+        --verde: #43b047;
+        --verde-escuro: #2d7a30;
+        --marrom: #8b4513;
+        --tijolo: #c84c0c;
+        --cinza: #475569;
+        --cinza-claro: #f1f5f9;
+        --borda: #cbd5e1;
+        --sombra: 0 10px 30px rgba(0, 0, 0, .18);
+        --raio: 16px;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(170deg, #049cd8 0%, #5ec8f5 60%, #9fdcf8 100%);
+        background-attachment: fixed;
+        color: #1e293b;
+        min-height: 100vh;
+        padding: clamp(8px, 2vw, 24px);
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: clamp(12px, 2vw, 22px);
+        overflow: hidden;
+        box-shadow: var(--sombra);
+    }
+
+    /* ---------- Cabeçalho ---------- */
+    header {
+        background: linear-gradient(135deg, var(--vermelho) 0%, #ff6b35 100%);
+        padding: clamp(16px, 3vw, 28px);
+        text-align: center;
+        color: #fff;
+    }
+
+    header h1 {
+        font-size: clamp(1.4rem, 5vw, 2.5rem);
+        text-shadow: 3px 3px 0 rgba(0, 0, 0, .25);
+        line-height: 1.15;
+    }
+
+    header p {
+        font-size: clamp(.82rem, 2.4vw, 1.05rem);
+        margin-top: 6px;
+        opacity: .95;
+    }
+
+    /* ---------- HUD estilo Mario ---------- */
+    .hud {
+        background: #000;
+        color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: clamp(10px, 3vw, 34px);
+        padding: clamp(7px, 2vw, 11px) clamp(8px, 2vw, 16px);
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        font-size: clamp(.68rem, 2.5vw, .95rem);
+        letter-spacing: .05em;
+    }
+
+    .hud div { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+    .hud .rotulo { opacity: .65; font-size: .82em; }
+    .hud .moeda-icone { color: var(--amarelo); }
+    .hud .valor { color: var(--amarelo); }
+
+    /* ---------- Barra de progresso ---------- */
+    .progresso-geral { background: var(--cinza-claro); height: 10px; }
+    .progresso-geral span {
+        display: block; height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--verde), var(--amarelo));
+        transition: width .35s ease;
+    }
+
+    /* ---------- Palco ---------- */
+    .palco {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(14px, 2.4vw, 22px);
+        padding: clamp(14px, 3vw, 26px);
+        background: #f8fbff;
+    }
+
+    @media (min-width: 900px) {
+        .palco { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); }
+    }
+
+    /* ---------- Cena ---------- */
+    .cena {
+        background: linear-gradient(180deg, #5ec8f5 0%, #9fdcf8 68%, #43b047 68%, #2d7a30 100%);
+        border: 4px solid var(--marrom);
+        border-radius: var(--raio);
+        position: relative;
+        overflow: hidden;
+        min-height: clamp(250px, 42vw, 340px);
+    }
+
+    /* nuvens */
+    .nuvem {
+        position: absolute;
+        background: #fff;
+        border-radius: 999px;
+        opacity: .9;
+    }
+    .nuvem::before, .nuvem::after {
+        content: ""; position: absolute; background: #fff; border-radius: 999px;
+    }
+    .nuvem.n1 { width: 46px; height: 20px; top: 12%; left: 12%; }
+    .nuvem.n1::before { width: 26px; height: 26px; top: -13px; left: 8px; }
+    .nuvem.n2 { width: 60px; height: 24px; top: 22%; right: 14%; }
+    .nuvem.n2::before { width: 32px; height: 32px; top: -16px; left: 12px; }
+
+    /* blocos ? e tijolos */
+    .blocos {
+        position: absolute;
+        top: 26%;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 5px;
+    }
+
+    .bloco {
+        width: clamp(26px, 7vw, 38px);
+        aspect-ratio: 1;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 900;
+        font-size: clamp(.85rem, 3vw, 1.2rem);
+        color: #fff;
+        border: 2px solid #7a3d00;
+        box-shadow: inset -3px -3px 0 rgba(0, 0, 0, .22), inset 3px 3px 0 rgba(255, 255, 255, .28);
+    }
+
+    .bloco.interrogacao { background: var(--amarelo); color: #7a3d00; }
+    .bloco.tijolo { background: var(--tijolo); }
+    .bloco.usado { background: #a1673a; color: transparent; }
+    .bloco.batendo { animation: bater .35s ease; }
+
+    @keyframes bater {
+        0%, 100% { transform: translateY(0); }
+        40%      { transform: translateY(-12px); }
+    }
+
+    /* cano */
+    .cano {
+        position: absolute;
+        bottom: 32%;
+        right: 26%;
+        width: clamp(34px, 9vw, 50px);
+        height: clamp(40px, 11vw, 62px);
+        background: var(--verde);
+        border: 3px solid var(--verde-escuro);
+        border-radius: 4px 4px 0 0;
+    }
+    .cano::before {
+        content: "";
+        position: absolute;
+        top: -10px; left: -7px; right: -7px;
+        height: 14px;
+        background: var(--verde);
+        border: 3px solid var(--verde-escuro);
+        border-radius: 4px;
+    }
+
+    /* bandeira do fim de fase */
+    .mastro {
+        position: absolute;
+        bottom: 32%;
+        left: 91%;
+        width: 5px;
+        height: clamp(70px, 18vw, 105px);
+        background: #cfcfcf;
+        border-radius: 2px;
+    }
+    .bandeira {
+        position: absolute;
+        top: 6px; left: 5px;
+        width: 0; height: 0;
+        border-left: clamp(16px, 4vw, 24px) solid var(--verde);
+        border-top: 9px solid transparent;
+        border-bottom: 9px solid transparent;
+        transition: top .8s ease;
+    }
+    .mastro.hasteada .bandeira { top: 6px; }
+
+    /* chão */
+    .chao {
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 32%;
+        background:
+            repeating-linear-gradient(90deg, #c84c0c 0 26px, #a83f09 26px 28px),
+            var(--tijolo);
+        border-top: 4px solid #7a3d00;
+    }
+
+    /* Mario */
+    .mario-box {
+        position: absolute;
+        bottom: 32%;
+        left: 8%;
+        z-index: 5;
+        transition: left .6s cubic-bezier(.34, 1.2, .64, 1);
+    }
+
+    .mario {
+        width: clamp(46px, 12vw, 68px);
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 4px 4px rgba(0, 0, 0, .35));
+        transform-origin: bottom center;
+        animation: passinho .6s ease-in-out infinite;
+        transition: transform .4s ease;
+    }
+
+    @keyframes passinho {
+        0%, 100% { transform: translateY(0) scaleY(1); }
+        50%      { transform: translateY(-3px) scaleY(1.03); }
+    }
+
+    /* tamanhos do Mario conforme o power-up */
+    .mario-box[data-forma="super"] .mario { transform: scale(1.28); }
+    .mario-box[data-forma="fogo"]  .mario { transform: scale(1.45); filter: drop-shadow(0 0 10px #fbd000) drop-shadow(0 4px 4px rgba(0,0,0,.35)); }
+
+    .mario-box.pulando .mario { animation: pulo .5s ease; }
+    @keyframes pulo {
+        0%   { transform: translateY(0); }
+        45%  { transform: translateY(-42px); }
+        100% { transform: translateY(0); }
+    }
+
+    .mario-box.tomou-dano .mario { animation: piscaDano .6s steps(4); }
+    @keyframes piscaDano { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+    .mario-box.vitoria .mario { animation: comemorar .6s ease-in-out infinite; }
+    @keyframes comemorar {
+        0%, 100% { transform: translateY(0) rotate(-4deg); }
+        50%      { transform: translateY(-14px) rotate(4deg); }
+    }
+
+    /* moeda que sobe */
+    .moeda-voando {
+        position: absolute;
+        z-index: 6;
+        font-size: clamp(1.1rem, 4vw, 1.6rem);
+        pointer-events: none;
+        animation: subirMoeda .9s ease-out forwards;
+    }
+    @keyframes subirMoeda {
+        0%   { opacity: 1; transform: translateY(0) scale(1); }
+        100% { opacity: 0; transform: translateY(-90px) scale(.6); }
+    }
+
+    /* aviso de power-up */
+    .aviso-powerup {
+        position: absolute;
+        top: 8px; left: 50%;
+        transform: translateX(-50%);
+        z-index: 8;
+        background: var(--amarelo);
+        color: #7a3d00;
+        font-weight: 800;
+        font-size: clamp(.68rem, 2.6vw, .82rem);
+        padding: 5px 12px;
+        border-radius: 999px;
+        border: 2px solid #7a3d00;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity .3s;
+    }
+    .aviso-powerup.mostrar { opacity: 1; animation: subirAviso 1.8s ease forwards; }
+    @keyframes subirAviso {
+        0%   { opacity: 0; transform: translate(-50%, 10px); }
+        20%  { opacity: 1; transform: translate(-50%, 0); }
+        80%  { opacity: 1; }
+        100% { opacity: 0; transform: translate(-50%, -12px); }
+    }
+
+    /* ---------- Painel ---------- */
+    .painel { display: flex; flex-direction: column; gap: clamp(10px, 2vw, 15px); }
+
+    .cabecalho-mundo {
+        background: linear-gradient(135deg, var(--azul) 0%, #5ec8f5 100%);
+        color: #fff;
+        padding: clamp(12px, 2.6vw, 18px);
+        border-radius: var(--raio);
+    }
+
+    .cabecalho-mundo h2 {
+        font-size: clamp(1rem, 3.4vw, 1.35rem);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .etiqueta {
+        background: rgba(255, 255, 255, .25);
+        border: 1px solid rgba(255, 255, 255, .5);
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: clamp(.6rem, 2.2vw, .72rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .cabecalho-mundo p { font-size: clamp(.78rem, 2.5vw, .92rem); opacity: .95; margin-top: 6px; }
+
+    /* pergunta */
+    .caixa-desafio {
+        background: #fff;
+        border: 3px solid var(--azul);
+        border-radius: var(--raio);
+        padding: clamp(14px, 3vw, 22px);
+    }
+
+    .pergunta {
+        font-size: clamp(.98rem, 3.4vw, 1.28rem);
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.45;
+    }
+
+    .instrucao {
+        font-size: clamp(.72rem, 2.4vw, .84rem);
+        color: var(--cinza);
+        background: var(--cinza-claro);
+        border-radius: 8px;
+        padding: 7px 11px;
+        display: inline-block;
+        margin-bottom: 12px;
+    }
+
+    /* teclas desenhadas */
+    .tecla {
+        display: inline-block;
+        background: linear-gradient(180deg, #fff 0%, #e2e8f0 100%);
+        border: 2px solid #94a3b8;
+        border-bottom-width: 4px;
+        border-radius: 7px;
+        padding: 3px 10px;
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 800;
+        font-size: .92em;
+        color: #1e293b;
+        box-shadow: 0 2px 0 rgba(0, 0, 0, .08);
+    }
+
+    /* área que capta a tecla pressionada */
+    .captura {
+        border: 3px dashed var(--azul);
+        border-radius: 12px;
+        background: #f0f9ff;
+        padding: clamp(14px, 3.5vw, 24px);
+        text-align: center;
+        cursor: pointer;
+        transition: border-color .2s, background .2s;
+        outline: none;
+    }
+
+    .captura:focus { border-color: var(--verde); background: #f0fdf4; border-style: solid; }
+    .captura.errou { border-color: var(--vermelho); background: #fef2f2; animation: tremer .3s; }
+    .captura.acertou { border-color: var(--verde); background: #f0fdf4; }
+
+    @keyframes tremer {
+        0%, 100% { transform: translateX(0); }
+        25%      { transform: translateX(-6px); }
+        75%      { transform: translateX(6px); }
+    }
+
+    .captura .dica-foco { font-size: clamp(.76rem, 2.6vw, .9rem); color: var(--cinza); }
+    .captura .lido {
+        font-size: clamp(1.1rem, 4.5vw, 1.6rem);
+        font-weight: 800;
+        color: var(--azul-escuro);
+        margin-top: 8px;
+        min-height: 1.5em;
+        font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* campo de digitação */
+    .campo {
+        width: 100%;
+        padding: clamp(11px, 2.6vw, 15px);
+        font-family: 'Courier New', Courier, monospace;
+        font-size: clamp(1rem, 3.6vw, 1.25rem);
+        border: 3px solid var(--borda);
+        border-radius: 12px;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+    .campo:focus { border-color: var(--azul); box-shadow: 0 0 0 4px rgba(4, 156, 216, .25); }
+
+    /* alternativas */
+    .opcoes { display: flex; flex-direction: column; gap: 8px; }
+
+    .opcao {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 2px solid var(--borda);
+        border-radius: 10px;
+        padding: clamp(10px, 2.6vw, 14px);
+        cursor: pointer;
+        font-size: clamp(.84rem, 2.8vw, .98rem);
+        text-align: left;
+        transition: border-color .2s, background .2s, transform .12s;
+        width: 100%;
+    }
+
+    .opcao:hover:not(:disabled) { border-color: var(--azul); background: #f0f9ff; transform: translateX(3px); }
+    .opcao .letra {
+        background: var(--azul); color: #fff; font-weight: 800;
+        width: 26px; height: 26px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        flex: none; font-size: .8rem;
+    }
+    .opcao.certa  { border-color: var(--verde); background: #f0fdf4; }
+    .opcao.certa .letra { background: var(--verde); }
+    .opcao.errada { border-color: var(--vermelho); background: #fef2f2; }
+    .opcao.errada .letra { background: var(--vermelho); }
+    .opcao:disabled { cursor: default; }
+
+    /* feedback */
+    .feedback {
+        border-radius: 12px;
+        padding: clamp(10px, 2.4vw, 14px);
+        font-size: clamp(.8rem, 2.6vw, .95rem);
+        display: none;
+        margin-top: 12px;
+    }
+    .feedback.mostrar { display: block; animation: aparece .25s ease; }
+    .feedback.ok  { background: #dcfce7; color: #14532d; border-left: 6px solid var(--verde); }
+    .feedback.nao { background: #fee2e2; color: #7f1d1d; border-left: 6px solid var(--vermelho); }
+    .feedback strong { display: block; margin-bottom: 3px; }
+
+    @keyframes aparece { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+    /* botões */
+    .botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    button.acao {
+        flex: 1 1 130px;
+        background: var(--azul);
+        color: #fff;
+        border: none;
+        padding: clamp(10px, 2.6vw, 14px) clamp(12px, 3vw, 20px);
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: clamp(.82rem, 2.6vw, .96rem);
+        font-weight: 700;
+        transition: background .2s, transform .15s;
+    }
+    button.acao:hover:not(:disabled) { background: var(--azul-escuro); transform: translateY(-2px); }
+    button.acao:disabled { opacity: .45; cursor: not-allowed; }
+    button.acao.verde { background: var(--verde); }
+    button.acao.verde:hover:not(:disabled) { background: var(--verde-escuro); }
+    button.acao.cinza { background: #64748b; }
+    button.acao.cinza:hover:not(:disabled) { background: #475569; }
+
+    /* ---------- Mapa de mundos ---------- */
+    .mapa { padding: clamp(14px, 3vw, 26px); border-top: 3px solid var(--cinza-claro); background: #fff; }
+    .mapa h3 { font-size: clamp(.95rem, 3vw, 1.12rem); color: var(--vermelho-escuro); margin-bottom: 10px; }
+
+    .lista-mundos {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(clamp(64px, 18vw, 88px), 1fr));
+        gap: 8px;
+    }
+
+    .btn-mundo {
+        border: 3px solid var(--borda);
+        border-radius: 12px;
+        background: var(--cinza-claro);
+        color: var(--cinza);
+        font-weight: 800;
+        font-size: clamp(.68rem, 2.5vw, .82rem);
+        padding: 9px 5px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+        transition: transform .15s, border-color .2s;
+    }
+    .btn-mundo small { font-size: .58rem; font-weight: 600; opacity: .8; }
+    .btn-mundo:hover { transform: translateY(-3px); }
+    .btn-mundo.concluido { background: #dcfce7; border-color: var(--verde); color: #14532d; }
+    .btn-mundo.atual { background: #e0f2fe; border-color: var(--azul); color: var(--azul-escuro); box-shadow: 0 0 0 3px rgba(4, 156, 216, .2); }
+    .btn-mundo.bloqueado { opacity: .55; }
+
+    /* ---------- Modal ---------- */
+    .modal {
+        position: fixed; inset: 0;
+        background: rgba(15, 23, 42, .84);
+        display: none; align-items: center; justify-content: center;
+        padding: clamp(12px, 4vw, 26px);
+        z-index: 60;
+    }
+    .modal.aberto { display: flex; animation: aparece .25s ease; }
+
+    .modal-caixa {
+        background: #fff;
+        border-radius: clamp(14px, 3vw, 22px);
+        max-width: 580px; width: 100%;
+        max-height: 92vh; overflow-y: auto;
+        text-align: center;
+        padding: clamp(18px, 4vw, 34px);
+        box-shadow: var(--sombra);
+    }
+    .modal-caixa h2 { font-size: clamp(1.15rem, 4.4vw, 1.7rem); margin-bottom: 10px; color: var(--vermelho-escuro); }
+    .modal-caixa p { font-size: clamp(.84rem, 2.8vw, .98rem); color: var(--cinza); margin-bottom: 12px; }
+    .modal-emoji { font-size: clamp(2.8rem, 12vw, 4.4rem); line-height: 1; margin-bottom: 8px; }
+
+    .placar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+        margin: 16px 0;
+    }
+    .placar .item {
+        background: #fffbeb;
+        border: 2px solid var(--amarelo);
+        border-radius: 12px;
+        padding: 9px 6px;
+    }
+    .placar .valor { font-size: clamp(1rem, 3.6vw, 1.35rem); font-weight: 800; color: var(--vermelho); }
+    .placar .nome { font-size: clamp(.58rem, 2vw, .68rem); color: var(--cinza); text-transform: uppercase; letter-spacing: .04em; }
+
+    footer {
+        text-align: center;
+        padding: clamp(12px, 3vw, 20px);
+        background: var(--cinza-claro);
+        color: var(--cinza);
+        font-size: clamp(.72rem, 2.4vw, .84rem);
+    }
+
+    .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🍄 Super Mario do Teclado</h1>
+        <p>Aprenda a usar as teclas de verdade: atalhos, teclas especiais, pontuação e vírgula</p>
+    </header>
+
+    <div class="hud">
+        <div><span class="rotulo">MUNDO</span> <span class="valor" id="hudMundo">1-1</span></div>
+        <div><span class="moeda-icone">🪙</span> <span class="valor" id="hudMoedas">×00</span></div>
+        <div><span class="rotulo">VIDAS</span> <span class="valor" id="hudVidas">🍄🍄🍄</span></div>
+        <div><span class="rotulo">FORMA</span> <span class="valor" id="hudForma">Pequeno</span></div>
+    </div>
+
+    <div class="progresso-geral"><span id="progressoGeral"></span></div>
+
+    <div class="palco">
+        <!-- CENA -->
+        <div class="cena" id="cena">
+            <div class="nuvem n1"></div>
+            <div class="nuvem n2"></div>
+
+            <div class="blocos" id="blocos"></div>
+            <div class="cano"></div>
+
+            <div class="mastro" id="mastro"><div class="bandeira"></div></div>
+
+            <div class="aviso-powerup" id="avisoPowerup"></div>
+
+            <div class="mario-box" id="marioBox" data-forma="pequeno">
+                <svg class="mario" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" aria-label="Mario">
+                    <!-- boné -->
+                    <path d="M14 18c0-8 7-13 18-13s18 5 18 13v5H14z" fill="#e52521"/>
+                    <path d="M46 18h12c2 0 3 2 1 3l-13 4z" fill="#e52521"/>
+                    <circle cx="32" cy="14" r="7" fill="#fff"/>
+                    <text x="32" y="18.5" font-size="9" font-weight="bold" fill="#e52521"
+                          text-anchor="middle" font-family="Arial">M</text>
+                    <!-- rosto -->
+                    <path d="M18 23h28v13c0 6-6 9-14 9s-14-3-14-9z" fill="#fbc2a0"/>
+                    <!-- olhos -->
+                    <ellipse cx="26" cy="29" rx="2.2" ry="3" fill="#2b2b2b"/>
+                    <ellipse cx="38" cy="29" rx="2.2" ry="3" fill="#2b2b2b"/>
+                    <!-- nariz -->
+                    <ellipse cx="32" cy="34" rx="4" ry="3.2" fill="#f0a882"/>
+                    <!-- bigode -->
+                    <path d="M22 37c3-2 6-2 10-2s7 0 10 2c-3 3-7 3.5-10 3.5S25 40 22 37z" fill="#4a2c12"/>
+                    <!-- corpo / macacão -->
+                    <path d="M20 45h24v20H20z" fill="#049cd8"/>
+                    <path d="M20 45h6v-3h12v3h6v6H20z" fill="#049cd8"/>
+                    <rect x="14" y="46" width="6" height="14" rx="3" fill="#e52521"/>
+                    <rect x="44" y="46" width="6" height="14" rx="3" fill="#e52521"/>
+                    <circle cx="26" cy="52" r="2.2" fill="#fbd000"/>
+                    <circle cx="38" cy="52" r="2.2" fill="#fbd000"/>
+                    <!-- mãos -->
+                    <circle cx="14" cy="61" r="5" fill="#fff"/>
+                    <circle cx="50" cy="61" r="5" fill="#fff"/>
+                    <!-- sapatos -->
+                    <ellipse cx="24" cy="70" rx="8" ry="5" fill="#4a2c12"/>
+                    <ellipse cx="40" cy="70" rx="8" ry="5" fill="#4a2c12"/>
+                </svg>
+            </div>
+
+            <div class="chao"></div>
+        </div>
+
+        <!-- PAINEL -->
+        <div class="painel">
+            <div class="cabecalho-mundo">
+                <h2><span id="tituloMundo">Carregando…</span> <span class="etiqueta" id="etiquetaMundo"></span></h2>
+                <p id="dicaMundo"></p>
+            </div>
+
+            <div class="caixa-desafio">
+                <div class="pergunta" id="pergunta"></div>
+                <div class="instrucao" id="instrucao"></div>
+
+                <!-- área de pressionar tecla -->
+                <div class="captura oculto" id="captura" tabindex="0">
+                    <div class="dica-foco">👆 Clique aqui e pressione a tecla no seu teclado</div>
+                    <div class="lido" id="teclaLida">—</div>
+                </div>
+
+                <!-- campo de digitação -->
+                <input type="text" class="campo oculto" id="campo" autocomplete="off"
+                       autocorrect="off" autocapitalize="off" spellcheck="false"
+                       placeholder="Digite aqui…">
+
+                <!-- alternativas -->
+                <div class="opcoes oculto" id="opcoes"></div>
+
+                <div class="feedback" id="feedback"></div>
+            </div>
+
+            <div class="botoes">
+                <button class="acao cinza" id="btnPular">Não sei, mostrar resposta</button>
+                <button class="acao verde" id="btnContinuar" disabled>Continuar →</button>
+            </div>
+
+            <div class="botoes">
+                <button class="acao cinza" id="btnAnterior">← Mundo anterior</button>
+                <button class="acao cinza" id="btnRepetir">↻ Repetir mundo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAPA -->
+    <div class="mapa">
+        <h3>🗺️ Mapa dos mundos <small style="font-weight:600;color:#64748b" id="resumoMapa"></small></h3>
+        <div class="lista-mundos" id="listaMundos"></div>
+    </div>
+
+    <footer><strong>Super Mario do Teclado</strong> — <span id="rodapeInfo"></span></footer>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-caixa">
+        <div class="modal-emoji" id="modalEmoji"></div>
+        <h2 id="modalTitulo"></h2>
+        <div id="modalCorpo"></div>
+        <div class="botoes" style="margin-top:14px">
+            <button class="acao" id="modalBotao">Continuar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ==================================================================
+   1) CONTEÚDO DOS MUNDOS
+   ------------------------------------------------------------------
+   Cada mundo tem uma lista de "desafios". Existem 4 tipos:
+
+     tipo: "tecla"    -> o aluno PRESSIONA uma tecla.        alvo: "Enter"
+     tipo: "atalho"   -> o aluno PRESSIONA uma combinação.   alvo: "Ctrl+C"
+     tipo: "digitar"  -> o aluno DIGITA um texto no campo.   alvo: ","
+     tipo: "escolha"  -> múltipla escolha.  opcoes: [...]    correta: 0
+
+   Para ADICIONAR um desafio, copie uma linha { ... } e edite.
+   Para criar um MUNDO NOVO, copie um bloco inteiro e cole no final.
+   O mapa, a barra de progresso e o placar se ajustam sozinhos.
+   ================================================================== */
+
+const MUNDOS = [
+    {
+        nome: "Teclas Especiais",
+        etiqueta: "Mundo 1",
+        dica: "Estas teclas não escrevem letras — elas dão comandos. Vamos conhecer cada uma!",
+        desafios: [
+            { tipo: "tecla", alvo: "Enter",
+              pergunta: "Qual tecla usamos para PULAR PARA A LINHA DE BAIXO enquanto escrevemos?",
+              explicacao: "O Enter cria um parágrafo novo. Também serve para confirmar coisas na tela." },
+            { tipo: "tecla", alvo: "Backspace",
+              pergunta: "Você errou uma letra. Qual tecla APAGA a letra que está ANTES do cursor?",
+              explicacao: "O Backspace fica acima do Enter e apaga para trás." },
+            { tipo: "tecla", alvo: "Delete",
+              pergunta: "E qual tecla apaga a letra que está DEPOIS do cursor?",
+              explicacao: "O Delete apaga para frente — o contrário do Backspace." },
+            { tipo: "tecla", alvo: " ",
+              pergunta: "Qual tecla coloca o ESPAÇO entre uma palavra e outra?",
+              explicacao: "A barra de espaço é a tecla comprida embaixo do teclado. Use o polegar!" },
+            { tipo: "tecla", alvo: "Shift",
+              pergunta: "Qual tecla você SEGURA para escrever uma letra MAIÚSCULA?",
+              explicacao: "Segure Shift e aperte a letra ao mesmo tempo. Existe um Shift de cada lado." },
+            { tipo: "tecla", alvo: "Tab",
+              pergunta: "Qual tecla dá um pulo grande para frente (usada para começar parágrafos e pular campos)?",
+              explicacao: "O Tab fica à esquerda do Q e anda vários espaços de uma vez." },
+            { tipo: "tecla", alvo: "Escape",
+              pergunta: "Qual tecla CANCELA ou FECHA o que está aberto na tela?",
+              explicacao: "O Esc fica sozinho no canto superior esquerdo do teclado." },
+            { tipo: "escolha", correta: 1,
+              pergunta: "Para que serve a tecla Caps Lock?",
+              opcoes: [
+                  "Apagar tudo o que foi escrito",
+                  "Deixar TODAS as letras maiúsculas até apertar de novo",
+                  "Salvar o arquivo",
+                  "Aumentar o volume do computador"
+              ],
+              explicacao: "Caps Lock trava as maiúsculas. Uma luzinha acende no teclado quando ele está ligado." }
+        ]
+    },
+    {
+        nome: "Atalhos de Edição",
+        etiqueta: "Mundo 2",
+        dica: "Atalho é apertar duas teclas juntas para fazer algo rapidinho. Segure o Ctrl e aperte a letra!",
+        desafios: [
+            { tipo: "atalho", alvo: "Ctrl+C",
+              pergunta: "Você selecionou um texto e quer COPIAR. Qual é o atalho?",
+              explicacao: "Ctrl+C copia. O 'C' vem de Copiar (e de Copy, em inglês)." },
+            { tipo: "atalho", alvo: "Ctrl+V",
+              pergunta: "Agora você quer COLAR o que copiou. Qual é o atalho?",
+              explicacao: "Ctrl+V cola. O V fica bem ao lado do C, fácil de lembrar!" },
+            { tipo: "atalho", alvo: "Ctrl+X",
+              pergunta: "Você quer RECORTAR (tirar daqui e levar para outro lugar). Qual é o atalho?",
+              explicacao: "Ctrl+X recorta. O X parece uma tesourinha cortando." },
+            { tipo: "atalho", alvo: "Ctrl+Z",
+              pergunta: "Ops, você fez besteira! Qual atalho DESFAZ a última ação?",
+              explicacao: "Ctrl+Z é o 'voltar atrás'. É o atalho que mais salva a gente!" },
+            { tipo: "atalho", alvo: "Ctrl+Y",
+              pergunta: "Desfez sem querer? Qual atalho REFAZ o que você desfez?",
+              explicacao: "Ctrl+Y refaz. Em alguns programas também funciona Ctrl+Shift+Z." },
+            { tipo: "atalho", alvo: "Ctrl+A",
+              pergunta: "Qual atalho SELECIONA TUDO de uma vez?",
+              explicacao: "Ctrl+A seleciona tudo. O A vem de 'All' (tudo, em inglês)." },
+            { tipo: "escolha", correta: 2,
+              pergunta: "Qual é a diferença entre COPIAR e RECORTAR?",
+              opcoes: [
+                  "Não existe diferença, são a mesma coisa",
+                  "Copiar apaga o original e recortar não",
+                  "Copiar mantém o original no lugar; recortar tira o original de lá",
+                  "Recortar só funciona com imagens"
+              ],
+              explicacao: "Copiar faz uma cópia e deixa o original. Recortar move: some do lugar antigo." }
+        ]
+    },
+    {
+        nome: "Atalhos de Texto",
+        etiqueta: "Mundo 3",
+        dica: "Estes atalhos deixam o texto bonito e ajudam a trabalhar mais rápido no Word.",
+        desafios: [
+            { tipo: "atalho", alvo: "Ctrl+B",
+              pergunta: "Qual atalho deixa o texto em NEGRITO (mais grosso)?",
+              explicacao: "Ctrl+B — o B vem de 'Bold', que é negrito em inglês." },
+            { tipo: "atalho", alvo: "Ctrl+I",
+              pergunta: "Qual atalho deixa o texto em ITÁLICO (inclinado)?",
+              explicacao: "Ctrl+I — o I vem de 'Italic'." },
+            { tipo: "atalho", alvo: "Ctrl+U",
+              pergunta: "Qual atalho deixa o texto SUBLINHADO (com risco embaixo)?",
+              explicacao: "Ctrl+U — o U vem de 'Underline', sublinhado em inglês." },
+            { tipo: "atalho", alvo: "Ctrl+S",
+              pergunta: "Você terminou o trabalho. Qual atalho SALVA o arquivo?",
+              explicacao: "Ctrl+S salva. Salve sempre, de tempos em tempos, para não perder nada!" },
+            { tipo: "atalho", alvo: "Ctrl+P",
+              pergunta: "Qual atalho abre a janela para IMPRIMIR?",
+              explicacao: "Ctrl+P — o P vem de 'Print', imprimir em inglês." },
+            { tipo: "atalho", alvo: "Ctrl+F",
+              pergunta: "Qual atalho PROCURA uma palavra dentro do texto?",
+              explicacao: "Ctrl+F — o F vem de 'Find', procurar em inglês. Ótimo para achar algo num texto grande." }
+        ]
+    },
+    {
+        nome: "Atalhos do Windows",
+        etiqueta: "Mundo 4",
+        dica: "Estes atalhos mexem no computador inteiro. Aqui você só escolhe a resposta — não precisa apertar!",
+        desafios: [
+            { tipo: "escolha", correta: 1,
+              pergunta: "Qual atalho TROCA entre os programas que estão abertos?",
+              opcoes: ["Ctrl+Tab", "Alt+Tab", "Shift+Tab", "Ctrl+Alt+T"],
+              explicacao: "Alt+Tab troca de janela. Segure o Alt e vá apertando Tab para escolher." },
+            { tipo: "escolha", correta: 0,
+              pergunta: "Qual atalho FECHA a janela ou o programa que está aberto?",
+              opcoes: ["Alt+F4", "Ctrl+F4 sempre", "Shift+Esc", "Ctrl+W em qualquer programa"],
+              explicacao: "Alt+F4 fecha o programa da frente. Cuidado: salve antes de fechar!" },
+            { tipo: "escolha", correta: 2,
+              pergunta: "Qual atalho MOSTRA A ÁREA DE TRABALHO, minimizando tudo?",
+              opcoes: ["Ctrl+D", "Alt+D", "Tecla Windows + D", "Shift+D"],
+              explicacao: "Tecla Windows + D mostra a área de trabalho. Aperte de novo para voltar." },
+            { tipo: "escolha", correta: 3,
+              pergunta: "Qual atalho abre o EXPLORADOR DE ARQUIVOS (as pastas)?",
+              opcoes: ["Ctrl+E", "Alt+E", "Ctrl+Shift+E", "Tecla Windows + E"],
+              explicacao: "Tecla Windows + E abre as pastas do computador na hora." },
+            { tipo: "escolha", correta: 0,
+              pergunta: "Qual tecla tira uma FOTO DA TELA (print)?",
+              opcoes: ["Print Screen (PrtSc)", "Scroll Lock", "Pause Break", "F12"],
+              explicacao: "Print Screen copia a tela. Depois é só colar com Ctrl+V onde quiser." },
+            { tipo: "escolha", correta: 1,
+              pergunta: "O computador travou. Qual atalho abre as opções de segurança e o Gerenciador de Tarefas?",
+              opcoes: ["Ctrl+Shift+Esc apenas", "Ctrl+Alt+Del", "Alt+Shift+Del", "Windows+Del"],
+              explicacao: "Ctrl+Alt+Del é o famoso 'salve-vidas' do Windows quando algo trava." }
+        ]
+    },
+    {
+        nome: "Pontuação Básica",
+        etiqueta: "Mundo 5",
+        dica: "Agora vamos aos sinais de pontuação. Encontre cada um no seu teclado e digite!",
+        desafios: [
+            { tipo: "digitar", alvo: ",",
+              pergunta: "Digite a VÍRGULA.",
+              explicacao: "A vírgula fica na linha de baixo, perto do M. Ela serve para dar uma pausa curta na frase." },
+            { tipo: "digitar", alvo: ".",
+              pergunta: "Digite o PONTO FINAL.",
+              explicacao: "O ponto final fica ao lado da vírgula e termina a frase." },
+            { tipo: "digitar", alvo: ";",
+              pergunta: "Digite o PONTO E VÍRGULA.",
+              explicacao: "O ponto e vírgula é uma pausa maior que a vírgula e menor que o ponto." },
+            { tipo: "digitar", alvo: ":",
+              pergunta: "Digite os DOIS PONTOS (use o Shift!).",
+              explicacao: "Dois pontos = Shift + a tecla do ponto e vírgula. Usamos antes de uma lista ou de uma fala." },
+            { tipo: "digitar", alvo: "...",
+              pergunta: "Digite as RETICÊNCIAS (três pontinhos seguidos).",
+              explicacao: "As reticências mostram que a frase continua ou ficou no ar…" },
+            { tipo: "digitar", alvo: "-",
+              pergunta: "Digite o HÍFEN (o tracinho).",
+              explicacao: "O hífen une palavras, como em 'guarda-chuva'." },
+            { tipo: "escolha", correta: 1,
+              pergunta: "Para que serve a VÍRGULA numa frase?",
+              opcoes: [
+                  "Para terminar a frase",
+                  "Para fazer uma pausa curta e separar partes da frase",
+                  "Para deixar a letra maiúscula",
+                  "Para dar espaço entre as palavras"
+              ],
+              explicacao: "A vírgula organiza a frase e mostra onde fazer uma pausinha ao ler." }
+        ]
+    },
+    {
+        nome: "Shift e Símbolos",
+        etiqueta: "Mundo 6",
+        dica: "Os símbolos ficam ESCONDIDOS em cima dos números. Segure o Shift para alcançá-los!",
+        desafios: [
+            { tipo: "digitar", alvo: "!",
+              pergunta: "Digite o PONTO DE EXCLAMAÇÃO.",
+              explicacao: "Exclamação = Shift + 1. Usamos para surpresa, susto ou empolgação!" },
+            { tipo: "digitar", alvo: "?",
+              pergunta: "Digite o PONTO DE INTERROGAÇÃO.",
+              explicacao: "Interrogação = Shift + a tecla da barra. Toda pergunta termina com ele." },
+            { tipo: "digitar", alvo: "@",
+              pergunta: "Digite o ARROBA (usado nos e-mails).",
+              explicacao: "Arroba = Shift + 2. Todo e-mail tem um: aluno@escola.com" },
+            { tipo: "digitar", alvo: "%",
+              pergunta: "Digite o símbolo de PORCENTAGEM.",
+              explicacao: "Porcentagem = Shift + 5. Serve para 100%, 50%, 10%…" },
+            { tipo: "digitar", alvo: "()",
+              pergunta: "Digite os PARÊNTESES: abre e fecha, um do lado do outro.",
+              explicacao: "Parênteses = Shift + 9 e Shift + 0. Servem para uma explicação extra (assim)." },
+            { tipo: "digitar", alvo: "#",
+              pergunta: "Digite a CERQUILHA (a 'hashtag').",
+              explicacao: "Hashtag = Shift + 3. Muito usada nas redes sociais." },
+            { tipo: "escolha", correta: 2,
+              pergunta: "Como se escreve o símbolo de exclamação no teclado?",
+              opcoes: ["Apertando só a tecla 1", "Caps Lock + 1", "Segurando Shift e apertando 1", "Ctrl + 1"],
+              explicacao: "Todo símbolo que está na parte de CIMA da tecla precisa do Shift." }
+        ]
+    },
+    {
+        nome: "Acentos e Cedilha",
+        etiqueta: "Mundo 7",
+        dica: "Para acentuar: aperte primeiro o acento, depois a vogal. Vamos treinar!",
+        desafios: [
+            { tipo: "digitar", alvo: "á",
+              pergunta: "Digite a letra A com ACENTO AGUDO: á",
+              explicacao: "Aperte a tecla do acento agudo (´) e depois o A." },
+            { tipo: "digitar", alvo: "ã",
+              pergunta: "Digite a letra A com TIL: ã",
+              explicacao: "Aperte til (~, com Shift) e depois o A. Aparece em 'não', 'irmã', 'pão'." },
+            { tipo: "digitar", alvo: "ê",
+              pergunta: "Digite a letra E com ACENTO CIRCUNFLEXO: ê",
+              explicacao: "Aperte o circunflexo (^, com Shift) e depois o E. Como em 'você'." },
+            { tipo: "digitar", alvo: "ç",
+              pergunta: "Digite o C CEDILHA: ç",
+              explicacao: "O Ç tem tecla própria, do lado direito do L." },
+            { tipo: "digitar", alvo: "à",
+              pergunta: "Digite a letra A com CRASE: à",
+              explicacao: "Aperte a crase (`) e depois o A. Como em 'vou à escola'." },
+            { tipo: "digitar", alvo: "coração",
+              pergunta: "Agora escreva a palavra completa: coração",
+              explicacao: "Muito bem! Você juntou letras, til e cedilha numa palavra só." },
+            { tipo: "digitar", alvo: "você",
+              pergunta: "Escreva a palavra: você",
+              explicacao: "Perfeito! O circunflexo no E é bem comum no português." }
+        ]
+    },
+    {
+        nome: "A Vírgula na Frase",
+        etiqueta: "Mundo 8",
+        dica: "Agora o desafio é saber ONDE colocar a vírgula. Preste atenção no sentido da frase!",
+        desafios: [
+            { tipo: "escolha", correta: 1,
+              pergunta: "Qual frase está com a vírgula no lugar certo?",
+              opcoes: [
+                  "Comprei banana maçã, e uva.",
+                  "Comprei banana, maçã e uva.",
+                  "Comprei, banana maçã e uva.",
+                  "Comprei banana maçã e, uva."
+              ],
+              explicacao: "Numa lista, a vírgula separa os itens — e antes do último usamos 'e', sem vírgula." },
+            { tipo: "escolha", correta: 0,
+              pergunta: "Qual frase está correta?",
+              opcoes: [
+                  "João, venha aqui!",
+                  "João venha, aqui!",
+                  "João venha aqui,!",
+                  "João, venha, aqui!"
+              ],
+              explicacao: "Quando chamamos alguém pelo nome, separamos o nome com vírgula." },
+            { tipo: "digitar", alvo: "Hoje, amanhã e depois.",
+              pergunta: "Digite exatamente esta frase (com vírgula e acento): Hoje, amanhã e depois.",
+              explicacao: "Você juntou vírgula, til e ponto final numa frase só!" },
+            { tipo: "digitar", alvo: "Maria, você vem?",
+              pergunta: "Digite exatamente: Maria, você vem?",
+              explicacao: "Vírgula para chamar a pessoa e interrogação no fim da pergunta." },
+            { tipo: "escolha", correta: 2,
+              pergunta: "Onde falta a vírgula em: 'Não Pedro eu não fui lá.'?",
+              opcoes: [
+                  "Depois de 'fui'",
+                  "Não falta vírgula nenhuma",
+                  "Depois de 'Não' e depois de 'Pedro'",
+                  "Depois de 'eu'"
+              ],
+              explicacao: "O certo é: 'Não, Pedro, eu não fui lá.' — separando o 'não' e o nome de quem falamos." },
+            { tipo: "digitar", alvo: "Vamos comer, vovó!",
+              pergunta: "Digite: Vamos comer, vovó!",
+              explicacao: "Sem a vírgula viraria 'Vamos comer vovó!' — a vírgula muda tudo!" }
+        ]
+    },
+    {
+        nome: "Castelo Final",
+        etiqueta: "Castelo",
+        dica: "O desafio final! Tudo o que você aprendeu: teclas, atalhos, símbolos e pontuação.",
+        desafios: [
+            { tipo: "atalho", alvo: "Ctrl+S",
+              pergunta: "Antes de tudo: SALVE o seu trabalho!",
+              explicacao: "Salvar sempre é o hábito mais importante de todos." },
+            { tipo: "tecla", alvo: "Enter",
+              pergunta: "Pule uma linha para começar o texto.",
+              explicacao: "Enter, o velho conhecido!" },
+            { tipo: "digitar", alvo: "Parabéns, você conseguiu!",
+              pergunta: "Digite: Parabéns, você conseguiu!",
+              explicacao: "Acento agudo, vírgula, circunflexo e exclamação numa frase só. Show!" },
+            { tipo: "atalho", alvo: "Ctrl+A",
+              pergunta: "Selecione TUDO o que você escreveu.",
+              explicacao: "Ctrl+A seleciona o texto inteiro." },
+            { tipo: "atalho", alvo: "Ctrl+C",
+              pergunta: "Agora COPIE a seleção.",
+              explicacao: "Ctrl+C copia para a memória do computador." },
+            { tipo: "atalho", alvo: "Ctrl+V",
+              pergunta: "E COLE no final do texto.",
+              explicacao: "Ctrl+V cola. Copiar e colar andam sempre juntos!" },
+            { tipo: "digitar", alvo: "aluno@escola.com.br",
+              pergunta: "Digite este e-mail completo: aluno@escola.com.br",
+              explicacao: "Arroba com Shift+2 e os pontinhos no lugar certo. Você é um mestre do teclado!" },
+            { tipo: "escolha", correta: 3,
+              pergunta: "Qual destes hábitos é o MAIS importante para não perder um trabalho?",
+              opcoes: [
+                  "Digitar bem rápido",
+                  "Usar muitas cores no texto",
+                  "Deixar o computador sempre ligado",
+                  "Salvar com Ctrl+S de tempos em tempos"
+              ],
+              explicacao: "Isso mesmo! Salvar sempre evita perder horas de trabalho." }
+        ]
+    }
+];
+
+/* ==================================================================
+   2) CONFIGURAÇÕES
+   ================================================================== */
+
+const CONFIG = {
+    moedasPorAcerto: 10,
+    moedasBonusPrimeiraTentativa: 5,
+    vidasIniciais: 3,
+    acertosParaSuper: 3,   // acertos seguidos para virar Super Mario
+    acertosParaFogo: 6     // acertos seguidos para virar Mario de Fogo
+};
+
+/* ==================================================================
+   3) ESTADO
+   ================================================================== */
+
+const estado = {
+    mundoAtual: 0,
+    desafioAtual: 0,
+    moedas: 0,
+    vidas: CONFIG.vidasIniciais,
+    combo: 0,
+    melhorCombo: 0,
+    acertos: 0,
+    erros: 0,
+    tentouNesteDesafio: false,
+    respondido: false,
+    concluidos: {},
+    forma: "pequeno"
+};
+
+/* ==================================================================
+   4) ELEMENTOS
+   ================================================================== */
+
+const el = {
+    hudMundo: document.getElementById("hudMundo"),
+    hudMoedas: document.getElementById("hudMoedas"),
+    hudVidas: document.getElementById("hudVidas"),
+    hudForma: document.getElementById("hudForma"),
+    progressoGeral: document.getElementById("progressoGeral"),
+    cena: document.getElementById("cena"),
+    blocos: document.getElementById("blocos"),
+    marioBox: document.getElementById("marioBox"),
+    mastro: document.getElementById("mastro"),
+    avisoPowerup: document.getElementById("avisoPowerup"),
+    tituloMundo: document.getElementById("tituloMundo"),
+    etiquetaMundo: document.getElementById("etiquetaMundo"),
+    dicaMundo: document.getElementById("dicaMundo"),
+    pergunta: document.getElementById("pergunta"),
+    instrucao: document.getElementById("instrucao"),
+    captura: document.getElementById("captura"),
+    teclaLida: document.getElementById("teclaLida"),
+    campo: document.getElementById("campo"),
+    opcoes: document.getElementById("opcoes"),
+    feedback: document.getElementById("feedback"),
+    btnPular: document.getElementById("btnPular"),
+    btnContinuar: document.getElementById("btnContinuar"),
+    btnAnterior: document.getElementById("btnAnterior"),
+    btnRepetir: document.getElementById("btnRepetir"),
+    listaMundos: document.getElementById("listaMundos"),
+    resumoMapa: document.getElementById("resumoMapa"),
+    rodapeInfo: document.getElementById("rodapeInfo"),
+    modal: document.getElementById("modal"),
+    modalEmoji: document.getElementById("modalEmoji"),
+    modalTitulo: document.getElementById("modalTitulo"),
+    modalCorpo: document.getElementById("modalCorpo"),
+    modalBotao: document.getElementById("modalBotao")
+};
+
+/* ==================================================================
+   5) LEITURA DAS TECLAS
+   ================================================================== */
+
+const NOMES_AMIGAVEIS = {
+    " ": "Barra de Espaço",
+    "Enter": "Enter",
+    "Backspace": "Backspace",
+    "Delete": "Delete",
+    "Tab": "Tab",
+    "Escape": "Esc",
+    "Shift": "Shift",
+    "Control": "Ctrl",
+    "CapsLock": "Caps Lock",
+    "ArrowUp": "Seta ↑", "ArrowDown": "Seta ↓",
+    "ArrowLeft": "Seta ←", "ArrowRight": "Seta →"
+};
+
+function nomeAmigavel(chave) {
+    return NOMES_AMIGAVEIS[chave] || chave;
+}
+
+// Transforma o evento de teclado num texto tipo "Ctrl+C" ou "Enter".
+function lerCombinacao(e) {
+    const modificadores = [];
+    if (e.ctrlKey) modificadores.push("Ctrl");
+    if (e.altKey) modificadores.push("Alt");
+    if (e.shiftKey) modificadores.push("Shift");
+
+    // Se o aluno só segurou um modificador, ainda não é uma combinação
+    if (["Control", "Alt", "Shift", "Meta"].includes(e.key)) {
+        return { completa: false, texto: modificadores.join("+"), tecla: e.key };
+    }
+
+    let tecla = e.key === " " ? "Barra de Espaço" : e.key;
+    if (tecla.length === 1) tecla = tecla.toUpperCase();
+    else tecla = nomeAmigavel(e.key);
+
+    const texto = modificadores.length ? modificadores.join("+") + "+" + tecla : tecla;
+    return { completa: true, texto, tecla: e.key };
+}
+
+// Compara o que o aluno apertou com o alvo do desafio.
+function combinaComAlvo(e, alvo) {
+    const partes = alvo.split("+");
+    const teclaAlvo = partes[partes.length - 1];
+    const precisaCtrl = partes.includes("Ctrl");
+    const precisaAlt = partes.includes("Alt");
+    const precisaShift = partes.includes("Shift");
+
+    // Os modificadores têm que bater exatamente: nem faltando, nem sobrando.
+    if (e.ctrlKey !== precisaCtrl) return false;
+    if (e.altKey !== precisaAlt) return false;
+    if (e.shiftKey !== precisaShift) return false;
+
+    // Alvos que são a própria tecla modificadora (ex: "aperte o Shift")
+    if (teclaAlvo === "Shift") return e.key === "Shift";
+    if (teclaAlvo === "Ctrl") return e.key === "Control";
+    if (teclaAlvo === "Alt") return e.key === "Alt";
+    if (teclaAlvo === " ") return e.key === " ";
+
+    return e.key.toLowerCase() === teclaAlvo.toLowerCase();
+}
+
+// Teclas que também podem ser o alvo sozinhas (ex: "aperte o Shift").
+const MODIFICADORES = ["Control", "Alt", "Shift", "Meta"];
+
+el.captura.addEventListener("keydown", (e) => {
+    const desafio = desafioCorrente();
+    if (!desafio || estado.respondido) return;
+    if (desafio.tipo !== "tecla" && desafio.tipo !== "atalho") return;
+
+    e.preventDefault();          // impede o navegador de salvar/imprimir/etc.
+    e.stopPropagation();
+
+    const leitura = lerCombinacao(e);
+    el.teclaLida.textContent = leitura.completa
+        ? leitura.texto
+        : (leitura.texto ? leitura.texto + "+…" : "…");
+
+    // O aluno apertou só um modificador (Ctrl, Shift, Alt).
+    if (!leitura.completa) {
+        // Se o desafio pede justamente essa tecla sozinha, vale como acerto.
+        const alvoEhModificadorSozinho = ["Shift", "Ctrl", "Alt"].includes(desafio.alvo);
+        if (alvoEhModificadorSozinho && combinaComAlvo(e, desafio.alvo)) {
+            el.teclaLida.textContent = rotuloAlvo(desafio.alvo);
+            responder(true, desafio);
+        }
+        return;   // senão, ainda está montando a combinação — espera a letra
+    }
+
+    if (combinaComAlvo(e, desafio.alvo)) {
+        el.teclaLida.textContent = rotuloAlvo(desafio.alvo);
+        responder(true, desafio);
+    } else {
+        responder(false, desafio);
+    }
+});
+
+function rotuloAlvo(alvo) {
+    if (alvo === " ") return "Barra de Espaço";
+    return alvo.split("+").map(nomeAmigavel).join(" + ");
+}
+
+/* ==================================================================
+   6) MONTAGEM DOS DESAFIOS
+   ================================================================== */
+
+function mundoCorrente() { return MUNDOS[estado.mundoAtual]; }
+function desafioCorrente() {
+    const m = mundoCorrente();
+    return m ? m.desafios[estado.desafioAtual] : null;
+}
+
+function carregarMundo(indice) {
+    const mundo = MUNDOS[indice];
+    if (!mundo) return;
+
+    estado.mundoAtual = indice;
+    estado.desafioAtual = 0;
+
+    el.tituloMundo.textContent = mundo.nome;
+    el.etiquetaMundo.textContent = mundo.etiqueta;
+    el.dicaMundo.textContent = mundo.dica;
+    el.btnAnterior.disabled = indice === 0;
+
+    montarBlocos();
+    el.mastro.classList.remove("hasteada");
+    el.marioBox.classList.remove("vitoria");
+
+    carregarDesafio();
+    desenharMapa();
+    atualizarHUD();
+}
+
+function montarBlocos() {
+    el.blocos.innerHTML = "";
+    const total = mundoCorrente().desafios.length;
+    for (let i = 0; i < total; i++) {
+        const b = document.createElement("div");
+        b.className = "bloco " + (i % 3 === 1 ? "tijolo" : "interrogacao");
+        b.textContent = i % 3 === 1 ? "" : "?";
+        el.blocos.appendChild(b);
+    }
+}
+
+function carregarDesafio() {
+    const desafio = desafioCorrente();
+    if (!desafio) return;
+
+    estado.respondido = false;
+    estado.tentouNesteDesafio = false;
+
+    el.pergunta.textContent = desafio.pergunta;
+    el.feedback.className = "feedback";
+    el.btnContinuar.disabled = true;
+    el.btnPular.disabled = false;
+
+    // esconde todos os modos de resposta
+    el.captura.classList.add("oculto");
+    el.campo.classList.add("oculto");
+    el.opcoes.classList.add("oculto");
+    el.captura.classList.remove("errou", "acertou");
+    el.campo.value = "";
+    el.teclaLida.textContent = "—";
+
+    if (desafio.tipo === "tecla" || desafio.tipo === "atalho") {
+        el.instrucao.innerHTML = desafio.tipo === "atalho"
+            ? "⌨️ <strong>Segure as teclas juntas</strong> e pressione no seu teclado"
+            : "⌨️ <strong>Pressione a tecla</strong> no seu teclado";
+        el.captura.classList.remove("oculto");
+        el.captura.focus();
+    } else if (desafio.tipo === "digitar") {
+        el.instrucao.innerHTML = "✍️ <strong>Digite no campo</strong> abaixo e aperte Enter";
+        el.campo.classList.remove("oculto");
+        el.campo.focus();
+    } else if (desafio.tipo === "escolha") {
+        el.instrucao.innerHTML = "🤔 <strong>Escolha</strong> a resposta certa";
+        el.opcoes.classList.remove("oculto");
+        montarOpcoes(desafio);
+    }
+
+    atualizarPosicaoMario();
+    atualizarHUD();
+}
+
+function montarOpcoes(desafio) {
+    el.opcoes.innerHTML = "";
+    const letras = ["A", "B", "C", "D", "E"];
+    desafio.opcoes.forEach((texto, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "opcao";
+        btn.innerHTML = `<span class="letra">${letras[i]}</span><span>${texto}</span>`;
+        btn.addEventListener("click", () => {
+            if (estado.respondido) return;
+            const certo = i === desafio.correta;
+            [...el.opcoes.children].forEach((b, j) => {
+                b.disabled = true;
+                if (j === desafio.correta) b.classList.add("certa");
+                else if (j === i) b.classList.add("errada");
+            });
+            responder(certo, desafio);
+        });
+        el.opcoes.appendChild(btn);
+    });
+}
+
+el.campo.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    const desafio = desafioCorrente();
+    if (!desafio || estado.respondido || desafio.tipo !== "digitar") return;
+    responder(el.campo.value.trim() === desafio.alvo, desafio);
+});
+
+/* ==================================================================
+   7) RESPOSTA, MOEDAS E POWER-UPS
+   ================================================================== */
+
+function responder(acertou, desafio) {
+    if (acertou) {
+        estado.respondido = true;
+        estado.acertos++;
+        estado.combo++;
+        estado.melhorCombo = Math.max(estado.melhorCombo, estado.combo);
+
+        let ganho = CONFIG.moedasPorAcerto;
+        if (!estado.tentouNesteDesafio) ganho += CONFIG.moedasBonusPrimeiraTentativa;
+        ganharMoedas(ganho);
+        quebrarBloco(estado.desafioAtual);
+        pularMario();
+        verificarPowerUp();
+
+        el.captura.classList.add("acertou");
+        el.btnContinuar.disabled = false;
+        el.btnPular.disabled = true;
+        mostrarFeedback(true,
+            `Isso mesmo! ${desafio.alvo ? "Resposta: " + rotuloAlvo(desafio.alvo) + ". " : ""}${desafio.explicacao}`,
+            `+${ganho} moedas`);
+        el.btnContinuar.focus();
+    } else {
+        estado.erros++;
+        estado.combo = 0;
+        estado.tentouNesteDesafio = true;
+        perderForma();
+
+        el.captura.classList.add("errou");
+        setTimeout(() => el.captura.classList.remove("errou"), 400);
+
+        if (desafio.tipo === "escolha") {
+            // na múltipla escolha a resposta certa já apareceu; segue o jogo
+            estado.respondido = true;
+            el.btnContinuar.disabled = false;
+            el.btnPular.disabled = true;
+            mostrarFeedback(false, desafio.explicacao, "Resposta certa marcada em verde");
+        } else {
+            mostrarFeedback(false,
+                "Não foi essa. Tente de novo — ou clique em \"Não sei, mostrar resposta\".", "Quase!");
+        }
+    }
+    atualizarHUD();
+}
+
+function mostrarFeedback(ok, texto, titulo) {
+    el.feedback.className = "feedback mostrar " + (ok ? "ok" : "nao");
+    el.feedback.innerHTML = `<strong>${ok ? "✅ " : "❌ "}${titulo || ""}</strong>${texto}`;
+}
+
+function ganharMoedas(qtd) {
+    estado.moedas += qtd;
+    const m = document.createElement("div");
+    m.className = "moeda-voando";
+    m.textContent = "🪙";
+    m.style.left = (30 + Math.random() * 40) + "%";
+    m.style.bottom = "42%";
+    el.cena.appendChild(m);
+    setTimeout(() => m.remove(), 950);
+}
+
+function quebrarBloco(indice) {
+    const bloco = el.blocos.children[indice];
+    if (!bloco) return;
+    bloco.classList.add("batendo");
+    setTimeout(() => { bloco.classList.remove("batendo"); bloco.classList.add("usado"); bloco.textContent = ""; }, 350);
+}
+
+function pularMario() {
+    el.marioBox.classList.add("pulando");
+    setTimeout(() => el.marioBox.classList.remove("pulando"), 520);
+}
+
+function verificarPowerUp() {
+    let nova = "pequeno";
+    if (estado.combo >= CONFIG.acertosParaFogo) nova = "fogo";
+    else if (estado.combo >= CONFIG.acertosParaSuper) nova = "super";
+
+    if (nova !== estado.forma) {
+        const subiu = ["pequeno", "super", "fogo"].indexOf(nova) > ["pequeno", "super", "fogo"].indexOf(estado.forma);
+        estado.forma = nova;
+        el.marioBox.dataset.forma = nova;
+        if (subiu) {
+            mostrarAviso(nova === "fogo" ? "🔥 MARIO DE FOGO!" : "🍄 SUPER MARIO!");
+        }
+    }
+}
+
+function perderForma() {
+    const ordem = ["pequeno", "super", "fogo"];
+    const i = ordem.indexOf(estado.forma);
+    if (i > 0) {
+        estado.forma = ordem[i - 1];
+        el.marioBox.dataset.forma = estado.forma;
+    } else if (estado.vidas > 0) {
+        estado.vidas--;
+        mostrarAviso("💔 Cuidado!");
+    }
+    el.marioBox.classList.add("tomou-dano");
+    setTimeout(() => el.marioBox.classList.remove("tomou-dano"), 620);
+}
+
+function mostrarAviso(texto) {
+    el.avisoPowerup.textContent = texto;
+    el.avisoPowerup.classList.remove("mostrar");
+    void el.avisoPowerup.offsetWidth;
+    el.avisoPowerup.classList.add("mostrar");
+}
+
+function atualizarPosicaoMario() {
+    const total = mundoCorrente().desafios.length;
+    const pct = 8 + (estado.desafioAtual / total) * 72;
+    el.marioBox.style.left = pct + "%";
+}
+
+function atualizarHUD() {
+    const mundo = mundoCorrente();
+    el.hudMundo.textContent = `${estado.mundoAtual + 1}-${estado.desafioAtual + 1}`;
+    el.hudMoedas.textContent = "×" + String(estado.moedas).padStart(2, "0");
+    el.hudVidas.textContent = estado.vidas > 0 ? "🍄".repeat(estado.vidas) : "—";
+    el.hudForma.textContent = { pequeno: "Pequeno", super: "Super", fogo: "Fogo" }[estado.forma];
+
+    const feitos = Object.keys(estado.concluidos).length;
+    el.progressoGeral.style.width = (feitos / MUNDOS.length) * 100 + "%";
+    el.resumoMapa.textContent = `— ${feitos} de ${MUNDOS.length} concluídos`;
+}
+
+/* ==================================================================
+   8) AVANÇAR
+   ================================================================== */
+
+el.btnContinuar.addEventListener("click", () => {
+    const mundo = mundoCorrente();
+    estado.desafioAtual++;
+
+    if (estado.desafioAtual >= mundo.desafios.length) {
+        concluirMundo();
+        return;
+    }
+    carregarDesafio();
+});
+
+el.btnPular.addEventListener("click", () => {
+    const desafio = desafioCorrente();
+    if (!desafio || estado.respondido) return;
+
+    estado.respondido = true;
+    estado.erros++;
+    estado.combo = 0;
+    el.btnContinuar.disabled = false;
+    el.btnPular.disabled = true;
+
+    if (desafio.tipo === "escolha") {
+        [...el.opcoes.children].forEach((b, j) => {
+            b.disabled = true;
+            if (j === desafio.correta) b.classList.add("certa");
+        });
+    } else {
+        el.teclaLida.textContent = rotuloAlvo(desafio.alvo);
+        el.campo.value = desafio.alvo;
+    }
+    mostrarFeedback(false, desafio.explicacao, "A resposta era: " +
+        (desafio.tipo === "escolha" ? desafio.opcoes[desafio.correta] : rotuloAlvo(desafio.alvo)));
+    atualizarHUD();
+});
+
+function concluirMundo() {
+    estado.concluidos[estado.mundoAtual] = true;
+    el.marioBox.style.left = "84%";
+    el.marioBox.classList.add("vitoria");
+    el.mastro.classList.add("hasteada");
+    desenharMapa();
+    atualizarHUD();
+
+    const ultimo = estado.mundoAtual === MUNDOS.length - 1;
+
+    setTimeout(() => {
+        if (ultimo) { mostrarTelaFinal(); return; }
+        abrirModal({
+            emoji: "🚩",
+            titulo: `${mundoCorrente().etiqueta} concluído!`,
+            corpoHTML: `<p>Você chegou na bandeira de <strong>${mundoCorrente().nome}</strong>!</p>
+                        <p>🪙 Moedas: <strong>${estado.moedas}</strong> · Forma: <strong>${el.hudForma.textContent}</strong></p>`,
+            textoBotao: "Ir para o próximo mundo →",
+            aoFechar: () => {
+                el.marioBox.classList.remove("vitoria");
+                el.marioBox.style.left = "8%";
+                carregarMundo(estado.mundoAtual + 1);
+            }
+        });
+    }, 900);
+}
+
+/* ==================================================================
+   9) MAPA
+   ================================================================== */
+
+function desenharMapa() {
+    el.listaMundos.innerHTML = "";
+    MUNDOS.forEach((mundo, i) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn-mundo";
+        btn.innerHTML = `${mundo.etiqueta}<small>${estado.concluidos[i] ? "✔ ok" : mundo.nome.slice(0, 12)}</small>`;
+        btn.title = mundo.nome;
+        if (estado.concluidos[i]) btn.classList.add("concluido");
+        if (i === estado.mundoAtual) btn.classList.add("atual");
+        if (!podeAcessar(i)) btn.classList.add("bloqueado");
+        btn.addEventListener("click", () => tentarIr(i));
+        el.listaMundos.appendChild(btn);
+    });
+}
+
+function podeAcessar(i) {
+    if (i === 0 || estado.concluidos[i]) return true;
+    return !!estado.concluidos[i - 1];
+}
+
+function tentarIr(i) {
+    if (i === estado.mundoAtual) return;
+    if (!podeAcessar(i)) {
+        abrirModal({
+            emoji: "🚧",
+            titulo: "Esse mundo ainda está fechado!",
+            corpoHTML: `<p>Termine o <strong>${MUNDOS[i - 1].etiqueta} — ${MUNDOS[i - 1].nome}</strong> primeiro.</p>
+                        <p>Os mundos vão ficando mais difíceis, então é melhor fazer em ordem. 🍄</p>`,
+            textoBotao: "Ok!"
+        });
+        return;
+    }
+    el.marioBox.classList.remove("vitoria");
+    el.marioBox.style.left = "8%";
+    carregarMundo(i);
+}
+
+el.btnAnterior.addEventListener("click", () => {
+    if (estado.mundoAtual > 0) {
+        el.marioBox.classList.remove("vitoria");
+        carregarMundo(estado.mundoAtual - 1);
+    }
+});
+
+el.btnRepetir.addEventListener("click", () => {
+    el.marioBox.classList.remove("vitoria");
+    carregarMundo(estado.mundoAtual);
+});
+
+/* ==================================================================
+   10) MODAIS E FINAL
+   ================================================================== */
+
+function abrirModal({ emoji, titulo, corpoHTML, textoBotao = "Continuar", aoFechar }) {
+    el.modalEmoji.textContent = emoji || "🍄";
+    el.modalTitulo.textContent = titulo;
+    el.modalCorpo.innerHTML = corpoHTML;
+    el.modalBotao.textContent = textoBotao;
+    el.modal.classList.add("aberto");
+    el.modalBotao.onclick = () => {
+        el.modal.classList.remove("aberto");
+        if (aoFechar) aoFechar();
+    };
+    el.modalBotao.focus();
+}
+
+function mostrarTelaFinal() {
+    const total = estado.acertos + estado.erros;
+    const precisao = total ? Math.round((estado.acertos / total) * 100) : 100;
+
+    let medalha, titulo, elogio;
+    if (precisao >= 95)      { medalha = "👑"; titulo = "MESTRE DO TECLADO!"; elogio = "Você domina os atalhos e a pontuação como ninguém!"; }
+    else if (precisao >= 80) { medalha = "⭐"; titulo = "MUITO BEM!";          elogio = "Você aprendeu os principais atalhos e sinais de pontuação."; }
+    else if (precisao >= 60) { medalha = "🍄"; titulo = "BOM TRABALHO!";       elogio = "Você chegou ao castelo! Repita os mundos para fixar os atalhos."; }
+    else                     { medalha = "🎮"; titulo = "PARABÉNS POR CHEGAR!"; elogio = "Terminar já é uma vitória. Jogue de novo para melhorar!"; }
+
+    abrirModal({
+        emoji: medalha,
+        titulo: titulo,
+        corpoHTML: `
+            <p>${elogio}</p>
+            <p style="font-style:italic;color:#e52521;font-weight:700">
+                "Obrigado Mario! Mas a princesa está em outro castelo…<br>
+                Brincadeira — desta vez você salvou o teclado! 🏰"
+            </p>
+            <div class="placar">
+                <div class="item"><div class="valor">${estado.moedas}</div><div class="nome">Moedas</div></div>
+                <div class="item"><div class="valor">${precisao}%</div><div class="nome">Precisão</div></div>
+                <div class="item"><div class="valor">${estado.acertos}</div><div class="nome">Acertos</div></div>
+                <div class="item"><div class="valor">${estado.melhorCombo}</div><div class="nome">Melhor sequência</div></div>
+                <div class="item"><div class="valor">${MUNDOS.length}</div><div class="nome">Mundos</div></div>
+                <div class="item"><div class="valor">${el.hudForma.textContent}</div><div class="nome">Forma final</div></div>
+            </div>
+            <p><strong>Dica do Mario:</strong> os atalhos só entram na cabeça com o uso.
+            Tente usar Ctrl+C, Ctrl+V e Ctrl+Z todos os dias — em uma semana já vira automático!</p>`,
+        textoBotao: "Jogar de novo 🔄",
+        aoFechar: reiniciar
+    });
+}
+
+function reiniciar() {
+    estado.mundoAtual = 0;
+    estado.desafioAtual = 0;
+    estado.moedas = 0;
+    estado.vidas = CONFIG.vidasIniciais;
+    estado.combo = 0;
+    estado.melhorCombo = 0;
+    estado.acertos = 0;
+    estado.erros = 0;
+    estado.concluidos = {};
+    estado.forma = "pequeno";
+    el.marioBox.dataset.forma = "pequeno";
+    el.marioBox.classList.remove("vitoria");
+    el.marioBox.style.left = "8%";
+    carregarMundo(0);
+}
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && el.modal.classList.contains("aberto")) el.modalBotao.click();
+});
+
+/* ==================================================================
+   11) INÍCIO
+   ================================================================== */
+
+el.rodapeInfo.textContent =
+    `${MUNDOS.length} mundos · ${MUNDOS.reduce((t, m) => t + m.desafios.length, 0)} desafios de teclas, atalhos e pontuação`;
+
+carregarMundo(0);
+</script>
+</body>
+</html>

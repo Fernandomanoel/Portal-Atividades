@@ -502,6 +502,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-sonic-digitacao.html",
       },
+      {
+        titulo: "Super Mario do Teclado — Atalhos e Pontuação",
+        descricao:
+          "Jogo com 9 mundos e 62 desafios em que o aluno pressiona as teclas de verdade: teclas especiais, atalhos do Ctrl, atalhos do Windows, pontuação, símbolos com Shift, acentos e uso da vírgula.",
+        tipo: "link",
+        url: "atividades/paginas/kids-mario-teclado.html",
+      },
     ],
   },
 

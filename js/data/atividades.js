@@ -495,6 +495,41 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
       },
+      {
+        titulo: "Sonic Digital Pro — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-sonic-digitacao.html",
+      },
+      {
+        titulo: "Missão Arquivos e Pastas",
+        descricao:
+          "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
+        tipo: "link",
+        url: "atividades/paginas/kids-missao-arquivos.html",
+      },
+      {
+        titulo: "Minha Grande Aventura no Windows 11",
+        descricao:
+          "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
+        tipo: "link",
+        url: "atividades/paginas/kids-aventura-windows11.html",
+      },
+      {
+        titulo: "Super Mario do Teclado — Atalhos e Pontuação",
+        descricao:
+          "Jogo com 9 mundos e 62 desafios em que o aluno pressiona as teclas de verdade: teclas especiais, atalhos do Ctrl, atalhos do Windows, pontuação, símbolos com Shift, acentos e uso da vírgula.",
+        tipo: "link",
+        url: "atividades/paginas/kids-mario-teclado.html",
+      },
+      {
+        titulo: "Batalha das 12 Casas — Digitação",
+        descricao:
+          "Jogo de digitação com as 12 casas do zodíaco: cada letra certa golpeia o Cavaleiro de Ouro e cada erro tira a vida do Seiya. Digitar rápido e sem errar queima o cosmo e multiplica o dano. As casas mudam de idioma — português, inglês e japonês em romaji — e cada uma tem seu próprio cenário com a constelação do signo.",
+        tipo: "link",
+        url: "atividades/paginas/cavaleiros-zodiaco-digitacao.html",
+      },
     ],
   },
 

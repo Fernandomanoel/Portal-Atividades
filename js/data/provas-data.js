@@ -165,6 +165,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - ADP.txt",
       "path": "provas/Assistente de Departamento Pessoal/Link - ADP.txt",
       "size": "0 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova assistente dp",
+      "path": "provas/Assistente de Departamento Pessoal/prova-assistente-dp.prova.html",
+      "size": "31.8 KB"
     }
   ],
   "Assistente de Logística": [
@@ -179,6 +185,12 @@ const PROVAS_MANIFEST = {
       "label": "AvaliaçãoAss.deLogistica.docx",
       "path": "provas/Assistente de Logística/AvaliaçãoAss.deLogistica.docx",
       "size": "35.6 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova assistente logistica",
+      "path": "provas/Assistente de Logística/prova-assistente-logistica.prova.html",
+      "size": "36.1 KB"
     }
   ],
   "Atendimento ao Cliente": [
@@ -213,6 +225,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação - Auxiliar Médico.txt",
       "path": "provas/Auxiliar Médico/Avaliação - Auxiliar Médico.txt",
       "size": "35 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova auxiliar medico",
+      "path": "provas/Auxiliar Médico/prova-auxiliar-medico.prova.html",
+      "size": "40.0 KB"
     }
   ],
   "Banco de Dados": [
@@ -251,6 +269,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Prática - Compras e Estoque.pdf",
       "path": "provas/Compras e Estoque/Avaliação Prática - Compras e Estoque.pdf",
       "size": "109.7 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova compras e estoque",
+      "path": "provas/Compras e Estoque/prova-compras-e-estoque.prova.html",
+      "size": "38.4 KB"
     },
     {
       "type": "file",
@@ -317,6 +341,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - Avaliação Crédito e Cobrança .txt",
       "path": "provas/Crédido e Cobrança/Link - Avaliação Crédito e Cobrança .txt",
       "size": "110 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova credito e cobranca",
+      "path": "provas/Crédido e Cobrança/prova-credito-e-cobranca.prova.html",
+      "size": "34.9 KB"
     }
   ],
   "CSS": [
@@ -601,6 +631,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Gestão de Pessoas (Múltipla Escolha)",
       "path": "provas/Gestão de Pessoas/Avaliação - Gestão de Pessoas (Múltipla Escolha).prova.js",
       "size": "2.8 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova gestao de pessoas",
+      "path": "provas/Gestão de Pessoas/prova-gestao-de-pessoas.prova.html",
+      "size": "25.1 KB"
     }
   ],
   "Google Adwords": [
@@ -929,6 +965,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - Avaliação RH.txt",
       "path": "provas/RH/Link - Avaliação RH.txt",
       "size": "404 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova recursos humanos",
+      "path": "provas/RH/prova-recursos-humanos.prova.html",
+      "size": "25.5 KB"
     }
   ],
   "Secretariado": [
@@ -977,6 +1019,12 @@ const PROVAS_MANIFEST = {
       "label": "Prova - Segurança no Trabalho.txt",
       "path": "provas/Segurança no Trabalho/Prova - Segurança no Trabalho.txt",
       "size": "35 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova seguranca no trabalho",
+      "path": "provas/Segurança no Trabalho/prova-seguranca-no-trabalho.prova.html",
+      "size": "29.8 KB"
     }
   ],
   "Vendas": [

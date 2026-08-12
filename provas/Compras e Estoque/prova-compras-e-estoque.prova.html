@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Compras e Estoque - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #4c1d95 0%, #2e1065 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #7c3aed;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #f5f3ff;
+        border: 2px solid #ddd6fe;
+        border-left: 6px solid #7c3aed;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #0f766e;
+    }
+
+    .question-card h3 {
+        color: #4c1d95;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #134e4a; }
+
+    .tema {
+        display: inline-block;
+        background: #ede9fe;
+        color: #5b21b6;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #ccfbf1; color: #115e59; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #a78bfa;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #7c3aed; }
+    .question-card.pratica .caso { border-color: #14b8a6; }
+    .question-card.pratica .caso strong { color: #0f766e; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #065f46;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #047857;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+    .orientacao code {
+        background: #d1fae5;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+    }
+
+    /* --- Ficha de dados --- */
+    .ficha {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+    }
+
+    .ficha-linha {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: clamp(.85rem, 2.4vw, .97em);
+    }
+
+    .ficha-linha:last-child { border-bottom: none; }
+    .ficha-linha:nth-child(even) { background: #f8fafc; }
+    .ficha-linha .rot { color: #64748b; }
+    .ficha-linha .val { font-weight: 700; color: #0f172a; text-align: right; }
+    .ficha-linha .val.alerta { color: #b91c1c; }
+
+    /* --- Campos de resposta --- */
+    .campos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: 14px;
+        margin-bottom: 6px;
+    }
+
+    .campo-box {
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 13px 15px;
+    }
+
+    .campo-box label {
+        display: block;
+        font-size: clamp(.78rem, 2.3vw, .88em);
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .campo-box .dica-campo {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: .92em;
+        margin-top: 2px;
+    }
+
+    .campo-box input {
+        width: 100%;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3vw, 1.15em);
+        font-weight: 700;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .campo-box input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.15); }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #7c3aed; background: #f5f3ff; }
+    .question-card.pratica .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+
+    .option-item input[type="radio"] {
+        accent-color: #7c3aed;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #0f766e; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #7c3aed;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #4c1d95;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #7c3aed; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #f5f3ff;
+        border: 2px solid #7c3aed;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #4c1d95; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #60a5fa; background: #eff6ff; color: #1e3a8a; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🛒 Prova de Compras e Estoque</h1>
+        <p>Cotação, fornecedores, reposição, inventário e controle de estoque</p>
+        <div class="aviso-tempo">10 questões · 7 objetivas + 3 práticas · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaCE">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Cotação · Custo total</span>
+                <p class="enunciado">Ao comparar propostas no mapa de cotação, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Vence sempre o menor preço unitário, pois os demais custos são iguais para todos os fornecedores.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Basta comparar preço e prazo de entrega; o frete é sempre absorvido pelo fornecedor da mercadoria.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Vence o menor custo total: preço, frete, impostos, prazo de entrega e condição de pagamento juntos.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) O prazo de pagamento não deve pesar na decisão, já que ele não altera o valor final do que é pago.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Documentos de compra</span>
+                <p class="enunciado">Sobre a diferença entre requisição de compra e pedido de compra:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) A requisição é interna e nasce da necessidade da área; o pedido é o documento enviado ao fornecedor.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) A requisição é enviada ao fornecedor para cotar preços; o pedido é o documento que circula internamente.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) São o mesmo documento com nomes diferentes, um usado na indústria e o outro usado no comércio.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) A requisição só existe em compras de valor alto; abaixo do limite, o comprador dispensa o documento.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Qualificação de fornecedores</span>
+                <p class="enunciado">Sobre a homologação e a avaliação de fornecedores, assinale a correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Depende exclusivamente do preço ofertado, porque é ele que define o resultado financeiro da compra.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) Uma vez homologado, o fornecedor não precisa ser reavaliado enquanto o contrato estiver em vigor.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Concentrar todas as compras em um único fornecedor homologado elimina o risco de desabastecimento.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Avalia capacidade de entrega, regularidade fiscal, qualidade e histórico, não apenas o preço ofertado.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Lote econômico de compra</span>
+                <p class="enunciado">Sobre o lote econômico de compra (LEC), é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Indica sempre o maior lote possível, já que comprar em grande quantidade reduz o preço unitário.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) Busca o ponto em que o custo de pedir e o custo de manter o estoque somados ficam no menor valor.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) Considera apenas o custo de emissão do pedido, pois o custo de armazenagem é um gasto fixo da empresa.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) Aplica-se somente a itens importados, em que o custo de cada processo de compra é bem mais alto.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">Giro de estoque</span>
+                <div class="caso">Um item passou a girar <strong>18 vezes ao ano</strong> (antes girava 9), mas o setor registrou <strong>rupturas em 4 dos 12 meses</strong>.</div>
+                <p class="enunciado">Qual é a leitura correta desse cenário?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) O resultado é ótimo: giro alto é sempre sinal de eficiência na gestão do estoque e das compras.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) O giro e a ruptura são indicadores independentes, de modo que um não ajuda a explicar o outro.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) A ruptura só teria relação com o giro se o item pertencesse à classe A da curva ABC do estoque.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) O giro subiu porque o estoque médio caiu demais; a ruptura mostra reposição mal dimensionada.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Mercadoria em consignação</span>
+                <p class="enunciado">Sobre a mercadoria recebida em consignação, assinale a correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) Passa a ser de propriedade da empresa já na entrada, e é por isso que ela entra no controle físico.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) Não precisa ser controlada no estoque, porque o risco da mercadoria continua sendo do fornecedor.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) Fica fisicamente na empresa, mas a propriedade só passa a ela quando a mercadoria é efetivamente vendida.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) Só pode ser devolvida ao fornecedor se houver defeito comprovado em laudo técnico emitido pelo fabricante.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Ética e controles em compras</span>
+                <p class="enunciado">Sobre os controles internos do setor de compras, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) Concentrar cotação, recebimento e pagamento em um só comprador agiliza o processo e reduz o erro.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) Quem compra não deve ser quem recebe e aprova o pagamento: a segregação de funções reduz fraude.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) Aceitar brindes do fornecedor é aceitável desde que o valor seja baixo e a compra saia mais barata.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) A cotação com três fornecedores é dispensável quando o comprador já conhece o preço de mercado.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 — PRÁTICA -->
+        <div class="chapter" id="q8">
+            <div class="question-card pratica">
+                <h3>Questão 8 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">💰 Mapa de cotação</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    A empresa vai comprar <strong>500 unidades</strong> de um mesmo item. Calcule o custo total de cada proposta e escolha o fornecedor.
+                    <ul>
+                        <li>Cada parte vale <strong>1/3 do ponto</strong> da questão.</li>
+                        <li>Custo total = <code>(preço unitário × 500) + frete</code></li>
+                        <li>Responda em reais, com duas casas. Ex.: <code>5.250,00</code></li>
+                    </ul>
+                </div>
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Necessidade</span><span class="val">500 unidades</span></div>
+                    <div class="ficha-linha"><span class="rot">Fornecedor Alfa</span><span class="val">R$ 9,80/un · frete R$ 350,00 · entrega 10 dias</span></div>
+                    <div class="ficha-linha"><span class="rot">Fornecedor Beta</span><span class="val">R$ 9,40/un · frete R$ 600,00 · entrega 15 dias</span></div>
+                    <div class="ficha-linha"><span class="rot">Fornecedor Gama</span><span class="val">R$ 10,10/un · frete grátis · entrega 7 dias</span></div>
+                    <div class="ficha-linha"><span class="rot">Condição de pagamento</span><span class="val">30 dias nos três fornecedores</span></div>
+                </div>
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c8a">a) Custo total do Fornecedor Alfa
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c8a" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c8b">b) Custo total do Fornecedor Gama
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c8b" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                </div>
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Qual proposta deve ser aprovada?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8c" value="A"> A) Beta: apresenta o menor preço unitário da cotação, que é o critério decisivo na escolha final.</label>
+                    <label class="option-item"><input type="radio" name="p8c" value="B"> B) Alfa: tem o menor valor de frete entre as três propostas e um prazo de entrega intermediário.</label>
+                    <label class="option-item"><input type="radio" name="p8c" value="C"> C) Gama: mesmo tendo o maior preço unitário, é a proposta que fecha o menor custo total da compra.</label>
+                    <label class="option-item"><input type="radio" name="p8c" value="D"> D) Qualquer uma: a diferença entre as três ficou abaixo de 10%, o que as torna equivalentes.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 — PRÁTICA -->
+        <div class="chapter" id="q9">
+            <div class="question-card pratica">
+                <h3>Questão 9 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">📈 Ponto de pedido</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Calcule o momento certo de emitir a próxima requisição deste item e decida o que fazer hoje.
+                    <ul>
+                        <li>Cada parte vale <strong>1/3 do ponto</strong> da questão.</li>
+                        <li>Consumo no prazo de entrega = <code>consumo médio diário × prazo de entrega</code></li>
+                        <li>Ponto de pedido = <code>consumo no prazo de entrega + estoque de segurança</code></li>
+                        <li>Responda apenas com o número de unidades. Ex.: <code>480</code></li>
+                    </ul>
+                </div>
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Item</span><span class="val">Cartucho de tinta preta</span></div>
+                    <div class="ficha-linha"><span class="rot">Consumo médio</span><span class="val">40 unidades por dia</span></div>
+                    <div class="ficha-linha"><span class="rot">Prazo de entrega do fornecedor</span><span class="val">12 dias</span></div>
+                    <div class="ficha-linha"><span class="rot">Estoque de segurança definido</span><span class="val">150 unidades</span></div>
+                    <div class="ficha-linha"><span class="rot">Saldo em estoque hoje</span><span class="val">700 unidades</span></div>
+                </div>
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c9a">a) Consumo durante o prazo de entrega
+                            <span class="dica-campo">em unidades</span>
+                        </label>
+                        <input type="text" id="c9a" inputmode="decimal" autocomplete="off" placeholder="0">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c9b">b) Ponto de pedido do item
+                            <span class="dica-campo">em unidades</span>
+                        </label>
+                        <input type="text" id="c9b" inputmode="decimal" autocomplete="off" placeholder="0">
+                    </div>
+                </div>
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Com o saldo de hoje, qual é a decisão correta?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9c" value="A"> A) Emitir a requisição agora, porque o saldo de 700 unidades já caiu abaixo do ponto de pedido apurado.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="B"> B) Aguardar: o saldo ainda está acima do ponto de pedido; a requisição sai quando o estoque chegar nele.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="C"> C) Comprar o dobro do lote habitual hoje, aproveitando que ainda há saldo e evitando um novo pedido.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="D"> D) Retirar o estoque de segurança da conta, já que o fornecedor não atrasou nenhuma das últimas entregas.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 — PRÁTICA -->
+        <div class="chapter" id="q10">
+            <div class="question-card pratica">
+                <h3>Questão 10 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🔍 Inventário e acuracidade</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    A contagem física deste item não bateu com o sistema. Apure a diferença e defina o encaminhamento.
+                    <ul>
+                        <li>Cada parte vale <strong>1/3 do ponto</strong> da questão.</li>
+                        <li>Divergência = <code>saldo do sistema − contagem física</code></li>
+                        <li>Acuracidade = <code>(contagem física ÷ saldo do sistema) × 100</code></li>
+                        <li>Informe a acuracidade em %, com duas casas. Ex.: <code>95,84</code></li>
+                    </ul>
+                </div>
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Item</span><span class="val">Resma de papel A4 75g</span></div>
+                    <div class="ficha-linha"><span class="rot">Saldo no sistema</span><span class="val">1.250 unidades</span></div>
+                    <div class="ficha-linha"><span class="rot">Contagem física</span><span class="val alerta">1.198 unidades</span></div>
+                    <div class="ficha-linha"><span class="rot">Contagens realizadas</span><span class="val">1 (primeira contagem)</span></div>
+                </div>
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c10a">a) Divergência apurada
+                            <span class="dica-campo">em unidades</span>
+                        </label>
+                        <input type="text" id="c10a" inputmode="decimal" autocomplete="off" placeholder="0">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c10b">b) Acuracidade do item
+                            <span class="dica-campo">em %</span>
+                        </label>
+                        <input type="text" id="c10b" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                </div>
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Qual é o encaminhamento correto para essa diferença?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10c" value="A"> A) Recontar o item, apurar a causa da diferença e só então ajustar, com documento e aprovação.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="B"> B) Ajustar o sistema para 1.198 unidades de imediato e seguir a operação, sem nenhum outro registro.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="C"> C) Manter o saldo do sistema, porque a contagem manual erra mais do que o registro eletrônico.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="D"> D) Lançar a diferença como perda no fechamento do mês, sem recontar, por ser menor que 5% do saldo.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">O gabarito não é exibido. Nas questões práticas, cada parte vale 1/3 do ponto — o quadro mostra quantas partes você acertou.</p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Compras e Estoque</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+    const TOTAL_Q = 10;
+
+    /* ---- Gabarito das objetivas ---- */
+    const gabarito = {
+        "p1": "C",
+        "p2": "A",
+        "p3": "D",
+        "p4": "B",
+        "p5": "D",
+        "p6": "C",
+        "p7": "B"
+};
+
+    const temas = {
+        "p1": "Cotação",
+        "p2": "Documentos",
+        "p3": "Fornecedores",
+        "p4": "LEC",
+        "p5": "Giro",
+        "p6": "Consignação",
+        "p7": "Ética"
+};
+
+    /* ---- Respostas das partes práticas ---- */
+    const PRATICAS = {
+        "q8": {
+                "tema": "Mapa de cotação",
+                "itens": [
+                        {
+                                "campo": "c8a",
+                                "certo": 5250,
+                                "tol": 0.01
+                        },
+                        {
+                                "campo": "c8b",
+                                "certo": 5050,
+                                "tol": 0.01
+                        }
+                ],
+                "escolhas": [
+                        {
+                                "nome": "p8c",
+                                "certo": "C"
+                        }
+                ]
+        },
+        "q9": {
+                "tema": "Ponto de pedido",
+                "itens": [
+                        {
+                                "campo": "c9a",
+                                "certo": 480,
+                                "tol": 0.01
+                        },
+                        {
+                                "campo": "c9b",
+                                "certo": 630,
+                                "tol": 0.01
+                        }
+                ],
+                "escolhas": [
+                        {
+                                "nome": "p9c",
+                                "certo": "B"
+                        }
+                ]
+        },
+        "q10": {
+                "tema": "Inventário",
+                "itens": [
+                        {
+                                "campo": "c10a",
+                                "certo": 52,
+                                "tol": 0.01
+                        },
+                        {
+                                "campo": "c10b",
+                                "certo": 95.84,
+                                "tol": 0.05
+                        }
+                ],
+                "escolhas": [
+                        {
+                                "nome": "p10c",
+                                "certo": "A"
+                        }
+                ]
+        }
+};
+
+    /* Lê o número digitado aceitando "1.234,56", "1234.56", "R$ 820,00" e "35%". */
+    function lerNumero(texto) {
+        if (texto == null) return NaN;
+        let s = String(texto).trim().replace(/[R$\s%]/gi, "");
+        if (s === "") return NaN;
+        if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+        return parseFloat(s);
+    }
+
+    function confere(valor, certo, tol) {
+        const n = lerNumero(valor);
+        return !isNaN(n) && Math.abs(n - certo) <= tol;
+    }
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= TOTAL_Q) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de ${TOTAL_Q}`;
+            document.getElementById('progressBar').style.width = (currentStep / TOTAL_Q) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaCE');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- práticas: cada questão vale 1 ponto, dividido entre as suas 3 partes ---
+        let partesPraticas = 0;
+        for (const id in PRATICAS) {
+            const q = PRATICAS[id];
+            const totalPartes = q.itens.length + q.escolhas.length;
+            let acertos = 0;
+
+            q.itens.forEach(it => {
+                const v = document.getElementById(it.campo).value;
+                if (v.trim() === "") semResposta++;
+                if (confere(v, it.certo, it.tol)) acertos++;
+            });
+
+            q.escolhas.forEach(e => {
+                const m = form.querySelector(`input[name="${e.nome}"]:checked`);
+                if (!m) semResposta++;
+                if (m && m.value === e.certo) acertos++;
+            });
+
+            nota += acertos / totalPartes;
+            partesPraticas += acertos;
+            detalhe.push({
+                rotulo: id.toUpperCase(), tema: q.tema,
+                estado: acertos === totalPartes ? "ok" : (acertos === 0 ? "nao" : "parcial"),
+                texto: `${acertos}/${totalPartes}`
+            });
+        }
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.filter(d => d.texto === "✓").length;
+        const resumoPratico = detalhe.filter(d => d.texto.includes("/"))
+            .map(d => `${d.rotulo}: ${d.texto}`).join(' · ');
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 7 objetivas` + (resumoPratico ? ` · ${resumoPratico}` : '');
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo das rotinas de compras e controle de estoque.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Refaça as questões práticas conferindo cada cálculo com atenção.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        // A parte prática é o núcleo do módulo: avisa quando ela foi mal,
+        // mesmo que a nota geral tenha ficado boa por causa das objetivas.
+        if (partesPraticas <= 3) {
+            msg.textContent += ' Atenção: o desempenho nas questões práticas ficou baixo — revise o custo total da cotação, o cálculo do ponto de pedido e a apuração da acuracidade.';
+        }
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // as setas não devem trocar de questão enquanto o aluno digita nos campos
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

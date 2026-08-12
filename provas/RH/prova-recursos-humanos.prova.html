@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Recursos Humanos - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.92; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.18);
+        border: 1px solid rgba(255,255,255,.35);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #0f766e;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #f8fafc;
+        border: 2px solid #e2e8f0;
+        border-left: 6px solid #0f766e;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card h3 {
+        color: #134e4a;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .tema {
+        display: inline-block;
+        background: #ccfbf1;
+        color: #115e59;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #14b8a6;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #0f766e; }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover {
+        border-color: #0f766e;
+        background: #f0fdfa;
+    }
+
+    .option-item input[type="radio"] {
+        accent-color: #0f766e;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #0f766e;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #115e59;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    }
+
+    button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    #counterDisplay {
+        font-weight: 700;
+        color: #0f766e;
+        font-size: clamp(.82rem, 2.4vw, .95rem);
+    }
+
+    .summary-box {
+        background: #f0fdfa;
+        border: 2px solid #0f766e;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #134e4a; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+        text-align: left;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok  { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.nao { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>👥 Prova de Recursos Humanos</h1>
+        <p>Avaliação técnica: legislação trabalhista, indicadores e gestão de pessoas</p>
+        <div class="aviso-tempo">10 questões · nota de 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaRH">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Contrato de trabalho</span>
+                <div class="caso">
+                    Um candidato foi contratado com <strong>contrato de experiência de 45 dias</strong>. Ao final desse
+                    prazo, o gestor pediu para prorrogar por mais 45 dias. Passados os 90 dias, ficou em dúvida se
+                    poderia prorrogar novamente por mais 30 dias.
+                </div>
+                <p class="enunciado">De acordo com a CLT, qual é a orientação correta do RH?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Pode prorrogar quantas vezes quiser, desde que não ultrapasse 1 ano de contrato.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Pode prorrogar mais uma vez, pois o limite legal é de 120 dias.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Não pode: o contrato de experiência admite uma única prorrogação e o total não pode passar de 90 dias. Após isso, o contrato passa a vigorar por prazo indeterminado.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) Deve encerrar o contrato obrigatoriamente no 90º dia e aguardar o prazo de seis meses antes de recontratar o mesmo profissional, sem possibilidade de efetivação direta.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Rescisão · Aviso prévio</span>
+                <div class="caso">
+                    Um empregado com <strong>7 anos completos</strong> na mesma empresa foi dispensado
+                    <strong>sem justa causa</strong>.
+                </div>
+                <p class="enunciado">Conforme a Lei nº 12.506/2011, quantos dias de aviso prévio lhe são devidos?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) 30 dias, pois o aviso prévio é sempre fixo.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) 45 dias.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) 51 dias (30 dias + 3 dias por ano completo de serviço).</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) 90 dias, que é o teto legal aplicado a partir do 5º ano.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Férias · Reforma trabalhista</span>
+                <p class="enunciado">
+                    Após a Reforma Trabalhista (Lei nº 13.467/2017), o fracionamento das férias passou a seguir qual regra?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Podem ser divididas em até 3 períodos, havendo concordância do empregado, sendo um deles de no mínimo 14 dias corridos e os demais de no mínimo 5 dias corridos cada.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) As férias não podem mais ser fracionadas em nenhuma hipótese.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Podem ser divididas livremente em quantos períodos a empresa desejar, sem prazo mínimo.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Podem ser divididas em até 2 períodos iguais de 15 dias por decisão exclusiva do empregador, dispensada a concordância do empregado e a comunicação prévia por escrito.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Indicadores · Rotatividade</span>
+                <div class="caso">
+                    Em determinado mês, uma empresa registrou <strong>8 admissões</strong> e <strong>12 desligamentos</strong>,
+                    mantendo um <strong>efetivo médio de 200 colaboradores</strong>.
+                </div>
+                <p class="enunciado">
+                    Aplicando a fórmula clássica de turnover — [(admissões + desligamentos) ÷ 2] ÷ efetivo médio × 100 —
+                    qual é o índice de rotatividade do período?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) 2%</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) 20%</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) 10%</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) 5%</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">Comportamento organizacional</span>
+                <p class="enunciado">
+                    Qual alternativa distingue corretamente <strong>cultura organizacional</strong> de
+                    <strong>clima organizacional</strong>?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) São sinônimos; a diferença é apenas o termo usado por cada autor.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) A cultura é o conjunto de valores, crenças e pressupostos enraizados e de mudança lenta; o clima é a percepção momentânea dos colaboradores sobre o ambiente, sendo mais volátil e medido por pesquisa.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) A cultura muda rapidamente conforme a liderança; o clima permanece estável por décadas.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) O clima é o que está formalizado no regimento interno e no código de conduta da empresa, enquanto a cultura é apenas a percepção informal que os funcionários têm do ambiente no dia a dia.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Avaliação de desempenho</span>
+                <p class="enunciado">
+                    O que caracteriza essencialmente a <strong>avaliação de desempenho 360 graus</strong>?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) A avaliação é feita exclusivamente pelo gestor imediato, com base em metas numéricas.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) É a avaliação em que somente o próprio colaborador se avalia, preenchendo um formulário de autoavaliação sem qualquer interferência externa ou validação posterior.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) É a avaliação aplicada apenas uma vez, no encerramento do contrato de experiência.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) O colaborador é avaliado por múltiplas fontes — superior, pares, subordinados, clientes internos/externos — além da autoavaliação.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Encargos · FGTS</span>
+                <div class="caso">
+                    O RH precisa orientar um gestor sobre os custos de uma <strong>dispensa sem justa causa</strong>.
+                </div>
+                <p class="enunciado">Sobre o FGTS, a informação correta é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) O empregador deposita 8% da remuneração mensal e, na dispensa sem justa causa, paga multa rescisória de 40% sobre o saldo da conta vinculada.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) O empregador deposita 11% da remuneração e a multa rescisória é de 20%.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) O desconto de 8% é feito no salário do empregado, e a multa de 40% também é descontada dele.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) O FGTS só é devido nos contratos por prazo determinado e nos contratos de aprendizagem, não incidindo sobre os contratos por prazo indeterminado.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="chapter" id="q8">
+            <div class="question-card">
+                <h3>Questão 8 de 10</h3>
+                <span class="tema">Treinamento e desenvolvimento</span>
+                <p class="enunciado">
+                    No modelo de avaliação de treinamento de <strong>Kirkpatrick</strong>, os quatro níveis são, na ordem:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Custo, prazo, escopo e qualidade.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Planejamento, execução, verificação e ação.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Reação, aprendizagem, comportamento e resultados.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Recrutamento, seleção, integração e retenção de talentos.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="chapter" id="q9">
+            <div class="question-card">
+                <h3>Questão 9 de 10</h3>
+                <span class="tema">Recrutamento e seleção</span>
+                <div class="caso">
+                    Uma empresa decidiu preencher uma vaga de supervisão exclusivamente por
+                    <strong>recrutamento interno</strong>.
+                </div>
+                <p class="enunciado">Qual é a principal <strong>desvantagem</strong> dessa escolha?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9" value="A"> A) O custo por contratação é muito mais alto do que no recrutamento externo.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="B"> B) Tende a reduzir a renovação de ideias e pode gerar endogamia, além de possível conflito entre os candidatos não promovidos.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="C"> C) O processo é sempre mais demorado do que buscar candidatos no mercado.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="D"> D) Desmotiva os colaboradores das demais áreas, pois elimina a perspectiva de plano de carreira e de crescimento interno na organização.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="chapter" id="q10">
+            <div class="question-card">
+                <h3>Questão 10 de 10</h3>
+                <span class="tema">Folha de pagamento · 13º salário</span>
+                <p class="enunciado">
+                    Sobre o pagamento do <strong>13º salário</strong> (gratificação natalina), a alternativa correta é:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10" value="A"> A) Deve ser pago em parcela única até 31 de dezembro, com desconto integral de INSS e de imposto de renda sobre o valor total.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="B"> B) É um benefício facultativo, concedido a critério do empregador.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="C"> C) É devido apenas a quem trabalhou os 12 meses completos do ano.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="D"> D) A 1ª parcela deve ser paga entre fevereiro e 30 de novembro e a 2ª até 20 de dezembro, incidindo INSS e IRRF apenas sobre a 2ª parcela.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">
+                    O gabarito não é exibido: revise os temas assinalados em vermelho e refaça a prova.
+                </p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Recursos Humanos</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+
+    const gabarito = {
+        p1: "C",
+        p2: "C",
+        p3: "A",
+        p4: "D",
+        p5: "B",
+        p6: "D",
+        p7: "A",
+        p8: "C",
+        p9: "B",
+        p10: "D"
+    };
+
+    const temas = {
+        p1: "Contrato", p2: "Aviso prévio", p3: "Férias", p4: "Turnover", p5: "Cultura/Clima",
+        p6: "Avaliação 360°", p7: "FGTS", p8: "Kirkpatrick", p9: "Recrutamento", p10: "13º salário"
+    };
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= 10) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+            document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaRH');
+        let acertos = 0;
+        const detalhe = [];
+
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) acertos++;
+            detalhe.push({ q, certo: !!certo, respondida: !!marcada });
+        }
+
+        const nota = acertos;   // 10 questões => 1 ponto cada
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        document.getElementById('scoreSub').textContent =
+            `${acertos} de 10 questões corretas`;
+
+        const naoRespondidas = detalhe.filter(d => !d.respondida).length;
+        const msg = document.getElementById('resultMessage');
+
+        if (nota === 10)      msg.textContent = 'Excelente! Domínio completo do conteúdo de RH.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Revise com atenção os temas em vermelho.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        if (naoRespondidas > 0) {
+            msg.textContent += ` (${naoRespondidas} questão(ões) sem resposta.)`;
+        }
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map((d, i) => `
+            <div class="revisao-item ${d.certo ? 'ok' : 'nao'}">
+                ${d.certo ? '✓' : '✗'} Q${i + 1}
+                <span class="tema-mini">${temas[d.q]}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

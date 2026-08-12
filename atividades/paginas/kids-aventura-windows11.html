@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Grande Aventura no Windows 11</title>
+<style>
+    /* ==========================================================
+       MINHA GRANDE AVENTURA NO WINDOWS 11
+       Versão interativa do livro de atividades.
+       Feito para criança de ~8 anos: textos curtos, botões grandes,
+       tudo por clique/toque. Funciona em celular, tablet e PC.
+       ========================================================== */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --rosa: #e6399b;
+        --rosa-claro: #ffe3f3;
+        --roxo: #7c3aed;
+        --roxo-claro: #f3e8ff;
+        --laranja: #f59e0b;
+        --amarelo-claro: #fff8e1;
+        --verde: #16a34a;
+        --verde-claro: #dcfce7;
+        --azul: #0ea5e9;
+        --azul-claro: #e0f2fe;
+        --vermelho: #ef4444;
+        --texto: #3b2f4a;
+        --cinza: #6b7280;
+        --borda: #e5d9ef;
+        --raio: 22px;
+        --sombra: 0 8px 24px rgba(124, 58, 237, .16);
+    }
+
+    body {
+        font-family: 'Comic Sans MS', 'Segoe UI', Verdana, sans-serif;
+        background: linear-gradient(160deg, #fde4f4 0%, #e9e0ff 50%, #dff1ff 100%);
+        background-attachment: fixed;
+        color: var(--texto);
+        min-height: 100vh;
+        padding: clamp(8px, 2vw, 22px);
+        line-height: 1.5;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .app {
+        max-width: 960px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: clamp(16px, 3vw, 28px);
+        overflow: hidden;
+        box-shadow: var(--sombra);
+    }
+
+    /* ---------- Barra de topo ---------- */
+    .topo {
+        background: linear-gradient(135deg, var(--rosa) 0%, var(--roxo) 100%);
+        color: #fff;
+        padding: clamp(10px, 2.4vw, 16px) clamp(12px, 3vw, 22px);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .topo .titulo-etapa {
+        font-size: clamp(.92rem, 3.4vw, 1.25rem);
+        font-weight: 700;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .topo .estrelas-hud {
+        background: rgba(255, 255, 255, .22);
+        border: 2px solid rgba(255, 255, 255, .45);
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-weight: 700;
+        font-size: clamp(.78rem, 2.8vw, .95rem);
+        white-space: nowrap;
+    }
+
+    .barra-progresso { background: #f1e6fb; height: 12px; }
+    .barra-progresso span {
+        display: block; height: 100%; width: 0%;
+        background: linear-gradient(90deg, var(--verde), var(--azul));
+        border-radius: 0 999px 999px 0;
+        transition: width .4s ease;
+    }
+
+    /* ---------- Telas ---------- */
+    .tela { display: none; padding: clamp(14px, 3.5vw, 30px); }
+    .tela.ativa { display: block; animation: entra .35s ease; }
+
+    @keyframes entra {
+        from { opacity: 0; transform: translateY(14px); }
+        to   { opacity: 1; transform: none; }
+    }
+
+    h2.titulo {
+        font-size: clamp(1.2rem, 5vw, 1.9rem);
+        color: var(--roxo);
+        text-align: center;
+        margin-bottom: 6px;
+        line-height: 1.2;
+    }
+
+    p.subtitulo {
+        text-align: center;
+        color: var(--cinza);
+        font-size: clamp(.85rem, 3vw, 1.02rem);
+        margin-bottom: 16px;
+    }
+
+    /* instrução grande com emoji */
+    .instrucao {
+        background: var(--amarelo-claro);
+        border: 3px solid var(--laranja);
+        border-radius: var(--raio);
+        padding: clamp(12px, 3vw, 18px);
+        font-size: clamp(1rem, 4vw, 1.35rem);
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .btn-ouvir {
+        background: var(--roxo);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 7px 15px;
+        font-size: clamp(.78rem, 2.8vw, .92rem);
+        font-weight: 700;
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+    }
+    .btn-ouvir:hover { background: #6d28d9; }
+    .btn-ouvir.falando { background: var(--verde); }
+
+    /* exemplo resolvido */
+    .exemplo {
+        background: var(--azul-claro);
+        border: 3px dashed var(--azul);
+        border-radius: 16px;
+        padding: clamp(10px, 2.6vw, 15px);
+        margin-bottom: 14px;
+        text-align: center;
+        font-size: clamp(.85rem, 3vw, 1.02rem);
+    }
+    .exemplo b { color: var(--azul); }
+
+    /* ---------- Botões ---------- */
+    .btn {
+        font-family: inherit;
+        font-weight: 700;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: transform .15s, box-shadow .2s, background .2s;
+        font-size: clamp(.95rem, 3.6vw, 1.15rem);
+        padding: clamp(12px, 3vw, 17px) clamp(20px, 5vw, 34px);
+        background: var(--rosa);
+        color: #fff;
+        box-shadow: 0 5px 0 #b91c74;
+    }
+    .btn:hover:not(:disabled) { transform: translateY(-2px); }
+    .btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 #b91c74; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; box-shadow: 0 5px 0 #cbd5e1; background: #94a3b8; }
+    .btn.verde { background: var(--verde); box-shadow: 0 5px 0 #14532d; }
+    .btn.roxo  { background: var(--roxo); box-shadow: 0 5px 0 #4c1d95; }
+    .btn.gigante { font-size: clamp(1.1rem, 5vw, 1.6rem); padding: clamp(16px, 4vw, 22px) clamp(28px, 8vw, 52px); }
+
+    .rodape-botoes {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 18px;
+    }
+
+    /* ---------- Tela inicial ---------- */
+    .capa { text-align: center; }
+    .capa h1 {
+        font-size: clamp(1.5rem, 7vw, 2.8rem);
+        color: var(--rosa);
+        line-height: 1.15;
+        margin-bottom: 4px;
+    }
+    .capa .win {
+        font-size: clamp(2rem, 10vw, 3.6rem);
+        color: var(--roxo);
+        display: block;
+        margin: 2px 0 10px;
+    }
+    .capa .pc-grande { font-size: clamp(3rem, 15vw, 5rem); }
+
+    .campo-nome {
+        width: min(340px, 100%);
+        padding: 14px 18px;
+        font-family: inherit;
+        font-size: clamp(1rem, 4vw, 1.25rem);
+        border: 3px solid var(--roxo);
+        border-radius: 999px;
+        outline: none;
+        text-align: center;
+        margin: 6px auto 14px;
+        display: block;
+    }
+    .campo-nome:focus { box-shadow: 0 0 0 5px var(--roxo-claro); }
+
+    .avatares {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+    .avatar {
+        font-size: clamp(1.8rem, 8vw, 2.6rem);
+        background: #fff;
+        border: 4px solid var(--borda);
+        border-radius: 50%;
+        width: clamp(58px, 16vw, 82px);
+        height: clamp(58px, 16vw, 82px);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        transition: transform .15s, border-color .2s;
+    }
+    .avatar:hover { transform: scale(1.08); }
+    .avatar.escolhido { border-color: var(--rosa); background: var(--rosa-claro); transform: scale(1.12); }
+
+    /* ---------- Termômetro (estrelas) ---------- */
+    .linha-termometro {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        background: var(--roxo-claro);
+        border-radius: 16px;
+        padding: clamp(9px, 2.4vw, 13px) clamp(11px, 3vw, 16px);
+        margin-bottom: 9px;
+        flex-wrap: wrap;
+    }
+    .linha-termometro .assunto {
+        font-size: clamp(.85rem, 3.2vw, 1.05rem);
+        font-weight: 700;
+        display: flex; align-items: center; gap: 7px;
+        flex: 1 1 150px;
+    }
+    .estrelas { display: flex; gap: 3px; }
+    .estrela {
+        font-size: clamp(1.4rem, 6vw, 1.9rem);
+        cursor: pointer;
+        filter: grayscale(1) opacity(.35);
+        transition: transform .15s, filter .2s;
+        background: none; border: none; padding: 0; line-height: 1;
+    }
+    .estrela:hover { transform: scale(1.15); }
+    .estrela.cheia { filter: none; }
+
+    /* ---------- Pintar ---------- */
+    .paleta {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+    .cor {
+        width: clamp(34px, 9vw, 46px);
+        height: clamp(34px, 9vw, 46px);
+        border-radius: 50%;
+        border: 4px solid #fff;
+        box-shadow: 0 2px 7px rgba(0, 0, 0, .22);
+        cursor: pointer;
+        transition: transform .15s;
+    }
+    .cor:hover { transform: scale(1.12); }
+    .cor.ativa { transform: scale(1.24); border-color: var(--texto); }
+
+    .area-desenho {
+        background: #fff;
+        border: 4px solid var(--roxo);
+        border-radius: var(--raio);
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 12px;
+    }
+    .area-desenho svg { width: min(320px, 86vw); height: auto; }
+    .pintavel { cursor: pointer; transition: fill .2s; }
+    .pintavel:hover { opacity: .8; }
+
+    /* ---------- Cartões de escolha ---------- */
+    .opcoes-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(clamp(110px, 30vw, 165px), 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .cartao {
+        background: #fff;
+        border: 4px solid var(--borda);
+        border-radius: 18px;
+        padding: clamp(12px, 3vw, 18px) 10px;
+        text-align: center;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: clamp(.85rem, 3.2vw, 1.05rem);
+        font-weight: 700;
+        color: var(--texto);
+        transition: transform .15s, border-color .2s, background .2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    .cartao .icone { font-size: clamp(2rem, 9vw, 2.8rem); line-height: 1; }
+    .cartao:hover:not(:disabled) { transform: translateY(-4px); border-color: var(--roxo); }
+    .cartao.certo  { border-color: var(--verde); background: var(--verde-claro); }
+    .cartao.errado { border-color: var(--vermelho); background: #fee2e2; opacity: .75; }
+    .cartao:disabled { cursor: default; }
+
+    /* ---------- Ordenar passos ---------- */
+    .trilha-passos {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+    .slot {
+        width: clamp(76px, 21vw, 118px);
+        min-height: clamp(76px, 21vw, 100px);
+        border: 4px dashed var(--borda);
+        border-radius: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        background: #faf7ff;
+        font-size: clamp(.62rem, 2.4vw, .76rem);
+        text-align: center;
+        padding: 5px;
+        color: var(--cinza);
+        font-weight: 700;
+    }
+    .slot .numero {
+        background: var(--roxo); color: #fff;
+        width: 24px; height: 24px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .8rem;
+    }
+    .slot.preenchido { border-style: solid; border-color: var(--verde); background: var(--verde-claro); color: var(--texto); }
+    .slot .icone-passo { font-size: clamp(1.4rem, 6vw, 2rem); }
+
+    .banco-passos {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+    }
+    .peca {
+        background: #fff;
+        border: 4px solid var(--rosa);
+        border-radius: 16px;
+        padding: 9px 12px;
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: clamp(.72rem, 2.8vw, .88rem);
+        display: flex; flex-direction: column; align-items: center; gap: 3px;
+        max-width: clamp(105px, 28vw, 150px);
+        text-align: center;
+        color: var(--texto);
+        transition: transform .15s;
+    }
+    .peca .icone-passo { font-size: clamp(1.4rem, 6vw, 2rem); }
+    .peca:hover:not(:disabled) { transform: translateY(-3px); }
+    .peca.usada { opacity: .3; pointer-events: none; }
+
+    /* ---------- Ligar ---------- */
+    .ligacao { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-bottom: 12px; }
+    .coluna-lig { display: flex; flex-direction: column; gap: 9px; }
+    .item-lig {
+        background: #fff;
+        border: 4px solid var(--borda);
+        border-radius: 14px;
+        padding: clamp(9px, 2.4vw, 13px);
+        cursor: pointer;
+        font-family: inherit;
+        font-weight: 700;
+        font-size: clamp(.7rem, 2.7vw, .9rem);
+        color: var(--texto);
+        text-align: center;
+        transition: border-color .2s, background .2s, transform .15s;
+        min-height: clamp(56px, 15vw, 70px);
+        display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .item-lig:hover:not(:disabled) { transform: scale(1.03); border-color: var(--roxo); }
+    .item-lig.selecionado { border-color: var(--laranja); background: var(--amarelo-claro); }
+    .item-lig.ligado { border-color: var(--verde); background: var(--verde-claro); }
+    .item-lig:disabled { cursor: default; }
+    .setinha { font-size: clamp(1.1rem, 4vw, 1.5rem); color: var(--cinza); text-align: center; }
+
+    /* ---------- Completar palavra ---------- */
+    .palavra-lacunas {
+        display: flex; justify-content: center; gap: 4px; flex-wrap: wrap;
+        font-size: clamp(1.1rem, 5vw, 1.8rem); font-weight: 700;
+        margin-bottom: 12px; letter-spacing: .02em;
+    }
+    .letra-fixa {
+        background: var(--roxo-claro); border-radius: 7px;
+        padding: 4px 8px; color: var(--roxo);
+    }
+    .letra-vazia {
+        background: #fff; border: 3px dashed var(--rosa); border-radius: 7px;
+        padding: 4px 10px; min-width: clamp(30px, 8vw, 42px); text-align: center;
+        color: var(--rosa);
+    }
+    .letra-vazia.ok { border-style: solid; border-color: var(--verde); background: var(--verde-claro); color: var(--verde); }
+    .letra-vazia.alvo { background: var(--amarelo-claro); border-color: var(--laranja); animation: pisca 1s infinite; }
+    @keyframes pisca { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
+
+    .teclas-letras { display: flex; gap: 7px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+    .tecla-letra {
+        background: #fff; border: 4px solid var(--roxo); border-radius: 12px;
+        width: clamp(44px, 12vw, 58px); height: clamp(44px, 12vw, 58px);
+        font-family: inherit; font-weight: 700; font-size: clamp(1.05rem, 4.5vw, 1.4rem);
+        color: var(--roxo); cursor: pointer; transition: transform .15s;
+    }
+    .tecla-letra:hover:not(:disabled) { transform: translateY(-3px); }
+    .tecla-letra.usada { opacity: .28; pointer-events: none; }
+
+    /* ---------- Caça-palavras ---------- */
+    .cp-area { overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px; }
+    .cp-grade {
+        display: grid;
+        grid-template-columns: repeat(13, 1fr);
+        gap: 2px;
+        background: var(--roxo-claro);
+        padding: 6px;
+        border-radius: 14px;
+        min-width: 300px;
+        max-width: 460px;
+        margin: 0 auto;
+    }
+    .cp-celula {
+        aspect-ratio: 1;
+        background: #fff;
+        border: none;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+        font-size: clamp(.6rem, 2.4vw, .95rem);
+        color: var(--texto);
+        cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        transition: background .15s, transform .1s;
+    }
+    .cp-celula:hover { background: var(--amarelo-claro); }
+    .cp-celula.inicio { background: var(--laranja); color: #fff; transform: scale(1.1); }
+    .cp-celula.achada { background: var(--verde); color: #fff; }
+
+    .cp-palavras { display: flex; gap: 7px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .cp-palavra {
+        background: #fff; border: 3px solid var(--rosa); border-radius: 999px;
+        padding: 5px 13px; font-weight: 700; font-size: clamp(.7rem, 2.8vw, .88rem);
+        color: var(--rosa);
+    }
+    .cp-palavra.achada { background: var(--verde-claro); border-color: var(--verde); color: var(--verde); text-decoration: line-through; }
+
+    /* ---------- V ou F ---------- */
+    .vf-caixa {
+        background: #fff; border: 4px solid var(--borda); border-radius: 18px;
+        padding: clamp(12px, 3vw, 18px); margin-bottom: 12px;
+    }
+    .vf-frase { font-size: clamp(.95rem, 3.6vw, 1.2rem); font-weight: 700; text-align: center; margin-bottom: 12px; }
+    .vf-botoes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-vf {
+        font-family: inherit; font-weight: 700; cursor: pointer;
+        border: 4px solid var(--borda); border-radius: 16px;
+        background: #fff; color: var(--texto);
+        padding: clamp(11px, 3vw, 15px) clamp(22px, 6vw, 40px);
+        font-size: clamp(.95rem, 3.6vw, 1.15rem);
+        display: flex; align-items: center; gap: 8px;
+        transition: transform .15s, border-color .2s;
+    }
+    .btn-vf .grande { font-size: clamp(1.4rem, 6vw, 1.9rem); }
+    .btn-vf:hover:not(:disabled) { transform: translateY(-3px); }
+    .btn-vf.certo  { border-color: var(--verde); background: var(--verde-claro); }
+    .btn-vf.errado { border-color: var(--vermelho); background: #fee2e2; }
+
+    /* ---------- Completar frases ---------- */
+    .frase-completar {
+        background: #fff; border: 4px solid var(--borda); border-radius: 16px;
+        padding: clamp(11px, 3vw, 16px); margin-bottom: 9px;
+        font-size: clamp(.88rem, 3.3vw, 1.1rem); font-weight: 700;
+        display: flex; align-items: center; gap: 7px; flex-wrap: wrap; justify-content: center;
+        text-align: center;
+    }
+    .lacuna {
+        display: inline-block; min-width: clamp(96px, 26vw, 140px);
+        border-bottom: 4px dashed var(--rosa);
+        padding: 2px 8px; color: var(--rosa); text-align: center;
+        cursor: pointer;
+    }
+    .lacuna.preenchida { border-bottom-style: solid; border-color: var(--verde); color: var(--verde); }
+    .lacuna.alvo { background: var(--amarelo-claro); border-color: var(--laranja); }
+
+    .banco-palavras { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+    .palavra-banco {
+        background: #fff; border: 4px solid var(--roxo); border-radius: 999px;
+        padding: 8px 16px; font-family: inherit; font-weight: 700;
+        font-size: clamp(.8rem, 3vw, 1rem); color: var(--roxo); cursor: pointer;
+        transition: transform .15s;
+    }
+    .palavra-banco:hover:not(:disabled) { transform: translateY(-3px); }
+    .palavra-banco.usada { opacity: .28; pointer-events: none; }
+    .palavra-banco.selecionada { background: var(--roxo); color: #fff; }
+
+    /* ---------- Plano de fundo ---------- */
+    .monitor {
+        background: #334155; border-radius: 16px 16px 6px 6px;
+        padding: 10px 10px 16px; max-width: 330px; margin: 0 auto 12px;
+        box-shadow: var(--sombra);
+    }
+    .monitor .tela-pc {
+        aspect-ratio: 16 / 10; border-radius: 8px; overflow: hidden;
+        display: flex; align-items: flex-end; justify-content: flex-start;
+        padding: 8px; font-size: clamp(1.6rem, 7vw, 2.4rem);
+        background: #0ea5e9;
+        transition: background .4s;
+    }
+    .monitor .base { width: 70px; height: 9px; background: #64748b; border-radius: 0 0 7px 7px; margin: 0 auto; }
+
+    /* ---------- Feedback ---------- */
+    .feedback {
+        border-radius: 18px; padding: clamp(12px, 3vw, 17px);
+        font-size: clamp(.95rem, 3.6vw, 1.2rem); font-weight: 700;
+        text-align: center; display: none; margin-top: 12px;
+    }
+    .feedback.mostrar { display: block; animation: pulo .4s ease; }
+    .feedback.bom  { background: var(--verde-claro); color: #14532d; border: 4px solid var(--verde); }
+    .feedback.opa  { background: var(--amarelo-claro); color: #7c2d12; border: 4px solid var(--laranja); }
+
+    @keyframes pulo {
+        0%   { transform: scale(.9); opacity: 0; }
+        60%  { transform: scale(1.04); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* confete */
+    .confete {
+        position: fixed; top: -20px; font-size: 1.6rem;
+        pointer-events: none; z-index: 90;
+        animation: cair linear forwards;
+    }
+    @keyframes cair {
+        to { transform: translateY(105vh) rotate(540deg); opacity: 0; }
+    }
+
+    /* ---------- Diploma ---------- */
+    .diploma {
+        background: linear-gradient(160deg, #fffbeb 0%, #fff 100%);
+        border: 8px double var(--laranja);
+        border-radius: var(--raio);
+        padding: clamp(18px, 4.5vw, 34px);
+        text-align: center;
+    }
+    .diploma .medalha { font-size: clamp(3.4rem, 16vw, 5.5rem); line-height: 1; }
+    .diploma h2 { color: var(--laranja); font-size: clamp(1.2rem, 5.4vw, 2rem); margin: 6px 0; }
+    .diploma .nome-diploma {
+        font-size: clamp(1.2rem, 5.4vw, 2rem); color: var(--rosa);
+        border-bottom: 4px dotted var(--rosa); display: inline-block;
+        padding: 0 16px 3px; margin: 10px 0;
+    }
+    .diploma p { font-size: clamp(.85rem, 3.2vw, 1.05rem); }
+
+    .resumo-final {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px; margin: 16px 0;
+    }
+    .resumo-item {
+        background: #fff; border: 4px solid var(--roxo-claro);
+        border-radius: 16px; padding: 11px 7px;
+    }
+    .resumo-item .num { font-size: clamp(1.2rem, 5vw, 1.7rem); font-weight: 700; color: var(--roxo); }
+    .resumo-item .rot { font-size: clamp(.62rem, 2.3vw, .74rem); color: var(--cinza); }
+
+    /* comparação dos termômetros */
+    .comparacao { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .linha-comp {
+        display: grid; grid-template-columns: 1fr auto auto auto;
+        gap: 8px; align-items: center;
+        background: var(--roxo-claro); border-radius: 14px;
+        padding: 9px 12px; font-size: clamp(.72rem, 2.8vw, .92rem); font-weight: 700;
+    }
+    .linha-comp .antes { color: var(--cinza); }
+    .linha-comp .depois { color: var(--verde); }
+    .linha-comp .subiu { color: var(--verde); font-size: 1.1em; }
+
+    footer {
+        text-align: center; padding: clamp(11px, 3vw, 17px);
+        background: #faf7ff; color: var(--cinza);
+        font-size: clamp(.68rem, 2.4vw, .8rem);
+    }
+
+    .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="app">
+    <div class="topo">
+        <div class="titulo-etapa" id="tituloEtapa">Minha Grande Aventura no Windows 11</div>
+        <div class="estrelas-hud">⭐ <span id="hudEstrelas">0</span></div>
+    </div>
+    <div class="barra-progresso"><span id="barraProgresso"></span></div>
+
+    <!-- ============ TELA 0: CAPA ============ -->
+    <section class="tela ativa" id="tela-capa">
+        <div class="capa">
+            <div class="pc-grande">✨🖥️✨</div>
+            <h1>Minha Grande Aventura no</h1>
+            <span class="win">WINDOWS 11</span>
+            <p class="subtitulo">Vamos lembrar tudo o que você já aprendeu!</p>
+
+            <div class="instrucao">
+                ✏️ Escreva seu nome
+                <button class="btn-ouvir" data-falar="Escreva o seu nome e escolha um personagem. Depois clique em começar.">🔊 Ouvir</button>
+            </div>
+            <input type="text" class="campo-nome" id="campoNome" placeholder="Seu nome aqui" maxlength="22" autocomplete="off">
+
+            <div class="instrucao">👉 Escolha você</div>
+            <div class="avatares" id="avatares"></div>
+
+            <button class="btn gigante verde" id="btnComecar">COMEÇAR! 🚀</button>
+        </div>
+    </section>
+
+    <!-- ============ TELA 1: TERMÔMETRO DO COMEÇO ============ -->
+    <section class="tela" id="tela-termometro1">
+        <h2 class="titulo">🌡️ Quanto você lembra?</h2>
+        <p class="subtitulo">Pinte as estrelinhas. Não tem certo nem errado!</p>
+        <div class="instrucao">
+            👆 Clique nas estrelas
+            <button class="btn-ouvir" data-falar="Clique nas estrelas. Cinco estrelas quer dizer que você lembra super bem.">🔊 Ouvir</button>
+        </div>
+        <div class="exemplo">Exemplo: ⭐⭐⭐⭐⭐ = <b>lembro super bem!</b> &nbsp;·&nbsp; ⭐ = <b>quase não lembro</b></div>
+        <div id="termometro1"></div>
+        <div class="rodape-botoes"><button class="btn verde" id="btnTerm1">Continuar ➡️</button></div>
+    </section>
+
+    <!-- ============ TELAS DAS MISSÕES (montadas pelo JS) ============ -->
+    <section class="tela" id="tela-missao"></section>
+
+    <!-- ============ TELA: TERMÔMETRO DO FIM ============ -->
+    <section class="tela" id="tela-termometro2">
+        <h2 class="titulo">🌡️ E agora, quanto você lembra?</h2>
+        <p class="subtitulo">Pinte de novo e veja como você aprendeu!</p>
+        <div class="instrucao">
+            👆 Clique nas estrelas de novo
+            <button class="btn-ouvir" data-falar="Agora que você treinou, clique nas estrelas de novo.">🔊 Ouvir</button>
+        </div>
+        <div id="termometro2"></div>
+        <div class="rodape-botoes"><button class="btn verde" id="btnTerm2">Ver meu diploma 🏆</button></div>
+    </section>
+
+    <!-- ============ TELA FINAL: DIPLOMA ============ -->
+    <section class="tela" id="tela-diploma">
+        <div class="diploma">
+            <div class="medalha">🏆</div>
+            <h2>PARABÉNS!</h2>
+            <p>Diploma de Exploradora do Windows 11</p>
+            <div class="nome-diploma" id="nomeDiploma">—</div>
+            <p id="textoDiploma">Eu aprendi a excluir apps, trocar o idioma, mudar o plano de fundo,<br>criar pastas e extrair pastas zipadas! 🎉</p>
+
+            <div class="resumo-final" id="resumoFinal"></div>
+
+            <h2 class="titulo" style="font-size:clamp(1rem,4vw,1.3rem)">📈 Olha como você aprendeu!</h2>
+            <div class="comparacao" id="comparacao"></div>
+
+            <div class="rodape-botoes">
+                <button class="btn roxo" id="btnDeNovo">Jogar de novo 🔄</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>Baseado no livro <strong>Minha Grande Aventura no Windows 11</strong></footer>
+</div>
+
+<script>
+/* ==================================================================
+   CONTEÚDO — vindo do livro em PDF
+   ================================================================== */
+
+const ASSUNTOS = [
+    { icone: "🗑️", nome: "Excluir um app" },
+    { icone: "🌍", nome: "Trocar o idioma" },
+    { icone: "🖼️", nome: "Mudar o plano de fundo" },
+    { icone: "📁", nome: "Criar uma pasta" },
+    { icone: "🤐", nome: "Extrair pasta zipada" }
+];
+
+const PALETA = ["#ef4444", "#f59e0b", "#fbbf24", "#22c55e", "#0ea5e9", "#7c3aed", "#e6399b", "#78350f", "#1f2937", "#ffffff"];
+
+/* Desenhos para pintar (SVG simples, cada parte é clicável) */
+const DESENHOS = {
+    lixeira: `
+        <svg viewBox="0 0 200 220">
+            <rect class="pintavel" x="52" y="60" width="96" height="130" rx="12" fill="#e5e7eb" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="36" y="34" width="128" height="28" rx="11" fill="#d1d5db" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="78" y="8" width="44" height="26" rx="8" fill="#d1d5db" stroke="#3b2f4a" stroke-width="5"/>
+            <rect class="pintavel" x="66" y="82" width="28" height="90" rx="12" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
+            <rect class="pintavel" x="106" y="82" width="28" height="90" rx="12" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
+        </svg>`,
+    planeta: `
+        <svg viewBox="0 0 200 200">
+            <circle class="pintavel" cx="100" cy="100" r="80" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="5"/>
+            <ellipse class="pintavel" cx="70" cy="66" rx="34" ry="22" fill="#bbf7d0" stroke="#3b2f4a" stroke-width="4"/>
+            <ellipse class="pintavel" cx="136" cy="92" rx="30" ry="24" fill="#bbf7d0" stroke="#3b2f4a" stroke-width="4"/>
+            <ellipse class="pintavel" cx="76" cy="140" rx="36" ry="24" fill="#fef3c7" stroke="#3b2f4a" stroke-width="4"/>
+        </svg>`,
+    paisagem: `
+        <svg viewBox="0 0 220 170">
+            <rect class="pintavel" x="4" y="4" width="212" height="104" fill="#e0f2fe" stroke="#3b2f4a" stroke-width="4"/>
+            <circle class="pintavel" cx="182" cy="34" r="20" fill="#fef3c7" stroke="#3b2f4a" stroke-width="4"/>
+            <path class="pintavel" d="M4 108 L64 40 L124 108 Z" fill="#e5e7eb" stroke="#3b2f4a" stroke-width="4"/>
+            <path class="pintavel" d="M84 108 L140 52 L196 108 Z" fill="#f3f4f6" stroke="#3b2f4a" stroke-width="4"/>
+            <rect class="pintavel" x="4" y="106" width="212" height="60" fill="#dcfce7" stroke="#3b2f4a" stroke-width="4"/>
+        </svg>`,
+    pasta: `
+        <svg viewBox="0 0 210 170">
+            <path class="pintavel" d="M14 40h64l16 18h102c7 0 12 5 12 12v78c0 7-5 12-12 12H14c-7 0-12-5-12-12V52c0-7 5-12 12-12z"
+                  fill="#fde68a" stroke="#3b2f4a" stroke-width="5"/>
+            <path class="pintavel" d="M2 78h206v72c0 7-5 12-12 12H14c-7 0-12-5-12-12z" fill="#fcd34d" stroke="#3b2f4a" stroke-width="5"/>
+        </svg>`
+};
+
+/* As 4 missões do livro */
+const MISSOES = [
+    {
+        id: "m1",
+        titulo: "Missão 1 — Excluir um app",
+        emoji: "🗑️",
+        desenho: "lixeira",
+        pinteTexto: "Pinte a lixeira!",
+        etapas: [
+            {
+                tipo: "ordenar",
+                instrucao: "👉 Clique nos passos na ordem certa",
+                falar: "Clique nos passos na ordem certa para desinstalar um aplicativo.",
+                exemplo: "Primeiro o que vem antes, depois o que vem no meio, e por último o fim.",
+                passos: [
+                    { icone: "🪟", texto: "Clicar no Iniciar" },
+                    { icone: "🖱️", texto: "Botão direito no app" },
+                    { icone: "🗑️", texto: "Escolher Desinstalar" }
+                ]
+            },
+            {
+                tipo: "escolha",
+                instrucao: "🤔 Qual botão do mouse eu uso para apagar um app?",
+                falar: "Qual botão do mouse eu uso para apagar um aplicativo?",
+                opcoes: [
+                    { icone: "🖱️", texto: "ESQUERDO" },
+                    { icone: "🖱️", texto: "DIREITO" },
+                    { icone: "🖱️", texto: "DO MEIO" }
+                ],
+                correta: 1,
+                dica: "💡 É o mesmo botão que abre o menuzinho de opções!",
+                explica: "Isso! Com o botão DIREITO aparece o menu com 'Desinstalar'."
+            }
+        ]
+    },
+    {
+        id: "m2",
+        titulo: "Missão 2 — Trocar o idioma",
+        emoji: "🌍",
+        desenho: "planeta",
+        pinteTexto: "Pinte o planeta!",
+        etapas: [
+            {
+                tipo: "completar-palavra",
+                instrucao: "🧩 Complete a palavra",
+                falar: "Complete a palavra Configurações clicando nas letras que faltam.",
+                exemplo: "É o lugar com o desenho de uma engrenagem ⚙️",
+                palavra: "CONFIGURACOES",
+                mostrar: "C O _ F I G _ R A _ _ E S",
+                bonus: ["N", "U", "C", "O"]
+            },
+            {
+                tipo: "ligar",
+                instrucao: "🔗 Ligue a bandeira ao seu 'olá'",
+                falar: "Ligue cada bandeira ao seu jeito de falar olá.",
+                esquerda: [
+                    { icone: "🇧🇷", texto: "Português" },
+                    { icone: "🇺🇸", texto: "Inglês" },
+                    { icone: "🇪🇸", texto: "Espanhol" }
+                ],
+                direita: [
+                    { icone: "👋", texto: "Hello!" },
+                    { icone: "👋", texto: "Olá!" },
+                    { icone: "👋", texto: "¡Hola!" }
+                ],
+                pares: { 0: 1, 1: 0, 2: 2 }
+            }
+        ]
+    },
+    {
+        id: "m3",
+        titulo: "Missão 3 — Plano de fundo",
+        emoji: "🖼️",
+        desenho: "paisagem",
+        pinteTexto: "Pinte a paisagem!",
+        etapas: [
+            {
+                tipo: "ordenar",
+                instrucao: "👉 Clique nos passos na ordem certa",
+                falar: "Clique nos passos na ordem certa para trocar o plano de fundo.",
+                exemplo: "Comece clicando na área de trabalho com o botão direito.",
+                passos: [
+                    { icone: "🖱️", texto: "Botão direito na tela" },
+                    { icone: "🎨", texto: "Clicar em Personalizar" },
+                    { icone: "🖼️", texto: "Escolher a imagem" }
+                ]
+            },
+            {
+                tipo: "fundo",
+                instrucao: "🌈 Escolha o plano de fundo dos seus sonhos",
+                falar: "Escolha uma imagem para o plano de fundo do computador.",
+                opcoes: [
+                    { icone: "🌈", nome: "Arco-íris", cor: "linear-gradient(160deg,#f472b6,#facc15,#4ade80,#38bdf8)" },
+                    { icone: "🐱", nome: "Gatinho",   cor: "linear-gradient(160deg,#fdba74,#fbbf24)" },
+                    { icone: "🚀", nome: "Espaço",    cor: "linear-gradient(160deg,#1e1b4b,#4c1d95,#0ea5e9)" },
+                    { icone: "🏖️", nome: "Praia",     cor: "linear-gradient(160deg,#38bdf8,#fde68a)" },
+                    { icone: "🌸", nome: "Flores",    cor: "linear-gradient(160deg,#f9a8d4,#c084fc)" },
+                    { icone: "🦄", nome: "Unicórnio", cor: "linear-gradient(160deg,#e9d5ff,#f9a8d4,#a5f3fc)" }
+                ]
+            }
+        ]
+    },
+    {
+        id: "m4",
+        titulo: "Missão 4 — Pastas",
+        emoji: "📁",
+        desenho: "pasta",
+        pinteTexto: "Pinte a pasta!",
+        etapas: [
+            {
+                tipo: "ordenar",
+                instrucao: "👉 Como criar uma pasta? Clique na ordem certa",
+                falar: "Clique nos passos na ordem certa para criar uma pasta nova.",
+                exemplo: "Primeiro clique com o botão direito num espaço vazio.",
+                passos: [
+                    { icone: "🖱️", texto: "Botão direito no vazio" },
+                    { icone: "✨", texto: "Escolher Novo" },
+                    { icone: "📁", texto: "Clicar em Pasta" }
+                ]
+            },
+            {
+                tipo: "ligar",
+                instrucao: "🔗 Ligue a ação ao que ela faz",
+                falar: "Ligue cada ação ao seu resultado.",
+                esquerda: [
+                    { icone: "📁", texto: "Novo > Pasta" },
+                    { icone: "🗑️", texto: "Excluir" },
+                    { icone: "🤐", texto: "Extrair tudo" }
+                ],
+                direita: [
+                    { icone: "📦", texto: "Abre o pacotinho zipado" },
+                    { icone: "✨", texto: "Cria uma pasta nova" },
+                    { icone: "💨", texto: "Apaga a pasta" }
+                ],
+                pares: { 0: 1, 1: 2, 2: 0 }
+            }
+        ]
+    },
+    {
+        id: "brincar",
+        titulo: "Hora de brincar",
+        emoji: "🎲",
+        etapas: [
+            {
+                tipo: "caca-palavras",
+                instrucao: "🔎 Ache as palavras escondidas",
+                falar: "Clique na primeira letra e depois na última letra da palavra.",
+                exemplo: "Clique na <b>primeira</b> letra e depois na <b>última</b>.",
+                grade: [
+                    "BQGBCNNCHCRNB", "SDHUIDIOMAUSB", "SSMBHBREJNERD",
+                    "SJPINTARRVFDS", "SUGLDPASTARWC", "SBTGPVRNYEKOS",
+                    "WINDOWSOLXJHZ", "FWYHCSJQPCKXO", "JTCDQNFYKLEPN",
+                    "BVCYRSZKKUWLT", "PSZOEXTRAIRCA", "CIPWVCBXWRJUP",
+                    "FUNDOSVOJWMVP"
+                ],
+                palavras: ["EXCLUIR", "IDIOMA", "PASTA", "FUNDO", "WINDOWS", "EXTRAIR", "APP", "PINTAR"]
+            },
+            {
+                tipo: "verdadeiro-falso",
+                instrucao: "✅ É verdade ou é mentira?",
+                falar: "Leia a frase e escolha: é verdade ou é mentira?",
+                frases: [
+                    { texto: "Para apagar um app eu clico com o botão DIREITO. 🖱️", v: true },
+                    { texto: "O plano de fundo é a imagem atrás da tela. 🖼️", v: true },
+                    { texto: "Pasta compactada tem desenho de zíper. 🤐", v: true },
+                    { texto: "Para trocar o idioma eu vou em Configurações. ⚙️", v: true },
+                    { texto: "\"Extrair\" quer dizer jogar a pasta no lixo. 🗑️", v: false },
+                    { texto: "Posso escolher qualquer imagem de plano de fundo. 🌈", v: true }
+                ]
+            },
+            {
+                tipo: "completar-frases",
+                instrucao: "🧠 Complete as frases",
+                falar: "Clique numa palavra e depois clique no espaço onde ela entra.",
+                exemplo: "Clique na <b>palavra</b> e depois no <b>espaço vazio</b>.",
+                banco: ["excluir", "idioma", "extrair", "personalizar", "pasta"],
+                frases: [
+                    { antes: "Não quero mais o app, vou", depois: "ele. 🗑️", resposta: "excluir" },
+                    { antes: "Para mudar a língua, troco o", depois: ". 🌍", resposta: "idioma" },
+                    { antes: "Para tirar arquivos do pacote zipado, vou", depois: ". 🤐", resposta: "extrair" },
+                    { antes: "Botão direito na tela e escolho", depois: ". 🎨", resposta: "personalizar" },
+                    { antes: "Para guardar organizado, eu crio uma", depois: ". 📁", resposta: "pasta" }
+                ]
+            }
+        ]
+    }
+];
+
+const ELOGIOS = ["🎉 Muito bem!", "⭐ Você conseguiu!", "👏 Acertou!", "🌟 Boa!", "💜 Perfeito!", "🚀 Show!"];
+const INCENTIVOS = ["🤔 Quase! Tente outra vez.", "💡 Olhe com atenção.", "🙂 Não faz mal, tente de novo!"];
+
+/* ==================================================================
+   ESTADO
+   ================================================================== */
+
+const estado = {
+    nome: "",
+    avatar: "🧒",
+    estrelas: 0,
+    termometro1: [0, 0, 0, 0, 0],
+    termometro2: [0, 0, 0, 0, 0],
+    missaoAtual: 0,
+    etapaAtual: 0,
+    corAtual: PALETA[0],
+    fundoEscolhido: null,
+    totalEtapas: MISSOES.reduce((t, m) => t + m.etapas.length + (m.desenho ? 1 : 0), 0),
+    etapasFeitas: 0
+};
+
+const $ = id => document.getElementById(id);
+
+/* ==================================================================
+   FALAR (leitura em voz alta)
+   ================================================================== */
+
+function falar(texto, botao) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const f = new SpeechSynthesisUtterance(texto);
+    f.lang = "pt-BR";
+    f.rate = 0.92;
+    if (botao) {
+        botao.classList.add("falando");
+        f.onend = () => botao.classList.remove("falando");
+        f.onerror = () => botao.classList.remove("falando");
+    }
+    speechSynthesis.speak(f);
+}
+
+document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-falar]");
+    if (b) falar(b.dataset.falar, b);
+});
+
+/* ==================================================================
+   NAVEGAÇÃO ENTRE TELAS
+   ================================================================== */
+
+function mostrarTela(id, titulo) {
+    document.querySelectorAll(".tela").forEach(t => t.classList.remove("ativa"));
+    $(id).classList.add("ativa");
+    if (titulo) $("tituloEtapa").textContent = titulo;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function atualizarProgresso() {
+    $("barraProgresso").style.width = Math.min(100, (estado.etapasFeitas / estado.totalEtapas) * 100) + "%";
+    $("hudEstrelas").textContent = estado.estrelas;
+}
+
+function ganharEstrela(qtd = 1) {
+    estado.estrelas += qtd;
+    atualizarProgresso();
+}
+
+function soltarConfete() {
+    const emojis = ["🎉", "⭐", "🌟", "💜", "✨", "🎊"];
+    for (let i = 0; i < 16; i++) {
+        const c = document.createElement("div");
+        c.className = "confete";
+        c.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.animationDuration = (1.6 + Math.random() * 1.4) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 3200);
+    }
+}
+
+function elogio()    { return ELOGIOS[Math.floor(Math.random() * ELOGIOS.length)]; }
+function incentivo() { return INCENTIVOS[Math.floor(Math.random() * INCENTIVOS.length)]; }
+
+/* ==================================================================
+   TELA 0 — CAPA
+   ================================================================== */
+
+const AVATARES = ["🧒", "👧", "👦", "🦸‍♀️", "🦸", "🐱", "🐶", "🦄"];
+
+(function montarAvatares() {
+    const box = $("avatares");
+    AVATARES.forEach((a, i) => {
+        const d = document.createElement("button");
+        d.className = "avatar" + (i === 0 ? " escolhido" : "");
+        d.type = "button";
+        d.textContent = a;
+        d.addEventListener("click", () => {
+            box.querySelectorAll(".avatar").forEach(x => x.classList.remove("escolhido"));
+            d.classList.add("escolhido");
+            estado.avatar = a;
+        });
+        box.appendChild(d);
+    });
+})();
+
+$("btnComecar").addEventListener("click", () => {
+    estado.nome = $("campoNome").value.trim() || "Exploradora";
+    montarTermometro("termometro1", estado.termometro1);
+    mostrarTela("tela-termometro1", "🌡️ Quanto você lembra?");
+});
+
+/* ==================================================================
+   TERMÔMETROS
+   ================================================================== */
+
+function montarTermometro(idBox, guardar) {
+    const box = $(idBox);
+    box.innerHTML = "";
+    ASSUNTOS.forEach((a, i) => {
+        const linha = document.createElement("div");
+        linha.className = "linha-termometro";
+        linha.innerHTML = `<div class="assunto"><span>${a.icone}</span>${a.nome}</div>`;
+        const estrelas = document.createElement("div");
+        estrelas.className = "estrelas";
+        for (let n = 1; n <= 5; n++) {
+            const b = document.createElement("button");
+            b.className = "estrela";
+            b.type = "button";
+            b.textContent = "⭐";
+            b.addEventListener("click", () => {
+                guardar[i] = n;
+                [...estrelas.children].forEach((s, k) => s.classList.toggle("cheia", k < n));
+            });
+            estrelas.appendChild(b);
+        }
+        linha.appendChild(estrelas);
+        box.appendChild(linha);
+    });
+}
+
+$("btnTerm1").addEventListener("click", () => {
+    estado.missaoAtual = 0;
+    estado.etapaAtual = -1;      // -1 = tela de pintar
+    proximaEtapa();
+});
+
+$("btnTerm2").addEventListener("click", mostrarDiploma);
+
+/* ==================================================================
+   MOTOR DAS MISSÕES
+   ================================================================== */
+
+function proximaEtapa() {
+    const missao = MISSOES[estado.missaoAtual];
+    if (!missao) { irParaTermometroFinal(); return; }
+
+    // etapa -1 => pintura de abertura da missão
+    if (estado.etapaAtual === -1) {
+        if (missao.desenho) { montarPintura(missao); return; }
+        estado.etapaAtual = 0;
+    }
+
+    if (estado.etapaAtual >= missao.etapas.length) {
+        estado.missaoAtual++;
+        estado.etapaAtual = -1;
+        proximaEtapa();
+        return;
+    }
+
+    montarEtapa(missao, missao.etapas[estado.etapaAtual]);
+}
+
+function avancar() {
+    estado.etapasFeitas++;
+    atualizarProgresso();
+    estado.etapaAtual++;
+    proximaEtapa();
+}
+
+function irParaTermometroFinal() {
+    montarTermometro("termometro2", estado.termometro2);
+    mostrarTela("tela-termometro2", "🌡️ Quanto você lembra agora?");
+}
+
+/* ---------- Cabeçalho comum de cada etapa ---------- */
+function baseEtapa(missao, instrucao, falarTexto, exemplo) {
+    return `
+        <h2 class="titulo">${missao.emoji} ${missao.titulo}</h2>
+        <div class="instrucao">
+            <span>${instrucao}</span>
+            <button class="btn-ouvir" data-falar="${falarTexto}">🔊 Ouvir</button>
+        </div>
+        ${exemplo ? `<div class="exemplo">👀 ${exemplo}</div>` : ""}
+    `;
+}
+
+function caixaFeedback() {
+    return `<div class="feedback" id="feedback"></div>`;
+}
+
+function mostrarFeedback(bom, texto) {
+    const f = $("feedback");
+    if (!f) return;
+    f.className = "feedback mostrar " + (bom ? "bom" : "opa");
+    f.textContent = texto;
+}
+
+/* ==================================================================
+   ETAPA: PINTAR
+   ================================================================== */
+
+function montarPintura(missao) {
+    const tela = $("tela-missao");
+    tela.innerHTML =
+        baseEtapa(missao, `🎨 ${missao.pinteTexto}`, `Escolha uma cor e clique no desenho para pintar.`,
+                  "Clique numa <b>cor</b> e depois clique no <b>desenho</b>.") +
+        `<div class="paleta" id="paleta"></div>
+         <div class="area-desenho">${DESENHOS[missao.desenho]}</div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx">Continuar ➡️</button>
+         </div>`;
+
+    const paleta = $("paleta");
+    PALETA.forEach((cor, i) => {
+        const c = document.createElement("button");
+        c.className = "cor" + (i === 0 ? " ativa" : "");
+        c.type = "button";
+        c.style.background = cor;
+        c.setAttribute("aria-label", "cor");
+        c.addEventListener("click", () => {
+            paleta.querySelectorAll(".cor").forEach(x => x.classList.remove("ativa"));
+            c.classList.add("ativa");
+            estado.corAtual = cor;
+        });
+        paleta.appendChild(c);
+    });
+    estado.corAtual = PALETA[0];
+
+    let pintou = 0;
+    tela.querySelectorAll(".pintavel").forEach(p => {
+        p.addEventListener("click", () => {
+            p.setAttribute("fill", estado.corAtual);
+            pintou++;
+            if (pintou === 2) mostrarFeedback(true, "🎨 Que lindo! Pinte mais se quiser.");
+        });
+    });
+
+    mostrarTela("tela-missao", missao.titulo);
+    $("btnProx").addEventListener("click", () => {
+        ganharEstrela();
+        soltarConfete();
+        estado.etapaAtual = 0;
+        estado.etapasFeitas++;
+        atualizarProgresso();
+        proximaEtapa();
+    });
+}
+
+/* ==================================================================
+   ETAPA: MONTAR CONFORME O TIPO
+   ================================================================== */
+
+function montarEtapa(missao, etapa) {
+    const tela = $("tela-missao");
+    const construtores = {
+        "ordenar": montarOrdenar,
+        "escolha": montarEscolha,
+        "completar-palavra": montarCompletarPalavra,
+        "ligar": montarLigar,
+        "fundo": montarFundo,
+        "caca-palavras": montarCacaPalavras,
+        "verdadeiro-falso": montarVerdadeiroFalso,
+        "completar-frases": montarCompletarFrases
+    };
+    (construtores[etapa.tipo] || (() => {}))(missao, etapa, tela);
+    mostrarTela("tela-missao", missao.titulo);
+}
+
+/* ---------- ORDENAR PASSOS ---------- */
+function montarOrdenar(missao, etapa, tela) {
+    const ordem = etapa.passos.map((_, i) => i);
+    const embaralhado = [...ordem].sort(() => Math.random() - 0.5);
+
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.exemplo) +
+        `<div class="trilha-passos" id="slots"></div>
+         <div class="banco-passos" id="banco"></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const slots = $("slots"), banco = $("banco");
+    etapa.passos.forEach((_, i) => {
+        const s = document.createElement("div");
+        s.className = "slot";
+        s.innerHTML = `<span class="numero">${i + 1}</span><span>?</span>`;
+        slots.appendChild(s);
+    });
+
+    let proximo = 0;
+    embaralhado.forEach(idx => {
+        const p = document.createElement("button");
+        p.className = "peca";
+        p.type = "button";
+        p.innerHTML = `<span class="icone-passo">${etapa.passos[idx].icone}</span><span>${etapa.passos[idx].texto}</span>`;
+        p.addEventListener("click", () => {
+            if (idx === proximo) {
+                const s = slots.children[proximo];
+                s.className = "slot preenchido";
+                s.innerHTML = `<span class="numero">${proximo + 1}</span>
+                               <span class="icone-passo">${etapa.passos[idx].icone}</span>
+                               <span>${etapa.passos[idx].texto}</span>`;
+                p.classList.add("usada");
+                proximo++;
+                if (proximo === etapa.passos.length) {
+                    mostrarFeedback(true, elogio() + " Você acertou a ordem!");
+                    ganharEstrela();
+                    soltarConfete();
+                    $("btnProx").disabled = false;
+                } else {
+                    mostrarFeedback(true, "👍 Isso! Qual vem agora?");
+                }
+            } else {
+                mostrarFeedback(false, incentivo() + " Esse não é o passo " + (proximo + 1) + ".");
+            }
+        });
+        banco.appendChild(p);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ---------- ESCOLHA ÚNICA ---------- */
+function montarEscolha(missao, etapa, tela) {
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.dica) +
+        `<div class="opcoes-grid" id="opcoes"></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const box = $("opcoes");
+    etapa.opcoes.forEach((o, i) => {
+        const b = document.createElement("button");
+        b.className = "cartao";
+        b.type = "button";
+        b.innerHTML = `<span class="icone">${o.icone}</span><span>${o.texto}</span>`;
+        b.addEventListener("click", () => {
+            if (i === etapa.correta) {
+                [...box.children].forEach(x => x.disabled = true);
+                b.classList.add("certo");
+                mostrarFeedback(true, elogio() + " " + (etapa.explica || ""));
+                ganharEstrela();
+                soltarConfete();
+                $("btnProx").disabled = false;
+            } else {
+                b.classList.add("errado");
+                b.disabled = true;
+                mostrarFeedback(false, incentivo());
+            }
+        });
+        box.appendChild(b);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ---------- COMPLETAR PALAVRA ---------- */
+function montarCompletarPalavra(missao, etapa, tela) {
+    const partes = etapa.mostrar.split(" ");
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.exemplo) +
+        `<div class="palavra-lacunas" id="palavra"></div>
+         <div class="teclas-letras" id="teclas"></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const box = $("palavra");
+    const vazias = [];
+    partes.forEach((ch, i) => {
+        const s = document.createElement("span");
+        if (ch === "_") {
+            s.className = "letra-vazia";
+            s.textContent = "?";
+            s.dataset.certa = etapa.palavra[i];
+            vazias.push(s);
+        } else {
+            s.className = "letra-fixa";
+            s.textContent = ch;
+        }
+        box.appendChild(s);
+    });
+    if (vazias[0]) vazias[0].classList.add("alvo");
+
+    // letras certas + algumas para confundir de leve
+    const certas = vazias.map(v => v.dataset.certa);
+    // Uma tecla para CADA letra que falta (se a letra repete, aparece duas vezes)
+    // mais algumas letras extras para não ficar óbvio demais.
+    const opcoes = [...certas, ...(etapa.bonus || [])].sort(() => Math.random() - 0.5);
+
+    const teclas = $("teclas");
+    let idx = 0;
+    opcoes.forEach(letra => {
+        const b = document.createElement("button");
+        b.className = "tecla-letra";
+        b.type = "button";
+        b.textContent = letra;
+        b.addEventListener("click", () => {
+            const alvo = vazias[idx];
+            if (!alvo) return;
+            if (letra === alvo.dataset.certa) {
+                alvo.textContent = letra;
+                alvo.className = "letra-vazia ok";
+                b.classList.add("usada");
+                idx++;
+                if (idx < vazias.length) {
+                    vazias[idx].classList.add("alvo");
+                    mostrarFeedback(true, "👍 Isso! Falta pouco.");
+                } else {
+                    mostrarFeedback(true, elogio() + " A palavra é CONFIGURAÇÕES!");
+                    ganharEstrela();
+                    soltarConfete();
+                    $("btnProx").disabled = false;
+                }
+            } else {
+                mostrarFeedback(false, incentivo());
+            }
+        });
+        teclas.appendChild(b);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ---------- LIGAR ---------- */
+function montarLigar(missao, etapa, tela) {
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar,
+                  "Clique de um lado 👉 e depois do outro.") +
+        `<div class="ligacao">
+            <div class="coluna-lig" id="ligEsq"></div>
+            <div class="setinha">🔗</div>
+            <div class="coluna-lig" id="ligDir"></div>
+         </div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const esq = $("ligEsq"), dir = $("ligDir");
+    let selecionado = null, feitos = 0;
+
+    etapa.esquerda.forEach((o, i) => {
+        const b = document.createElement("button");
+        b.className = "item-lig";
+        b.type = "button";
+        b.innerHTML = `<span>${o.icone}</span><span>${o.texto}</span>`;
+        b.addEventListener("click", () => {
+            if (b.classList.contains("ligado")) return;
+            esq.querySelectorAll(".item-lig").forEach(x => x.classList.remove("selecionado"));
+            b.classList.add("selecionado");
+            selecionado = { i, el: b };
+        });
+        esq.appendChild(b);
+    });
+
+    etapa.direita.forEach((o, j) => {
+        const b = document.createElement("button");
+        b.className = "item-lig";
+        b.type = "button";
+        b.innerHTML = `<span>${o.icone}</span><span>${o.texto}</span>`;
+        b.addEventListener("click", () => {
+            if (!selecionado) { mostrarFeedback(false, "👈 Escolha primeiro do lado esquerdo."); return; }
+            if (b.classList.contains("ligado")) return;
+
+            if (etapa.pares[selecionado.i] === j) {
+                selecionado.el.classList.remove("selecionado");
+                selecionado.el.classList.add("ligado");
+                selecionado.el.disabled = true;
+                b.classList.add("ligado");
+                b.disabled = true;
+                selecionado = null;
+                feitos++;
+                if (feitos === etapa.esquerda.length) {
+                    mostrarFeedback(true, elogio() + " Você ligou tudo certinho!");
+                    ganharEstrela();
+                    soltarConfete();
+                    $("btnProx").disabled = false;
+                } else {
+                    mostrarFeedback(true, "👍 Certo! Continue.");
+                }
+            } else {
+                mostrarFeedback(false, incentivo());
+            }
+        });
+        dir.appendChild(b);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ---------- ESCOLHER PLANO DE FUNDO ---------- */
+function montarFundo(missao, etapa, tela) {
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar,
+                  "Clique numa imagem e veja ela aparecer no computador!") +
+        `<div class="monitor">
+            <div class="tela-pc" id="telaPC">🗑️</div>
+         </div>
+         <div class="base" style="width:80px;height:9px;background:#64748b;border-radius:0 0 8px 8px;margin:-10px auto 14px"></div>
+         <div class="opcoes-grid" id="opcoesFundo"></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const box = $("opcoesFundo"), pc = $("telaPC");
+    etapa.opcoes.forEach(o => {
+        const b = document.createElement("button");
+        b.className = "cartao";
+        b.type = "button";
+        b.innerHTML = `<span class="icone">${o.icone}</span><span>${o.nome}</span>`;
+        b.addEventListener("click", () => {
+            box.querySelectorAll(".cartao").forEach(x => x.classList.remove("certo"));
+            b.classList.add("certo");
+            pc.style.background = o.cor;
+            pc.textContent = o.icone;
+            estado.fundoEscolhido = o.nome;
+            mostrarFeedback(true, `🌈 Que lindo! Seu fundo é ${o.nome}.`);
+            if ($("btnProx").disabled) { ganharEstrela(); soltarConfete(); }
+            $("btnProx").disabled = false;
+        });
+        box.appendChild(b);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ---------- CAÇA-PALAVRAS ---------- */
+function montarCacaPalavras(missao, etapa, tela) {
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.exemplo) +
+        `<div class="cp-palavras" id="cpPalavras"></div>
+         <div class="cp-area"><div class="cp-grade" id="cpGrade"></div></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const grade = etapa.grade.map(l => l.split(""));
+    const R = grade.length, C = grade[0].length;
+    const achadas = new Set();
+
+    const boxP = $("cpPalavras");
+    etapa.palavras.forEach(p => {
+        const s = document.createElement("span");
+        s.className = "cp-palavra";
+        s.id = "cp-" + p;
+        s.textContent = p;
+        boxP.appendChild(s);
+    });
+
+    const boxG = $("cpGrade");
+    const celulas = [];
+    for (let r = 0; r < R; r++) {
+        celulas[r] = [];
+        for (let c = 0; c < C; c++) {
+            const b = document.createElement("button");
+            b.className = "cp-celula";
+            b.type = "button";
+            b.textContent = grade[r][c];
+            b.dataset.r = r; b.dataset.c = c;
+            b.addEventListener("click", () => clicar(r, c));
+            boxG.appendChild(b);
+            celulas[r][c] = b;
+        }
+    }
+
+    let inicio = null;
+
+    function clicar(r, c) {
+        if (!inicio) {
+            inicio = { r, c };
+            celulas[r][c].classList.add("inicio");
+            mostrarFeedback(true, "👆 Agora clique na ÚLTIMA letra.");
+            return;
+        }
+        const palavra = lerEntre(inicio, { r, c });
+        celulas[inicio.r][inicio.c].classList.remove("inicio");
+
+        if (palavra && etapa.palavras.includes(palavra) && !achadas.has(palavra)) {
+            marcar(inicio, { r, c });
+            achadas.add(palavra);
+            $("cp-" + palavra).classList.add("achada");
+            mostrarFeedback(true, elogio() + " Achou " + palavra + "!");
+            ganharEstrela();
+            if (achadas.size === etapa.palavras.length) {
+                soltarConfete();
+                mostrarFeedback(true, "🏆 Você achou TODAS as palavras!");
+                $("btnProx").disabled = false;
+            }
+        } else if (achadas.has(palavra)) {
+            mostrarFeedback(true, "🙂 Essa você já achou!");
+        } else {
+            mostrarFeedback(false, incentivo());
+        }
+        inicio = null;
+    }
+
+    // Lê as letras em linha reta entre dois pontos (só linhas, colunas e diagonais)
+    function lerEntre(a, b) {
+        const dr = Math.sign(b.r - a.r), dc = Math.sign(b.c - a.c);
+        const passosR = Math.abs(b.r - a.r), passosC = Math.abs(b.c - a.c);
+        if (passosR !== 0 && passosC !== 0 && passosR !== passosC) return null;
+        const n = Math.max(passosR, passosC);
+        let s = "";
+        for (let k = 0; k <= n; k++) s += grade[a.r + dr * k][a.c + dc * k];
+        return s;
+    }
+
+    function marcar(a, b) {
+        const dr = Math.sign(b.r - a.r), dc = Math.sign(b.c - a.c);
+        const n = Math.max(Math.abs(b.r - a.r), Math.abs(b.c - a.c));
+        for (let k = 0; k <= n; k++) celulas[a.r + dr * k][a.c + dc * k].classList.add("achada");
+    }
+
+    // Depois de achar 4, já pode seguir (não trava a criança)
+    const obs = setInterval(() => {
+        if (achadas.size >= 4) { $("btnProx").disabled = false; clearInterval(obs); }
+    }, 400);
+
+    $("btnProx").addEventListener("click", () => { clearInterval(obs); avancar(); });
+}
+
+/* ---------- VERDADEIRO OU FALSO ---------- */
+function montarVerdadeiroFalso(missao, etapa, tela) {
+    let i = 0, acertos = 0;
+
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar) +
+        `<div class="vf-caixa">
+            <div class="vf-frase" id="vfFrase"></div>
+            <div class="vf-botoes">
+                <button class="btn-vf" id="vfSim"><span class="grande">✅</span> É VERDADE</button>
+                <button class="btn-vf" id="vfNao"><span class="grande">❌</span> É MENTIRA</button>
+            </div>
+         </div>
+         <p class="subtitulo" id="vfContador"></p>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    function desenhar() {
+        const f = etapa.frases[i];
+        $("vfFrase").textContent = f.texto;
+        $("vfContador").textContent = `Frase ${i + 1} de ${etapa.frases.length}`;
+        $("vfSim").className = "btn-vf";
+        $("vfNao").className = "btn-vf";
+        $("vfSim").disabled = false;
+        $("vfNao").disabled = false;
+    }
+
+    function responder(resp) {
+        const f = etapa.frases[i];
+        const certo = resp === f.v;
+        const btn = resp ? $("vfSim") : $("vfNao");
+        btn.classList.add(certo ? "certo" : "errado");
+        $("vfSim").disabled = true;
+        $("vfNao").disabled = true;
+
+        if (certo) { acertos++; ganharEstrela(); mostrarFeedback(true, elogio()); }
+        else       { mostrarFeedback(false, "🤔 Era " + (f.v ? "VERDADE" : "MENTIRA") + "!"); }
+
+        setTimeout(() => {
+            i++;
+            if (i >= etapa.frases.length) {
+                mostrarFeedback(true, `🏆 Você acertou ${acertos} de ${etapa.frases.length}!`);
+                soltarConfete();
+                $("vfFrase").textContent = "Terminou! 🎉";
+                $("vfContador").textContent = "";
+                $("btnProx").disabled = false;
+            } else {
+                desenhar();
+                $("feedback").className = "feedback";
+            }
+        }, 1300);
+    }
+
+    $("vfSim").addEventListener("click", () => responder(true));
+    $("vfNao").addEventListener("click", () => responder(false));
+    $("btnProx").addEventListener("click", avancar);
+    desenhar();
+}
+
+/* ---------- COMPLETAR FRASES ---------- */
+function montarCompletarFrases(missao, etapa, tela) {
+    tela.innerHTML =
+        baseEtapa(missao, etapa.instrucao, etapa.falar, etapa.exemplo) +
+        `<div class="banco-palavras" id="bancoPalavras"></div>
+         <div id="frases"></div>
+         ${caixaFeedback()}
+         <div class="rodape-botoes">
+            <button class="btn verde" id="btnProx" disabled>Continuar ➡️</button>
+         </div>`;
+
+    const banco = $("bancoPalavras"), frases = $("frases");
+    let escolhida = null, feitas = 0;
+
+    [...etapa.banco].sort(() => Math.random() - 0.5).forEach(p => {
+        const b = document.createElement("button");
+        b.className = "palavra-banco";
+        b.type = "button";
+        b.textContent = p;
+        b.addEventListener("click", () => {
+            banco.querySelectorAll(".palavra-banco").forEach(x => x.classList.remove("selecionada"));
+            b.classList.add("selecionada");
+            escolhida = { p, el: b };
+            mostrarFeedback(true, `👇 Agora clique no espaço onde "${p}" entra.`);
+        });
+        banco.appendChild(b);
+    });
+
+    etapa.frases.forEach((f) => {
+        const d = document.createElement("div");
+        d.className = "frase-completar";
+        d.innerHTML = `<span>${f.antes}</span><span class="lacuna">?</span><span>${f.depois}</span>`;
+        const lac = d.querySelector(".lacuna");
+        lac.addEventListener("click", () => {
+            if (lac.classList.contains("preenchida")) return;
+            if (!escolhida) { mostrarFeedback(false, "👆 Escolha primeiro uma palavra."); return; }
+
+            if (escolhida.p === f.resposta) {
+                lac.textContent = escolhida.p;
+                lac.classList.add("preenchida");
+                escolhida.el.classList.add("usada");
+                escolhida = null;
+                feitas++;
+                if (feitas === etapa.frases.length) {
+                    mostrarFeedback(true, elogio() + " Você completou todas!");
+                    ganharEstrela();
+                    soltarConfete();
+                    $("btnProx").disabled = false;
+                } else {
+                    mostrarFeedback(true, "👍 Certo! Falta " + (etapa.frases.length - feitas) + ".");
+                }
+            } else {
+                mostrarFeedback(false, incentivo());
+            }
+        });
+        frases.appendChild(d);
+    });
+
+    $("btnProx").addEventListener("click", avancar);
+}
+
+/* ==================================================================
+   DIPLOMA
+   ================================================================== */
+
+function mostrarDiploma() {
+    $("nomeDiploma").textContent = estado.avatar + " " + estado.nome;
+
+    const media1 = estado.termometro1.reduce((a, b) => a + b, 0);
+    const media2 = estado.termometro2.reduce((a, b) => a + b, 0);
+
+    $("resumoFinal").innerHTML = `
+        <div class="resumo-item"><div class="num">⭐ ${estado.estrelas}</div><div class="rot">Estrelas</div></div>
+        <div class="resumo-item"><div class="num">${MISSOES.length}</div><div class="rot">Missões</div></div>
+        <div class="resumo-item"><div class="num">${estado.fundoEscolhido || "🌈"}</div><div class="rot">Meu fundo</div></div>
+        <div class="resumo-item"><div class="num">${media2 > media1 ? "📈" : "😀"}</div><div class="rot">${media2 > media1 ? "Você melhorou!" : "Mandou bem!"}</div></div>
+    `;
+
+    $("comparacao").innerHTML = ASSUNTOS.map((a, i) => {
+        const antes = estado.termometro1[i], depois = estado.termometro2[i];
+        return `<div class="linha-comp">
+            <span>${a.icone} ${a.nome}</span>
+            <span class="antes">antes ${"⭐".repeat(antes) || "–"}</span>
+            <span>➡️</span>
+            <span class="depois">agora ${"⭐".repeat(depois) || "–"} ${depois > antes ? '<span class="subiu">📈</span>' : ""}</span>
+        </div>`;
+    }).join("");
+
+    mostrarTela("tela-diploma", "🏆 Meu diploma");
+    soltarConfete();
+    setTimeout(soltarConfete, 700);
+    falar(`Parabéns ${estado.nome}! Você terminou todas as missões e ganhou ${estado.estrelas} estrelas!`);
+}
+
+$("btnDeNovo").addEventListener("click", () => {
+    estado.estrelas = 0;
+    estado.missaoAtual = 0;
+    estado.etapaAtual = 0;
+    estado.etapasFeitas = 0;
+    estado.termometro1 = [0, 0, 0, 0, 0];
+    estado.termometro2 = [0, 0, 0, 0, 0];
+    estado.fundoEscolhido = null;
+    atualizarProgresso();
+    mostrarTela("tela-capa", "Minha Grande Aventura no Windows 11");
+});
+
+atualizarProgresso();
+</script>
+</body>
+</html>

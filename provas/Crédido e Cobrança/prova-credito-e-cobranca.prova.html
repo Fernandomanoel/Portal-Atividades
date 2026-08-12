@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Crédito e Cobrança - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #78350f 0%, #451a03 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #b45309 0%, #f59e0b 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #b45309;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #fffbeb;
+        border: 2px solid #fde68a;
+        border-left: 6px solid #b45309;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #0f766e;
+    }
+
+    .question-card h3 {
+        color: #78350f;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #134e4a; }
+
+    .tema {
+        display: inline-block;
+        background: #fef3c7;
+        color: #92400e;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #ccfbf1; color: #115e59; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #f59e0b;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #b45309; }
+    .question-card.pratica .caso { border-color: #14b8a6; }
+    .question-card.pratica .caso strong { color: #0f766e; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #065f46;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #047857;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+    .orientacao code {
+        background: #d1fae5;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+    }
+
+    /* --- Ficha de dados do cliente / da dívida --- */
+    .ficha {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+    }
+
+    .ficha-linha {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: clamp(.85rem, 2.4vw, .97em);
+    }
+
+    .ficha-linha:last-child { border-bottom: none; }
+    .ficha-linha:nth-child(even) { background: #f8fafc; }
+    .ficha-linha .rot { color: #64748b; }
+    .ficha-linha .val { font-weight: 700; color: #0f172a; text-align: right; }
+    .ficha-linha .val.alerta { color: #b91c1c; }
+
+    /* --- Campos de resposta --- */
+    .campos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: 14px;
+        margin-bottom: 6px;
+    }
+
+    .campo-box {
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 13px 15px;
+    }
+
+    .campo-box label {
+        display: block;
+        font-size: clamp(.78rem, 2.3vw, .88em);
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .campo-box .dica-campo {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: .92em;
+        margin-top: 2px;
+    }
+
+    .campo-box input {
+        width: 100%;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3vw, 1.15em);
+        font-weight: 700;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .campo-box input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.15); }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #b45309; background: #fffbeb; }
+    .question-card.pratica .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+
+    .option-item input[type="radio"] {
+        accent-color: #b45309;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #0f766e; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #b45309;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #92400e;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #b45309; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #fffbeb;
+        border: 2px solid #b45309;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #78350f; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💳 Prova de Crédito e Cobrança</h1>
+        <p>Análise de crédito, legislação, régua de cobrança e cálculos</p>
+        <div class="aviso-tempo">10 questões · 8 objetivas + 2 práticas · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaCC">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Os 5 C's do crédito</span>
+                <p class="enunciado">
+                    Na análise pelos <strong>5 C's do crédito</strong>, o "C" de <strong>Capacidade</strong> refere-se a:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) A idoneidade do cliente e o seu histórico em honrar os compromissos financeiros assumidos em operações anteriores.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) A garantia oferecida como segunda saída para a operação.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) O patrimônio acumulado que o cliente possui.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) A capacidade de geração de recursos do cliente para pagar a dívida, avaliada pela renda e pelo fluxo de caixa.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Score de crédito</span>
+                <p class="enunciado">Sobre o <strong>score de crédito</strong>, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) É uma pontuação estatística que estima a probabilidade de inadimplência; é um apoio à decisão, não um veto automático à concessão.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) É uma lista de devedores mantida em conjunto pelos bancos, na qual o cliente passa a constar automaticamente ao atrasar qualquer parcela.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) É definido pelo próprio cliente ao preencher a ficha cadastral.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) Score baixo impede legalmente a concessão de crédito por qualquer instituição.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Comprometimento de renda</span>
+                <p class="enunciado">
+                    Ao calcular o <strong>comprometimento de renda</strong> de um proponente, a prática correta é:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Considerar a renda bruta e apenas a parcela do novo financiamento.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) Considerar somente as dívidas já existentes, pois a nova parcela ainda não foi contratada.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Considerar a renda líquida e somar a nova parcela às parcelas de dívidas já existentes.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Usar o limite do cartão de crédito como se fosse renda disponível.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Garantias</span>
+                <p class="enunciado">Qual das alternativas apresenta uma <strong>garantia real</strong>?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Aval em nota promissória.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) Fiança prestada por terceiro.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) Alienação fiduciária do veículo financiado.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) Carta de recomendação assinada por um cliente antigo.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">CDC · Cadastros de inadimplentes</span>
+                <p class="enunciado">
+                    Segundo o Código de Defesa do Consumidor, por quanto tempo uma informação negativa pode
+                    permanecer nos cadastros de proteção ao crédito?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Por prazo indeterminado, até a quitação da dívida.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) No máximo 5 anos.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) No máximo 10 anos.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) No máximo 2 anos.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">CDC · Práticas de cobrança</span>
+                <div class="caso">
+                    Um operador ligou para o vizinho do devedor informando o valor da dívida e ameaçou "mandar
+                    um oficial buscar os móveis" caso não houvesse pagamento no mesmo dia.
+                </div>
+                <p class="enunciado">Sobre essa conduta, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) É permitida, desde que a dívida realmente exista.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) É irregular somente se o devedor apresentar reclamação formal por escrito junto ao órgão de defesa do consumidor da sua cidade.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) É permitida apenas após 90 dias de atraso.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) É irregular: o CDC veda expor o consumidor a constrangimento ou ameaça na cobrança, e a exposição da dívida a terceiros fere o sigilo.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Régua de cobrança</span>
+                <p class="enunciado">
+                    O que é a <strong>régua de cobrança</strong> (aging) em uma carteira de crédito?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) A segmentação dos títulos por faixas de dias de atraso, com ações de cobrança diferentes e crescentes para cada faixa.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) A tabela de juros aplicada a cada produto financeiro.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) O ranking interno dos operadores de cobrança, ordenado pelo valor total efetivamente recuperado a cada mês de trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) O limite máximo de crédito concedido por cliente.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="chapter" id="q8">
+            <div class="question-card">
+                <h3>Questão 8 de 10</h3>
+                <span class="tema">Fases da cobrança</span>
+                <p class="enunciado">
+                    A sequência que representa corretamente as fases do processo de cobrança é:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Judicial → extrajudicial → administrativa → preventiva.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Preventiva (antes do vencimento) → administrativa (contato direto) → extrajudicial (protesto/negativação) → judicial.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Administrativa → preventiva → judicial → extrajudicial.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Todas as fases devem ocorrer simultaneamente desde o primeiro dia de atraso, de modo a aumentar a pressão exercida sobre o devedor.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 — PRÁTICA: ANÁLISE DE CRÉDITO -->
+        <div class="chapter" id="q9">
+            <div class="question-card pratica">
+                <h3>Questão 9 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🔎 Análise de crédito</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Você é o analista de crédito da loja. Leia a ficha do cliente e a política da empresa,
+                    faça os cálculos e preencha os <strong>dois campos numéricos</strong>. Depois, marque a
+                    <strong>decisão</strong> que a política exige.
+                    <ul>
+                        <li>Comprometimento (%) = <code>(parcelas atuais + parcela nova) ÷ renda líquida × 100</code></li>
+                        <li>Parcela máxima = <code>(renda líquida × limite da política) − parcelas atuais</code></li>
+                        <li>Use ponto ou vírgula para decimais. Não precisa escrever "R$" nem "%".</li>
+                    </ul>
+                </div>
+
+                <div class="caso">
+                    <strong>Proposta nº 4471</strong> — financiamento de um sofá em 10 parcelas.
+                </div>
+
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Renda líquida comprovada</span><span class="val">R$ 3.200,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Parcelas de dívidas já existentes</span><span class="val">R$ 640,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Parcela do crédito solicitado</span><span class="val">R$ 480,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Score</span><span class="val">620 (faixa média)</span></div>
+                    <div class="ficha-linha"><span class="rot">Restrições no CPF</span><span class="val">Nenhuma</span></div>
+                    <div class="ficha-linha"><span class="rot">Tempo de emprego</span><span class="val">2 anos</span></div>
+                    <div class="ficha-linha"><span class="rot">Política da empresa: comprometimento máximo</span><span class="val alerta">30% da renda líquida</span></div>
+                </div>
+
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c9a">a) Comprometimento de renda total
+                            <span class="dica-campo">em % — ex.: 28,5</span>
+                        </label>
+                        <input type="text" id="c9a" inputmode="decimal" autocomplete="off" placeholder="0,0">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c9b">b) Parcela máxima que a política permite
+                            <span class="dica-campo">em reais — ex.: 250,00</span>
+                        </label>
+                        <input type="text" id="c9b" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                </div>
+
+                <p class="enunciado" style="margin-top:20px">c) Qual decisão está de acordo com a política da empresa?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9c" value="A"> A) Aprovar integralmente: o cliente não tem restrição no CPF e tem emprego estável.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="B"> B) Aprovar integralmente: o score 620 já é suficiente para dispensar a análise de renda.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="C"> C) Não aprovar o valor solicitado: o comprometimento ultrapassa o limite. Negociar entrada ou reduzir a parcela até o teto permitido.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="D"> D) Recusar definitivamente e encerrar o atendimento, sem oferecer alternativa.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 — PRÁTICA: CÁLCULO DE COBRANÇA -->
+        <div class="chapter" id="q10">
+            <div class="question-card pratica">
+                <h3>Questão 10 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🧮 Cálculo de cobrança crediária</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Um cliente vai quitar hoje uma parcela atrasada do crediário. Calcule os encargos conforme
+                    o contrato e preencha os <strong>três campos</strong>.
+                    <ul>
+                        <li>Multa = <code>valor da parcela × 2%</code> (percentual fixo, não depende dos dias)</li>
+                        <li>Juros de mora = <code>valor da parcela × (1% ÷ 30) × dias de atraso</code></li>
+                        <li>Total = <code>parcela + multa + juros</code></li>
+                        <li>Responda em reais, com duas casas. Ex.: <code>820,00</code></li>
+                    </ul>
+                </div>
+
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Valor da parcela</span><span class="val">R$ 800,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Vencimento</span><span class="val">10/03</span></div>
+                    <div class="ficha-linha"><span class="rot">Data do pagamento</span><span class="val">25/03</span></div>
+                    <div class="ficha-linha"><span class="rot">Dias em atraso</span><span class="val alerta">15 dias</span></div>
+                    <div class="ficha-linha"><span class="rot">Multa contratual</span><span class="val">2% sobre a parcela</span></div>
+                    <div class="ficha-linha"><span class="rot">Juros de mora</span><span class="val">1% ao mês (pro rata die)</span></div>
+                </div>
+
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c10a">a) Valor da multa
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c10a" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c10b">b) Valor dos juros de mora
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c10b" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c10c">c) Total a pagar
+                            <span class="dica-campo">parcela + encargos</span>
+                        </label>
+                        <input type="text" id="c10c" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">
+                    O gabarito não é exibido. Nas questões práticas, cada item vale 1/3 do ponto —
+                    o quadro mostra quantas partes você acertou.
+                </p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Crédito e Cobrança</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+
+    /* ---- Gabarito das 8 objetivas ---- */
+    const gabarito = {
+        p1: "D",
+        p2: "A",
+        p3: "C",
+        p4: "C",
+        p5: "B",
+        p6: "D",
+        p7: "A",
+        p8: "B"
+    };
+
+    const temas = {
+        p1: "5 C's", p2: "Score", p3: "Comprometimento", p4: "Garantias",
+        p5: "CDC · 5 anos", p6: "CDC · Cobrança", p7: "Régua", p8: "Fases"
+    };
+
+    /* ---- Respostas das partes práticas ---- */
+    const PRATICAS = {
+        q9: {
+            tema: "Análise de crédito",
+            itens: [
+                { campo: "c9a", certo: 35,  tol: 0.15 },   // (640+480)/3200 = 35%
+                { campo: "c9b", certo: 320, tol: 0.01 }    // 3200*0,30 - 640 = 320
+            ],
+            escolha: { nome: "p9c", certo: "C" }
+        },
+        q10: {
+            tema: "Cálculo de cobrança",
+            itens: [
+                { campo: "c10a", certo: 16,  tol: 0.01 },  // 800 * 2%
+                { campo: "c10b", certo: 4,   tol: 0.01 },  // 800 * (1%/30) * 15
+                { campo: "c10c", certo: 820, tol: 0.01 }   // 800 + 16 + 4
+            ]
+        }
+    };
+
+    /* Lê o número digitado aceitando "1.234,56", "1234.56", "R$ 820,00" e "35%". */
+    function lerNumero(texto) {
+        if (texto == null) return NaN;
+        let s = String(texto).trim().replace(/[R$\s%]/gi, "");
+        if (s === "") return NaN;
+        if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+        return parseFloat(s);
+    }
+
+    function confere(valor, certo, tol) {
+        const n = lerNumero(valor);
+        return !isNaN(n) && Math.abs(n - certo) <= tol;
+    }
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= 10) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+            document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaCC');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- 8 objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- Q9: 2 campos + 1 escolha, valendo 1/3 do ponto cada ---
+        const q9 = PRATICAS.q9;
+        let partes9 = 0;
+        q9.itens.forEach(it => {
+            const v = document.getElementById(it.campo).value;
+            if (v.trim() === "") semResposta++;
+            if (confere(v, it.certo, it.tol)) partes9++;
+        });
+        const esc9 = form.querySelector(`input[name="${q9.escolha.nome}"]:checked`);
+        if (!esc9) semResposta++;
+        if (esc9 && esc9.value === q9.escolha.certo) partes9++;
+        nota += partes9 / 3;
+        detalhe.push({
+            rotulo: "Q9", tema: q9.tema,
+            estado: partes9 === 3 ? "ok" : (partes9 === 0 ? "nao" : "parcial"),
+            texto: `${partes9}/3`
+        });
+
+        // --- Q10: 3 campos, valendo 1/3 do ponto cada ---
+        const q10 = PRATICAS.q10;
+        let partes10 = 0;
+        q10.itens.forEach(it => {
+            const v = document.getElementById(it.campo).value;
+            if (v.trim() === "") semResposta++;
+            if (confere(v, it.certo, it.tol)) partes10++;
+        });
+        nota += partes10 / 3;
+        detalhe.push({
+            rotulo: "Q10", tema: q10.tema,
+            estado: partes10 === 3 ? "ok" : (partes10 === 0 ? "nao" : "parcial"),
+            texto: `${partes10}/3`
+        });
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.slice(0, 8).filter(d => d.estado === "ok").length;
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 8 objetivas · Q9: ${partes9}/3 · Q10: ${partes10}/3`;
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo de análise de crédito e cobrança.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Refaça os cálculos com atenção às fórmulas do enunciado.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        // A parte prática é o núcleo do módulo: avisa quando ela foi mal,
+        // mesmo que a nota geral tenha ficado boa por causa das objetivas.
+        const partesPraticas = partes9 + partes10;
+        if (partesPraticas <= 2) {
+            msg.textContent += ' Atenção: o desempenho na parte prática (Q9 e Q10) ficou baixo — ' +
+                               'refaça os cálculos de comprometimento de renda e de encargos por atraso.';
+        }
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // as setas não devem trocar de questão enquanto o aluno digita nos campos
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

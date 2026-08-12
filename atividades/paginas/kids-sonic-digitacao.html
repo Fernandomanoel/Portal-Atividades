@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonic Digital Pro — Treino de Digitação</title>
+<style>
+    /* ==========================================================
+       SONIC DIGITAL PRO — TREINO DE DIGITAÇÃO
+       Layout responsivo: celular, tablet e computador.
+       ========================================================== */
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --azul: #0b63c5;
+        --azul-escuro: #063a78;
+        --azul-claro: #38bdf8;
+        --amarelo: #ffd700;
+        --laranja: #ff8a00;
+        --verde: #16a34a;
+        --verde-claro: #dcfce7;
+        --vermelho: #dc2626;
+        --vermelho-claro: #fee2e2;
+        --cinza: #475569;
+        --cinza-claro: #f1f5f9;
+        --borda: #cbd5e1;
+        --sombra: 0 10px 30px rgba(0, 0, 0, .18);
+        --raio: 16px;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(160deg, #0b63c5 0%, #38bdf8 55%, #7dd3fc 100%);
+        background-attachment: fixed;
+        color: #1e293b;
+        min-height: 100vh;
+        padding: clamp(8px, 2vw, 24px);
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 1180px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: clamp(12px, 2vw, 22px);
+        overflow: hidden;
+        box-shadow: var(--sombra);
+    }
+
+    /* ---------- Cabeçalho ---------- */
+    header {
+        background: linear-gradient(135deg, var(--amarelo) 0%, var(--laranja) 100%);
+        padding: clamp(16px, 3vw, 28px);
+        text-align: center;
+        color: #3b2a00;
+    }
+
+    header h1 {
+        font-size: clamp(1.5rem, 5vw, 2.6rem);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, .18);
+        line-height: 1.15;
+    }
+
+    header p {
+        font-size: clamp(.85rem, 2.4vw, 1.05rem);
+        margin-top: 6px;
+        opacity: .85;
+    }
+
+    /* ---------- Barra de progresso geral ---------- */
+    .progresso-geral {
+        background: var(--cinza-claro);
+        height: 10px;
+        position: relative;
+    }
+
+    .progresso-geral span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--verde), var(--azul-claro));
+        transition: width .35s ease;
+    }
+
+    /* ---------- Área principal ---------- */
+    .palco {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(14px, 2.4vw, 22px);
+        padding: clamp(14px, 3vw, 26px);
+        background: #f8fbff;
+    }
+
+    @media (min-width: 900px) {
+        .palco { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); }
+    }
+
+    /* ---------- Cena do Sonic ---------- */
+    .cena {
+        background: linear-gradient(180deg, #bfeaff 0%, #e8f8ff 62%, #8fd94f 62%, #63b32c 100%);
+        border: 4px solid var(--azul);
+        border-radius: var(--raio);
+        position: relative;
+        overflow: hidden;
+        min-height: clamp(230px, 40vw, 330px);
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    /* nuvens de fundo que correm quando o Sonic acelera */
+    .nuvens {
+        position: absolute;
+        inset: 0 0 38% 0;
+        background:
+            radial-gradient(circle at 20% 40%, #fff 18px, transparent 19px),
+            radial-gradient(circle at 26% 46%, #fff 14px, transparent 15px),
+            radial-gradient(circle at 68% 28%, #fff 20px, transparent 21px),
+            radial-gradient(circle at 75% 34%, #fff 15px, transparent 16px);
+        background-size: 340px 100%;
+        background-repeat: repeat-x;
+        opacity: .85;
+        animation: correNuvem linear infinite;
+        animation-duration: 14s;
+    }
+
+    @keyframes correNuvem { from { background-position: 0 0; } to { background-position: -340px 0; } }
+
+    /* chão listrado que acelera junto */
+    .chao {
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 38%;
+        background: repeating-linear-gradient(90deg,
+            #6cc02c 0 34px, #5aab24 34px 68px);
+        animation: correChao linear infinite;
+        animation-duration: 6s;
+    }
+
+    @keyframes correChao { from { background-position: 0 0; } to { background-position: -68px 0; } }
+
+    .sonic-box {
+        position: relative;
+        z-index: 3;
+        margin-bottom: clamp(14px, 4vw, 30px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sonic-sprite {
+        width: clamp(110px, 26vw, 175px);
+        height: auto;
+        image-rendering: auto;
+        filter: drop-shadow(0 6px 8px rgba(0, 0, 0, .3));
+        animation: pula .55s ease-in-out infinite;
+        transition: transform .3s ease;
+    }
+
+    @keyframes pula {
+        0%, 100% { transform: translateY(0); }
+        50%      { transform: translateY(-7px); }
+    }
+
+    /* Sonic desenhado em CSS: só aparece se o GIF correspondente faltar */
+    .sonic-fallback {
+        width: clamp(110px, 26vw, 175px);
+        aspect-ratio: 1 / 1;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 4px;
+        font-size: clamp(2.6rem, 9vw, 4rem);
+        background: radial-gradient(circle at 35% 30%, #4aa3ff, #0b63c5 70%);
+        border: 5px solid #fff;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, .3);
+        animation: pula .55s ease-in-out infinite;
+    }
+
+    .sonic-fallback small {
+        font-size: .55rem;
+        color: #fff;
+        text-align: center;
+        padding: 0 8px;
+        line-height: 1.2;
+        opacity: .9;
+    }
+
+    .sonic-box.usar-fallback .sonic-sprite { display: none; }
+    .sonic-box.usar-fallback .sonic-fallback { display: flex; }
+
+    /* rastro de velocidade */
+    .rastro {
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        width: clamp(40px, 12vw, 90px);
+        height: 6px;
+        margin-right: 6px;
+        border-radius: 4px;
+        background: linear-gradient(90deg, transparent, #fff);
+        opacity: 0;
+        transition: opacity .3s ease;
+    }
+
+    .rastro:nth-of-type(2) { top: 38%; width: 60%; }
+    .rastro:nth-of-type(3) { top: 62%; width: 75%; }
+
+    /* estados de velocidade */
+    .cena[data-velocidade="1"] .nuvens { animation-duration: 10s; }
+    .cena[data-velocidade="1"] .chao   { animation-duration: 3.4s; }
+    .cena[data-velocidade="1"] .sonic-sprite,
+    .cena[data-velocidade="1"] .sonic-fallback { animation-duration: .42s; }
+
+    .cena[data-velocidade="2"] .nuvens { animation-duration: 6s; }
+    .cena[data-velocidade="2"] .chao   { animation-duration: 1.8s; }
+    .cena[data-velocidade="2"] .sonic-sprite,
+    .cena[data-velocidade="2"] .sonic-fallback { animation-duration: .3s; }
+    .cena[data-velocidade="2"] .rastro { opacity: .55; }
+
+    .cena[data-velocidade="3"] .nuvens { animation-duration: 3s; }
+    .cena[data-velocidade="3"] .chao   { animation-duration: .85s; }
+    .cena[data-velocidade="3"] .sonic-sprite,
+    .cena[data-velocidade="3"] .sonic-fallback { animation-duration: .2s; }
+    .cena[data-velocidade="3"] .rastro { opacity: .9; }
+    .cena[data-velocidade="3"] .sonic-sprite { transform: scale(1.06); }
+
+    .cena[data-velocidade="4"] .nuvens { animation-duration: 1.4s; }
+    .cena[data-velocidade="4"] .chao   { animation-duration: .4s; }
+    .cena[data-velocidade="4"] .sonic-sprite,
+    .cena[data-velocidade="4"] .sonic-fallback { animation-duration: .14s; }
+    .cena[data-velocidade="4"] .rastro { opacity: 1; height: 8px; }
+    .cena[data-velocidade="4"] .sonic-sprite { transform: scale(1.1); filter: drop-shadow(0 0 14px #38bdf8) drop-shadow(0 6px 8px rgba(0,0,0,.3)); }
+
+    /* Sonic sumindo no final */
+    .sonic-box.sumindo .sonic-sprite,
+    .sonic-box.sumindo .sonic-fallback { animation: sumir 1.5s ease-in forwards; }
+
+    @keyframes sumir {
+        0%   { transform: translateX(0) scale(1);        opacity: 1; filter: blur(0); }
+        45%  { transform: translateX(30px) scale(1.06);  opacity: 1; filter: blur(1px); }
+        100% { transform: translateX(560px) scale(.55);  opacity: 0; filter: blur(7px); }
+    }
+
+    /* medidor de velocidade */
+    .velocimetro {
+        position: absolute;
+        top: 10px; left: 10px; right: 10px;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .velocimetro .rotulo {
+        font-size: clamp(.62rem, 2.2vw, .78rem);
+        font-weight: 800;
+        color: var(--azul-escuro);
+        background: rgba(255, 255, 255, .85);
+        padding: 3px 8px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    .barra-velocidade {
+        flex: 1 1 90px;
+        min-width: 90px;
+        height: 14px;
+        border: 3px solid #1e293b;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, .7);
+        overflow: hidden;
+    }
+
+    .barra-velocidade span {
+        display: block;
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, #ef4444 0%, #facc15 50%, #22c55e 100%);
+        transition: width .25s ease;
+    }
+
+    /* contador de anéis */
+    .contador-aneis {
+        position: absolute;
+        bottom: 10px; right: 10px;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg, var(--amarelo), var(--laranja));
+        border: 3px solid #c2410c;
+        border-radius: 999px;
+        padding: 4px 12px 4px 6px;
+        font-weight: 800;
+        color: #3b2a00;
+        font-size: clamp(.8rem, 3vw, 1.05rem);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    }
+
+    .contador-aneis img { width: clamp(20px, 5vw, 26px); height: auto; }
+    .contador-aneis.pulsa { animation: pulsaAnel .3s ease; }
+
+    @keyframes pulsaAnel {
+        0% { transform: scale(1); } 50% { transform: scale(1.16); } 100% { transform: scale(1); }
+    }
+
+    /* anel que sobe ao acertar */
+    .anel-voando {
+        position: absolute;
+        width: clamp(26px, 6vw, 38px);
+        z-index: 5;
+        pointer-events: none;
+        animation: subirAnel .9s ease-out forwards;
+    }
+
+    @keyframes subirAnel {
+        0%   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+        100% { opacity: 0; transform: translateY(-110px) scale(.5) rotate(180deg); }
+    }
+
+    /* ---------- Painel de digitação ---------- */
+    .painel { display: flex; flex-direction: column; gap: clamp(10px, 2vw, 16px); }
+
+    .cabecalho-fase {
+        background: linear-gradient(135deg, var(--azul) 0%, var(--azul-claro) 100%);
+        color: #fff;
+        padding: clamp(12px, 2.6vw, 18px);
+        border-radius: var(--raio);
+    }
+
+    .cabecalho-fase h2 {
+        font-size: clamp(1rem, 3.4vw, 1.4rem);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    .etiqueta-nivel {
+        background: rgba(255, 255, 255, .25);
+        border: 1px solid rgba(255, 255, 255, .5);
+        border-radius: 999px;
+        padding: 2px 10px;
+        font-size: clamp(.6rem, 2.2vw, .72rem);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .cabecalho-fase p {
+        font-size: clamp(.8rem, 2.5vw, .95rem);
+        opacity: .95;
+        margin-top: 6px;
+    }
+
+    /* texto-alvo */
+    .alvo {
+        background: #fff;
+        border: 3px solid var(--azul);
+        border-radius: var(--raio);
+        padding: clamp(12px, 3vw, 22px);
+        font-family: 'Courier New', Courier, monospace;
+        font-size: clamp(1.05rem, 4.4vw, 1.85rem);
+        font-weight: 700;
+        letter-spacing: .04em;
+        word-break: break-word;
+        line-height: 1.7;
+        min-height: 3em;
+    }
+
+    .alvo .ch { border-radius: 3px; padding: 1px 0; }
+    .alvo .ch.ok    { color: var(--verde); background: var(--verde-claro); }
+    .alvo .ch.erro  { color: var(--vermelho); background: var(--vermelho-claro); text-decoration: underline wavy; }
+    .alvo .ch.atual { background: var(--amarelo); box-shadow: 0 0 0 2px #b45309 inset; animation: piscaCursor .8s steps(2) infinite; }
+    .alvo .ch.espaco.ok { background: #bbf7d0; }
+
+    @keyframes piscaCursor { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+
+    /* campo de digitação */
+    .campo {
+        width: 100%;
+        padding: clamp(11px, 2.6vw, 15px);
+        font-family: 'Courier New', Courier, monospace;
+        font-size: clamp(1rem, 3.6vw, 1.3rem);
+        border: 3px solid var(--borda);
+        border-radius: 12px;
+        outline: none;
+        transition: border-color .2s, box-shadow .2s;
+    }
+
+    .campo:focus { border-color: var(--azul); box-shadow: 0 0 0 4px rgba(56, 189, 248, .28); }
+    .campo.errando { border-color: var(--vermelho); box-shadow: 0 0 0 4px rgba(220, 38, 38, .22); }
+
+    /* estatísticas */
+    .estatisticas {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+        gap: 8px;
+    }
+
+    .estat {
+        background: #fff;
+        border: 2px solid var(--borda);
+        border-radius: 12px;
+        padding: 8px 6px;
+        text-align: center;
+    }
+
+    .estat .valor { font-size: clamp(1rem, 3.6vw, 1.35rem); font-weight: 800; color: var(--azul); }
+    .estat .nome  { font-size: clamp(.58rem, 2vw, .7rem); color: var(--cinza); text-transform: uppercase; letter-spacing: .04em; }
+
+    /* mensagens */
+    .mensagem {
+        border-radius: 12px;
+        padding: clamp(10px, 2.4vw, 14px);
+        font-weight: 700;
+        font-size: clamp(.82rem, 2.6vw, .98rem);
+        display: none;
+    }
+
+    .mensagem.mostrar { display: block; animation: aparece .3s ease; }
+    .mensagem.sucesso { background: var(--verde-claro); color: #14532d; border-left: 6px solid var(--verde); }
+    .mensagem.erro    { background: var(--vermelho-claro); color: #7f1d1d; border-left: 6px solid var(--vermelho); }
+    .mensagem.aviso   { background: #fef9c3; color: #713f12; border-left: 6px solid var(--amarelo); }
+
+    @keyframes aparece { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+    /* botões */
+    .botoes { display: flex; flex-wrap: wrap; gap: 8px; }
+
+    button {
+        flex: 1 1 130px;
+        background: var(--azul);
+        color: #fff;
+        border: none;
+        padding: clamp(10px, 2.6vw, 14px) clamp(12px, 3vw, 20px);
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: clamp(.82rem, 2.6vw, .98rem);
+        font-weight: 700;
+        transition: background .2s, transform .15s, box-shadow .2s;
+    }
+
+    button:hover:not(:disabled) { background: var(--azul-escuro); transform: translateY(-2px); box-shadow: 0 6px 14px rgba(11, 99, 197, .35); }
+    button:disabled { opacity: .45; cursor: not-allowed; }
+    button.secundario { background: #64748b; }
+    button.secundario:hover:not(:disabled) { background: #475569; }
+    button.destaque { background: var(--verde); }
+    button.destaque:hover:not(:disabled) { background: #15803d; }
+
+    /* ---------- Mapa de fases ---------- */
+    .mapa {
+        padding: clamp(14px, 3vw, 26px);
+        border-top: 3px solid var(--cinza-claro);
+        background: #fff;
+    }
+
+    .mapa h3 {
+        font-size: clamp(.95rem, 3vw, 1.15rem);
+        color: var(--azul-escuro);
+        margin-bottom: 10px;
+    }
+
+    .lista-fases {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(clamp(48px, 14vw, 62px), 1fr));
+        gap: 8px;
+    }
+
+    .btn-fase {
+        aspect-ratio: 1 / 1;
+        border: 3px solid var(--borda);
+        border-radius: 12px;
+        background: var(--cinza-claro);
+        color: var(--cinza);
+        font-weight: 800;
+        font-size: clamp(.75rem, 2.8vw, .95rem);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1px;
+        cursor: pointer;
+        flex: none;
+        padding: 2px;
+        transition: transform .15s, border-color .2s;
+    }
+
+    .btn-fase small { font-size: .55rem; font-weight: 600; opacity: .8; }
+    .btn-fase:hover { transform: translateY(-3px); background: var(--cinza-claro); }
+    .btn-fase.concluida { background: var(--verde-claro); border-color: var(--verde); color: #14532d; }
+    .btn-fase.atual { background: #dbeafe; border-color: var(--azul); color: var(--azul-escuro); box-shadow: 0 0 0 3px rgba(11, 99, 197, .2); }
+    .btn-fase.bloqueada { opacity: .55; }
+
+    /* ---------- Modal (Sonic feio / final) ---------- */
+    .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, .82);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(12px, 4vw, 26px);
+        z-index: 50;
+    }
+
+    .modal.aberto { display: flex; animation: aparece .25s ease; }
+
+    .modal-caixa {
+        background: #fff;
+        border-radius: clamp(14px, 3vw, 22px);
+        max-width: 560px;
+        width: 100%;
+        max-height: 92vh;
+        overflow-y: auto;
+        text-align: center;
+        padding: clamp(18px, 4vw, 34px);
+        box-shadow: var(--sombra);
+    }
+
+    .modal-caixa img {
+        max-width: min(280px, 70%);
+        height: auto;
+        border-radius: 12px;
+        margin: 0 auto 14px;
+        display: block;
+    }
+
+    .modal-caixa h2 {
+        font-size: clamp(1.2rem, 4.6vw, 1.8rem);
+        margin-bottom: 10px;
+        color: var(--azul-escuro);
+    }
+
+    .modal-caixa p {
+        font-size: clamp(.85rem, 2.8vw, 1rem);
+        color: var(--cinza);
+        margin-bottom: 12px;
+    }
+
+    .emoji-gigante { font-size: clamp(3rem, 14vw, 5rem); line-height: 1; margin-bottom: 8px; }
+
+    /* ---------- Tela final ---------- */
+    .placar-final {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+        margin: 16px 0;
+    }
+
+    .placar-final .estat { border-color: var(--amarelo); background: #fffbeb; }
+
+    .medalha {
+        font-size: clamp(2.4rem, 10vw, 3.6rem);
+        margin-bottom: 6px;
+    }
+
+    footer {
+        text-align: center;
+        padding: clamp(12px, 3vw, 20px);
+        background: var(--cinza-claro);
+        color: var(--cinza);
+        font-size: clamp(.72rem, 2.4vw, .85rem);
+    }
+
+    .oculto { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>💨 Sonic Digital Pro</h1>
+        <p>Treino de digitação — quanto mais você acerta, mais anéis o Sonic ganha e mais rápido ele corre!</p>
+    </header>
+
+    <div class="progresso-geral"><span id="progressoGeral"></span></div>
+
+    <div class="palco">
+        <!-- CENA DO SONIC -->
+        <div class="cena" id="cena" data-velocidade="0">
+            <div class="nuvens"></div>
+            <div class="chao"></div>
+
+            <div class="velocimetro">
+                <span class="rotulo" id="rotuloVelocidade">Parado</span>
+                <div class="barra-velocidade"><span id="barraVelocidade"></span></div>
+            </div>
+
+            <div class="sonic-box" id="sonicBox">
+                <span class="rastro"></span>
+                <span class="rastro"></span>
+                <span class="rastro"></span>
+                <img class="sonic-sprite" id="sonicSprite" src="assets/sonic/sonic-idle.gif" alt="Sonic correndo">
+                <div class="sonic-fallback" id="sonicFallback">
+                    <span id="fallbackEmoji">🦔</span>
+                    <small id="fallbackTexto">Sonic</small>
+                </div>
+            </div>
+
+            <div class="contador-aneis" id="contadorAneis">
+                <img src="assets/sonic/ring.png" alt="Anel">
+                <span id="totalAneis">0</span>
+            </div>
+        </div>
+
+        <!-- PAINEL DE DIGITAÇÃO -->
+        <div class="painel">
+            <div class="cabecalho-fase">
+                <h2>
+                    <span id="tituloFase">Carregando…</span>
+                    <span class="etiqueta-nivel" id="nivelFase">Nível</span>
+                </h2>
+                <p id="dicaFase"></p>
+            </div>
+
+            <div class="alvo" id="alvo"></div>
+
+            <input type="text" class="campo" id="campo" autocomplete="off" autocorrect="off"
+                   autocapitalize="off" spellcheck="false" placeholder="Digite aqui o texto acima…">
+
+            <div class="estatisticas">
+                <div class="estat"><div class="valor" id="statItem">1/1</div><div class="nome">Frase</div></div>
+                <div class="estat"><div class="valor" id="statPrecisao">100%</div><div class="nome">Precisão</div></div>
+                <div class="estat"><div class="valor" id="statPPM">0</div><div class="nome">Palavras/min</div></div>
+                <div class="estat"><div class="valor" id="statCombo">0</div><div class="nome">Sequência</div></div>
+            </div>
+
+            <div class="mensagem" id="mensagem"></div>
+
+            <div class="botoes">
+                <button class="secundario" id="btnAnterior">← Fase anterior</button>
+                <button class="secundario" id="btnRepetir">↻ Repetir fase</button>
+                <button id="btnProxima">Próxima fase →</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAPA DE FASES -->
+    <div class="mapa">
+        <h3>🗺️ Mapa de fases <small style="font-weight:600;color:#64748b" id="resumoMapa"></small></h3>
+        <div class="lista-fases" id="listaFases"></div>
+    </div>
+
+    <footer>
+        <strong>Sonic Digital Pro</strong> — treino de digitação · <span id="rodapeInfo"></span>
+    </footer>
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+    <div class="modal-caixa">
+        <img id="modalImg" src="" alt="" hidden>
+        <div class="emoji-gigante" id="modalEmoji" hidden></div>
+        <h2 id="modalTitulo"></h2>
+        <div id="modalCorpo"></div>
+        <div class="botoes" style="margin-top:14px">
+            <button id="modalBotao">Entendi!</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ==================================================================
+   1) CONTEÚDO DAS FASES
+   ------------------------------------------------------------------
+   Para ADICIONAR PALAVRAS/FRASES: é só acrescentar textos entre
+   aspas dentro da lista "itens" da fase que você quiser, separados
+   por vírgula. Para criar uma FASE NOVA, copie um bloco inteiro
+   { ... } e cole no final, trocando nome, nivel, dica e itens.
+   Nada mais precisa ser mexido: o mapa de fases, a barra de
+   progresso e o placar final se ajustam sozinhos.
+   ================================================================== */
+
+const FASES = [
+    /* ---------------- NÍVEL 1: POSIÇÃO DAS MÃOS ---------------- */
+    {
+        nome: "Linha de base — ASDF JKLÇ",
+        nivel: "Iniciante",
+        dica: "Apoie os dedos em A-S-D-F (mão esquerda) e J-K-L-Ç (mão direita). Não olhe para o teclado!",
+        itens: [
+            "asdf", "jklç", "asdf jklç", "fdsa çlkj", "asd jkl", "aaa sss ddd fff",
+            "jjj kkk lll ççç", "af js dk fl", "sala", "lada", "fada", "asa",
+            "lasca", "falda", "jaca", "kajal", "dás", "lá", "já", "fá",
+            "asdf asdf", "jklç jklç", "as ds fs js", "kl çl al sl"
+        ]
+    },
+    {
+        nome: "Linha de cima — QWERTY UIOP",
+        nivel: "Iniciante",
+        dica: "Suba os dedos uma linha e volte sempre para a posição de base depois de cada tecla.",
+        itens: [
+            "qwer", "tyui", "op", "qwerty", "uiop", "que", "peru", "tipo",
+            "rio", "topo", "porta", "torre", "quero", "tempo", "rota",
+            "prato", "poeira", "quieto", "roteiro", "outro",
+            "quer", "teu", "riu", "pote", "erro", "trio", "puro"
+        ]
+    },
+    {
+        nome: "Linha de baixo — ZXCVBNM",
+        nivel: "Iniciante",
+        dica: "Desça os dedos com calma. O polegar continua na barra de espaço.",
+        itens: [
+            "zxcv", "bnm", "zxcvbnm", "vez", "bem", "com", "nunca", "banco",
+            "cavalo", "menino", "nuvem", "bicicleta", "combinar", "vizinho",
+            "zebra", "caixa", "vento", "banana", "cabana", "mexer", "nave"
+        ]
+    },
+    {
+        nome: "Números — 1234567890",
+        nivel: "Iniciante",
+        dica: "Use a linha de cima do teclado. Digite devagar e confira cada número.",
+        itens: [
+            "123", "456", "7890", "1234567890", "10 20 30", "2026", "100 200 300",
+            "7 14 21 28", "1 2 3 4 5", "9876543210", "365 dias", "24 horas",
+            "60 minutos", "12 meses", "1000", "50 50 50"
+        ]
+    },
+
+    /* ---------------- NÍVEL 2: PALAVRAS ---------------- */
+    {
+        nome: "Palavras curtas",
+        nivel: "Fácil",
+        dica: "Palavras de 3 a 5 letras. Tente não parar entre uma palavra e outra.",
+        itens: [
+            "casa", "bola", "gato", "rato", "sapo", "pato", "livro", "porta",
+            "mesa", "flor", "sol", "lua", "mar", "céu", "pão", "leite",
+            "bolo", "suco", "doce", "festa", "amigo", "verde", "azul", "preto",
+            "carro", "trem", "moto", "barco", "peixe", "vaca", "urso", "lobo"
+        ]
+    },
+    {
+        nome: "Palavras médias",
+        nivel: "Fácil",
+        dica: "Agora as palavras têm mais letras. Mantenha o ritmo constante.",
+        itens: [
+            "computador", "teclado", "cadeira", "janela", "caderno", "mochila",
+            "bicicleta", "borboleta", "elefante", "girafa", "pipoca", "sorvete",
+            "chocolate", "melancia", "abacaxi", "morango", "escola", "professor",
+            "estudante", "biblioteca", "brinquedo", "aventura", "floresta",
+            "montanha", "cachoeira", "estrela", "planeta", "foguete"
+        ]
+    },
+    {
+        nome: "Palavras grandes",
+        nivel: "Médio",
+        dica: "Palavras compridas! Leia tudo antes de começar a digitar.",
+        itens: [
+            "extraordinário", "responsabilidade", "computadorizado",
+            "desenvolvimento", "conhecimento", "possibilidade", "inteligência",
+            "personalidade", "aproveitamento", "independência", "transformação",
+            "acontecimento", "estabelecimento", "aproximadamente",
+            "constantemente", "particularmente", "impressionante"
+        ]
+    },
+    {
+        nome: "Acentos e cedilha",
+        nivel: "Médio",
+        dica: "Para acentuar: aperte o acento e depois a vogal. O Ç fica ao lado do L.",
+        itens: [
+            "coração", "atenção", "canção", "informação", "português",
+            "avó", "avô", "pêssego", "você", "café", "chapéu", "irmã",
+            "amanhã", "maçã", "açúcar", "criança", "praça", "moça",
+            "país", "saída", "herói", "ideia", "história", "família"
+        ]
+    },
+
+    /* ---------------- NÍVEL 3: SÍMBOLOS ---------------- */
+    {
+        nome: "Pontuação",
+        nivel: "Médio",
+        dica: "Vírgula, ponto, exclamação e interrogação. Use o Shift quando precisar.",
+        itens: [
+            "olá, tudo bem?", "sim! claro.", "que legal!", "onde? aqui.",
+            "vamos: agora;", "certo, então...", "pare! espere.",
+            "quem é? sou eu.", "ah, entendi!", "não, obrigado.",
+            "hoje, amanhã e depois.", "1, 2, 3... já!"
+        ]
+    },
+    {
+        nome: "Símbolos especiais",
+        nivel: "Difícil",
+        dica: "Segure o Shift para os símbolos de cima dos números.",
+        itens: [
+            "@#$%", "&*()", "email@site.com", "100% certo", "R$ 25,90",
+            "#sonic", "50% + 50%", "a & b", "(sim)", "[teste]", "{ok}",
+            "1+1=2", "10-5=5", "3*4=12", "8/2=4", "x < y > z"
+        ]
+    },
+
+    /* ---------------- NÍVEL 4: FRASES ---------------- */
+    {
+        nome: "Frases curtas",
+        nivel: "Médio",
+        dica: "Frases completas! Não esqueça o espaço entre as palavras.",
+        itens: [
+            "o gato dorme no sofá",
+            "eu gosto de estudar",
+            "a bola é azul e branca",
+            "hoje o dia está bonito",
+            "meu amigo joga futebol",
+            "a escola abre às sete",
+            "vamos brincar no parque",
+            "o cachorro late alto",
+            "minha mãe faz bolo",
+            "o sol nasce no leste",
+            "eu sei digitar rápido",
+            "o livro está na mesa"
+        ]
+    },
+    {
+        nome: "Frases médias",
+        nivel: "Difícil",
+        dica: "Respire fundo e mantenha o ritmo. Precisão vale mais que pressa.",
+        itens: [
+            "a prática constante deixa a digitação muito mais rápida",
+            "todos os dias eu treino um pouco no computador",
+            "o segredo é não olhar para o teclado enquanto digita",
+            "quando erramos, aprendemos e tentamos de novo",
+            "a tecnologia ajuda muito nos estudos e no trabalho",
+            "com paciência e treino qualquer pessoa consegue aprender",
+            "escrever bem no computador é uma habilidade importante",
+            "as mãos devem ficar sempre na posição correta do teclado"
+        ]
+    },
+    {
+        nome: "Frases longas",
+        nivel: "Difícil",
+        dica: "Desafio de resistência! Vá com calma até o final da frase.",
+        itens: [
+            "a digitação rápida e correta é uma habilidade que serve para a escola, para o trabalho e para a vida toda",
+            "quando começamos a digitar sem olhar para o teclado, conseguimos pensar no texto e não nas teclas",
+            "o computador é uma ferramenta poderosa, mas quem faz a diferença é a pessoa que sabe usá-lo muito bem",
+            "estudar todos os dias um pouquinho funciona melhor do que estudar tudo de uma vez só no último dia"
+        ]
+    },
+
+    /* ---------------- NÍVEL 5: TEMÁTICAS ---------------- */
+    {
+        nome: "Mundo do Sonic",
+        nivel: "Difícil",
+        dica: "Palavras e frases do universo do Sonic. Corra como ele!",
+        itens: [
+            "sonic the hedgehog", "green hill zone", "anéis dourados",
+            "velocidade máxima", "tails knuckles amy", "doutor eggman",
+            "esmeraldas do caos", "sonic corre mais rápido que o som",
+            "colete todos os anéis da fase", "o ouriço azul mais veloz do mundo",
+            "chaos emerald", "super sonic", "loop de velocidade",
+            "gotta go fast", "zona da colina verde"
+        ]
+    },
+    {
+        nome: "Trava-línguas",
+        nivel: "Expert",
+        dica: "Difícil de falar e de digitar! Vá devagar para não errar.",
+        itens: [
+            "o rato roeu a roupa do rei de roma",
+            "três pratos de trigo para três tigres tristes",
+            "a aranha arranha a jarra e a jarra arranha a aranha",
+            "o peito do pé de pedro é preto",
+            "num ninho de mafagafos havia sete mafagafinhos",
+            "sabia que o sabiá sabia assobiar"
+        ]
+    },
+    {
+        nome: "Desafio final",
+        nivel: "Expert",
+        dica: "Tudo junto: letras, números, acentos e símbolos. Mostre o que aprendeu!",
+        itens: [
+            "Parabéns! Você digitou 100% das 16 fases.",
+            "O Sonic coletou 1.000 anéis na Green Hill Zone!",
+            "Treinar 15 minutos por dia = grande evolução.",
+            "Meu e-mail é aluno@escola.com.br (turma 2026).",
+            "A prática leva à perfeição — e à velocidade!",
+            "Digitar rápido & sem erros: missão cumprida!"
+        ]
+    }
+];
+
+/* ==================================================================
+   2) CONFIGURAÇÕES
+   ================================================================== */
+
+const CONFIG = {
+    // Quantos itens (palavras/frases) o aluno faz em cada fase.
+    itensPorFase: 8,
+    // A partir de quantos erros seguidos o "Sonic realista" aparece.
+    errosParaSonicRealista: 5,
+    // Faixas de sequência de acertos que aumentam a velocidade.
+    faixasVelocidade: [
+        { min: 0,  nivel: 0, rotulo: "Parado" },
+        { min: 8,  nivel: 1, rotulo: "Andando" },
+        { min: 20, nivel: 2, rotulo: "Correndo" },
+        { min: 40, nivel: 3, rotulo: "Muito rápido!" },
+        { min: 70, nivel: 4, rotulo: "SUPER SONIC!" }
+    ],
+    // Arquivos de imagem usados em cada situação.
+    imagens: {
+        normal:   "assets/sonic/sonic-idle.gif",
+        realista: "assets/sonic/sonic-realista.gif",
+        feio:     "assets/sonic/sonic-feio.gif"
+    },
+    // Emojis usados caso o GIF correspondente ainda não exista na pasta.
+    emojiFallback: { normal: "🦔", realista: "🦔", feio: "😬" }
+};
+
+/* ==================================================================
+   3) ESTADO DO JOGO
+   ================================================================== */
+
+const estado = {
+    faseAtual: 0,
+    itemAtual: 0,
+    digitado: "",
+    aneis: 0,
+    combo: 0,
+    melhorCombo: 0,
+    errosSeguidos: 0,
+    acertosTotais: 0,      // do jogo inteiro (usado no placar final)
+    errosTotais: 0,
+    acertosFase: 0,        // só da fase atual (usado nas estatísticas ao vivo)
+    errosFase: 0,
+    inicioItem: null,
+    inicioFase: null,
+    conclusoes: {},        // { indiceFase: { precisao, ppm, aneis } }
+    itensDaFase: [],
+    imagensQuebradas: {},
+    modoSonic: "normal"
+};
+
+/* ==================================================================
+   4) ELEMENTOS DA TELA
+   ================================================================== */
+
+const el = {
+    cena:          document.getElementById("cena"),
+    sonicBox:      document.getElementById("sonicBox"),
+    sonicSprite:   document.getElementById("sonicSprite"),
+    sonicFallback: document.getElementById("sonicFallback"),
+    fallbackEmoji: document.getElementById("fallbackEmoji"),
+    fallbackTexto: document.getElementById("fallbackTexto"),
+    barraVel:      document.getElementById("barraVelocidade"),
+    rotuloVel:     document.getElementById("rotuloVelocidade"),
+    totalAneis:    document.getElementById("totalAneis"),
+    contadorAneis: document.getElementById("contadorAneis"),
+    tituloFase:    document.getElementById("tituloFase"),
+    nivelFase:     document.getElementById("nivelFase"),
+    dicaFase:      document.getElementById("dicaFase"),
+    alvo:          document.getElementById("alvo"),
+    campo:         document.getElementById("campo"),
+    statItem:      document.getElementById("statItem"),
+    statPrecisao:  document.getElementById("statPrecisao"),
+    statPPM:       document.getElementById("statPPM"),
+    statCombo:     document.getElementById("statCombo"),
+    mensagem:      document.getElementById("mensagem"),
+    btnAnterior:   document.getElementById("btnAnterior"),
+    btnRepetir:    document.getElementById("btnRepetir"),
+    btnProxima:    document.getElementById("btnProxima"),
+    listaFases:    document.getElementById("listaFases"),
+    resumoMapa:    document.getElementById("resumoMapa"),
+    progressoGeral:document.getElementById("progressoGeral"),
+    rodapeInfo:    document.getElementById("rodapeInfo"),
+    modal:         document.getElementById("modal"),
+    modalImg:      document.getElementById("modalImg"),
+    modalEmoji:    document.getElementById("modalEmoji"),
+    modalTitulo:   document.getElementById("modalTitulo"),
+    modalCorpo:    document.getElementById("modalCorpo"),
+    modalBotao:    document.getElementById("modalBotao")
+};
+
+/* ==================================================================
+   5) SONIC — TROCA DE IMAGEM E VELOCIDADE
+   ================================================================== */
+
+// Se um GIF não existir na pasta, mostramos um Sonic desenhado em CSS
+// no lugar, para o jogo continuar funcionando normalmente.
+el.sonicSprite.addEventListener("error", () => {
+    estado.imagensQuebradas[estado.modoSonic] = true;
+    aplicarFallback();
+});
+
+function aplicarFallback() {
+    const quebrada = estado.imagensQuebradas[estado.modoSonic];
+    el.sonicBox.classList.toggle("usar-fallback", !!quebrada);
+    if (quebrada) {
+        el.fallbackEmoji.textContent = CONFIG.emojiFallback[estado.modoSonic] || "🦔";
+        el.fallbackTexto.textContent = estado.modoSonic === "realista"
+            ? "Devagar!" : estado.modoSonic === "feio" ? "Ops!" : "Sonic";
+    }
+}
+
+function definirModoSonic(modo) {
+    if (estado.modoSonic === modo) return;
+    estado.modoSonic = modo;
+    const src = CONFIG.imagens[modo];
+    if (src && !estado.imagensQuebradas[modo]) {
+        el.sonicSprite.src = src;
+    }
+    aplicarFallback();
+}
+
+function atualizarVelocidade() {
+    let faixa = CONFIG.faixasVelocidade[0];
+    for (const f of CONFIG.faixasVelocidade) {
+        if (estado.combo >= f.min) faixa = f;
+    }
+    el.cena.dataset.velocidade = faixa.nivel;
+    el.rotuloVel.textContent = faixa.rotulo;
+
+    const maximo = CONFIG.faixasVelocidade[CONFIG.faixasVelocidade.length - 1].min;
+    el.barraVel.style.width = Math.min(100, (estado.combo / maximo) * 100) + "%";
+
+    // Muitos erros seguidos => entra o Sonic realista (correndo devagar)
+    if (estado.errosSeguidos >= CONFIG.errosParaSonicRealista) {
+        definirModoSonic("realista");
+    } else if (estado.modoSonic === "realista" && estado.errosSeguidos === 0) {
+        definirModoSonic("normal");
+    }
+}
+
+function ganharAnel(quantidade = 1) {
+    estado.aneis += quantidade;
+    el.totalAneis.textContent = estado.aneis;
+    el.contadorAneis.classList.remove("pulsa");
+    void el.contadorAneis.offsetWidth;   // reinicia a animação
+    el.contadorAneis.classList.add("pulsa");
+    soltarAnelVoando();
+}
+
+function soltarAnelVoando() {
+    const anel = document.createElement("img");
+    anel.src = "assets/sonic/ring.png";
+    anel.alt = "";
+    anel.className = "anel-voando";
+    anel.style.left = (35 + Math.random() * 30) + "%";
+    anel.style.bottom = (28 + Math.random() * 18) + "%";
+    anel.addEventListener("error", () => anel.remove());
+    el.cena.appendChild(anel);
+    setTimeout(() => anel.remove(), 950);
+}
+
+/* ==================================================================
+   6) MONTAGEM DAS FASES
+   ================================================================== */
+
+function sortear(lista, quantidade) {
+    const copia = [...lista];
+    const escolhidos = [];
+    while (copia.length && escolhidos.length < quantidade) {
+        escolhidos.push(copia.splice(Math.floor(Math.random() * copia.length), 1)[0]);
+    }
+    return escolhidos;
+}
+
+function carregarFase(indice, { reiniciarProgresso = true } = {}) {
+    const fase = FASES[indice];
+    if (!fase) return;
+
+    estado.faseAtual = indice;
+    if (reiniciarProgresso) {
+        estado.itensDaFase = sortear(fase.itens, Math.min(CONFIG.itensPorFase, fase.itens.length));
+        estado.itemAtual = 0;
+        estado.inicioFase = null;
+        estado.acertosFase = 0;
+        estado.errosFase = 0;
+    }
+    estado.digitado = "";
+    estado.inicioItem = null;
+
+    el.tituloFase.textContent = `Fase ${indice + 1} — ${fase.nome}`;
+    el.nivelFase.textContent = fase.nivel;
+    el.dicaFase.textContent = fase.dica;
+
+    el.campo.value = "";
+    el.campo.disabled = false;
+    el.campo.classList.remove("errando");
+    esconderMensagem();
+
+    el.btnAnterior.disabled = indice === 0;
+    el.btnProxima.textContent = indice === FASES.length - 1 ? "Ver resultado 🏁" : "Próxima fase →";
+
+    desenharAlvo();
+    atualizarEstatisticas();
+    desenharMapa();
+    atualizarProgressoGeral();
+    el.campo.focus();
+}
+
+function textoAtual() {
+    return estado.itensDaFase[estado.itemAtual] || "";
+}
+
+function desenharAlvo() {
+    const alvo = textoAtual();
+    const digitado = estado.digitado;
+    el.alvo.innerHTML = "";
+
+    for (let i = 0; i < alvo.length; i++) {
+        const span = document.createElement("span");
+        const caractere = alvo[i];
+        span.className = "ch";
+        span.textContent = caractere === " " ? " " : caractere;
+        if (caractere === " ") span.classList.add("espaco");
+
+        if (i < digitado.length) {
+            span.classList.add(digitado[i] === caractere ? "ok" : "erro");
+        } else if (i === digitado.length) {
+            span.classList.add("atual");
+        }
+        el.alvo.appendChild(span);
+    }
+}
+
+/* ==================================================================
+   7) DIGITAÇÃO
+   ================================================================== */
+
+el.campo.addEventListener("input", () => {
+    const alvo = textoAtual();
+    const valor = el.campo.value;
+
+    if (!estado.inicioItem) estado.inicioItem = Date.now();
+    if (!estado.inicioFase) estado.inicioFase = Date.now();
+
+    // Contabiliza apenas o caractere recém-digitado (quando o texto cresce)
+    if (valor.length > estado.digitado.length) {
+        const posicao = valor.length - 1;
+        const acertou = valor[posicao] === alvo[posicao];
+
+        if (acertou) {
+            estado.acertosTotais++;
+            estado.acertosFase++;
+            estado.combo++;
+            estado.errosSeguidos = 0;
+            estado.melhorCombo = Math.max(estado.melhorCombo, estado.combo);
+            ganharAnel(1);
+        } else {
+            estado.errosTotais++;
+            estado.errosFase++;
+            estado.combo = 0;
+            estado.errosSeguidos++;
+        }
+    }
+
+    estado.digitado = valor;
+
+    const temErro = [...valor].some((c, i) => c !== alvo[i]);
+    el.campo.classList.toggle("errando", temErro);
+
+    desenharAlvo();
+    atualizarVelocidade();
+    atualizarEstatisticas();
+
+    // Item concluído corretamente
+    if (valor === alvo) concluirItem();
+});
+
+function concluirItem() {
+    ganharAnel(10);   // bônus por terminar a frase
+    estado.itemAtual++;
+
+    if (estado.itemAtual >= estado.itensDaFase.length) {
+        concluirFase();
+        return;
+    }
+
+    estado.digitado = "";
+    estado.inicioItem = null;
+    el.campo.value = "";
+    el.campo.classList.remove("errando");
+    mostrarMensagem("sucesso", "✅ Boa! Próxima frase…");
+    setTimeout(esconderMensagem, 1200);
+    desenharAlvo();
+    atualizarEstatisticas();
+}
+
+function concluirFase() {
+    const precisao = calcularPrecisao();
+    const ppm = calcularPPM();
+
+    estado.conclusoes[estado.faseAtual] = { precisao, ppm, aneis: estado.aneis };
+
+    el.campo.value = "";
+    el.campo.disabled = true;
+    desenharMapa();
+    atualizarProgressoGeral();
+
+    if (estado.faseAtual === FASES.length - 1) {
+        mostrarTelaFinal();
+        return;
+    }
+
+    mostrarMensagem("sucesso",
+        `🏆 Fase ${estado.faseAtual + 1} concluída! Precisão ${precisao}% · ${ppm} palavras/min. ` +
+        `Clique em "Próxima fase" para continuar.`);
+}
+
+/* ==================================================================
+   8) ESTATÍSTICAS
+   ================================================================== */
+
+// Precisão da fase atual (mostrada ao vivo nas estatísticas).
+function calcularPrecisao() {
+    const total = estado.acertosFase + estado.errosFase;
+    return total === 0 ? 100 : Math.round((estado.acertosFase / total) * 100);
+}
+
+// Precisão do jogo inteiro (usada no placar final).
+function calcularPrecisaoTotal() {
+    const total = estado.acertosTotais + estado.errosTotais;
+    return total === 0 ? 100 : Math.round((estado.acertosTotais / total) * 100);
+}
+
+// Palavras por minuto DA FASE ATUAL: usa só os acertos e o tempo desta fase,
+// senão o número cresceria sem parar ao longo do jogo.
+function calcularPPM() {
+    if (!estado.inicioFase) return 0;
+    const minutos = (Date.now() - estado.inicioFase) / 60000;
+    if (minutos <= 0) return 0;
+    // Padrão do mercado: 5 caracteres = 1 palavra
+    const ppm = Math.round((estado.acertosFase / 5) / minutos);
+    return Math.max(0, Math.min(ppm, 999));   // trava para não exibir número absurdo
+}
+
+function atualizarEstatisticas() {
+    el.statItem.textContent = `${Math.min(estado.itemAtual + 1, estado.itensDaFase.length)}/${estado.itensDaFase.length}`;
+    el.statPrecisao.textContent = calcularPrecisao() + "%";
+    el.statPPM.textContent = calcularPPM();
+    el.statCombo.textContent = estado.combo;
+}
+
+function atualizarProgressoGeral() {
+    const feitas = Object.keys(estado.conclusoes).length;
+    el.progressoGeral.style.width = (feitas / FASES.length) * 100 + "%";
+    el.resumoMapa.textContent = `— ${feitas} de ${FASES.length} concluídas`;
+}
+
+/* ==================================================================
+   9) MAPA DE FASES
+   ================================================================== */
+
+function desenharMapa() {
+    el.listaFases.innerHTML = "";
+    FASES.forEach((fase, i) => {
+        const btn = document.createElement("button");
+        btn.className = "btn-fase";
+        btn.type = "button";
+        btn.innerHTML = `${i + 1}<small>${estado.conclusoes[i] ? "✔" : "•"}</small>`;
+        btn.title = fase.nome;
+
+        if (estado.conclusoes[i]) btn.classList.add("concluida");
+        if (i === estado.faseAtual) btn.classList.add("atual");
+        if (!podeAcessar(i)) btn.classList.add("bloqueada");
+
+        btn.addEventListener("click", () => tentarIrParaFase(i));
+        el.listaFases.appendChild(btn);
+    });
+}
+
+// Só libera a fase seguinte se a anterior já tiver sido concluída.
+function podeAcessar(indice) {
+    if (indice === 0) return true;
+    if (estado.conclusoes[indice]) return true;
+    return !!estado.conclusoes[indice - 1];
+}
+
+function tentarIrParaFase(indice) {
+    if (indice === estado.faseAtual) return;
+
+    if (!podeAcessar(indice)) {
+        mostrarSonicFeio(indice);
+        return;
+    }
+    carregarFase(indice);
+}
+
+/* ==================================================================
+   10) MODAIS — SONIC FEIO E TELA FINAL
+   ================================================================== */
+
+function abrirModal({ titulo, corpoHTML, imagem, emoji, textoBotao = "Entendi!", aoFechar }) {
+    el.modalTitulo.textContent = titulo;
+    el.modalCorpo.innerHTML = corpoHTML;
+    el.modalBotao.textContent = textoBotao;
+
+    if (imagem) {
+        el.modalImg.src = imagem;
+        el.modalImg.hidden = false;
+        el.modalEmoji.hidden = true;
+        el.modalImg.onerror = () => {           // GIF ainda não está na pasta
+            el.modalImg.hidden = true;
+            el.modalEmoji.hidden = false;
+            el.modalEmoji.textContent = emoji || "🦔";
+        };
+    } else {
+        el.modalImg.hidden = true;
+        el.modalEmoji.hidden = false;
+        el.modalEmoji.textContent = emoji || "🦔";
+    }
+
+    el.modal.classList.add("aberto");
+    el.modalBotao.onclick = () => {
+        el.modal.classList.remove("aberto");
+        if (aoFechar) aoFechar();
+    };
+}
+
+function mostrarSonicFeio(indiceTentado) {
+    definirModoSonic("feio");
+    abrirModal({
+        titulo: "Opa! Essa fase ainda está trancada 🔒",
+        corpoHTML: `
+            <p>Você tentou pular para a <strong>fase ${indiceTentado + 1}</strong>,
+            mas ainda não terminou a <strong>fase ${indiceTentado}</strong>.</p>
+            <p>Termine as fases em ordem — assim o treino funciona de verdade
+            e o Sonic continua bonito! 😅</p>`,
+        imagem: CONFIG.imagens.feio,
+        emoji: CONFIG.emojiFallback.feio,
+        textoBotao: "Ok, vou terminar a anterior!",
+        aoFechar: () => {
+            definirModoSonic("normal");
+            el.campo.focus();
+        }
+    });
+}
+
+function mostrarTelaFinal() {
+    // Sonic sai correndo e some da tela
+    el.cena.dataset.velocidade = "4";
+    el.rotuloVel.textContent = "SUPER SONIC!";
+    el.sonicBox.classList.add("sumindo");
+
+    const precisao = calcularPrecisaoTotal();
+    const totalCaracteres = estado.acertosTotais + estado.errosTotais;
+
+    // Melhor velocidade alcançada entre todas as fases
+    const ppms = Object.values(estado.conclusoes).map(c => c.ppm);
+    const ppm = ppms.length ? Math.max(...ppms) : 0;
+
+    let medalha, titulo, elogio;
+    if (precisao >= 97 && ppm >= 35)      { medalha = "🥇"; titulo = "LENDÁRIO!";     elogio = "Velocidade e precisão de campeão. O Sonic ficou para trás!"; }
+    else if (precisao >= 92 && ppm >= 25) { medalha = "🥈"; titulo = "EXCELENTE!";    elogio = "Você digita rápido e com muita precisão. Impressionante!"; }
+    else if (precisao >= 85)              { medalha = "🥉"; titulo = "MUITO BEM!";    elogio = "Ótima precisão! Agora é só ganhar mais velocidade."; }
+    else                                  { medalha = "⭐"; titulo = "PARABÉNS!";     elogio = "Você chegou até o fim! Repita as fases para melhorar ainda mais."; }
+
+    setTimeout(() => {
+        abrirModal({
+            titulo: `${titulo} Você completou todas as fases!`,
+            corpoHTML: `
+                <div class="medalha">${medalha}</div>
+                <p>${elogio}</p>
+                <p style="font-style:italic;color:#0b63c5;font-weight:700">
+                    "O Sonic correu tão rápido que sumiu no horizonte — e levou seus
+                    ${estado.aneis} anéis com ele!" 💨
+                </p>
+                <div class="placar-final">
+                    <div class="estat"><div class="valor">${estado.aneis}</div><div class="nome">Anéis</div></div>
+                    <div class="estat"><div class="valor">${precisao}%</div><div class="nome">Precisão</div></div>
+                    <div class="estat"><div class="valor">${ppm}</div><div class="nome">Melhor vel. (ppm)</div></div>
+                    <div class="estat"><div class="valor">${estado.melhorCombo}</div><div class="nome">Melhor sequência</div></div>
+                    <div class="estat"><div class="valor">${FASES.length}</div><div class="nome">Fases</div></div>
+                    <div class="estat"><div class="valor">${totalCaracteres}</div><div class="nome">Teclas digitadas</div></div>
+                </div>
+                <p><strong>Dica do Sonic:</strong> treinar 10 a 15 minutos por dia deixa
+                a digitação muito mais rápida em poucas semanas!</p>`,
+            emoji: "🏁",
+            textoBotao: "Jogar de novo 🔄",
+            aoFechar: reiniciarJogo
+        });
+    }, 1500);
+}
+
+/* ==================================================================
+   11) BOTÕES E ATALHOS
+   ================================================================== */
+
+el.btnProxima.addEventListener("click", () => {
+    const proxima = estado.faseAtual + 1;
+
+    if (proxima >= FASES.length) {
+        if (estado.conclusoes[estado.faseAtual]) mostrarTelaFinal();
+        else mostrarMensagem("aviso", "⏳ Termine todas as frases desta fase para ver o resultado final.");
+        return;
+    }
+    // Pular sem terminar a fase atual => Sonic feio
+    if (!estado.conclusoes[estado.faseAtual]) {
+        mostrarSonicFeio(proxima);
+        return;
+    }
+    carregarFase(proxima);
+});
+
+el.btnAnterior.addEventListener("click", () => {
+    if (estado.faseAtual > 0) carregarFase(estado.faseAtual - 1);
+});
+
+el.btnRepetir.addEventListener("click", () => {
+    estado.combo = 0;
+    estado.errosSeguidos = 0;
+    definirModoSonic("normal");
+    atualizarVelocidade();
+    carregarFase(estado.faseAtual);
+});
+
+function reiniciarJogo() {
+    estado.faseAtual = 0;
+    estado.itemAtual = 0;
+    estado.digitado = "";
+    estado.aneis = 0;
+    estado.combo = 0;
+    estado.melhorCombo = 0;
+    estado.errosSeguidos = 0;
+    estado.acertosTotais = 0;
+    estado.errosTotais = 0;
+    estado.acertosFase = 0;
+    estado.errosFase = 0;
+    estado.inicioFase = null;
+    estado.inicioItem = null;
+    estado.conclusoes = {};
+
+    el.sonicBox.classList.remove("sumindo");
+    el.totalAneis.textContent = "0";
+    definirModoSonic("normal");
+    atualizarVelocidade();
+    carregarFase(0);
+}
+
+function mostrarMensagem(tipo, texto) {
+    el.mensagem.className = `mensagem mostrar ${tipo}`;
+    el.mensagem.textContent = texto;
+}
+
+function esconderMensagem() {
+    el.mensagem.className = "mensagem";
+}
+
+// Enter avança quando a fase termina; Tab não sai do campo por engano.
+el.campo.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && estado.conclusoes[estado.faseAtual]) {
+        e.preventDefault();
+        el.btnProxima.click();
+    }
+    if (e.key === "Tab") e.preventDefault();
+});
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && el.modal.classList.contains("aberto")) {
+        el.modalBotao.click();
+    }
+});
+
+/* ==================================================================
+   12) INÍCIO
+   ================================================================== */
+
+el.rodapeInfo.textContent =
+    `${FASES.length} fases · ${FASES.reduce((t, f) => t + f.itens.length, 0)} palavras e frases no total`;
+
+definirModoSonic("normal");
+atualizarVelocidade();
+carregarFase(0);
+</script>
+</body>
+</html>

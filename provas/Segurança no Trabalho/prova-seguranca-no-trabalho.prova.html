@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Segurança no Trabalho - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #713f12 0%, #422006 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #a16207 0%, #eab308 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #a16207;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #fefce8;
+        border: 2px solid #fef08a;
+        border-left: 6px solid #a16207;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #0f766e;
+    }
+
+    .question-card h3 {
+        color: #713f12;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #134e4a; }
+
+    .tema {
+        display: inline-block;
+        background: #fef9c3;
+        color: #854d0e;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #ccfbf1; color: #115e59; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #eab308;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #a16207; }
+    .question-card.pratica .caso { border-color: #14b8a6; }
+    .question-card.pratica .caso strong { color: #0f766e; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #065f46;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #047857;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+    .orientacao code {
+        background: #d1fae5;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+    }
+
+    /* --- Ficha de dados --- */
+    .ficha {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+    }
+
+    .ficha-linha {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: clamp(.85rem, 2.4vw, .97em);
+    }
+
+    .ficha-linha:last-child { border-bottom: none; }
+    .ficha-linha:nth-child(even) { background: #f8fafc; }
+    .ficha-linha .rot { color: #64748b; }
+    .ficha-linha .val { font-weight: 700; color: #0f172a; text-align: right; }
+    .ficha-linha .val.alerta { color: #b91c1c; }
+
+    /* --- Campos de resposta --- */
+    .campos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: 14px;
+        margin-bottom: 6px;
+    }
+
+    .campo-box {
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 13px 15px;
+    }
+
+    .campo-box label {
+        display: block;
+        font-size: clamp(.78rem, 2.3vw, .88em);
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .campo-box .dica-campo {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: .92em;
+        margin-top: 2px;
+    }
+
+    .campo-box input {
+        width: 100%;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3vw, 1.15em);
+        font-weight: 700;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .campo-box input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.15); }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #a16207; background: #fefce8; }
+    .question-card.pratica .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+
+    .option-item input[type="radio"] {
+        accent-color: #a16207;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #0f766e; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #a16207;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #713f12;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #a16207; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #fefce8;
+        border: 2px solid #a16207;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #713f12; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #60a5fa; background: #eff6ff; color: #1e3a8a; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>⛑️ Prova de Segurança no Trabalho</h1>
+        <p>Normas regulamentadoras, EPI, CIPA, riscos e conduta em acidentes</p>
+        <div class="aviso-tempo">10 questões de múltipla escolha · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaST">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Hierarquia de controles</span>
+                <div class="caso">Em um setor com ruído acima do limite, a empresa entregou protetores auriculares a todos e <strong>não avaliou o enclausuramento da máquina</strong>, que é tecnicamente viável.</div>
+                <p class="enunciado">Como avaliar essa decisão?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Está correta: o EPI protege diretamente o trabalhador exposto e por isso é sempre a primeira escolha.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Está incorreta: a proteção coletiva tem prioridade, e o EPI entra quando o EPC é inviável ou insuficiente.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Está correta desde que os protetores tenham CA válido, o que já satisfaz plenamente a exigência legal.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) É indiferente: a norma deixa a escolha entre proteção coletiva e individual a critério do empregador.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">NR-6 · Certificado de Aprovação</span>
+                <p class="enunciado">Sobre o Certificado de Aprovação (CA) do EPI, assinale a correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) O CA é exigido apenas para os equipamentos importados, dispensando os fabricados no país.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) O CA é emitido pela própria empresa que compra o equipamento, após o teste em seu setor.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) O CA não tem prazo: uma vez concedido, vale por tempo indeterminado para aquele modelo.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) Sem CA válido o equipamento não pode ser vendido nem entregue como EPI ao trabalhador.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">NR-5 · CIPA</span>
+                <p class="enunciado">Sobre a CIPA, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) A composição é paritária: o empregador designa seus representantes e os empregados elegem os seus.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) Todos os membros são indicados pelo empregador, que escolhe quem tem melhor desempenho no setor.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Todos os membros são eleitos pelos empregados, sem qualquer participação da empresa na composição.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) A comissão só é obrigatória em empresas industriais com mais de duzentos empregados registrados.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Estabilidade do cipeiro</span>
+                <p class="enunciado">Sobre a garantia de emprego do membro eleito da CIPA, assinale a correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Vale apenas durante o mandato: encerrado o período, o empregado volta à condição dos demais colegas.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) Alcança tanto os eleitos quanto os designados pelo empregador, por exercerem a mesma atribuição.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) Vai do registro da candidatura até um ano após o fim do mandato, salvo motivo disciplinar ou econômico.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) Começa somente na posse dos eleitos, pois antes disso o empregado ainda é apenas um candidato.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">CAT</span>
+                <div class="caso">Um empregado sofreu um corte na mão, foi atendido no ambulatório e <strong>voltou a trabalhar no mesmo dia</strong>, sem afastamento.</div>
+                <p class="enunciado">Sobre a Comunicação de Acidente de Trabalho (CAT) nesse caso:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Deve ser emitida até o primeiro dia útil seguinte, pois a CAT não depende de haver afastamento.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) Não é necessária, porque sem afastamento do trabalho o evento não é considerado acidente típico.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) Só será emitida se houver sequela permanente comprovada pela perícia médica do INSS mais tarde.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) Pode ser emitida em até trinta dias, prazo válido para qualquer acidente sem gravidade aparente.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Mapa de riscos</span>
+                <p class="enunciado">Sobre o mapa de riscos, assinale a alternativa correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) É elaborado apenas pelo técnico de segurança, sem consulta aos trabalhadores de cada setor da empresa.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) É feito com a participação dos trabalhadores e usa cores por tipo de risco e círculos por gravidade.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) Usa uma cor única para todos os riscos, variando somente o tamanho do círculo conforme a gravidade.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) Deve ficar arquivado no setor de segurança, protegido do acesso de pessoas estranhas ao serviço.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">NR-35 · Trabalho em altura</span>
+                <p class="enunciado">Sobre o trabalho em altura, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) É toda atividade acima de 5,00 m do nível inferior, medida que define a exigência do cinto de segurança.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) O cinto tipo paraquedista dispensa a análise de risco quando o serviço dura menos de uma hora.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) A capacitação é feita uma única vez na admissão e vale por todo o tempo de contrato do empregado.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) É toda atividade acima de 2,00 m do nível inferior com risco de queda, e exige análise e autorização.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="chapter" id="q8">
+            <div class="question-card">
+                <h3>Questão 8 de 10</h3>
+                <span class="tema">Deveres do empregado</span>
+                <p class="enunciado">Quanto às obrigações do trabalhador em relação ao EPI, assinale a correta:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Pode deixar de usá-lo em tarefas rápidas, desde que avise antes o encarregado direto do setor.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Cabe a ele comprar a reposição quando o equipamento se danificar durante a jornada de trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Deve usá-lo, guardá-lo, conservá-lo e avisar quando houver alteração que o torne impróprio ao uso.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) A recusa em usar o equipamento é um direito do empregado, por se tratar de proteção individual.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="chapter" id="q9">
+            <div class="question-card">
+                <h3>Questão 9 de 10</h3>
+                <span class="tema">NR-1 · GRO e PGR</span>
+                <p class="enunciado">Sobre o Programa de Gerenciamento de Riscos (PGR), é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9" value="A"> A) É um documento apenas descritivo dos riscos, sem exigir plano de ação nem definição de prazos.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="B"> B) Substituiu o PPRA e reúne o inventário de riscos e o plano de ação com prazos e responsáveis.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="C"> C) Trata somente dos riscos químicos, deixando os físicos e ergonômicos para outros programas legais.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="D"> D) É elaborado uma única vez e não precisa de revisão enquanto o processo produtivo se mantiver.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="chapter" id="q10">
+            <div class="question-card">
+                <h3>Questão 10 de 10</h3>
+                <span class="tema">Conduta no acidente</span>
+                <div class="caso">Um colaborador caiu de uma escada e está consciente, queixando-se de dor forte nas costas. Vocês estão sozinhos no setor.</div>
+                <p class="enunciado">Qual é a conduta correta enquanto o socorro não chega?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10" value="A"> A) Não movimentar a vítima, acionar o socorro, isolar a área e preservar o local para a investigação.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="B"> B) Levantar a vítima com cuidado e sentá-la em uma cadeira, para que ela fique em posição confortável.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="C"> C) Levá-la de carro ao hospital mais próximo, pois isso costuma ser mais rápido do que esperar a ambulância.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="D"> D) Liberar a área e retomar a produção, já que a vítima está consciente e conversando normalmente.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">O gabarito não é exibido. O quadro acima mostra apenas em quais temas você acertou e em quais precisa revisar.</p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Segurança no Trabalho</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+    const TOTAL_Q = 10;
+
+    /* ---- Gabarito das objetivas ---- */
+    const gabarito = {
+        "p1": "B",
+        "p2": "D",
+        "p3": "A",
+        "p4": "C",
+        "p5": "A",
+        "p6": "B",
+        "p7": "D",
+        "p8": "C",
+        "p9": "B",
+        "p10": "A"
+};
+
+    const temas = {
+        "p1": "EPI × EPC",
+        "p2": "CA do EPI",
+        "p3": "CIPA",
+        "p4": "Estabilidade",
+        "p5": "CAT",
+        "p6": "Mapa de risco",
+        "p7": "NR-35",
+        "p8": "Deveres",
+        "p9": "PGR",
+        "p10": "Conduta"
+};
+
+    /* ---- Respostas das partes práticas ---- */
+    const PRATICAS = {};
+
+    /* Lê o número digitado aceitando "1.234,56", "1234.56", "R$ 820,00" e "35%". */
+    function lerNumero(texto) {
+        if (texto == null) return NaN;
+        let s = String(texto).trim().replace(/[R$\s%]/gi, "");
+        if (s === "") return NaN;
+        if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+        return parseFloat(s);
+    }
+
+    function confere(valor, certo, tol) {
+        const n = lerNumero(valor);
+        return !isNaN(n) && Math.abs(n - certo) <= tol;
+    }
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= TOTAL_Q) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de ${TOTAL_Q}`;
+            document.getElementById('progressBar').style.width = (currentStep / TOTAL_Q) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaST');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- práticas: cada questão vale 1 ponto, dividido entre as suas 3 partes ---
+        let partesPraticas = 0;
+        for (const id in PRATICAS) {
+            const q = PRATICAS[id];
+            const totalPartes = q.itens.length + q.escolhas.length;
+            let acertos = 0;
+
+            q.itens.forEach(it => {
+                const v = document.getElementById(it.campo).value;
+                if (v.trim() === "") semResposta++;
+                if (confere(v, it.certo, it.tol)) acertos++;
+            });
+
+            q.escolhas.forEach(e => {
+                const m = form.querySelector(`input[name="${e.nome}"]:checked`);
+                if (!m) semResposta++;
+                if (m && m.value === e.certo) acertos++;
+            });
+
+            nota += acertos / totalPartes;
+            partesPraticas += acertos;
+            detalhe.push({
+                rotulo: id.toUpperCase(), tema: q.tema,
+                estado: acertos === totalPartes ? "ok" : (acertos === 0 ? "nao" : "parcial"),
+                texto: `${acertos}/${totalPartes}`
+            });
+        }
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.filter(d => d.texto === "✓").length;
+        const resumoPratico = detalhe.filter(d => d.texto.includes("/"))
+            .map(d => `${d.rotulo}: ${d.texto}`).join(' · ');
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 10 objetivas` + (resumoPratico ? ` · ${resumoPratico}` : '');
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo das normas e das práticas de segurança do trabalho.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Revise as normas regulamentadoras assinaladas em vermelho.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // as setas não devem trocar de questão enquanto o aluno digita nos campos
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

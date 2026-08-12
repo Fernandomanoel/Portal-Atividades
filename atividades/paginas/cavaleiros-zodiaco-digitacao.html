@@ -441,6 +441,69 @@
     .som input[type="range"] { width: 74px; accent-color: var(--ouro); cursor: pointer; }
     .som .dica { font-size: .6rem; color: var(--apagado); max-width: 92px; line-height: 1.25; }
 
+    /* ---------- editor de versos ---------- */
+    .fundo-editor {
+        position: fixed;
+        inset: 0;
+        background: rgba(4, 4, 14, .86);
+        z-index: 60;
+        display: none;
+        overflow-y: auto;
+        padding: 14px;
+    }
+    .fundo-editor.aberto { display: block; }
+
+    .editor {
+        max-width: 760px;
+        margin: 0 auto;
+        background: #131333;
+        border: 1px solid var(--borda);
+        border-radius: 16px;
+        padding: clamp(14px, 3.4vw, 26px);
+    }
+    .editor h2 { color: var(--ouro); font-size: clamp(1rem, 3.6vw, 1.4rem); margin-bottom: 6px; }
+    .editor .explica {
+        color: var(--apagado);
+        font-size: clamp(.76rem, 2.5vw, .88rem);
+        line-height: 1.6;
+        margin-bottom: 14px;
+    }
+    .campo-letra { margin-bottom: 14px; }
+    .campo-letra label {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 8px;
+        font-size: clamp(.76rem, 2.5vw, .88rem);
+        font-weight: 700;
+        color: var(--ouro);
+        margin-bottom: 5px;
+    }
+    .campo-letra .conta { font-weight: 400; color: var(--apagado); font-size: .92em; }
+    .campo-letra textarea {
+        width: 100%;
+        min-height: 128px;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(.86rem, 2.9vw, 1rem);
+        line-height: 1.6;
+        color: var(--texto);
+        background: rgba(0,0,0,.45);
+        border: 2px solid rgba(255,255,255,.14);
+        border-radius: 10px;
+        outline: none;
+        resize: vertical;
+    }
+    .campo-letra textarea:focus { border-color: var(--ouro); }
+    .editor .aviso-salvo {
+        min-height: 1.4em;
+        text-align: center;
+        font-size: clamp(.76rem, 2.5vw, .88rem);
+        font-weight: 700;
+        color: var(--vida);
+        margin-top: 4px;
+    }
+
     /* ---------- telas ---------- */
     .tela { display: none; }
     .tela.ativa { display: block; animation: entrar .35s ease; }
@@ -506,7 +569,42 @@
 <body>
 <div class="ceu"></div>
 
+<div class="fundo-editor" id="fundoEditor">
+    <div class="editor">
+        <h2>&#9999;&#65039; Versos para digitar</h2>
+        <p class="explica">
+            Cole aqui os versos de cada idioma, <strong>um por linha</strong>. O jogo reparte
+            sozinho entre as quatro casas daquele idioma &mdash; n&atilde;o precisa contar nem
+            equilibrar. Fica salvo neste navegador; deixar um idioma em branco mant&eacute;m as
+            frases que j&aacute; v&ecirc;m no jogo. No japon&ecirc;s, escreva em
+            <strong>romaji</strong>.
+        </p>
+
+        <div class="campo-letra">
+            <label for="letraPT">Portugu&ecirc;s &mdash; casas 1 a 4 <span class="conta" id="contaPT"></span></label>
+            <textarea id="letraPT" spellcheck="false" placeholder="um verso por linha&hellip;"></textarea>
+        </div>
+        <div class="campo-letra">
+            <label for="letraEN">Ingl&ecirc;s &mdash; casas 5 a 8 <span class="conta" id="contaEN"></span></label>
+            <textarea id="letraEN" spellcheck="false" placeholder="one line per verse&hellip;"></textarea>
+        </div>
+        <div class="campo-letra">
+            <label for="letraJP">Japon&ecirc;s em romaji &mdash; casas 9 a 12 <span class="conta" id="contaJP"></span></label>
+            <textarea id="letraJP" spellcheck="false" placeholder="ichi gyou ni hitotsu&hellip;"></textarea>
+        </div>
+
+        <div class="aviso-salvo" id="avisoSalvo"></div>
+
+        <div class="botoes">
+            <button type="button" id="btnSalvarLetras">&#128190; Salvar e usar</button>
+            <button class="discreto" type="button" id="btnLimparLetras">Voltar &agrave;s frases do jogo</button>
+            <button class="discreto" type="button" id="btnFecharEditor">Fechar</button>
+        </div>
+    </div>
+</div>
+
 <div class="som" id="som">
+    <button id="btnEditor" type="button" title="Escrever os versos que os alunos vão digitar">✏️</button>
     <button id="btnSom" type="button" title="Ligar ou desligar a música">🔇</button>
     <input type="range" id="volume" min="0" max="100" value="55" title="Volume" disabled>
     <span class="dica" id="dicaSom">música desligada</span>
@@ -835,13 +933,42 @@ function proporcaoVidaVilao(indiceCasa) {
    3) DISTRIBUIÇÃO DOS VERSOS ENTRE AS CASAS
    ================================================================== */
 
+/* ------------------------------------------------------------------
+   Versos escritos pelo professor, guardados no próprio navegador.
+
+   Existe para quem não pode mexer no arquivo — no celular, na máquina do
+   laboratório, no meio da aula. O que for salvo aqui substitui o bloco LETRAS
+   acima, idioma por idioma: se só o português for preenchido, o inglês e o
+   japonês seguem com as frases que já vêm no arquivo.
+   ------------------------------------------------------------------ */
+const CHAVE_LETRAS = "zodiaco-letras";
+
+function lerLetrasSalvas() {
+    try { return JSON.parse(localStorage.getItem(CHAVE_LETRAS) || "{}") || {}; }
+    catch { return {}; }
+}
+
+function salvarLetras(dados) {
+    try {
+        localStorage.setItem(CHAVE_LETRAS, JSON.stringify(dados));
+        return true;
+    } catch { return false; }          // navegador sem localStorage
+}
+
+/** Versos em uso para um idioma: os salvos, se houver; senão os do arquivo. */
+function versosDoIdioma(codigo) {
+    const salvos = lerLetrasSalvas()[codigo];
+    const escolhidos = (Array.isArray(salvos) && salvos.length) ? salvos : LETRAS[codigo];
+    return (escolhidos || []).map(t => String(t).trim()).filter(Boolean);
+}
+
 function versosDaCasa(indice) {
     const casa = CASAS[indice];
     const doIdioma = CASAS.filter(c => c.idioma === casa.idioma);
     const posicao = doIdioma.indexOf(casa);
     const total = doIdioma.length;
 
-    const linhas = (LETRAS[casa.idioma] || []).map(t => String(t).trim()).filter(Boolean);
+    const linhas = versosDoIdioma(casa.idioma);
     if (!linhas.length) return ["cosmo"];
     if (linhas.length <= total) return [linhas[posicao % linhas.length]];
 
@@ -1503,6 +1630,92 @@ function zerarJogo() {
     estado.melhorCombo = 0;
     estado.melhorPPM = 0;
 }
+
+/* ==================================================================
+   12b) EDITOR DE VERSOS
+   ------------------------------------------------------------------
+   Serve para quem não pode abrir o arquivo: o professor cola os versos
+   aqui pelo próprio navegador — inclusive pelo celular — e o jogo passa
+   a usá-los na hora.
+   ================================================================== */
+
+const CAMPOS_LETRA = { PT: "letraPT", EN: "letraEN", JP: "letraJP" };
+
+function abrirEditor() {
+    const salvas = lerLetrasSalvas();
+    for (const [codigo, id] of Object.entries(CAMPOS_LETRA)) {
+        const guardado = salvas[codigo];
+        document.getElementById(id).value =
+            (Array.isArray(guardado) && guardado.length) ? guardado.join("\n") : "";
+    }
+    contarVersos();
+    document.getElementById("avisoSalvo").textContent = "";
+    document.getElementById("fundoEditor").classList.add("aberto");
+}
+
+function fecharEditor() {
+    document.getElementById("fundoEditor").classList.remove("aberto");
+}
+
+function linhasDoCampo(id) {
+    return document.getElementById(id).value
+        .split("\n").map(l => l.trim()).filter(Boolean);
+}
+
+function contarVersos() {
+    for (const [codigo, id] of Object.entries(CAMPOS_LETRA)) {
+        const escritos = linhasDoCampo(id).length;
+        const emUso = escritos || (LETRAS[codigo] || []).length;
+        document.getElementById("conta" + codigo).textContent =
+            escritos ? `${escritos} versos seus` : `${emUso} versos do jogo`;
+    }
+}
+
+function aplicarLetras() {
+    const dados = {};
+    let total = 0;
+    for (const [codigo, id] of Object.entries(CAMPOS_LETRA)) {
+        const linhas = linhasDoCampo(id);
+        if (linhas.length) { dados[codigo] = linhas; total += linhas.length; }
+    }
+
+    const aviso = document.getElementById("avisoSalvo");
+    if (!salvarLetras(dados)) {
+        aviso.style.color = "var(--perigo)";
+        aviso.textContent = "Este navegador não deixou salvar. Os versos valem só até fechar a página.";
+    } else if (total) {
+        aviso.style.color = "var(--vida)";
+        aviso.textContent = `Salvo! ${total} versos seus vão para as casas.`;
+    } else {
+        aviso.style.color = "var(--apagado)";
+        aviso.textContent = "Nada preenchido — o jogo segue com as frases dele.";
+    }
+
+    contarVersos();
+    // recarrega a casa em curso para já usar os versos novos
+    if (el.telaBatalha.classList.contains("ativa")) iniciarCasa(estado.casaAtual);
+}
+
+function limparLetras() {
+    for (const id of Object.values(CAMPOS_LETRA)) document.getElementById(id).value = "";
+    salvarLetras({});
+    contarVersos();
+    const aviso = document.getElementById("avisoSalvo");
+    aviso.style.color = "var(--apagado)";
+    aviso.textContent = "Voltou para as frases que vêm no jogo.";
+    if (el.telaBatalha.classList.contains("ativa")) iniciarCasa(estado.casaAtual);
+}
+
+document.getElementById("btnEditor").addEventListener("click", abrirEditor);
+document.getElementById("btnFecharEditor").addEventListener("click", fecharEditor);
+document.getElementById("btnSalvarLetras").addEventListener("click", aplicarLetras);
+document.getElementById("btnLimparLetras").addEventListener("click", limparLetras);
+Object.values(CAMPOS_LETRA).forEach(id =>
+    document.getElementById(id).addEventListener("input", contarVersos));
+
+document.getElementById("fundoEditor").addEventListener("click", e => {
+    if (e.target.id === "fundoEditor") fecharEditor();     // clicar fora fecha
+});
 
 /* ==================================================================
    13) LIGAÇÕES E PARTIDA

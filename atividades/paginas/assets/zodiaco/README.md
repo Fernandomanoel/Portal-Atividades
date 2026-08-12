@@ -1,0 +1,72 @@
+# Sprites do jogo Cavaleiros do Zodíaco — Batalha das 12 Casas
+
+Estes arquivos são usados por
+`atividades/paginas/cavaleiros-zodiaco-digitacao.html`.
+
+## Como gerar
+
+Cada personagem é feito no **PixelLab**, numa única folha quadrada com **fundo
+verde chapado**, contendo as quatro poses nesta ordem:
+
+```
++----------------+----------------+
+|     NEUTRO     |     ATAQUE     |
++----------------+----------------+
+|      DANO      |     CAÍDO      |
++----------------+----------------+
+```
+
+Depois é só rodar, a partir da raiz do projeto:
+
+```bash
+python3 scripts/recortar-sprites-zodiaco.py minha-folha.png aries
+```
+
+O script recorta os quatro quadrantes, remove o fundo verde, tira o halo
+esverdeado da borda (*despill*) e salva os PNGs já com o nome certo nesta pasta.
+O segundo argumento é o **nome base** da tabela abaixo.
+
+## Arquivos esperados
+
+| Personagem | Nome base | Situação |
+|---|---|---|
+| Seiya de Pégaso | `seiya` | ✅ as 4 poses estão aqui |
+| Mu de Áries | `aries` | ⬜ falta |
+| Aldebaran de Touro | `touro` | ⬜ falta |
+| Saga de Gêmeos | `gemeos` | ⬜ falta |
+| Máscara da Morte de Câncer | `cancer` | ⬜ falta |
+| Aiolia de Leão | `leao` | ⬜ falta |
+| Shaka de Virgem | `virgem` | ⬜ falta |
+| Dohko de Libra | `libra` | ⬜ falta |
+| Milo de Escorpião | `escorpiao` | ⬜ falta |
+| Aiolos de Sagitário | `sagitario` | ⬜ falta |
+| Shura de Capricórnio | `capricornio` | ⬜ falta |
+| Camus de Aquário | `aquario` | ⬜ falta |
+| Afrodite de Peixes | `peixes` | ⬜ falta |
+
+Cada nome base gera quatro arquivos. Para `aries`, por exemplo:
+
+| Arquivo | Quando aparece no jogo |
+|---|---|
+| `aries.png` | O tempo todo — é a pose parada, com a respiração em loop |
+| `aries-ataque.png` | No golpe, a cada rajada de acertos |
+| `aries-dano.png` | Quando o personagem leva dano |
+| `aries-caido.png` | Quando a barra de vida zera |
+
+## E se um arquivo não estiver aqui?
+
+O jogo **continua funcionando normalmente**. A busca é em cascata:
+
+1. Faltou a pose (`-ataque`, `-dano`, `-caido`) → usa a pose neutra com o efeito
+   feito em código (avanço, tremida, rastro).
+2. Faltou também a pose neutra → aparece uma silhueta escura com o símbolo e a
+   constelação da casa acesos.
+
+Ou seja: dá para ir soltando os personagens aqui **um de cada vez**, e cada um
+passa a aparecer sozinho, sem precisar mexer em código nenhum.
+
+## Padrão técnico
+
+- PNG com transparência (RGBA)
+- Folha de origem quadrada — a do Seiya veio em 1024×1024
+- Sem redimensionar depois do recorte: o jogo ajusta a altura por CSS

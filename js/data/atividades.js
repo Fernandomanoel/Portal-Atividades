@@ -523,6 +523,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/kids-mario-teclado.html",
       },
+      {
+        titulo: "Batalha das 12 Casas — Digitação",
+        descricao:
+          "Jogo de digitação com as 12 casas do zodíaco: cada letra certa golpeia o Cavaleiro de Ouro e cada erro tira a vida do Seiya. Digitar rápido e sem errar queima o cosmo e multiplica o dano. As casas mudam de idioma — português, inglês e japonês em romaji — e cada uma tem seu próprio cenário com a constelação do signo.",
+        tipo: "link",
+        url: "atividades/paginas/cavaleiros-zodiaco-digitacao.html",
+      },
     ],
   },
 

@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Batalha das 12 Casas — Treino de Digitação</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --ouro: #f6c445;
+        --ouro-escuro: #b8860b;
+        --fundo: #0a0a1f;
+        --painel: rgba(18, 18, 46, .82);
+        --borda: rgba(246, 196, 69, .32);
+        --texto: #e8e8f8;
+        --apagado: #8b8bb0;
+        --vida: #38d16a;
+        --perigo: #e0334b;
+        --cosmo: #63b3ff;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+        background: var(--fundo);
+        color: var(--texto);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* ---------- céu estrelado ---------- */
+    .ceu {
+        position: fixed;
+        inset: 0;
+        background:
+            radial-gradient(1.4px 1.4px at 12% 18%, #fff, transparent),
+            radial-gradient(1.4px 1.4px at 27% 62%, #cfe4ff, transparent),
+            radial-gradient(1.6px 1.6px at 44% 28%, #fff, transparent),
+            radial-gradient(1.2px 1.2px at 58% 76%, #ffe9b0, transparent),
+            radial-gradient(1.5px 1.5px at 71% 12%, #fff, transparent),
+            radial-gradient(1.3px 1.3px at 83% 48%, #cfe4ff, transparent),
+            radial-gradient(1.4px 1.4px at 92% 82%, #fff, transparent),
+            radial-gradient(1.2px 1.2px at 8% 88%, #fff, transparent),
+            radial-gradient(1200px 700px at 50% -10%, #241a4d 0%, transparent 70%),
+            linear-gradient(180deg, #0a0a1f 0%, #14082a 60%, #0a0a1f 100%);
+        z-index: 0;
+    }
+    .ceu::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(900px 500px at 50% 110%, rgba(246,196,69,.10), transparent 70%);
+        animation: brilhar 6s ease-in-out infinite;
+    }
+    @keyframes brilhar { 0%,100% { opacity:.55 } 50% { opacity:1 } }
+
+    .conteudo { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 16px; }
+
+    /* ---------- cabeçalho ---------- */
+    header {
+        text-align: center;
+        padding: 14px 10px 6px;
+    }
+    h1 {
+        font-size: clamp(1.2rem, 4.2vw, 2rem);
+        letter-spacing: .04em;
+        color: var(--ouro);
+        text-shadow: 0 0 18px rgba(246,196,69,.45);
+    }
+    header p { color: var(--apagado); font-size: clamp(.76rem, 2.4vw, .92rem); margin-top: 4px; }
+
+    /* ---------- relógio das 12 casas ---------- */
+    .relogio {
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin: 12px 0 6px;
+    }
+    .hora {
+        width: clamp(26px, 6.4vw, 40px);
+        height: clamp(26px, 6.4vw, 40px);
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,.14);
+        display: grid;
+        place-items: center;
+        font-size: clamp(.7rem, 2.4vw, 1rem);
+        color: var(--apagado);
+        background: rgba(255,255,255,.03);
+        transition: all .35s;
+    }
+    .hora.vencida {
+        border-color: var(--ouro);
+        color: #1a1200;
+        background: radial-gradient(circle at 35% 30%, #ffe9a8, var(--ouro));
+        box-shadow: 0 0 14px rgba(246,196,69,.65);
+    }
+    .hora.atual {
+        border-color: #fff;
+        color: #fff;
+        box-shadow: 0 0 14px rgba(255,255,255,.5);
+        animation: pulsar 1.5s ease-in-out infinite;
+    }
+    @keyframes pulsar { 0%,100% { transform: scale(1) } 50% { transform: scale(1.12) } }
+
+    /* ---------- arena ---------- */
+    .arena {
+        --ceu1: #22224a;
+        --ceu2: #0c0c22;
+        --pedra: #7f8ce0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(8px, 3vw, 26px);
+        align-items: end;
+        background: linear-gradient(180deg, var(--ceu1) 0%, var(--ceu2) 100%);
+        border: 1px solid var(--borda);
+        border-radius: 16px;
+        padding: clamp(10px, 2.4vw, 20px);
+        min-height: clamp(230px, 40vh, 340px);
+        position: relative;
+        overflow: hidden;
+        transition: --ceu1 .6s, --ceu2 .6s;
+    }
+    .arena::before {
+        content: "";
+        position: absolute;
+        left: 0; right: 0; bottom: 0;
+        height: 34%;
+        background: linear-gradient(180deg, transparent, rgba(246,196,69,.07));
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    /* cenário da casa: templo + constelação, desenhados por casa */
+    .cenario {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+    }
+    .cenario .estrela { fill: #fff; }
+    .cenario .traco { stroke: var(--pedra); stroke-width: .5; fill: none; opacity: .20; }
+    .cenario .pedra { fill: var(--pedra); }
+    .cenario .brilho { animation: cintilar 3.2s ease-in-out infinite; }
+    @keyframes cintilar { 0%,100% { opacity: .28 } 50% { opacity: .62 } }
+
+    .lutador { text-align: center; position: relative; z-index: 2; }
+    .lutador .nome {
+        font-size: clamp(.68rem, 2.2vw, .86rem);
+        font-weight: 700;
+        letter-spacing: .05em;
+        text-transform: uppercase;
+        margin-bottom: 5px;
+    }
+    .lutador.heroi .nome { color: #9ec5ff; }
+    .lutador.vilao .nome { color: var(--ouro); }
+
+    /* barras de vida */
+    .barra {
+        height: 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,.45);
+        border: 1px solid rgba(255,255,255,.16);
+        overflow: hidden;
+        margin-bottom: 4px;
+    }
+    .barra i {
+        display: block;
+        height: 100%;
+        width: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--vida), #7ef0a4);
+        transition: width .3s ease, background .3s ease;
+    }
+    .barra i.baixa { background: linear-gradient(90deg, #e8a33a, #ffd07a); }
+    .barra i.critica { background: linear-gradient(90deg, var(--perigo), #ff7b8c); }
+    .vidas-texto { font-size: clamp(.62rem, 2vw, .74rem); color: var(--apagado); }
+
+    /* palco do sprite */
+    .palco {
+        position: relative;
+        height: clamp(150px, 26vh, 260px);
+        display: grid;
+        place-items: end center;
+        margin-top: 10px;
+    }
+    /* O sprite é posicionado por cima do palco, e não como item do grid.
+       Como item, a altura em porcentagem depende da linha, que por sua vez é
+       medida pelo conteúdo — o navegador resolve esse laço usando o tamanho
+       natural da imagem, e o sprite estoura para fora da arena. Fora do fluxo,
+       ele obedece exatamente à caixa do palco. */
+    .sprite {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: bottom center;
+        image-rendering: pixelated;
+        filter: drop-shadow(0 6px 10px rgba(0,0,0,.55));
+        animation: respirar 2.8s ease-in-out infinite;
+        transition: transform .18s ease, filter .18s ease, opacity .4s ease;
+        z-index: 2;
+    }
+    @keyframes respirar { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-3px) } }
+
+    .lutador.vilao .sprite { transform: scaleX(-1); }
+    .lutador.vilao .sprite.golpeando { transform: scaleX(-1) translateX(14px) scale(1.04); }
+    .lutador.heroi .sprite.golpeando { transform: translateX(14px) scale(1.04); }
+
+    .sprite.apanhando {
+        animation: tremer .3s linear;
+        filter: drop-shadow(0 0 12px rgba(224,51,75,.9)) brightness(1.7) saturate(.4);
+    }
+    @keyframes tremer {
+        0%,100% { transform: translateX(0) }
+        20% { transform: translateX(-7px) } 40% { transform: translateX(6px) }
+        60% { transform: translateX(-4px) } 80% { transform: translateX(3px) }
+    }
+    .lutador.vilao .sprite.apanhando { animation: tremer-esp 0.3s linear; }
+    @keyframes tremer-esp {
+        0%,100% { transform: scaleX(-1) translateX(0) }
+        20% { transform: scaleX(-1) translateX(-7px) } 40% { transform: scaleX(-1) translateX(6px) }
+        60% { transform: scaleX(-1) translateX(-4px) } 80% { transform: scaleX(-1) translateX(3px) }
+    }
+    .sprite.derrotado { opacity: .75; filter: grayscale(.55) brightness(.7); animation: none; }
+
+    /* aura de cosmo */
+    .aura {
+        position: absolute;
+        bottom: 4%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 78%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(99,179,255,.55), transparent 66%);
+        opacity: 0;
+        transition: opacity .4s, transform .4s;
+        z-index: 1;
+        pointer-events: none;
+    }
+    .aura.n1 { opacity: .30 }
+    .aura.n2 { opacity: .50; transform: translateX(-50%) scale(1.12) }
+    .aura.n3 { opacity: .72; transform: translateX(-50%) scale(1.26);
+               background: radial-gradient(circle, rgba(246,196,69,.62), transparent 66%) }
+
+    /* silhueta quando o sprite ainda não existe */
+    .silhueta {
+        width: min(74%, 190px);
+        aspect-ratio: 3 / 4;
+        border-radius: 46% 46% 18% 18% / 40% 40% 12% 12%;
+        background: linear-gradient(180deg, rgba(20,18,52,.96), rgba(8,8,24,.98));
+        border: 2px solid var(--borda);
+        display: grid;
+        place-items: center;
+        position: relative;
+        z-index: 2;
+    }
+    .silhueta .signo {
+        font-size: clamp(2.4rem, 9vw, 4rem);
+        color: var(--ouro);
+        text-shadow: 0 0 22px rgba(246,196,69,.85);
+        animation: brilhar 3s ease-in-out infinite;
+    }
+    .silhueta .aviso {
+        position: absolute;
+        bottom: 7px;
+        font-size: .58rem;
+        color: var(--apagado);
+        letter-spacing: .04em;
+    }
+
+    .dano-flutuante {
+        position: absolute;
+        top: 22%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-weight: 800;
+        font-size: clamp(.9rem, 3vw, 1.3rem);
+        color: var(--ouro);
+        text-shadow: 0 2px 6px #000;
+        pointer-events: none;
+        animation: subir .7s ease-out forwards;
+        z-index: 4;
+    }
+    @keyframes subir {
+        from { opacity: 1; transform: translate(-50%, 0) }
+        to   { opacity: 0; transform: translate(-50%, -46px) }
+    }
+
+    /* ---------- área de digitação ---------- */
+    .digitacao {
+        background: var(--painel);
+        border: 1px solid var(--borda);
+        border-radius: 16px;
+        padding: clamp(12px, 2.6vw, 20px);
+        margin-top: 12px;
+    }
+    .faixa-casa {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+    }
+    .faixa-casa h2 { font-size: clamp(.92rem, 3vw, 1.2rem); color: var(--ouro); }
+    .etiqueta-idioma {
+        font-size: clamp(.62rem, 2vw, .74rem);
+        font-weight: 700;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--borda);
+        color: var(--ouro);
+        background: rgba(246,196,69,.10);
+    }
+
+    .verso {
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3.6vw, 1.5rem);
+        line-height: 1.75;
+        letter-spacing: .02em;
+        background: rgba(0,0,0,.35);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 10px;
+        padding: clamp(10px, 2.4vw, 16px);
+        min-height: 3.2em;
+        word-break: break-word;
+        user-select: none;
+    }
+    .verso .ok { color: var(--vida); }
+    .verso .atual {
+        background: var(--ouro);
+        color: #14102a;
+        border-radius: 3px;
+        animation: piscar 1s steps(2, start) infinite;
+    }
+    @keyframes piscar { 0%,100% { opacity: 1 } 50% { opacity: .55 } }
+    .verso .falta { color: var(--apagado); }
+    .verso .espaco-atual { background: var(--ouro); border-radius: 3px; }
+
+    .campo {
+        width: 100%;
+        margin-top: 12px;
+        padding: 13px 15px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3.4vw, 1.3rem);
+        font-weight: 700;
+        color: var(--texto);
+        background: rgba(0,0,0,.5);
+        border: 2px solid var(--borda);
+        border-radius: 10px;
+        outline: none;
+    }
+    .campo:focus { border-color: var(--ouro); box-shadow: 0 0 0 4px rgba(246,196,69,.16); }
+    .campo.errou { border-color: var(--perigo); box-shadow: 0 0 0 4px rgba(224,51,75,.22); }
+
+    /* ---------- painel de números ---------- */
+    .numeros {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(86px, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+    }
+    .numero {
+        background: rgba(0,0,0,.32);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 10px;
+        padding: 9px 6px;
+        text-align: center;
+    }
+    .numero .rot {
+        display: block;
+        font-size: clamp(.56rem, 1.9vw, .66rem);
+        color: var(--apagado);
+        text-transform: uppercase;
+        letter-spacing: .07em;
+    }
+    .numero .val {
+        display: block;
+        font-size: clamp(1rem, 3.4vw, 1.32rem);
+        font-weight: 800;
+        color: var(--ouro);
+        margin-top: 2px;
+    }
+    .numero .val.cosmo-alto { color: var(--cosmo); text-shadow: 0 0 12px rgba(99,179,255,.8); }
+
+    .recado {
+        margin-top: 10px;
+        min-height: 1.5em;
+        text-align: center;
+        font-size: clamp(.78rem, 2.6vw, .95rem);
+        font-weight: 600;
+        color: var(--ouro);
+    }
+
+    /* ---------- botões ---------- */
+    .botoes { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+    button {
+        font-family: inherit;
+        font-size: clamp(.82rem, 2.6vw, .98rem);
+        font-weight: 700;
+        padding: 11px 22px;
+        border-radius: 10px;
+        border: 2px solid var(--ouro);
+        background: linear-gradient(180deg, rgba(246,196,69,.22), rgba(246,196,69,.08));
+        color: var(--ouro);
+        cursor: pointer;
+        transition: all .2s;
+    }
+    button:hover:not(:disabled) { background: var(--ouro); color: #14102a; transform: translateY(-2px); }
+    button:disabled { opacity: .4; cursor: not-allowed; }
+    button.discreto { border-color: rgba(255,255,255,.22); color: var(--apagado); background: transparent; }
+    button.discreto:hover:not(:disabled) { background: rgba(255,255,255,.1); color: var(--texto); }
+
+    /* ---------- som ---------- */
+    .som {
+        position: fixed;
+        top: 12px;
+        right: 12px;
+        z-index: 40;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(10,10,31,.9);
+        border: 1px solid var(--borda);
+        border-radius: 999px;
+        padding: 5px 8px 5px 5px;
+    }
+    .som button {
+        padding: 6px 10px;
+        font-size: 1rem;
+        border-radius: 999px;
+        line-height: 1;
+    }
+    .som input[type="range"] { width: 74px; accent-color: var(--ouro); cursor: pointer; }
+    .som .dica { font-size: .6rem; color: var(--apagado); max-width: 92px; line-height: 1.25; }
+
+    /* ---------- telas ---------- */
+    .tela { display: none; }
+    .tela.ativa { display: block; animation: entrar .35s ease; }
+    @keyframes entrar { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: none } }
+
+    .cartao {
+        background: var(--painel);
+        border: 1px solid var(--borda);
+        border-radius: 16px;
+        padding: clamp(18px, 4vw, 34px);
+        text-align: center;
+        max-width: 700px;
+        margin: 20px auto;
+    }
+    .cartao h2 { color: var(--ouro); font-size: clamp(1.1rem, 4vw, 1.7rem); margin-bottom: 12px; }
+    .cartao p { color: var(--texto); line-height: 1.65; font-size: clamp(.84rem, 2.7vw, .98rem); margin-bottom: 10px; }
+    .cartao ul { text-align: left; margin: 12px auto 6px; max-width: 480px; color: var(--texto); line-height: 1.75; font-size: clamp(.8rem, 2.6vw, .94rem); }
+    .cartao li { margin-bottom: 6px; }
+    .cartao .destaque { color: var(--ouro); font-weight: 700; }
+
+    .placar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 10px;
+        margin: 18px 0;
+    }
+    .placar div {
+        background: rgba(0,0,0,.32);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 10px;
+        padding: 12px 8px;
+    }
+    .placar b { display: block; font-size: clamp(1.2rem, 4.6vw, 1.8rem); color: var(--ouro); }
+    .placar span { font-size: .66rem; color: var(--apagado); text-transform: uppercase; letter-spacing: .07em; }
+
+    .mapa {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+        gap: 8px;
+        margin-top: 16px;
+    }
+    .mapa .casa {
+        background: rgba(0,0,0,.3);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: 10px;
+        padding: 9px 6px;
+        font-size: .68rem;
+        text-align: center;
+        color: var(--apagado);
+    }
+    .mapa .casa.ok { border-color: var(--ouro); color: var(--ouro); background: rgba(246,196,69,.1); }
+    .mapa .casa b { display: block; font-size: .78rem; color: inherit; margin-bottom: 2px; }
+
+    footer { text-align: center; color: var(--apagado); font-size: .7rem; padding: 22px 10px 30px; }
+
+    @media (max-width: 560px) {
+        .arena { grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px; }
+        .som { top: 6px; right: 6px; padding: 4px; }
+        .som .dica { display: none; }
+    }
+</style>
+</head>
+<body>
+<div class="ceu"></div>
+
+<div class="som" id="som">
+    <button id="btnSom" type="button" title="Ligar ou desligar a música">🔇</button>
+    <input type="range" id="volume" min="0" max="100" value="55" title="Volume" disabled>
+    <span class="dica" id="dicaSom">música desligada</span>
+</div>
+
+<div class="conteudo">
+    <header>
+        <h1>⭐ Batalha das 12 Casas</h1>
+        <p>Digite rápido e sem errar: cada acerto queima o cosmo, cada erro tira a vida do Seiya.</p>
+    </header>
+
+    <!-- ============ TELA DE ABERTURA ============ -->
+    <section class="tela ativa" id="telaInicio">
+        <div class="cartao">
+            <h2>O relógio das 12 Casas começou a queimar</h2>
+            <p>Você é o <span class="destaque">Seiya de Pégaso</span>. Para chegar ao topo do Santuário,
+               precisa atravessar as doze casas — e em cada uma há um Cavaleiro de Ouro esperando.</p>
+            <ul>
+                <li>⌨️ <b>Cada letra certa</b> é um golpe no Cavaleiro.</li>
+                <li>💔 <b>Cada letra errada</b> tira um ponto da sua vida.</li>
+                <li>🔥 <b>Quanto mais rápido e mais seguido você acerta</b>, mais o cosmo queima — e o golpe dói mais.</li>
+                <li>💚 <b>Terminar um verso sem nenhum erro</b> devolve um ponto de vida.</li>
+                <li>🌐 As casas mudam de idioma: <b>português</b> → <b>inglês</b> → <b>japonês em romaji</b>.</li>
+            </ul>
+            <p style="color:var(--apagado);font-size:.82rem">
+                Nas casas em português você aguenta <b>3 erros</b>. Em inglês e em japonês, <b>5</b> —
+                porque o idioma já dificulta bastante.
+            </p>
+            <div class="botoes">
+                <button id="btnComecar" type="button">⚔️ Entrar na primeira casa</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TELA DE BATALHA ============ -->
+    <section class="tela" id="telaBatalha">
+        <div class="relogio" id="relogio"></div>
+
+        <div class="arena" id="arena">
+            <svg class="cenario" id="cenario" viewBox="0 0 200 120"
+                 preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+
+            <div class="lutador heroi">
+                <div class="nome" id="nomeHeroi">Seiya de Pégaso</div>
+                <div class="barra"><i id="barraHeroi"></i></div>
+                <div class="vidas-texto" id="vidasHeroi">—</div>
+                <div class="palco">
+                    <div class="aura" id="auraHeroi"></div>
+                    <img class="sprite" id="spriteHeroi" alt="Seiya" hidden>
+                    <div class="silhueta" id="silhuetaHeroi" hidden>
+                        <span class="signo">🐴</span>
+                        <span class="aviso">sprite não instalado</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lutador vilao">
+                <div class="nome" id="nomeVilao">—</div>
+                <div class="barra"><i id="barraVilao"></i></div>
+                <div class="vidas-texto" id="vidasVilao">—</div>
+                <div class="palco">
+                    <div class="aura" id="auraVilao"></div>
+                    <img class="sprite" id="spriteVilao" alt="Cavaleiro de Ouro" hidden>
+                    <div class="silhueta" id="silhuetaVilao" hidden>
+                        <span class="signo" id="signoVilao">♈</span>
+                        <span class="aviso">sprite não instalado</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="digitacao">
+            <div class="faixa-casa">
+                <h2 id="tituloCasa">Casa de Áries</h2>
+                <span class="etiqueta-idioma" id="etiquetaIdioma">Português</span>
+            </div>
+
+            <div class="verso" id="verso"></div>
+            <input class="campo" id="campo" type="text" autocomplete="off" autocorrect="off"
+                   autocapitalize="off" spellcheck="false" placeholder="Digite aqui…">
+
+            <div class="numeros">
+                <div class="numero"><span class="rot">Verso</span><span class="val" id="numVerso">1/1</span></div>
+                <div class="numero"><span class="rot">Precisão</span><span class="val" id="numPrecisao">100%</span></div>
+                <div class="numero"><span class="rot">PPM</span><span class="val" id="numPPM">0</span></div>
+                <div class="numero"><span class="rot">Combo</span><span class="val" id="numCombo">0</span></div>
+                <div class="numero"><span class="rot">Cosmo</span><span class="val" id="numCosmo">×1</span></div>
+            </div>
+
+            <div class="recado" id="recado"></div>
+
+            <div class="botoes">
+                <button class="discreto" id="btnReiniciarCasa" type="button">↻ Recomeçar a casa</button>
+                <button class="discreto" id="btnSair" type="button">Voltar ao início</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ RESULTADO DE UMA CASA ============ -->
+    <section class="tela" id="telaCasa">
+        <div class="cartao">
+            <h2 id="tituloResultadoCasa">Casa vencida!</h2>
+            <p id="textoResultadoCasa"></p>
+            <div class="placar">
+                <div><b id="casaPrecisao">0%</b><span>Precisão</span></div>
+                <div><b id="casaPPM">0</b><span>PPM</span></div>
+                <div><b id="casaCombo">0</b><span>Maior combo</span></div>
+                <div><b id="casaErros">0</b><span>Erros</span></div>
+            </div>
+            <div class="botoes" id="botoesCasa"></div>
+        </div>
+    </section>
+
+    <!-- ============ TELA FINAL ============ -->
+    <section class="tela" id="telaFinal">
+        <div class="cartao">
+            <h2 id="tituloFinal">🏆 Você atravessou as 12 Casas!</h2>
+            <p id="textoFinal"></p>
+            <div class="placar">
+                <div><b id="finalCasas">0/12</b><span>Casas vencidas</span></div>
+                <div><b id="finalPrecisao">0%</b><span>Precisão geral</span></div>
+                <div><b id="finalPPM">0</b><span>Melhor PPM</span></div>
+                <div><b id="finalCombo">0</b><span>Maior combo</span></div>
+            </div>
+            <div class="mapa" id="mapaFinal"></div>
+            <div class="botoes">
+                <button id="btnJogarDeNovo" type="button">↻ Enfrentar tudo de novo</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> · Treino de digitação — velocidade e precisão</p>
+    </footer>
+</div>
+
+<script>
+/* ==================================================================
+   1) LETRAS DAS MÚSICAS  —  COLE AQUI
+   ------------------------------------------------------------------
+   Cada idioma é uma lista de versos entre aspas, separados por
+   vírgula. Um verso = uma linha para o aluno digitar.
+
+   As casas se dividem sozinhas: as 4 primeiras casas usam PT,
+   as 4 do meio usam EN e as 4 últimas usam JP. Os versos de cada
+   idioma são repartidos entre as suas 4 casas automaticamente,
+   quantos versos houver — não precisa contar nem equilibrar nada.
+
+   Enquanto você não colar nada, o jogo usa as frases temáticas que
+   já estão aqui, e funciona normalmente.
+
+   Dica: no japonês, escreva em ROMAJI (o som em letras normais),
+   porque o teclado do laboratório não tem como digitar kana.
+   ================================================================== */
+
+const LETRAS = {
+
+    // ---------- CASAS 1 a 4 · PORTUGUÊS · COLE AQUI ----------
+    PT: [
+        "O cosmo desperta dentro de mim",
+        "A armadura de bronze brilha na noite",
+        "Doze casas separam o santuario da esperanca",
+        "Levante-se, cavaleiro, a batalha comecou",
+        "Cada estrela guarda um guerreiro",
+        "A amizade e a forca que nao se quebra",
+        "Nenhum golpe derruba quem ainda tem fe",
+        "O meteoro de pegaso corta o ceu",
+        "Avance sem medo pela primeira casa",
+        "A esperanca nasce quando tudo parece perdido",
+        "Erga o punho e queime o seu cosmo",
+        "O caminho ate atena comeca agora"
+    ],
+
+    // ---------- CASAS 5 a 8 · INGLÊS · COLE AQUI ----------
+    EN: [
+        "The cosmo awakens deep inside me",
+        "The bronze cloth shines under the night sky",
+        "Twelve houses stand between us and the truth",
+        "Rise up, knight, the battle has begun",
+        "Every star protects a warrior",
+        "Friendship is the strength that never breaks",
+        "No blow can crush a heart that still hopes",
+        "The pegasus meteor tears across the sky",
+        "Move forward without fear",
+        "Hope is born when everything seems lost",
+        "Raise your fist and burn your cosmo",
+        "The road to the goddess starts right here"
+    ],
+
+    // ---------- CASAS 9 a 12 · JAPONÊS EM ROMAJI · COLE AQUI ----------
+    JP: [
+        "kosumo o moyase",
+        "seiya wa akiramenai",
+        "juuni kyuu o susumu",
+        "ougon no seinto ga matteiru",
+        "tomodachi no chikara wa tsuyoi",
+        "hoshi ga michi o terasu",
+        "tatakai wa ima hajimaru",
+        "yume o wasurenai",
+        "kibou wa kienai hikari",
+        "pegasasu ryuuseiken",
+        "tachiagare wakaki seinto",
+        "sora no kanata e susume"
+    ]
+};
+
+/* ==================================================================
+   2) AS 12 CASAS
+   ================================================================== */
+
+const IDIOMAS = {
+    PT: { rotulo: "Português",        vidaMaxima: 3, audio: "assets/zodiaco/audio/abertura-pt.mp3" },
+    EN: { rotulo: "Inglês",           vidaMaxima: 5, audio: "assets/zodiaco/audio/abertura-en.mp3" },
+    JP: { rotulo: "Japonês (romaji)", vidaMaxima: 5, audio: "assets/zodiaco/audio/abertura-jp.mp3" }
+};
+
+const CASAS = [
+    { base: "aries",       casa: "Áries",       cavaleiro: "Mu de Áries",                 signo: "♈", idioma: "PT" },
+    { base: "touro",       casa: "Touro",       cavaleiro: "Aldebaran de Touro",          signo: "♉", idioma: "PT" },
+    { base: "gemeos",      casa: "Gêmeos",      cavaleiro: "Saga de Gêmeos",              signo: "♊", idioma: "PT" },
+    { base: "cancer",      casa: "Câncer",      cavaleiro: "Máscara da Morte de Câncer",  signo: "♋", idioma: "PT" },
+    { base: "leao",        casa: "Leão",        cavaleiro: "Aiolia de Leão",              signo: "♌", idioma: "EN" },
+    { base: "virgem",      casa: "Virgem",      cavaleiro: "Shaka de Virgem",             signo: "♍", idioma: "EN" },
+    { base: "libra",       casa: "Libra",       cavaleiro: "Dohko de Libra",              signo: "♎", idioma: "EN" },
+    { base: "escorpiao",   casa: "Escorpião",   cavaleiro: "Milo de Escorpião",           signo: "♏", idioma: "EN" },
+    { base: "sagitario",   casa: "Sagitário",   cavaleiro: "Aiolos de Sagitário",         signo: "♐", idioma: "JP" },
+    { base: "capricornio", casa: "Capricórnio", cavaleiro: "Shura de Capricórnio",        signo: "♑", idioma: "JP" },
+    { base: "aquario",     casa: "Aquário",     cavaleiro: "Camus de Aquário",            signo: "♒", idioma: "JP" },
+    { base: "peixes",      casa: "Peixes",      cavaleiro: "Afrodite de Peixes",          signo: "♓", idioma: "JP" }
+];
+
+/* ------------------------------------------------------------------
+   CENÁRIOS — um por casa.
+
+   Cada casa tem sua própria cor de céu, sua própria cor de pedra e a
+   CONSTELAÇÃO DE VERDADE daquele signo desenhada ao fundo: as estrelas
+   estão nas posições aproximadas do céu real, ligadas pelo traço que
+   se usa nos mapas celestes. Além de deixar cada casa diferente, isso
+   ensina o desenho das doze constelações sem precisar dizer nada.
+
+   Coordenadas dentro de um quadro 200 x 120.
+   ------------------------------------------------------------------ */
+const CENARIOS = {
+    aries: {
+        ceu1: "#3b1f2b", ceu2: "#120a12", pedra: "#c2705a",
+        estrelas: [[62,30],[82,26],[98,34],[114,48]],
+        tracos: [[0,1],[1,2],[2,3]]
+    },
+    touro: {
+        ceu1: "#1f3222", ceu2: "#0a1410", pedra: "#6fae7d",
+        estrelas: [[58,26],[74,36],[88,46],[102,54],[118,44],[134,32],[88,64],[104,72]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[2,6],[6,7]]
+    },
+    gemeos: {
+        ceu1: "#22224a", ceu2: "#0c0c22", pedra: "#7f8ce0",
+        estrelas: [[64,20],[64,44],[64,68],[80,56],[100,20],[100,44],[100,68],[86,32]],
+        tracos: [[0,1],[1,2],[1,3],[4,5],[5,6],[5,7]]
+    },
+    cancer: {
+        ceu1: "#16303a", ceu2: "#08161c", pedra: "#58a0b0",
+        estrelas: [[88,18],[88,38],[70,56],[106,54],[108,74]],
+        tracos: [[0,1],[1,2],[1,3],[3,4]]
+    },
+    leao: {
+        ceu1: "#3a2a10", ceu2: "#160f04", pedra: "#e0a53a",
+        estrelas: [[58,54],[62,40],[72,30],[86,26],[100,32],[104,46],[122,52],[134,38],[120,64]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[6,8],[5,8]]
+    },
+    virgem: {
+        ceu1: "#2b2038", ceu2: "#110c18", pedra: "#b58ad6",
+        estrelas: [[54,30],[72,38],[88,32],[106,44],[124,40],[114,60],[96,64]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[3,5],[5,6]]
+    },
+    libra: {
+        ceu1: "#123030", ceu2: "#061616", pedra: "#56b8a4",
+        estrelas: [[70,52],[88,32],[112,34],[126,54],[98,66]],
+        tracos: [[0,1],[1,2],[2,3],[1,4],[2,4]]
+    },
+    escorpiao: {
+        ceu1: "#3a1220", ceu2: "#160610", pedra: "#d2455f",
+        estrelas: [[56,24],[70,32],[84,30],[94,44],[100,58],[98,74],[86,82],[72,82],[62,74]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]
+    },
+    sagitario: {
+        ceu1: "#2a1836", ceu2: "#120a1a", pedra: "#a06fe0",
+        estrelas: [[60,58],[60,40],[76,28],[94,38],[94,58],[76,68],[110,44],[124,54]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[3,6],[6,7]]
+    },
+    capricornio: {
+        ceu1: "#23262c", ceu2: "#0c0e12", pedra: "#8f9aa8",
+        estrelas: [[58,34],[80,26],[104,38],[122,54],[98,66],[72,54]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0]]
+    },
+    aquario: {
+        ceu1: "#10283f", ceu2: "#06121e", pedra: "#4fa3e0",
+        estrelas: [[56,32],[72,42],[88,32],[104,42],[120,32],[136,42],[88,58],[104,68]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[2,6],[6,7]]
+    },
+    peixes: {
+        ceu1: "#2c1836", ceu2: "#12081a", pedra: "#c86fb8",
+        estrelas: [[56,24],[72,34],[88,46],[104,56],[120,48],[136,38],[104,72],[118,82]],
+        tracos: [[0,1],[1,2],[2,3],[3,4],[4,5],[3,6],[6,7]]
+    }
+};
+
+const PASTA_SPRITES = "assets/zodiaco/";
+const POSES = { neutro: "", ataque: "-ataque", dano: "-dano", caido: "-caido" };
+
+/* A vida do Cavaleiro é 70% dos caracteres da casa. Como o dano por acerto é
+   sempre >= 1, isso garante que os versos nunca acabam antes do Cavaleiro cair:
+   ninguém fica preso numa casa por digitar devagar — só demora mais. */
+const PROPORCAO_VIDA_VILAO = 0.7;
+
+/* ==================================================================
+   3) DISTRIBUIÇÃO DOS VERSOS ENTRE AS CASAS
+   ================================================================== */
+
+function versosDaCasa(indice) {
+    const casa = CASAS[indice];
+    const doIdioma = CASAS.filter(c => c.idioma === casa.idioma);
+    const posicao = doIdioma.indexOf(casa);
+    const total = doIdioma.length;
+
+    const linhas = (LETRAS[casa.idioma] || []).map(t => String(t).trim()).filter(Boolean);
+    if (!linhas.length) return ["cosmo"];
+    if (linhas.length <= total) return [linhas[posicao % linhas.length]];
+
+    // reparte as linhas em blocos iguais, sobrando as primeiras casas com +1
+    const porCasa = Math.floor(linhas.length / total);
+    const sobra = linhas.length % total;
+    const inicio = posicao * porCasa + Math.min(posicao, sobra);
+    const quantidade = porCasa + (posicao < sobra ? 1 : 0);
+    return linhas.slice(inicio, inicio + quantidade);
+}
+
+/* ==================================================================
+   4) ESTADO
+   ================================================================== */
+
+const estado = {
+    casaAtual: 0,
+    versos: [],
+    versoAtual: 0,
+    digitado: "",
+    errosNoVerso: 0,
+
+    vidaHeroi: 3,
+    vidaMaximaHeroi: 3,
+    vidaVilao: 100,
+    vidaMaximaVilao: 100,
+
+    combo: 0,
+    melhorCombo: 0,
+    acertosCasa: 0,
+    errosCasa: 0,
+    acertosTotais: 0,
+    errosTotais: 0,
+    melhorPPM: 0,
+    inicioCasa: null,
+
+    resultados: {},          // { indiceCasa: { precisao, ppm, combo, erros } }
+    spritesDisponiveis: {},  // { "seiya-ataque": true }
+    travado: false
+};
+
+/* ==================================================================
+   5) ELEMENTOS
+   ================================================================== */
+
+const el = {};
+[
+    "arena", "cenario", "relogio", "nomeHeroi", "barraHeroi", "vidasHeroi", "spriteHeroi", "silhuetaHeroi", "auraHeroi",
+    "nomeVilao", "barraVilao", "vidasVilao", "spriteVilao", "silhuetaVilao", "auraVilao", "signoVilao",
+    "tituloCasa", "etiquetaIdioma", "verso", "campo", "recado",
+    "numVerso", "numPrecisao", "numPPM", "numCombo", "numCosmo",
+    "telaInicio", "telaBatalha", "telaCasa", "telaFinal",
+    "tituloResultadoCasa", "textoResultadoCasa", "casaPrecisao", "casaPPM", "casaCombo", "casaErros",
+    "botoesCasa", "tituloFinal", "textoFinal", "finalCasas", "finalPrecisao", "finalPPM", "finalCombo",
+    "mapaFinal", "btnComecar", "btnReiniciarCasa", "btnSair", "btnJogarDeNovo",
+    "btnSom", "volume", "dicaSom"
+].forEach(id => { el[id] = document.getElementById(id); });
+
+/* ==================================================================
+   6) SPRITES  —  descobre quais existem, sem quebrar quando faltam
+   ================================================================== */
+
+function caminhoSprite(base, pose) {
+    return `${PASTA_SPRITES}${base}${POSES[pose]}.png`;
+}
+
+function testarImagem(src) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => resolve(false);
+        img.src = src;
+    });
+}
+
+async function descobrirSprites() {
+    const bases = ["seiya", ...CASAS.map(c => c.base)];
+    const testes = [];
+    for (const base of bases) {
+        for (const pose of Object.keys(POSES)) {
+            const chave = base + POSES[pose];
+            testes.push(testarImagem(caminhoSprite(base, pose))
+                .then(existe => { estado.spritesDisponiveis[chave] = existe; }));
+        }
+    }
+    await Promise.all(testes);
+}
+
+/** Melhor arquivo disponível para a pose pedida; cai para o neutro; null se nada. */
+function melhorSprite(base, pose) {
+    if (estado.spritesDisponiveis[base + POSES[pose]]) return caminhoSprite(base, pose);
+    if (estado.spritesDisponiveis[base]) return caminhoSprite(base, "neutro");
+    return null;
+}
+
+function aplicarSprite(lado, base, pose) {
+    const img = lado === "heroi" ? el.spriteHeroi : el.spriteVilao;
+    const silhueta = lado === "heroi" ? el.silhuetaHeroi : el.silhuetaVilao;
+    const src = melhorSprite(base, pose);
+
+    if (src) {
+        if (!img.src.endsWith(src)) img.src = src;
+        img.hidden = false;
+        silhueta.hidden = true;
+    } else {
+        img.hidden = true;
+        silhueta.hidden = false;
+    }
+}
+
+/** Mostra uma pose por alguns instantes e volta ao neutro. */
+const relogiosDePose = {};
+function poseTemporaria(lado, base, pose, classe, ms) {
+    const img = lado === "heroi" ? el.spriteHeroi : el.spriteVilao;
+    aplicarSprite(lado, base, pose);
+    img.classList.add(classe);
+
+    clearTimeout(relogiosDePose[lado]);
+    relogiosDePose[lado] = setTimeout(() => {
+        img.classList.remove(classe);
+        if (!estado.travado) aplicarSprite(lado, base, "neutro");
+    }, ms);
+}
+
+/* ==================================================================
+   7) MÚSICA  —  começa desligada, troca de faixa conforme o idioma
+   ================================================================== */
+
+const musica = {
+    ligado: false,
+    volume: 0.55,
+    idiomaAtual: null,
+    tocador: null,
+    disponiveis: {},
+    CHAVE: "zodiaco-som"
+};
+
+async function prepararMusica() {
+    for (const [codigo, dados] of Object.entries(IDIOMAS)) {
+        musica.disponiveis[codigo] = await testarAudio(dados.audio);
+    }
+    const algum = Object.values(musica.disponiveis).some(Boolean);
+
+    const salvo = lerPreferenciaSom();
+    if (salvo) {
+        musica.ligado = !!salvo.ligado;
+        musica.volume = typeof salvo.volume === "number" ? salvo.volume : musica.volume;
+    }
+
+    el.volume.value = Math.round(musica.volume * 100);
+    el.btnSom.disabled = !algum;
+    el.volume.disabled = !algum || !musica.ligado;
+
+    if (!algum) {
+        musica.ligado = false;
+        el.dicaSom.textContent = "áudio ainda não instalado";
+        el.btnSom.title = "Os arquivos de música ainda não foram colocados na pasta assets/zodiaco/audio/";
+    }
+    atualizarBotaoSom();
+}
+
+function testarAudio(src) {
+    return new Promise(resolve => {
+        const a = new Audio();
+        a.preload = "metadata";
+        const pronto = () => { limpar(); resolve(true); };
+        const falhou = () => { limpar(); resolve(false); };
+        const limpar = () => {
+            a.removeEventListener("loadedmetadata", pronto);
+            a.removeEventListener("error", falhou);
+        };
+        a.addEventListener("loadedmetadata", pronto);
+        a.addEventListener("error", falhou);
+        a.src = src;
+        setTimeout(() => { limpar(); resolve(false); }, 4000);
+    });
+}
+
+function lerPreferenciaSom() {
+    try { return JSON.parse(localStorage.getItem(musica.CHAVE) || "null"); }
+    catch { return null; }
+}
+
+function salvarPreferenciaSom() {
+    try {
+        localStorage.setItem(musica.CHAVE,
+            JSON.stringify({ ligado: musica.ligado, volume: musica.volume }));
+    } catch { /* navegador sem localStorage: só não lembra da preferência */ }
+}
+
+function atualizarBotaoSom() {
+    el.btnSom.textContent = musica.ligado ? "🔊" : "🔇";
+    if (el.btnSom.disabled) return;
+    el.dicaSom.textContent = musica.ligado ? "música ligada" : "música desligada";
+    el.volume.disabled = !musica.ligado;
+}
+
+function trocarMusica(codigoIdioma) {
+    if (musica.idiomaAtual === codigoIdioma) return;
+    musica.idiomaAtual = codigoIdioma;
+    if (!musica.ligado) return;
+    iniciarFaixa(codigoIdioma);
+}
+
+function iniciarFaixa(codigoIdioma) {
+    const src = IDIOMAS[codigoIdioma] && IDIOMAS[codigoIdioma].audio;
+    if (!src || !musica.disponiveis[codigoIdioma]) { pararFaixa(); return; }
+
+    const anterior = musica.tocador;
+    const novo = new Audio(src);
+    novo.loop = true;
+    novo.volume = 0;
+    musica.tocador = novo;
+
+    // navegador só deixa tocar depois de um clique — o botão 🔊 é esse clique
+    novo.play().then(() => {
+        aparecer(novo, musica.volume, 800);
+        if (anterior) sumir(anterior, 800);
+    }).catch(() => {
+        musica.tocador = anterior;
+        el.dicaSom.textContent = "clique em 🔊 para liberar o som";
+    });
+}
+
+function pararFaixa() {
+    if (musica.tocador) {
+        sumir(musica.tocador, 500);
+        musica.tocador = null;
+    }
+}
+
+function aparecer(audio, alvo, ms) { transicao(audio, alvo, ms); }
+function sumir(audio, ms) { transicao(audio, 0, ms, () => { audio.pause(); }); }
+
+function transicao(audio, alvo, ms, aoFim) {
+    const inicio = audio.volume;
+    const t0 = performance.now();
+    (function passo(agora) {
+        const p = Math.min(1, (agora - t0) / ms);
+        audio.volume = Math.max(0, Math.min(1, inicio + (alvo - inicio) * p));
+        if (p < 1) requestAnimationFrame(passo);
+        else if (aoFim) aoFim();
+    })(t0);
+}
+
+el.btnSom.addEventListener("click", () => {
+    musica.ligado = !musica.ligado;
+    atualizarBotaoSom();
+    salvarPreferenciaSom();
+    if (musica.ligado) iniciarFaixa(musica.idiomaAtual || CASAS[estado.casaAtual].idioma);
+    else pararFaixa();
+});
+
+el.volume.addEventListener("input", () => {
+    musica.volume = el.volume.value / 100;
+    if (musica.tocador) musica.tocador.volume = musica.volume;
+    salvarPreferenciaSom();
+});
+
+/* ==================================================================
+   8) TELAS
+   ================================================================== */
+
+function mostrarTela(nome) {
+    ["telaInicio", "telaBatalha", "telaCasa", "telaFinal"]
+        .forEach(t => el[t].classList.toggle("ativa", t === nome));
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+/* ==================================================================
+   9) BATALHA
+   ================================================================== */
+
+function iniciarCasa(indice) {
+    const casa = CASAS[indice];
+    const idioma = IDIOMAS[casa.idioma];
+
+    estado.casaAtual = indice;
+    estado.versos = versosDaCasa(indice);
+    estado.versoAtual = 0;
+    estado.digitado = "";
+    estado.errosNoVerso = 0;
+    estado.combo = 0;
+    estado.acertosCasa = 0;
+    estado.errosCasa = 0;
+    estado.inicioCasa = null;
+    estado.travado = false;
+
+    estado.vidaMaximaHeroi = idioma.vidaMaxima;
+    estado.vidaHeroi = idioma.vidaMaxima;
+
+    const caracteres = estado.versos.reduce((s, v) => s + v.length, 0);
+    estado.vidaMaximaVilao = Math.max(10, Math.round(caracteres * PROPORCAO_VIDA_VILAO));
+    estado.vidaVilao = estado.vidaMaximaVilao;
+
+    el.tituloCasa.textContent = `Casa de ${casa.casa}`;
+    el.etiquetaIdioma.textContent = idioma.rotulo;
+    el.nomeVilao.textContent = casa.cavaleiro;
+    el.signoVilao.textContent = casa.signo;
+    el.recado.textContent = "";
+
+    aplicarSprite("heroi", "seiya", "neutro");
+    aplicarSprite("vilao", casa.base, "neutro");
+    el.spriteHeroi.classList.remove("derrotado", "apanhando", "golpeando");
+    el.spriteVilao.classList.remove("derrotado", "apanhando", "golpeando");
+
+    desenharCenario(casa.base);
+    trocarMusica(casa.idioma);
+    desenharRelogio();
+    mostrarVerso();
+    atualizarBarras();
+    atualizarNumeros();
+
+    mostrarTela("telaBatalha");
+    el.campo.disabled = false;
+    el.campo.value = "";
+    el.campo.focus();
+}
+
+function versoAlvo() { return estado.versos[estado.versoAtual] || ""; }
+
+function mostrarVerso() {
+    const alvo = versoAlvo();
+    const feito = estado.digitado.length;
+    let html = "";
+
+    for (let i = 0; i < alvo.length; i++) {
+        const ch = alvo[i] === " " ? "&nbsp;" : escapar(alvo[i]);
+        if (i < feito) html += `<span class="ok">${ch}</span>`;
+        else if (i === feito) html += `<span class="atual">${ch}</span>`;
+        else html += `<span class="falta">${ch}</span>`;
+    }
+    el.verso.innerHTML = html;
+    el.numVerso.textContent = `${estado.versoAtual + 1}/${estado.versos.length}`;
+}
+
+function escapar(t) {
+    return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+/* ---- o motor de digitação ---- */
+el.campo.addEventListener("paste", e => {
+    e.preventDefault();                       // colar o verso inteiro não vale
+    recado("Nada de colar — aqui se digita! ⌨️");
+});
+
+el.campo.addEventListener("input", () => {
+    if (estado.travado) { el.campo.value = estado.digitado; return; }
+
+    const alvo = versoAlvo();
+    const valor = el.campo.value;
+
+    // apagar não desfaz acerto: o cursor só anda para a frente
+    if (valor.length <= estado.digitado.length) {
+        el.campo.value = estado.digitado;
+        return;
+    }
+
+    if (!estado.inicioCasa) estado.inicioCasa = Date.now();
+
+    const novos = valor.slice(estado.digitado.length);
+    for (const ch of novos) {
+        const esperado = alvo[estado.digitado.length];
+        if (esperado === undefined) break;
+        if (ch === esperado) {
+            estado.digitado += ch;
+            registrarAcerto();
+        } else {
+            registrarErro();
+            break;                             // para no primeiro erro do lote
+        }
+        if (estado.travado) break;
+    }
+
+    el.campo.value = estado.digitado;
+    mostrarVerso();
+    atualizarNumeros();
+
+    if (!estado.travado && estado.digitado.length === alvo.length) concluirVerso();
+});
+
+function registrarAcerto() {
+    estado.acertosCasa++;
+    estado.acertosTotais++;
+    estado.combo++;
+    estado.melhorCombo = Math.max(estado.melhorCombo, estado.combo);
+
+    const dano = multiplicadorCosmo();
+    estado.vidaVilao = Math.max(0, estado.vidaVilao - dano);
+
+    // o golpe aparece de vez em quando, não a cada letra, senão fica epilético
+    if (estado.combo % 6 === 1) {
+        poseTemporaria("heroi", "seiya", "ataque", "golpeando", 200);
+        poseTemporaria("vilao", CASAS[estado.casaAtual].base, "dano", "apanhando", 260);
+        flutuar(el.spriteVilao.parentElement, `-${dano.toFixed(1)}`);
+    }
+
+    atualizarBarras();
+    if (estado.vidaVilao <= 0) vencerCasa();
+}
+
+function registrarErro() {
+    estado.errosCasa++;
+    estado.errosTotais++;
+    estado.errosNoVerso++;
+    estado.combo = 0;
+    estado.vidaHeroi = Math.max(0, estado.vidaHeroi - 1);
+
+    poseTemporaria("heroi", "seiya", "dano", "apanhando", 320);
+    poseTemporaria("vilao", CASAS[estado.casaAtual].base, "ataque", "golpeando", 220);
+
+    el.campo.classList.add("errou");
+    setTimeout(() => el.campo.classList.remove("errou"), 320);
+
+    atualizarBarras();
+    if (estado.vidaHeroi <= 0) perderCasa();
+    else recado(`Cuidado! Restam ${estado.vidaHeroi} de vida.`);
+}
+
+function concluirVerso() {
+    if (estado.errosNoVerso === 0 && estado.vidaHeroi < estado.vidaMaximaHeroi) {
+        estado.vidaHeroi++;
+        recado("Verso perfeito! +1 de vida 💚");
+    }
+    estado.errosNoVerso = 0;
+    estado.digitado = "";
+    el.campo.value = "";
+
+    estado.versoAtual++;
+    if (estado.versoAtual >= estado.versos.length) estado.versoAtual = 0;   // recomeça a letra
+
+    mostrarVerso();
+    atualizarBarras();
+}
+
+function multiplicadorCosmo() {
+    const c = estado.combo;
+    const ppm = calcularPPM();
+    const porCombo = c >= 60 ? 2 : c >= 35 ? 1.7 : c >= 20 ? 1.4 : c >= 10 ? 1.2 : 1;
+    const porVelocidade = ppm >= 60 ? 2 : ppm >= 40 ? 1.6 : ppm >= 25 ? 1.3 : 1;
+    return Math.min(4, Math.round(porCombo * porVelocidade * 100) / 100);
+}
+
+/* PPM da CASA atual — nunca dos totais do jogo, senão o número infla ao trocar
+   de casa (mistura acertos de todas as casas com o tempo de uma só). */
+function calcularPPM() {
+    if (!estado.inicioCasa) return 0;
+    const minutos = (Date.now() - estado.inicioCasa) / 60000;
+    if (minutos <= 0) return 0;
+    const ppm = Math.round((estado.acertosCasa / 5) / minutos);
+    return Math.max(0, Math.min(ppm, 999));
+}
+
+function calcularPrecisaoCasa() {
+    const total = estado.acertosCasa + estado.errosCasa;
+    return total ? Math.round((estado.acertosCasa / total) * 100) : 100;
+}
+
+/* ==================================================================
+   10) PINTAR A TELA
+   ================================================================== */
+
+function atualizarBarras() {
+    const pHeroi = (estado.vidaHeroi / estado.vidaMaximaHeroi) * 100;
+    el.barraHeroi.style.width = pHeroi + "%";
+    el.barraHeroi.className = pHeroi <= 34 ? "critica" : pHeroi <= 67 ? "baixa" : "";
+    el.vidasHeroi.textContent = `${estado.vidaHeroi} de ${estado.vidaMaximaHeroi} de vida`;
+
+    const pVilao = (estado.vidaVilao / estado.vidaMaximaVilao) * 100;
+    el.barraVilao.style.width = pVilao + "%";
+    el.barraVilao.className = pVilao <= 34 ? "critica" : pVilao <= 67 ? "baixa" : "";
+    el.vidasVilao.textContent = `${Math.ceil(pVilao)}% de cosmo`;
+
+    const nivel = estado.combo >= 35 ? 3 : estado.combo >= 20 ? 2 : estado.combo >= 10 ? 1 : 0;
+    el.auraHeroi.className = "aura" + (nivel ? " n" + nivel : "");
+}
+
+function atualizarNumeros() {
+    el.numPrecisao.textContent = calcularPrecisaoCasa() + "%";
+    const ppm = calcularPPM();
+    el.numPPM.textContent = ppm;
+    estado.melhorPPM = Math.max(estado.melhorPPM, ppm);
+    el.numCombo.textContent = estado.combo;
+
+    const m = multiplicadorCosmo();
+    el.numCosmo.textContent = "×" + (Number.isInteger(m) ? m : m.toFixed(1));
+    el.numCosmo.classList.toggle("cosmo-alto", m >= 2);
+}
+
+/* Monta o cenário da casa: cor do céu, colunas do templo e a constelação. */
+function desenharCenario(base) {
+    const c = CENARIOS[base] || CENARIOS.gemeos;
+
+    el.arena.style.setProperty("--ceu1", c.ceu1);
+    el.arena.style.setProperty("--ceu2", c.ceu2);
+    el.arena.style.setProperty("--pedra", c.pedra);
+
+    const tracos = c.tracos.map(([a, b]) => {
+        const p1 = c.estrelas[a], p2 = c.estrelas[b];
+        return `<line class="traco" x1="${p1[0]}" y1="${p1[1]}" x2="${p2[0]}" y2="${p2[1]}"/>`;
+    }).join("");
+
+    const estrelas = c.estrelas.map(([x, y], i) => `
+        <circle class="estrela brilho" cx="${x}" cy="${y}" r="1.05"
+                style="animation-delay:${(i * 0.27).toFixed(2)}s"/>
+        <circle class="estrela" cx="${x}" cy="${y}" r="2.3" opacity=".10"/>`).join("");
+
+    // duas colunas do templo, uma de cada lado, e o piso
+    const colunas = `
+        <g opacity=".16">
+            <rect class="pedra" x="6"  y="26" width="13" height="82" rx="2"/>
+            <rect class="pedra" x="2"  y="22" width="21" height="6"  rx="2"/>
+            <rect class="pedra" x="181" y="26" width="13" height="82" rx="2"/>
+            <rect class="pedra" x="177" y="22" width="21" height="6"  rx="2"/>
+        </g>
+        <rect class="pedra" x="0" y="106" width="200" height="14" opacity=".10"/>`;
+
+    el.cenario.innerHTML = colunas + tracos + estrelas;
+}
+
+function desenharRelogio() {
+    el.relogio.innerHTML = CASAS.map((c, i) => {
+        const classe = estado.resultados[i] ? "vencida" : (i === estado.casaAtual ? "atual" : "");
+        return `<div class="hora ${classe}" title="Casa de ${c.casa}">${c.signo}</div>`;
+    }).join("");
+}
+
+function recado(texto) {
+    el.recado.textContent = texto;
+    clearTimeout(recado.relogio);
+    recado.relogio = setTimeout(() => { el.recado.textContent = ""; }, 2600);
+}
+
+function flutuar(container, texto) {
+    const span = document.createElement("span");
+    span.className = "dano-flutuante";
+    span.textContent = texto;
+    container.appendChild(span);
+    setTimeout(() => span.remove(), 700);
+}
+
+/* ==================================================================
+   11) FIM DE CASA
+   ================================================================== */
+
+function fecharCasa() {
+    estado.travado = true;
+    el.campo.disabled = true;
+}
+
+function vencerCasa() {
+    fecharCasa();
+    const casa = CASAS[estado.casaAtual];
+
+    aplicarSprite("vilao", casa.base, "caido");
+    el.spriteVilao.classList.add("derrotado");
+    poseTemporaria("heroi", "seiya", "ataque", "golpeando", 700);
+
+    estado.resultados[estado.casaAtual] = {
+        precisao: calcularPrecisaoCasa(),
+        ppm: calcularPPM(),
+        combo: estado.melhorCombo,
+        erros: estado.errosCasa
+    };
+
+    setTimeout(() => mostrarResultadoCasa(true), 900);
+}
+
+function perderCasa() {
+    fecharCasa();
+    const casa = CASAS[estado.casaAtual];
+
+    aplicarSprite("heroi", "seiya", "caido");
+    el.spriteHeroi.classList.add("derrotado");
+    poseTemporaria("vilao", casa.base, "ataque", "golpeando", 700);
+
+    setTimeout(() => mostrarResultadoCasa(false), 900);
+}
+
+function mostrarResultadoCasa(venceu) {
+    const casa = CASAS[estado.casaAtual];
+
+    el.tituloResultadoCasa.textContent = venceu
+        ? `⚡ ${casa.cavaleiro} foi derrotado!`
+        : `💔 O Seiya caiu na Casa de ${casa.casa}`;
+
+    el.textoResultadoCasa.textContent = venceu
+        ? "O relógio avançou uma hora. A próxima casa já está aberta."
+        : "A armadura não aguentou. Respire fundo, digite com calma e tente de novo — "
+          + "acertar sem pressa machuca menos do que correr errando.";
+
+    el.casaPrecisao.textContent = calcularPrecisaoCasa() + "%";
+    el.casaPPM.textContent = calcularPPM();
+    el.casaCombo.textContent = estado.melhorCombo;
+    el.casaErros.textContent = estado.errosCasa;
+
+    el.botoesCasa.innerHTML = "";
+    if (venceu) {
+        const ultima = estado.casaAtual >= CASAS.length - 1;
+        adicionarBotao(ultima ? "🏆 Ver o resultado final" : "➡️ Avançar para a próxima casa", () => {
+            if (ultima) mostrarFinal();
+            else iniciarCasa(estado.casaAtual + 1);
+        });
+    } else {
+        adicionarBotao("↻ Enfrentar de novo", () => iniciarCasa(estado.casaAtual));
+        adicionarBotao("Ver o resultado até aqui", mostrarFinal, true);
+    }
+
+    mostrarTela("telaCasa");
+}
+
+function adicionarBotao(texto, aoClicar, discreto) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = texto;
+    if (discreto) b.className = "discreto";
+    b.addEventListener("click", aoClicar);
+    el.botoesCasa.appendChild(b);
+}
+
+/* ==================================================================
+   12) TELA FINAL
+   ================================================================== */
+
+function mostrarFinal() {
+    pararFaixa();
+    const vencidas = Object.keys(estado.resultados).length;
+    const totalTeclas = estado.acertosTotais + estado.errosTotais;
+    const precisao = totalTeclas ? Math.round((estado.acertosTotais / totalTeclas) * 100) : 100;
+
+    el.tituloFinal.textContent = vencidas === CASAS.length
+        ? "🏆 Você atravessou as 12 Casas!"
+        : `⭐ Você chegou até a ${vencidas + 1}ª Casa`;
+
+    el.textoFinal.textContent = vencidas === CASAS.length
+        ? "O Santuário está aberto. Sua digitação venceu os doze Cavaleiros de Ouro."
+        : "Cada casa vencida é um pedaço de caminho. Volte e siga de onde parou.";
+
+    el.finalCasas.textContent = `${vencidas}/${CASAS.length}`;
+    el.finalPrecisao.textContent = precisao + "%";
+    el.finalPPM.textContent = estado.melhorPPM;
+    el.finalCombo.textContent = estado.melhorCombo;
+
+    el.mapaFinal.innerHTML = CASAS.map((c, i) => {
+        const r = estado.resultados[i];
+        return `<div class="casa ${r ? "ok" : ""}">
+                    <b>${c.signo} ${c.casa}</b>
+                    ${r ? `${r.precisao}% · ${r.ppm} PPM` : "não vencida"}
+                </div>`;
+    }).join("");
+
+    mostrarTela("telaFinal");
+}
+
+function zerarJogo() {
+    estado.resultados = {};
+    estado.acertosTotais = 0;
+    estado.errosTotais = 0;
+    estado.melhorCombo = 0;
+    estado.melhorPPM = 0;
+}
+
+/* ==================================================================
+   13) LIGAÇÕES E PARTIDA
+   ================================================================== */
+
+el.btnComecar.addEventListener("click", () => { zerarJogo(); iniciarCasa(0); });
+el.btnReiniciarCasa.addEventListener("click", () => iniciarCasa(estado.casaAtual));
+el.btnSair.addEventListener("click", () => { pararFaixa(); mostrarTela("telaInicio"); });
+el.btnJogarDeNovo.addEventListener("click", () => { zerarJogo(); iniciarCasa(0); });
+
+// clicar em qualquer lugar da área de digitação devolve o foco ao campo
+el.verso.addEventListener("click", () => el.campo.focus());
+
+setInterval(() => {
+    if (el.telaBatalha.classList.contains("ativa") && !estado.travado) atualizarNumeros();
+}, 900);
+
+(async function comecar() {
+    await Promise.all([descobrirSprites(), prepararMusica()]);
+    aplicarSprite("heroi", "seiya", "neutro");
+    desenharCenario(CASAS[0].base);
+    desenharRelogio();
+})();
+</script>
+</body>
+</html>

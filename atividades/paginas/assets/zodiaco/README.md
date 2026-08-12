@@ -48,17 +48,17 @@ ao lado do sprite em pé.
 | Personagem | Nome base | Situação |
 |---|---|---|
 | Seiya de Pégaso | `seiya` | ✅ as 4 poses estão aqui |
-| Mu de Áries | `aries` | ⬜ falta |
-| Aldebaran de Touro | `touro` | ⬜ falta |
+| Mu de Áries | `aries` | ✅ as 4 poses estão aqui |
+| Aldebaran de Touro | `touro` | ✅ as 4 poses estão aqui |
 | Saga de Gêmeos | `gemeos` | ✅ as 4 poses estão aqui |
 | Máscara da Morte de Câncer | `cancer` | ⬜ falta |
-| Aiolia de Leão | `leao` | ⬜ falta |
-| Shaka de Virgem | `virgem` | ⬜ falta |
+| Aiolia de Leão | `leao` | ✅ as 4 poses estão aqui |
+| Shaka de Virgem | `virgem` | ✅ as 4 poses estão aqui |
 | Dohko de Libra | `libra` | ⬜ falta |
 | Milo de Escorpião | `escorpiao` | ⬜ falta |
 | Aiolos de Sagitário | `sagitario` | ⬜ falta |
-| Shura de Capricórnio | `capricornio` | ⬜ falta |
-| Camus de Aquário | `aquario` | ⬜ falta |
+| Shura de Capricórnio | `capricornio` | ✅ as 4 poses estão aqui |
+| Camus de Aquário | `aquario` | ✅ as 4 poses estão aqui |
 | Afrodite de Peixes | `peixes` | ⬜ falta |
 
 Cada nome base gera quatro arquivos. Para `aries`, por exemplo:
@@ -87,3 +87,8 @@ passa a aparecer sozinho, sem precisar mexer em código nenhum.
 - PNG com transparência (RGBA)
 - Folha de origem quadrada — a do Seiya veio em 1024×1024
 - Sem redimensionar depois do recorte: o jogo ajusta a altura por CSS
+
+## Músicas
+
+As três aberturas (uma por idioma) ficam em `audio/`, nesta mesma pasta.
+Veja `audio/README.md` para os nomes dos arquivos e como instalar.

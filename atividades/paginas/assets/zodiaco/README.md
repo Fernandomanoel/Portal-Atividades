@@ -26,6 +26,23 @@ O script recorta os quatro quadrantes, remove o fundo verde, tira o halo
 esverdeado da borda (*despill*) e salva os PNGs já com o nome certo nesta pasta.
 O segundo argumento é o **nome base** da tabela abaixo.
 
+Depois de recortar, rode o otimizador **uma vez por personagem novo**:
+
+```bash
+python3 scripts/otimizar-sprites-zodiaco.py aries
+```
+
+Ele reduz a paleta para 64 tons e a resolução para 360px de altura, o que corta
+cerca de metade do peso sem diferença visível no tamanho em que o jogo mostra os
+personagens. Sem isso, os 13 personagens somariam quase 8 MB — pesado demais
+para abrir em máquina de laboratório.
+
+O otimizador usa **um único fator de escala por personagem**, calculado pela
+pose mais alta. Isso importa: as quatro poses saem da mesma folha, na mesma
+escala. Se cada uma fosse reduzida para a mesma altura, o personagem mudaria de
+tamanho ao trocar de pose — o sprite caído, que é baixo e largo, ficaria enorme
+ao lado do sprite em pé.
+
 ## Arquivos esperados
 
 | Personagem | Nome base | Situação |
@@ -33,7 +50,7 @@ O segundo argumento é o **nome base** da tabela abaixo.
 | Seiya de Pégaso | `seiya` | ✅ as 4 poses estão aqui |
 | Mu de Áries | `aries` | ⬜ falta |
 | Aldebaran de Touro | `touro` | ⬜ falta |
-| Saga de Gêmeos | `gemeos` | ⬜ falta |
+| Saga de Gêmeos | `gemeos` | ✅ as 4 poses estão aqui |
 | Máscara da Morte de Câncer | `cancer` | ⬜ falta |
 | Aiolia de Leão | `leao` | ⬜ falta |
 | Shaka de Virgem | `virgem` | ⬜ falta |

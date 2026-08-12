@@ -8,9 +8,9 @@ daquele bloco e faz uma transição suave quando o idioma muda.
 
 | Arquivo | Toca nas casas | Situação |
 |---|---|---|
-| `abertura-pt.mp3` | 1 a 4 — Áries, Touro, Gêmeos, Câncer | ⬜ falta |
-| `abertura-en.mp3` | 5 a 8 — Leão, Virgem, Libra, Escorpião | ⬜ falta |
-| `abertura-jp.mp3` | 9 a 12 — Sagitário, Capricórnio, Aquário, Peixes | ⬜ falta |
+| `abertura-pt.mp3` | 1 a 4 — Áries, Touro, Gêmeos, Câncer | ✅ instalada |
+| `abertura-en.mp3` | 5 a 8 — Leão, Virgem, Libra, Escorpião | ✅ instalada |
+| `abertura-jp.mp3` | 9 a 12 — Sagitário, Capricórnio, Aquário, Peixes | ✅ instalada |
 
 ## Como instalar
 
@@ -51,3 +51,25 @@ marcado com `// COLE AQUI`, dividido em `PT`, `EN` e `JP`.
 Cole os versos lá que o jogo reparte sozinho entre as quatro casas de cada
 idioma — não precisa contar nem equilibrar. No japonês, escreva em **romaji**
 (o som em letras normais), porque o teclado do laboratório não digita kana.
+
+## Como as faixas foram preparadas
+
+Os arquivos originais vinham em 322 kbps estéreo, 48 kHz, somando 27 MB. Para
+música de fundo em navegador isso é desperdício: foram recodificados para
+**96 kbps mono, 44,1 kHz**, caindo para 8,4 MB no total, sem diferença audível
+com o volume de fundo que o jogo usa.
+
+O comando, caso você troque alguma faixa:
+
+```bash
+ffmpeg -i ORIGINAL.mp3 -ac 1 -ar 44100 -b:a 96k -map_metadata -1 abertura-pt.mp3
+```
+
+O `-map_metadata -1` remove capa de álbum e etiquetas, que não servem para nada
+aqui e só pesam.
+
+## Trocar qual música toca em qual bloco
+
+É só renomear os arquivos. `abertura-pt.mp3` toca nas quatro primeiras casas,
+`abertura-en.mp3` nas quatro do meio e `abertura-jp.mp3` nas quatro últimas —
+independentemente de qual música seja.

@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missão Cavaleiros do Zodíaco - Digitação no Word</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #10142e 0%, #2c1a5e 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 92%;
+            height: 90%;
+            max-width: 1200px;
+            max-height: 780px;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.45);
+            padding: 45px;
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        :root {
+            --roxo: #4b2fa8;
+            --roxo-claro: #eee9ff;
+            --dourado: #e0a800;
+            --dourado-claro: #fff6db;
+            --verde: #1fa855;
+            --verde-claro: #e3f9ec;
+            --vermelho: #d9382b;
+            --vermelho-claro: #fdecec;
+            --cinza: #555;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--roxo) 0%, #7a5cd6 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .slide-header h1 {
+            font-size: 2.1em;
+            font-weight: 800;
+        }
+
+        .slide-header p {
+            font-size: 1em;
+            opacity: 0.95;
+        }
+
+        .emoji-large {
+            font-size: 2.6em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 10px;
+            font-size: 1.15em;
+        }
+
+        .slide-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .slide-content::-webkit-scrollbar-thumb {
+            background: var(--roxo);
+            border-radius: 10px;
+        }
+
+        .content-box {
+            padding: 22px;
+            border-radius: 14px;
+            border-left: 8px solid;
+            line-height: 1.7;
+        }
+
+        .box-roxo {
+            background: var(--roxo-claro);
+            border-left-color: var(--roxo);
+        }
+
+        .box-dourado {
+            background: var(--dourado-claro);
+            border-left-color: var(--dourado);
+        }
+
+        .box-verde {
+            background: var(--verde-claro);
+            border-left-color: var(--verde);
+        }
+
+        .content-box h3 {
+            color: var(--roxo);
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .content-box strong {
+            color: var(--roxo);
+        }
+
+        .passos-numerados {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .passo {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 16px;
+            background: #f8f7fd;
+            border-radius: 12px;
+            border-left: 5px solid var(--roxo);
+        }
+
+        .passo-numero {
+            min-width: 44px;
+            height: 44px;
+            background: var(--roxo);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+
+        .passo-texto {
+            flex: 1;
+        }
+
+        /* Caixa com o texto que o aluno vai digitar */
+        .texto-digitar {
+            background: #fdfdfd;
+            border: 2px dashed var(--roxo);
+            border-radius: 14px;
+            padding: 24px;
+            line-height: 1.85;
+        }
+
+        .texto-digitar .titulo-texto {
+            text-align: center;
+            font-weight: 800;
+            font-size: 1.3em;
+            color: var(--roxo);
+            margin-bottom: 14px;
+        }
+
+        .texto-digitar p {
+            color: #444;
+            margin-bottom: 12px;
+            text-indent: 30px;
+        }
+
+        .texto-digitar ul {
+            margin: 0 0 6px 26px;
+            color: #444;
+        }
+
+        .texto-digitar li {
+            padding: 3px 0;
+        }
+
+        .etiqueta-texto {
+            display: inline-block;
+            align-self: flex-start;
+            background: var(--dourado);
+            color: #4a3600;
+            font-weight: 700;
+            font-size: 0.9em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+
+        .cavaleiros-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .cavaleiro-tag {
+            background: var(--roxo-claro);
+            color: var(--roxo);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        /* Teclas do teclado */
+        .teclas {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
+
+        .tecla-card {
+            flex: 1;
+            min-width: 190px;
+            background: #f8f7fd;
+            border: 2px solid #ddd6f5;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .tecla-card .tecla {
+            display: inline-block;
+            background: white;
+            border: 2px solid var(--roxo);
+            border-bottom-width: 5px;
+            border-radius: 8px;
+            padding: 8px 16px;
+            font-weight: 800;
+            color: var(--roxo);
+            margin-bottom: 10px;
+        }
+
+        .tecla-card p {
+            font-size: 0.95em;
+            color: var(--cinza);
+            line-height: 1.5;
+        }
+
+        /* Checklist clicável */
+        .checklist {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: #f8f7fd;
+            border: 3px solid #ddd6f5;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .check-item:hover {
+            border-color: var(--roxo);
+        }
+
+        .check-item .icone-programa {
+            font-size: 2.2em;
+            width: 55px;
+            text-align: center;
+        }
+
+        .check-item .texto-programa {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+
+        .check-item .selo {
+            font-size: 1.6em;
+            width: 40px;
+            text-align: center;
+        }
+
+        .check-item.feito {
+            background: var(--verde-claro);
+            border-color: var(--verde);
+            text-decoration: line-through;
+            opacity: 0.75;
+        }
+
+        .contador-missao {
+            text-align: center;
+            font-weight: 700;
+            color: var(--roxo);
+            font-size: 1.15em;
+            margin-top: 5px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 40px;
+            background: rgba(0, 0, 0, 0.25);
+        }
+
+        button {
+            background: var(--dourado);
+            color: #3d2f00;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #f5c22e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(224, 168, 0, 0.45);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .slide-counter {
+            color: white;
+            font-weight: 700;
+            font-size: 1em;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 30px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--dourado);
+            transition: width 0.3s;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 25px;
+                width: 95%;
+                height: 95%;
+            }
+
+            .slide-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+
+            .slide-header h1 {
+                font-size: 1.5em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 12px;
+                padding: 15px;
+            }
+
+            .progress-bar {
+                margin: 8px 0;
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--roxo) 0%, #7a5cd6 100%);
+            color: white;
+            flex: 1;
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 25px;
+        }
+
+        .slide-capa h1 {
+            color: white;
+            font-size: 2.8em;
+        }
+
+        .slide-capa p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+
+        .slide-capa .emoji-large {
+            font-size: 3.5em;
+        }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 18px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            max-width: 580px;
+        }
+
+        .capa-box h2 {
+            color: white;
+            margin-bottom: 16px;
+            font-size: 1.4em;
+        }
+
+        .capa-box ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .capa-box li {
+            padding: 6px 0;
+            font-size: 1.1em;
+            color: white;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--roxo-claro) 0%, white 100%);
+            border: 3px solid var(--roxo);
+            border-radius: 18px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .motivacao-box h2 {
+            color: var(--roxo);
+            font-size: 2em;
+            margin-bottom: 18px;
+        }
+
+        .motivacao-box p {
+            color: var(--cinza);
+            font-size: 1.15em;
+            line-height: 1.8;
+            margin-bottom: 14px;
+        }
+
+        .motivacao-box .destaque {
+            color: var(--roxo);
+            font-weight: bold;
+        }
+
+        .aviso-adulto {
+            background: var(--vermelho-claro);
+            border-left: 6px solid var(--vermelho);
+            padding: 16px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #7a1c1f;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Voltar</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">10</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // Slide 1: Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">⭐🛡️</div>
+                        <h1>Missão: Cavaleiros do Zodíaco!</h1>
+                        <p>Treinando digitação no Word</p>
+                        <div class="capa-box">
+                            <h2>Nesta missão você vai:</h2>
+                            <ul>
+                                <li>1️⃣ Digitar um texto grande com parágrafos</li>
+                                <li>2️⃣ Usar o SHIFT para as letras maiúsculas</li>
+                                <li>3️⃣ Criar uma lista com marcadores</li>
+                                <li>4️⃣ Inserir uma imagem e salvar o arquivo</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 2: Contexto
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🌌</div>
+                        <div>
+                            <h1>Quem são os Cavaleiros?</h1>
+                            <p>Um pouquinho da história antes de começar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-roxo">
+                            <p>Os <strong>Cavaleiros do Zodíaco</strong> são guerreiros que vestem armaduras inspiradas nas constelações do céu. Cada cavaleiro protege uma constelação diferente e luta pela paz na Terra.</p>
+                        </div>
+                        <h3 style="color: var(--roxo); font-weight: 700;">Os cinco cavaleiros de bronze:</h3>
+                        <div class="cavaleiros-list">
+                            <span class="cavaleiro-tag">🐴 Seiya de Pégaso</span>
+                            <span class="cavaleiro-tag">🐉 Shiryu de Dragão</span>
+                            <span class="cavaleiro-tag">🦢 Hyoga de Cisne</span>
+                            <span class="cavaleiro-tag">🔥 Ikki de Fênix</span>
+                            <span class="cavaleiro-tag">🐍 Shun de Andrômeda</span>
+                        </div>
+                        <div class="content-box box-dourado">
+                            <p>Repare que os nomes começam com <strong>letra maiúscula</strong>. Você vai precisar da tecla <strong>SHIFT</strong> para digitá-los!</p>
+                        </div>
+                        <div class="aviso-adulto">
+                            👨‍👩‍👧 Peça para um adulto ficar por perto enquanto você faz essa atividade!
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 3: Preparando o Word
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📝</div>
+                        <div>
+                            <h1>Preparando o Word</h1>
+                            <p>Deixando a folha pronta para a batalha</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique no botão <strong>Iniciar</strong> e procure por <strong>Word</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>Documento em branco</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Na aba <strong>Página Inicial</strong>, escolha a fonte <strong>Arial</strong> e o tamanho <strong>14</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Pronto! Agora é só começar a digitar o texto dos próximos slides.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 4: As teclas da missão
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⌨️</div>
+                        <div>
+                            <h1>As Teclas da Missão</h1>
+                            <p>Conheça suas armas antes de digitar</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="teclas">
+                            <div class="tecla-card">
+                                <div class="tecla">SHIFT ⇧</div>
+                                <p>Segure e aperte a letra para escrever em <strong>MAIÚSCULA</strong>. Use no começo de cada nome.</p>
+                            </div>
+                            <div class="tecla-card">
+                                <div class="tecla">ENTER ↵</div>
+                                <p>Pula para a linha de baixo. Use para começar um <strong>novo parágrafo</strong>.</p>
+                            </div>
+                            <div class="tecla-card">
+                                <div class="tecla">ESPAÇO</div>
+                                <p>A barra grandona. Dá <strong>um espaço só</strong> entre as palavras.</p>
+                            </div>
+                        </div>
+                        <div class="teclas">
+                            <div class="tecla-card">
+                                <div class="tecla">BACKSPACE ⌫</div>
+                                <p>Apaga a letra que está <strong>antes</strong> do cursor. Errou? É só apagar!</p>
+                            </div>
+                            <div class="tecla-card">
+                                <div class="tecla">TAB ⇥</div>
+                                <p>Dá aquele espaço maior no <strong>começo do parágrafo</strong>.</p>
+                            </div>
+                            <div class="tecla-card">
+                                <div class="tecla">Ç e acentos</div>
+                                <p>O <strong>Ç</strong> fica do lado do L. Para <strong>ó</strong>, aperte o acento e depois a letra.</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 5: Texto 1
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✍️</div>
+                        <div>
+                            <h1>Texto 1: A Saga Começa</h1>
+                            <p>Digite o título e os dois parágrafos</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <span class="etiqueta-texto">Digite exatamente como está aqui</span>
+                        <div class="texto-digitar">
+                            <div class="titulo-texto">Os Cavaleiros do Zodíaco</div>
+                            <p>Há muito tempo, guerreiros corajosos usam armaduras sagradas para proteger a Terra. Essas armaduras são chamadas de Cloths e cada uma representa uma constelação do céu. Quando o cavaleiro veste a sua armadura, ele ganha uma força incrível para defender quem precisa de ajuda.</p>
+                            <p>O cavaleiro mais conhecido é Seiya, o Cavaleiro de Pégaso. Ele é teimoso, nunca desiste e sempre levanta depois de cair. Ao lado dos amigos Shiryu, Hyoga, Shun e Ikki, ele enfrenta desafios enormes e aprende que a amizade é a maior força de todas.</p>
+                        </div>
+                        <div class="content-box box-dourado">
+                            <p>💡 Aperte <strong>TAB</strong> no começo de cada parágrafo e <strong>ENTER</strong> só quando terminar o parágrafo inteiro.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 6: Texto 2 (lista)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📋</div>
+                        <div>
+                            <h1>Texto 2: A Lista dos Cavaleiros</h1>
+                            <p>Agora com marcadores (as bolinhas)</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Pule uma linha e digite o subtítulo: <strong>Os Cinco Cavaleiros de Bronze</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Na aba <strong>Página Inicial</strong>, clique no botão de <strong>Marcadores</strong> (as bolinhas ⦁).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Digite cada nome e aperte <strong>ENTER</strong> para criar a próxima bolinha.</div>
+                            </div>
+                        </div>
+                        <div class="texto-digitar">
+                            <div class="titulo-texto">Os Cinco Cavaleiros de Bronze</div>
+                            <ul>
+                                <li>Seiya de Pégaso, o cavaleiro que nunca desiste.</li>
+                                <li>Shiryu de Dragão, o mais calmo e sábio do grupo.</li>
+                                <li>Hyoga de Cisne, que domina o poder do gelo.</li>
+                                <li>Shun de Andrômeda, gentil e muito corajoso.</li>
+                                <li>Ikki de Fênix, que sempre renasce mais forte.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 7: Formatação
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎨</div>
+                        <div>
+                            <h1>Deixando o Texto Bonito</h1>
+                            <p>Formatação do título e dos nomes</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Selecione o título <strong>Os Cavaleiros do Zodíaco</strong> passando o mouse por cima dele com o botão apertado.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>N</strong> (negrito), aumente para o tamanho <strong>20</strong> e clique em <strong>centralizar</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Selecione o subtítulo <strong>Os Cinco Cavaleiros de Bronze</strong> e deixe também em negrito.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Na lista, selecione o nome de cada cavaleiro (só o nome!) e clique em <strong>I</strong> (itálico).</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-verde">
+                            <p>✅ Errou a formatação? Aperte <strong>Ctrl + Z</strong> para desfazer e tente de novo.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 8: Imagem e salvar
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖼️</div>
+                        <div>
+                            <h1>Imagem e Hora de Salvar</h1>
+                            <p>Terminando a missão do jeito certo</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-roxo">
+                            <h3>Inserindo a imagem</h3>
+                            <p>Peça ajuda a um adulto para procurar na internet uma imagem dos Cavaleiros do Zodíaco e salvá-la no computador. Depois, no Word, clique em <strong>Inserir</strong> → <strong>Imagens</strong> → <strong>Este dispositivo</strong> e escolha a imagem.</p>
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Coloque a imagem no final do texto e ajuste o tamanho puxando os cantinhos dela.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique em <strong>Arquivo</strong> → <strong>Salvar Como</strong> e escolha a <strong>Área de Trabalho</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Dê o nome de <strong>Cavaleiros do Zodiaco</strong> e clique em <strong>Salvar</strong>.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // Slide 9: Checklist
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✅</div>
+                        <div>
+                            <h1>Conferindo a Missão</h1>
+                            <p>Faça cada tarefa no computador e marque aqui</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="checklist" id="checklist-zodiaco">
+                            <div class="check-item" data-item="paragrafos">
+                                <div class="icone-programa">✍️</div>
+                                <div class="texto-programa">Digitei o título e os 2 parágrafos do Texto 1</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="maiusculas">
+                                <div class="icone-programa">⇧</div>
+                                <div class="texto-programa">Usei o SHIFT nas letras maiúsculas dos nomes</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="lista">
+                                <div class="icone-programa">📋</div>
+                                <div class="texto-programa">Criei a lista dos 5 cavaleiros com marcadores</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="formatacao">
+                                <div class="icone-programa">🎨</div>
+                                <div class="texto-programa">Deixei o título em negrito e centralizado</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="imagem">
+                                <div class="icone-programa">🖼️</div>
+                                <div class="texto-programa">Inseri uma imagem no final do texto</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                            <div class="check-item" data-item="salvar">
+                                <div class="icone-programa">💾</div>
+                                <div class="texto-programa">Salvei o arquivo na área de trabalho</div>
+                                <div class="selo">⬜</div>
+                            </div>
+                        </div>
+                        <div class="contador-missao" id="contadorZodiaco">0 de 6 concluídas</div>
+                    </div>
+                `
+            },
+
+            // Slide 10: Conclusão
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.5em; margin-bottom: 16px;">🏆</div>
+                            <h2>Missão Cumprida, Cavaleiro!</h2>
+                            <p>Você treinou a <span class="destaque">digitação</span>, usou o <span class="destaque">SHIFT</span>, criou uma <span class="destaque">lista com marcadores</span> e ainda formatou tudo direitinho.</p>
+                            <p>Assim como os cavaleiros, quem treina todo dia fica cada vez mais forte. Mostre o seu documento para um adulto! ⭐</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            ativarChecklists();
+            updateControls();
+        }
+
+        function ativarChecklists() {
+            document.querySelectorAll('.check-item').forEach((item) => {
+                item.addEventListener('click', () => {
+                    item.classList.toggle('feito');
+                    const selo = item.querySelector('.selo');
+                    selo.textContent = item.classList.contains('feito') ? '✅' : '⬜';
+                    atualizarContador(item.closest('.checklist'));
+                });
+            });
+        }
+
+        function atualizarContador(checklist) {
+            if (!checklist) return;
+            const total = checklist.querySelectorAll('.check-item').length;
+            const feitos = checklist.querySelectorAll('.check-item.feito').length;
+            const contador = document.getElementById('contadorZodiaco');
+            if (contador) {
+                contador.textContent = `${feitos} de ${total} concluídas`;
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

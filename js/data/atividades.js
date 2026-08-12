@@ -468,6 +468,13 @@ const ATIVIDADES = [
         arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
       },
       {
+        titulo: "Missão: Digitação com os Cavaleiros do Zodíaco",
+        descricao:
+          "Atividade guiada para crianças treinarem digitação no Word com textos dos Cavaleiros do Zodíaco: parágrafos com TAB, uso do SHIFT nas maiúsculas, lista com marcadores, formatação e inserção de imagem, com checklist interativo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-cavaleiros-zodiaco.html",
+      },
+      {
         titulo: "Missão: Computador Arrumado",
         descricao:
           "Atividade guiada para crianças aprenderem a desinstalar programas (Adobe, WinRAR, McAfee) pelas Configurações do Windows e a ativar os atalhos padrão da área de trabalho, com checklist interativo.",

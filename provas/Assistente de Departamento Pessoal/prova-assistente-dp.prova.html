@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Assistente de Departamento Pessoal - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0c2d5e 0%, #071b3a 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #1d4ed8 0%, #60a5fa 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #1d4ed8;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #eff6ff;
+        border: 2px solid #bfdbfe;
+        border-left: 6px solid #1d4ed8;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #0f766e;
+    }
+
+    .question-card h3 {
+        color: #0c2d5e;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #134e4a; }
+
+    .tema {
+        display: inline-block;
+        background: #dbeafe;
+        color: #1e3a8a;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #ccfbf1; color: #115e59; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #60a5fa;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #1d4ed8; }
+    .question-card.pratica .caso { border-color: #14b8a6; }
+    .question-card.pratica .caso strong { color: #0f766e; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #065f46;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #047857;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+    .orientacao code {
+        background: #d1fae5;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+    }
+
+    /* --- Ficha de dados do cliente / da dívida --- */
+    .ficha {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+    }
+
+    .ficha-linha {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: clamp(.85rem, 2.4vw, .97em);
+    }
+
+    .ficha-linha:last-child { border-bottom: none; }
+    .ficha-linha:nth-child(even) { background: #f8fafc; }
+    .ficha-linha .rot { color: #64748b; }
+    .ficha-linha .val { font-weight: 700; color: #0f172a; text-align: right; }
+    .ficha-linha .val.alerta { color: #b91c1c; }
+
+    /* --- Campos de resposta --- */
+    .campos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: 14px;
+        margin-bottom: 6px;
+    }
+
+    .campo-box {
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 13px 15px;
+    }
+
+    .campo-box label {
+        display: block;
+        font-size: clamp(.78rem, 2.3vw, .88em);
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .campo-box .dica-campo {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: .92em;
+        margin-top: 2px;
+    }
+
+    .campo-box input {
+        width: 100%;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3vw, 1.15em);
+        font-weight: 700;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .campo-box input:focus { border-color: #0f766e; box-shadow: 0 0 0 4px rgba(15,118,110,.15); }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #1d4ed8; background: #eff6ff; }
+    .question-card.pratica .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+
+    .option-item input[type="radio"] {
+        accent-color: #1d4ed8;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #0f766e; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #1d4ed8;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #1e3a8a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(180, 83, 9, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #1d4ed8; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #eff6ff;
+        border: 2px solid #1d4ed8;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #0c2d5e; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #60a5fa; background: #eff6ff; color: #1e3a8a; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📑 Prova de Assistente de Departamento Pessoal</h1>
+        <p>Rotinas trabalhistas, folha, benefícios e atendimento ao colaborador</p>
+        <div class="aviso-tempo">10 questões · 9 objetivas + 1 prática · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaDP">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Benefícios · Vale-transporte</span>
+                <p class="enunciado">Sobre o desconto do vale-transporte na folha, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) O desconto é de até 6% sobre a remuneração total, incluindo horas extras e demais adicionais do mês.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) O benefício é obrigatório apenas para as empresas com mais de cinquenta empregados registrados.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) O empregado que recebe vale-transporte não pode, em nenhuma hipótese, optar por deixar de recebê-lo.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) O desconto é de até 6% do salário básico, cabendo à empresa arcar com o que exceder esse limite.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Adicionais</span>
+                <p class="enunciado">
+                    Sobre os adicionais de insalubridade e de periculosidade, a alternativa correta é:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) A insalubridade é de 30% sobre o salário base e a periculosidade é de 40% sobre o salário mínimo.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) A periculosidade é de 30% do salário base; a insalubridade é de 10%, 20% ou 40% do salário mínimo.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) Os dois adicionais são de 30% e podem ser acumulados livremente quando houver os dois riscos.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) A insalubridade é fixada em 20% do salário base, seja qual for o grau apurado na perícia técnica.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Jornada · Adicional noturno</span>
+                <p class="enunciado">Para o trabalhador urbano, sobre o trabalho noturno é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) A hora noturna é reduzida para 52 minutos e 30 segundos e o adicional mínimo é de 20%.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) O adicional é de 50% e a hora noturna tem a mesma duração da diurna, com 60 minutos cheios.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) O período noturno vai das 20h às 4h, com adicional de 20% sobre o valor da hora normal.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) O adicional só é devido a quem trabalha exclusivamente à noite, em todos os dias da semana.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Rescisão</span>
+                <p class="enunciado">Qual é o prazo legal para o pagamento das verbas rescisórias?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Até 30 dias corridos, contados a partir do último dia efetivamente trabalhado pelo empregado.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) 48 horas quando o aviso é trabalhado e 10 dias quando o aviso prévio é indenizado pela empresa.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) Até 10 dias corridos contados do término do contrato, em qualquer modalidade de aviso prévio.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) Não há prazo legal; empresa e empregado combinam a data que for mais conveniente para ambos.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">eSocial</span>
+                <p class="enunciado">Qual é o prazo para informar a admissão de um empregado no eSocial?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Em até cinco dias úteis após o início efetivo das atividades do empregado na empresa.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) Até o dia imediatamente anterior ao início das atividades do empregado na empresa.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) Junto com o envio da primeira folha de pagamento, no mês seguinte ao da contratação.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) Em até 30 dias, mesmo prazo previsto para o registro na Carteira de Trabalho digital.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Estabilidade</span>
+                <p class="enunciado">Sobre as estabilidades provisórias no emprego, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) A estabilidade da gestante vai da confirmação da gravidez até o término da licença-maternidade.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) O membro da CIPA eleito tem estabilidade apenas durante o mandato, sem qualquer extensão depois.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) O empregado afastado por acidente de trabalho tem estabilidade de seis meses após o retorno.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) A gestante tem estabilidade da confirmação da gravidez até cinco meses após o parto.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Férias</span>
+                <p class="enunciado">Sobre a concessão das férias, a alternativa correta é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) Devem ser comunicadas por escrito ao empregado com pelo menos 30 dias de antecedência.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) Podem ser concedidas com aviso de 48 horas, desde que o terço constitucional seja pago.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) Podem iniciar em qualquer data, inclusive no dia anterior a feriado ou ao descanso semanal.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) A comunicação é dispensável quando o período está definido em acordo coletivo da categoria.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="chapter" id="q8">
+            <div class="question-card">
+                <h3>Questão 8 de 10</h3>
+                <span class="tema">Horas extras</span>
+                <p class="enunciado">Sobre a jornada extraordinária, é correto afirmar:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) O adicional mínimo é de 20% e as horas podem ser quitadas como abono no final do ano.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) O banco de horas pode ser instituído por decisão unilateral da empresa, sem acordo com o empregado.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) O adicional mínimo é de 50% e o limite legal é de duas horas extras por dia de trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Não existe limite diário de horas extras quando há concordância expressa do empregado.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="chapter" id="q9">
+            <div class="question-card">
+                <h3>Questão 9 de 10</h3>
+                <span class="tema">Faltas · Atestado</span>
+                <p class="enunciado">
+                    Sobre o atestado médico apresentado para justificar uma falta, é correto afirmar:
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9" value="A"> A) Só é aceito quando emitido por médico do convênio contratado pela própria empresa.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="B"> B) Emitido por profissional habilitado, justifica a falta e não permite o desconto do dia.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="C"> C) Justifica a falta, mas a empresa ainda pode descontar o descanso semanal remunerado da semana.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="D"> D) Deve ser entregue em até dez dias corridos, conforme prazo previsto expressamente na CLT.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 — PRÁTICA -->
+        <div class="chapter" id="q10">
+            <div class="question-card pratica">
+                <h3>Questão 10 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🗣️ Atendimento e reclamações no DP</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Leia a situação abaixo. Você é o assistente de Departamento Pessoal que está no atendimento.
+                    Responda às <strong>três etapas</strong> do caso, na ordem: como agir no primeiro momento,
+                    o que verificar e como encerrar o atendimento.
+                    <ul>
+                        <li>Cada etapa vale <strong>1/3 do ponto</strong> da questão.</li>
+                        <li>Considere sempre a conduta correta do setor: sigilo, escuta, registro e prazo de retorno.</li>
+                    </ul>
+                </div>
+
+                <div class="caso">
+                    <strong>Situação.</strong> Uma colaboradora chega ao balcão do DP visivelmente alterada, falando
+                    alto na frente de outros funcionários. Ela afirma que o desconto do vale-transporte veio maior
+                    do que deveria nos últimos dois meses e diz que <strong>já reclamou duas vezes com a chefia</strong>,
+                    sem receber nenhum retorno.
+                </div>
+
+                <p class="enunciado"><strong>a)</strong> Qual deve ser a sua primeira atitude?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10a" value="A"> A) Explicar o cálculo ali mesmo, no balcão, para que os demais funcionários também aprendam a conferir.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="B"> B) Orientar que procure o sindicato, pois reclamação sobre desconto não é atribuição do DP.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="C"> C) Conduzi-la a uma sala reservada, ouvir sem interromper e registrar a reclamação por escrito.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="D"> D) Pedir que volte outro dia mais calma, já que não se atende quem chega alterado ao setor.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>b)</strong> O que você deve verificar antes de dar qualquer resposta?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10b" value="A"> A) Conferir os holerites do período, o percentual descontado e o recibo de entrega do benefício.</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="B"> B) Aguardar a manifestação da chefia, já que a colaboradora reclamou primeiro com a liderança.</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="C"> C) Perguntar aos colegas do mesmo setor se eles também notaram diferença no próprio desconto.</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="D"> D) Encaminhar direto ao jurídico, pelo risco de virar uma reclamação trabalhista mais adiante.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Como encerrar corretamente o atendimento?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10c" value="A"> A) Corrigir a folha apenas se ela apresentar advogado ou protocolar uma reclamação formal.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="B"> B) Informar o resultado apenas verbalmente, evitando gerar documento escrito sobre o caso.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="C"> C) Devolver o valor em dinheiro, por fora da folha, para resolver a situação com mais rapidez.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="D"> D) Dar um prazo de retorno, formalizar a resposta e, se confirmado o erro, acertar na próxima folha.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">
+                    O gabarito não é exibido. No caso prático, cada etapa vale 1/3 do ponto —
+                    o quadro mostra quantas etapas você acertou.
+                </p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Departamento Pessoal</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+
+    /* ---- Gabarito das 8 objetivas ---- */
+    const gabarito = {
+        p1: "D", p2: "B", p3: "A", p4: "C", p5: "B",
+        p6: "D", p7: "A", p8: "C", p9: "B"
+    };
+
+    const temas = {
+        p1: "Vale-transporte", p2: "Adicionais", p3: "Ad. noturno", p4: "Rescisão", p5: "eSocial",
+        p6: "Estabilidade", p7: "Férias", p8: "Horas extras", p9: "Atestado"
+    };
+
+    /* ---- Respostas das partes práticas ---- */
+    const PRATICAS = {
+        q10: {
+            tema: "Atendimento",
+            escolhas: [
+                { nome: "p10a", certo: "C" },   // acolher em local reservado e registrar
+                { nome: "p10b", certo: "A" },   // conferir holerite, percentual e recibo
+                { nome: "p10c", certo: "D" }    // prazo, resposta formal e acerto em folha
+            ]
+        }
+    };
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= 10) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+            document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaDP');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- 8 objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- Q10: 3 etapas do caso prático, valendo 1/3 do ponto cada ---
+        const q10 = PRATICAS.q10;
+        let partes10 = 0;
+        q10.escolhas.forEach(e => {
+            const m = form.querySelector(`input[name="${e.nome}"]:checked`);
+            if (!m) semResposta++;
+            if (m && m.value === e.certo) partes10++;
+        });
+        nota += partes10 / 3;
+        detalhe.push({
+            rotulo: "Q10", tema: q10.tema,
+            estado: partes10 === 3 ? "ok" : (partes10 === 0 ? "nao" : "parcial"),
+            texto: `${partes10}/3`
+        });
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.slice(0, 9).filter(d => d.estado === "ok").length;
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 9 objetivas · Q10 (caso prático): ${partes10}/3`;
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo das rotinas de departamento pessoal.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Revise as rotinas trabalhistas assinaladas em vermelho.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        // A parte prática é o núcleo do módulo: avisa quando ela foi mal,
+        // mesmo que a nota geral tenha ficado boa por causa das objetivas.
+        if (partes10 <= 1) {
+            msg.textContent += ' Atenção: reveja a conduta no atendimento (Q10) — acolher em local ' +
+                               'reservado, apurar nos documentos e formalizar a resposta com prazo.';
+        }
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // as setas não devem trocar de questão enquanto o aluno digita nos campos
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prova de Recursos Humanos - 10 Questões</title>
+<title>Prova de Gestão de Pessoas - 10 Questões</title>
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background: linear-gradient(135deg, #0f766e 0%, #134e4a 100%);
+        background: linear-gradient(135deg, #5b21b6 0%, #3b0764 100%);
         color: #333;
         min-height: 100vh;
         padding: 20px;
@@ -25,7 +25,7 @@
     }
 
     header {
-        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+        background: linear-gradient(135deg, #5b21b6 0%, #8b5cf6 100%);
         color: white;
         padding: clamp(22px, 4vw, 35px);
         border-radius: 12px;
@@ -56,7 +56,7 @@
     }
 
     .progress-bar {
-        background: #0f766e;
+        background: #5b21b6;
         height: 100%;
         width: 10%;
         transition: width 0.3s ease;
@@ -73,22 +73,22 @@
     .question-card {
         background: #f8fafc;
         border: 2px solid #e2e8f0;
-        border-left: 6px solid #0f766e;
+        border-left: 6px solid #5b21b6;
         padding: clamp(18px, 3.5vw, 25px);
         border-radius: 12px;
         margin-bottom: 25px;
     }
 
     .question-card h3 {
-        color: #134e4a;
+        color: #3b0764;
         margin-bottom: 8px;
         font-size: clamp(1rem, 3vw, 1.25em);
     }
 
     .tema {
         display: inline-block;
-        background: #ccfbf1;
-        color: #115e59;
+        background: #ede9fe;
+        color: #4c1d95;
         border-radius: 999px;
         padding: 3px 12px;
         font-size: clamp(.68rem, 2vw, .78rem);
@@ -107,7 +107,7 @@
 
     .caso {
         background: #fff;
-        border: 1px dashed #14b8a6;
+        border: 1px dashed #8b5cf6;
         border-radius: 10px;
         padding: 14px 16px;
         margin-bottom: 18px;
@@ -116,7 +116,7 @@
         color: #0f172a;
     }
 
-    .caso strong { color: #0f766e; }
+    .caso strong { color: #5b21b6; }
 
     .options-list {
         list-style: none;
@@ -140,12 +140,12 @@
     }
 
     .option-item:hover {
-        border-color: #0f766e;
-        background: #f0fdfa;
+        border-color: #5b21b6;
+        background: #f5f3ff;
     }
 
     .option-item input[type="radio"] {
-        accent-color: #0f766e;
+        accent-color: #5b21b6;
         width: 18px;
         height: 18px;
         margin-top: 2px;
@@ -164,7 +164,7 @@
     }
 
     button {
-        background: #0f766e;
+        background: #5b21b6;
         color: white;
         border: none;
         padding: 12px 28px;
@@ -177,7 +177,7 @@
     }
 
     button:hover:not(:disabled) {
-        background: #115e59;
+        background: #4c1d95;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
     }
@@ -191,19 +191,19 @@
 
     #counterDisplay {
         font-weight: 700;
-        color: #0f766e;
+        color: #5b21b6;
         font-size: clamp(.82rem, 2.4vw, .95rem);
     }
 
     .summary-box {
-        background: #f0fdfa;
-        border: 2px solid #0f766e;
+        background: #f5f3ff;
+        border: 2px solid #5b21b6;
         border-radius: 12px;
         padding: clamp(22px, 4vw, 34px);
         text-align: center;
     }
 
-    .summary-box h2 { color: #134e4a; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+    .summary-box h2 { color: #3b0764; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
 
     .score-display {
         font-size: clamp(2.6rem, 12vw, 3.8em);
@@ -236,7 +236,7 @@
         text-align: center;
     }
 
-    .revisao-item.ok  { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.ok  { border-color: #059669; background: #f5f3ff; color: #065f46; }
     .revisao-item.nao { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
     .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
 
@@ -260,8 +260,8 @@
 <body>
 <div class="container">
     <header>
-        <h1>👥 Prova de Recursos Humanos</h1>
-        <p>Avaliação técnica: legislação trabalhista, indicadores e gestão de pessoas</p>
+        <h1>🧭 Prova de Gestão de Pessoas</h1>
+        <p>Motivação, liderança, avaliação de desempenho e desenvolvimento de equipes</p>
         <div class="aviso-tempo">10 questões · nota de 0 a 10 · aprovação a partir de 7</div>
     </header>
 
@@ -269,24 +269,21 @@
         <div class="progress-bar" id="progressBar"></div>
     </div>
 
-    <form id="provaRH">
+    <form id="provaGP">
 
         <!-- Q1 -->
         <div class="chapter active" id="q1">
             <div class="question-card">
                 <h3>Questão 1 de 10</h3>
-                <span class="tema">Contrato de trabalho</span>
-                <div class="caso">
-                    Um candidato foi contratado com <strong>contrato de experiência de 45 dias</strong>. Ao final desse
-                    prazo, o gestor pediu para prorrogar por mais 45 dias. Passados os 90 dias, ficou em dúvida se
-                    poderia prorrogar novamente por mais 30 dias.
-                </div>
-                <p class="enunciado">De acordo com a CLT, qual é a orientação correta do RH?</p>
+                <span class="tema">Motivação · Herzberg</span>
+                <p class="enunciado">
+                    Segundo a Teoria dos Dois Fatores de Herzberg, qual afirmação está correta?
+                </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Pode prorrogar quantas vezes quiser, desde que não ultrapasse 1 ano de contrato.</label>
-                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Pode prorrogar mais uma vez, pois o limite legal é de 120 dias.</label>
-                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Não pode: o contrato de experiência admite uma única prorrogação e o total não pode passar de 90 dias. Após isso, o contrato passa a vigorar por prazo indeterminado.</label>
-                    <label class="option-item"><input type="radio" name="p1" value="D"> D) Deve encerrar o contrato obrigatoriamente no 90º dia e aguardar o prazo de seis meses antes de recontratar o mesmo profissional, sem possibilidade de efetivação direta.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) O salário é o principal fator motivacional e, quanto maior ele for, maior será a motivação ao longo do tempo.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Reconhecimento e responsabilidade são fatores higiênicos, ligados à manutenção do ambiente físico de trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Fatores higiênicos evitam a insatisfação, mas não motivam; a motivação vem de realização e reconhecimento.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) Fatores higiênicos e motivacionais produzem exatamente o mesmo efeito na equipe, mudando apenas o custo de implantação.</label>
                 </div>
             </div>
         </div>
@@ -295,17 +292,15 @@
         <div class="chapter" id="q2">
             <div class="question-card">
                 <h3>Questão 2 de 10</h3>
-                <span class="tema">Rescisão · Aviso prévio</span>
-                <div class="caso">
-                    Um empregado com <strong>7 anos completos</strong> na mesma empresa foi dispensado
-                    <strong>sem justa causa</strong>.
-                </div>
-                <p class="enunciado">Conforme a Lei nº 12.506/2011, quantos dias de aviso prévio lhe são devidos?</p>
+                <span class="tema">Liderança situacional</span>
+                <p class="enunciado">
+                    Na Liderança Situacional de Hersey e Blanchard, o que define o estilo que o líder deve adotar?
+                </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p2" value="A"> A) 30 dias, pois o aviso prévio é sempre fixo.</label>
-                    <label class="option-item"><input type="radio" name="p2" value="B"> B) 45 dias.</label>
-                    <label class="option-item"><input type="radio" name="p2" value="C"> C) 51 dias (30 dias + 3 dias por ano completo de serviço).</label>
-                    <label class="option-item"><input type="radio" name="p2" value="D"> D) 90 dias, que é o teto legal aplicado a partir do 5º ano.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) O líder ajusta o estilo conforme a maturidade do liderado naquela tarefa, sendo mais diretivo ou mais delegativo.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) O líder mantém um único estilo com toda a equipe e em todas as tarefas, pois isso garante coerência e imparcialidade.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) O estilo delegativo é sempre superior aos demais, porque demonstra confiança e desenvolve autonomia em qualquer caso.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) A escolha do estilo depende do temperamento pessoal do líder, e não da situação nem do preparo do liderado.</label>
                 </div>
             </div>
         </div>
@@ -314,15 +309,18 @@
         <div class="chapter" id="q3">
             <div class="question-card">
                 <h3>Questão 3 de 10</h3>
-                <span class="tema">Férias · Reforma trabalhista</span>
-                <p class="enunciado">
-                    Após a Reforma Trabalhista (Lei nº 13.467/2017), o fracionamento das férias passou a seguir qual regra?
-                </p>
+                <span class="tema">Vieses da avaliação</span>
+                <div class="caso">
+                    Um gestor considera que a colaboradora é extremamente organizada e, por isso, atribui a ela
+                    <strong>notas altas em todos os critérios</strong> da avaliação — inclusive em comunicação e
+                    trabalho em equipe, que ele nunca observou de perto.
+                </div>
+                <p class="enunciado">Que viés de avaliação está descrito?</p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Podem ser divididas em até 3 períodos, havendo concordância do empregado, sendo um deles de no mínimo 14 dias corridos e os demais de no mínimo 5 dias corridos cada.</label>
-                    <label class="option-item"><input type="radio" name="p3" value="B"> B) As férias não podem mais ser fracionadas em nenhuma hipótese.</label>
-                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Podem ser divididas livremente em quantos períodos a empresa desejar, sem prazo mínimo.</label>
-                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Podem ser divididas em até 2 períodos iguais de 15 dias por decisão exclusiva do empregador, dispensada a concordância do empregado e a comunicação prévia por escrito.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Tendência central, que é a inclinação a concentrar todas as notas na média, evitando os extremos da escala.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) Efeito recência, em que o desempenho das últimas semanas pesa mais que o do restante do período avaliado.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Erro de contraste, em que o avaliado é comparado aos colegas em vez de ser medido pelos critérios definidos.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Efeito halo, em que uma característica marcante contamina a nota dos demais critérios avaliados.</label>
                 </div>
             </div>
         </div>
@@ -331,20 +329,15 @@
         <div class="chapter" id="q4">
             <div class="question-card">
                 <h3>Questão 4 de 10</h3>
-                <span class="tema">Indicadores · Rotatividade</span>
-                <div class="caso">
-                    Em determinado mês, uma empresa registrou <strong>8 admissões</strong> e <strong>12 desligamentos</strong>,
-                    mantendo um <strong>efetivo médio de 200 colaboradores</strong>.
-                </div>
+                <span class="tema">Gestão por competências</span>
                 <p class="enunciado">
-                    Aplicando a fórmula clássica de turnover — [(admissões + desligamentos) ÷ 2] ÷ efetivo médio × 100 —
-                    qual é o índice de rotatividade do período?
+                    No modelo de gestão por competências (CHA), qual afirmação é correta?
                 </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p4" value="A"> A) 2%</label>
-                    <label class="option-item"><input type="radio" name="p4" value="B"> B) 20%</label>
-                    <label class="option-item"><input type="radio" name="p4" value="C"> C) 10%</label>
-                    <label class="option-item"><input type="radio" name="p4" value="D"> D) 5%</label>
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Competência equivale à escolaridade formal: quanto maior a titulação do profissional, maior a sua competência.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) Competência reúne conhecimento, habilidade e atitude, e só se confirma na entrega efetiva ao trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) O mapeamento de competências substitui a descrição de cargos, que se torna dispensável na organização.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) O gap de competências é a diferença entre o salário pago e o praticado pelo mercado no mesmo cargo.</label>
                 </div>
             </div>
         </div>
@@ -353,16 +346,13 @@
         <div class="chapter" id="q5">
             <div class="question-card">
                 <h3>Questão 5 de 10</h3>
-                <span class="tema">Comportamento organizacional</span>
-                <p class="enunciado">
-                    Qual alternativa distingue corretamente <strong>cultura organizacional</strong> de
-                    <strong>clima organizacional</strong>?
-                </p>
+                <span class="tema">Feedback</span>
+                <p class="enunciado">Qual prática caracteriza um feedback bem conduzido?</p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p5" value="A"> A) São sinônimos; a diferença é apenas o termo usado por cada autor.</label>
-                    <label class="option-item"><input type="radio" name="p5" value="B"> B) A cultura é o conjunto de valores, crenças e pressupostos enraizados e de mudança lenta; o clima é a percepção momentânea dos colaboradores sobre o ambiente, sendo mais volátil e medido por pesquisa.</label>
-                    <label class="option-item"><input type="radio" name="p5" value="C"> C) A cultura muda rapidamente conforme a liderança; o clima permanece estável por décadas.</label>
-                    <label class="option-item"><input type="radio" name="p5" value="D"> D) O clima é o que está formalizado no regimento interno e no código de conduta da empresa, enquanto a cultura é apenas a percepção informal que os funcionários têm do ambiente no dia a dia.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Dar o feedback corretivo diante da equipe, para que todos aprendam com o erro que foi cometido.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) Concentrar todo o feedback na avaliação anual, evitando gerar ansiedade no colaborador durante o ano.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) Avaliar a pessoa, apontando os traços de personalidade que precisam ser corrigidos por ela.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) Ser específico, apoiar-se em fatos observáveis e falar do comportamento, não da pessoa.</label>
                 </div>
             </div>
         </div>
@@ -371,15 +361,15 @@
         <div class="chapter" id="q6">
             <div class="question-card">
                 <h3>Questão 6 de 10</h3>
-                <span class="tema">Avaliação de desempenho</span>
+                <span class="tema">Delegação</span>
                 <p class="enunciado">
-                    O que caracteriza essencialmente a <strong>avaliação de desempenho 360 graus</strong>?
+                    Qual alternativa distingue corretamente <strong>delegar</strong> de simplesmente repassar a tarefa?
                 </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p6" value="A"> A) A avaliação é feita exclusivamente pelo gestor imediato, com base em metas numéricas.</label>
-                    <label class="option-item"><input type="radio" name="p6" value="B"> B) É a avaliação em que somente o próprio colaborador se avalia, preenchendo um formulário de autoavaliação sem qualquer interferência externa ou validação posterior.</label>
-                    <label class="option-item"><input type="radio" name="p6" value="C"> C) É a avaliação aplicada apenas uma vez, no encerramento do contrato de experiência.</label>
-                    <label class="option-item"><input type="radio" name="p6" value="D"> D) O colaborador é avaliado por múltiplas fontes — superior, pares, subordinados, clientes internos/externos — além da autoavaliação.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) Delegar é transferir a execução mantendo o acompanhamento e a responsabilidade final pelo resultado.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) Delegar é entregar a tarefa e toda a responsabilidade, deixando de acompanhar o andamento dela.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) Delegar é dividir a tarefa em partes iguais entre todos os membros da equipe, sem qualquer exceção.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) Delegar cabe apenas em tarefas operacionais e nunca em atividades de maior complexidade técnica.</label>
                 </div>
             </div>
         </div>
@@ -388,16 +378,17 @@
         <div class="chapter" id="q7">
             <div class="question-card">
                 <h3>Questão 7 de 10</h3>
-                <span class="tema">Encargos · FGTS</span>
+                <span class="tema">Pesquisa de clima</span>
                 <div class="caso">
-                    O RH precisa orientar um gestor sobre os custos de uma <strong>dispensa sem justa causa</strong>.
+                    Uma empresa aplica pesquisa de clima todo ano, tabula os resultados e os arquiva. Os
+                    colaboradores <strong>nunca recebem devolutiva</strong> e nenhuma ação é anunciada.
                 </div>
-                <p class="enunciado">Sobre o FGTS, a informação correta é:</p>
+                <p class="enunciado">Qual é a principal consequência dessa prática?</p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p7" value="A"> A) O empregador deposita 8% da remuneração mensal e, na dispensa sem justa causa, paga multa rescisória de 40% sobre o saldo da conta vinculada.</label>
-                    <label class="option-item"><input type="radio" name="p7" value="B"> B) O empregador deposita 11% da remuneração e a multa rescisória é de 20%.</label>
-                    <label class="option-item"><input type="radio" name="p7" value="C"> C) O desconto de 8% é feito no salário do empregado, e a multa de 40% também é descontada dele.</label>
-                    <label class="option-item"><input type="radio" name="p7" value="D"> D) O FGTS só é devido nos contratos por prazo determinado e nos contratos de aprendizagem, não incidindo sobre os contratos por prazo indeterminado.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) Nenhuma, desde que a pesquisa seja anônima e tenha alta taxa de adesão entre os colaboradores.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) O clima melhora naturalmente, porque o simples ato de responder já funciona como desabafo da equipe.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) A pesquisa perde credibilidade e a adesão tende a cair, pois a equipe não vê resultado do que apontou.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) Os dados passam a servir como base direta para promoções e desligamentos individuais na organização.</label>
                 </div>
             </div>
         </div>
@@ -406,15 +397,15 @@
         <div class="chapter" id="q8">
             <div class="question-card">
                 <h3>Questão 8 de 10</h3>
-                <span class="tema">Treinamento e desenvolvimento</span>
+                <span class="tema">Turnover · Retenção</span>
                 <p class="enunciado">
-                    No modelo de avaliação de treinamento de <strong>Kirkpatrick</strong>, os quatro níveis são, na ordem:
+                    Sobre a leitura correta da rotatividade em gestão de pessoas, é correto afirmar:
                 </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Custo, prazo, escopo e qualidade.</label>
-                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Planejamento, execução, verificação e ação.</label>
-                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Reação, aprendizagem, comportamento e resultados.</label>
-                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Recrutamento, seleção, integração e retenção de talentos.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Toda rotatividade é prejudicial, e reduzi-la a zero deve ser a meta permanente da gestão de pessoas.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) O turnover disfuncional é o que faz perder bons profissionais; a saída de baixo desempenho pode ser saudável.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) A rotatividade é assunto exclusivo do RH e não tem relação com a atuação das lideranças de cada área.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) A causa principal dos pedidos de demissão é sempre o salário, qualquer que seja o setor ou o cargo.</label>
                 </div>
             </div>
         </div>
@@ -423,17 +414,13 @@
         <div class="chapter" id="q9">
             <div class="question-card">
                 <h3>Questão 9 de 10</h3>
-                <span class="tema">Recrutamento e seleção</span>
-                <div class="caso">
-                    Uma empresa decidiu preencher uma vaga de supervisão exclusivamente por
-                    <strong>recrutamento interno</strong>.
-                </div>
-                <p class="enunciado">Qual é a principal <strong>desvantagem</strong> dessa escolha?</p>
+                <span class="tema">Integração · Onboarding</span>
+                <p class="enunciado">Qual afirmação sobre a integração de novos colaboradores está correta?</p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p9" value="A"> A) O custo por contratação é muito mais alto do que no recrutamento externo.</label>
-                    <label class="option-item"><input type="radio" name="p9" value="B"> B) Tende a reduzir a renovação de ideias e pode gerar endogamia, além de possível conflito entre os candidatos não promovidos.</label>
-                    <label class="option-item"><input type="radio" name="p9" value="C"> C) O processo é sempre mais demorado do que buscar candidatos no mercado.</label>
-                    <label class="option-item"><input type="radio" name="p9" value="D"> D) Desmotiva os colaboradores das demais áreas, pois elimina a perspectiva de plano de carreira e de crescimento interno na organização.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="A"> A) A integração se encerra no primeiro dia, com a entrega do crachá e dos equipamentos ao novo colaborador.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="B"> B) O onboarding é responsabilidade exclusiva do RH, sem participação do gestor direto da área de destino.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="C"> C) A integração serve sobretudo para apresentar as punições e as regras disciplinares aplicáveis na empresa.</label>
+                    <label class="option-item"><input type="radio" name="p9" value="D"> D) Um onboarding estruturado reduz o desligamento precoce e encurta o tempo até a plena produtividade.</label>
                 </div>
             </div>
         </div>
@@ -442,15 +429,15 @@
         <div class="chapter" id="q10">
             <div class="question-card">
                 <h3>Questão 10 de 10</h3>
-                <span class="tema">Folha de pagamento · 13º salário</span>
+                <span class="tema">Desenvolvimento · PDI</span>
                 <p class="enunciado">
-                    Sobre o pagamento do <strong>13º salário</strong> (gratificação natalina), a alternativa correta é:
+                    Como deve ser construído um <strong>Plano de Desenvolvimento Individual (PDI)</strong>?
                 </p>
                 <div class="options-list">
-                    <label class="option-item"><input type="radio" name="p10" value="A"> A) Deve ser pago em parcela única até 31 de dezembro, com desconto integral de INSS e de imposto de renda sobre o valor total.</label>
-                    <label class="option-item"><input type="radio" name="p10" value="B"> B) É um benefício facultativo, concedido a critério do empregador.</label>
-                    <label class="option-item"><input type="radio" name="p10" value="C"> C) É devido apenas a quem trabalhou os 12 meses completos do ano.</label>
-                    <label class="option-item"><input type="radio" name="p10" value="D"> D) A 1ª parcela deve ser paga entre fevereiro e 30 de novembro e a 2ª até 20 de dezembro, incidindo INSS e IRRF apenas sobre a 2ª parcela.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="A"> A) Junto com o colaborador, com ações, prazos e responsáveis definidos para cada meta acordada.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="B"> B) Pelo RH e entregue pronto ao colaborador, o que garante padronização entre todas as áreas da empresa.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="C"> C) Como substituto da avaliação de desempenho, dispensando qualquer medição posterior dos resultados.</label>
+                    <label class="option-item"><input type="radio" name="p10" value="D"> D) Contendo somente treinamentos formais, já que atividades práticas do dia a dia não são mensuráveis.</label>
                 </div>
             </div>
         </div>
@@ -482,7 +469,7 @@
     </form>
 
     <footer>
-        <p><strong>Portal Educacional Interativo</strong> | Recursos Humanos</p>
+        <p><strong>Portal Educacional Interativo</strong> | Gestão de Pessoas</p>
     </footer>
 </div>
 
@@ -491,21 +478,13 @@
     const totalSteps = 11;              // 10 questões + tela de resultado
 
     const gabarito = {
-        p1: "C",
-        p2: "C",
-        p3: "A",
-        p4: "D",
-        p5: "B",
-        p6: "D",
-        p7: "A",
-        p8: "C",
-        p9: "B",
-        p10: "D"
+        p1: "C", p2: "A", p3: "D", p4: "B", p5: "D",
+        p6: "A", p7: "C", p8: "B", p9: "D", p10: "A"
     };
 
     const temas = {
-        p1: "Contrato", p2: "Aviso prévio", p3: "Férias", p4: "Turnover", p5: "Cultura/Clima",
-        p6: "Avaliação 360°", p7: "FGTS", p8: "Kirkpatrick", p9: "Recrutamento", p10: "13º salário"
+        p1: "Herzberg", p2: "Liderança", p3: "Vieses", p4: "Competências", p5: "Feedback",
+        p6: "Delegação", p7: "Clima", p8: "Turnover", p9: "Onboarding", p10: "PDI"
     };
 
     function updateView() {
@@ -543,7 +522,7 @@
     }
 
     function calcularResultado() {
-        const form = document.getElementById('provaRH');
+        const form = document.getElementById('provaGP');
         let acertos = 0;
         const detalhe = [];
 
@@ -566,7 +545,7 @@
         const naoRespondidas = detalhe.filter(d => !d.respondida).length;
         const msg = document.getElementById('resultMessage');
 
-        if (nota === 10)      msg.textContent = 'Excelente! Domínio completo do conteúdo de RH.';
+        if (nota === 10)      msg.textContent = 'Excelente! Domínio completo do conteúdo de gestão de pessoas.';
         else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
         else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
         else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Revise com atenção os temas em vermelho.';

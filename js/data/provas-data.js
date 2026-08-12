@@ -165,6 +165,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - ADP.txt",
       "path": "provas/Assistente de Departamento Pessoal/Link - ADP.txt",
       "size": "0 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova assistente dp",
+      "path": "provas/Assistente de Departamento Pessoal/prova-assistente-dp.prova.html",
+      "size": "31.8 KB"
     }
   ],
   "Assistente de Logística": [
@@ -322,7 +328,7 @@ const PROVAS_MANIFEST = {
       "type": "quiz_html",
       "label": "Prova credito e cobranca",
       "path": "provas/Crédido e Cobrança/prova-credito-e-cobranca.prova.html",
-      "size": "34.1 KB"
+      "size": "34.6 KB"
     }
   ],
   "CSS": [
@@ -607,6 +613,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Gestão de Pessoas (Múltipla Escolha)",
       "path": "provas/Gestão de Pessoas/Avaliação - Gestão de Pessoas (Múltipla Escolha).prova.js",
       "size": "2.8 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova gestao de pessoas",
+      "path": "provas/Gestão de Pessoas/prova-gestao-de-pessoas.prova.html",
+      "size": "25.1 KB"
     }
   ],
   "Google Adwords": [

@@ -929,6 +929,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - Avaliação RH.txt",
       "path": "provas/RH/Link - Avaliação RH.txt",
       "size": "404 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova recursos humanos",
+      "path": "provas/RH/prova-recursos-humanos.prova.html",
+      "size": "25.0 KB"
     }
   ],
   "Secretariado": [

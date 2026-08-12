@@ -815,10 +815,21 @@ const CENARIOS = {
 const PASTA_SPRITES = "assets/zodiaco/";
 const POSES = { neutro: "", ataque: "-ataque", dano: "-dano", caido: "-caido" };
 
-/* A vida do Cavaleiro é 70% dos caracteres da casa. Como o dano por acerto é
-   sempre >= 1, isso garante que os versos nunca acabam antes do Cavaleiro cair:
-   ninguém fica preso numa casa por digitar devagar — só demora mais. */
-const PROPORCAO_VIDA_VILAO = 0.7;
+/* Quanta vida o Cavaleiro tem, medida em caracteres da casa.
+
+   Sobe de 1,8 na primeira casa para 3,2 na última, então a luta fica mais longa
+   conforme o aluno avança — o Mu cai em cerca de dois versos, o Afrodite exige
+   quatro ou cinco. Como o dano por acerto é sempre >= 1, os versos nunca acabam
+   antes do Cavaleiro: quando a letra termina, ela recomeça, e ninguém fica
+   preso numa casa por digitar devagar. Quem digita rápido acumula cosmo e
+   derruba antes — a pressa encurta a luta em vez de destravá-la. */
+const VIDA_VILAO_PRIMEIRA = 1.8;
+const VIDA_VILAO_ULTIMA = 3.2;
+
+function proporcaoVidaVilao(indiceCasa) {
+    const passo = indiceCasa / (CASAS.length - 1);
+    return VIDA_VILAO_PRIMEIRA + (VIDA_VILAO_ULTIMA - VIDA_VILAO_PRIMEIRA) * passo;
+}
 
 /* ==================================================================
    3) DISTRIBUIÇÃO DOS VERSOS ENTRE AS CASAS
@@ -1123,7 +1134,7 @@ function iniciarCasa(indice) {
     estado.vidaHeroi = idioma.vidaMaxima;
 
     const caracteres = estado.versos.reduce((s, v) => s + v.length, 0);
-    estado.vidaMaximaVilao = Math.max(10, Math.round(caracteres * PROPORCAO_VIDA_VILAO));
+    estado.vidaMaximaVilao = Math.max(10, Math.round(caracteres * proporcaoVidaVilao(indice)));
     estado.vidaVilao = estado.vidaMaximaVilao;
 
     el.tituloCasa.textContent = `Casa de ${casa.casa}`;

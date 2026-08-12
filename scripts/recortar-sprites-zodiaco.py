@@ -232,12 +232,26 @@ def detectar_poses(limpa):
     largura, altura = limpa.size
     px = limpa.getchannel("A").load()
 
+    # O vão entre as fileiras costuma ser apertado: nas folhas de 1024px ele fica
+    # em torno de 19px. Exigir muito espaço faz as duas fileiras virarem uma só.
+    # Um limite pequeno é seguro porque uma figura em pé tem desenho em todas as
+    # linhas dela — não há como parti-la ao meio por aqui.
     linha_cheia = lambda y: any(px[x, y] > 40 for x in range(0, largura, 2))
-    fileiras = _faixas(linha_cheia, altura, max(8, altura // 40))
-    if len(fileiras) != 2:
-        return None, f"esperava 2 fileiras de poses, encontrei {len(fileiras)}"
+    fileiras = _faixas(linha_cheia, altura, max(6, altura // 90))
 
-    resultado, avisos = [], []
+    # Faixa fina demais não é personagem: é o título escrito no alto da folha
+    # ("CANCER DEATHMASK SPRITESHEET" e afins). Sai da conta.
+    altura_minima = altura * 0.12
+    titulos = [f for f in fileiras if (f[1] - f[0] + 1) < altura_minima]
+    fileiras = [f for f in fileiras if (f[1] - f[0] + 1) >= altura_minima]
+
+    if len(fileiras) != 2:
+        return None, (f"esperava 2 fileiras de poses, encontrei {len(fileiras)}"
+                      + (f" (fora {len(titulos)} faixa(s) de título)" if titulos else ""))
+
+    aviso_titulo = [f"descartei {len(titulos)} faixa(s) de título escritas na folha"] if titulos else []
+
+    resultado, avisos = [], list(aviso_titulo)
     for (y0, y1) in fileiras:
         col_cheia = lambda x, y0=y0, y1=y1: any(px[x, y] > 40 for y in range(y0, y1 + 1))
         colunas = _faixas(col_cheia, largura, max(6, largura // 90))
@@ -251,6 +265,27 @@ def detectar_poses(limpa):
             peso = sum(1 for x in range(x0, x1 + 1, 2)
                        for y in range(ys[0], ys[-1] + 1, 2) if px[x, y] > 40)
             caixas.append({"caixa": (x0, ys[0], x1 + 1, ys[-1] + 1), "peso": peso})
+
+        # Duas poses encostadas viram um bloco só (o efeito de uma alcança a
+        # outra). Nesse caso, cortamos no ponto mais estreito do meio: a cintura
+        # entre as duas figuras é sempre a coluna com menos desenho.
+        if len(caixas) == 1 and (colunas[0][1] - colunas[0][0]) > largura * 0.55:
+            x0, x1 = colunas[0]
+            faixa = range(x0 + int((x1 - x0) * 0.30), x0 + int((x1 - x0) * 0.70))
+            alturas = {x: sum(1 for y in range(y0, y1 + 1, 2) if px[x, y] > 40)
+                       for x in faixa}
+            corte = min(alturas, key=alturas.get)
+            avisos.append(f"duas poses encostadas nesta fileira; separei em x={corte}")
+            colunas = [(x0, corte - 1), (corte, x1)]
+            caixas = []
+            for (cx0, cx1) in colunas:
+                ys = [y for y in range(y0, y1 + 1)
+                      if any(px[x, y] > 40 for x in range(cx0, cx1 + 1, 2))]
+                if not ys:
+                    continue
+                peso = sum(1 for x in range(cx0, cx1 + 1, 2)
+                           for y in range(ys[0], ys[-1] + 1, 2) if px[x, y] > 40)
+                caixas.append({"caixa": (cx0, ys[0], cx1 + 1, ys[-1] + 1), "peso": peso})
 
         if len(caixas) > 2:
             # sobra costuma ser o nome do golpe escrito ao lado: fica o que tem
@@ -299,6 +334,11 @@ def main():
                     pose, lado = parte.split(":", 1)
                     apagar[pose.strip()] = lado.strip()
 
+    cortar_topo = 0
+    for op in sys.argv[1:]:
+        if op.startswith("--cortar-topo="):
+            cortar_topo = int(op.split("=", 1)[1])
+
     if len(argumentos) != 2:
         print(__doc__)
         return 1
@@ -310,6 +350,14 @@ def main():
 
     os.makedirs(DESTINO, exist_ok=True)
     folha = Image.open(origem).convert("RGBA")
+
+    # Algumas folhas trazem o título escrito no alto ("CANCER DEATHMASK
+    # SPRITESHEET"). Quando o texto encosta no personagem não sobra vão para
+    # separá-lo sozinho, então a altura a descartar vem no comando.
+    if cortar_topo:
+        folha = folha.crop((0, cortar_topo, folha.width, folha.height))
+        print(f"  descartados os {cortar_topo}px do topo (título da folha)")
+
     largura, altura = folha.size
     meio_x, meio_y = largura // 2, altura // 2
 

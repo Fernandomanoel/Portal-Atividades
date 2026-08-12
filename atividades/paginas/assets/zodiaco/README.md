@@ -51,12 +51,12 @@ ao lado do sprite em pé.
 | Mu de Áries | `aries` | ✅ as 4 poses estão aqui |
 | Aldebaran de Touro | `touro` | ✅ as 4 poses estão aqui |
 | Saga de Gêmeos | `gemeos` | ✅ as 4 poses estão aqui |
-| Máscara da Morte de Câncer | `cancer` | ⬜ falta |
+| Máscara da Morte de Câncer | `cancer` | ✅ as 4 poses estão aqui |
 | Aiolia de Leão | `leao` | ✅ as 4 poses estão aqui |
 | Shaka de Virgem | `virgem` | ✅ as 4 poses estão aqui |
 | Dohko de Libra | `libra` | ⬜ falta |
-| Milo de Escorpião | `escorpiao` | ⬜ falta |
-| Aiolos de Sagitário | `sagitario` | ⬜ falta |
+| Milo de Escorpião | `escorpiao` | ✅ as 4 poses estão aqui |
+| Aiolos de Sagitário | `sagitario` | ✅ as 4 poses estão aqui |
 | Shura de Capricórnio | `capricornio` | ✅ as 4 poses estão aqui |
 | Camus de Aquário | `aquario` | ✅ as 4 poses estão aqui |
 | Afrodite de Peixes | `peixes` | ⬜ falta |

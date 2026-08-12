@@ -59,6 +59,17 @@ def limpar(img):
             saida.append((r, g, b, alfa))
         else:
             saida.append((r, g, b, 255))
+
+    # Segunda passada: traços finos com antialiasing suave (comum em arte
+    # gerada por IA, diferente do pixel art bem definido do PixelLab) deixam
+    # fiapos verdes que a correção acima, sozinha, não elimina — ela reduz o
+    # verde proporcionalmente, mas não garante que ele pare de dominar. Aqui,
+    # qualquer pixel que ainda sobra com o verde acima do vermelho e do azul
+    # é travado no teto dos outros dois canais, o que mata o fiapo sem afetar
+    # as cores do personagem (dourado, roxo, vermelho não caem nesse caso).
+    saida = [(r, min(g, max(r, b)), b, a) if g > max(r, b) else (r, g, b, a)
+             for (r, g, b, a) in saida]
+
     nova = Image.new("RGBA", img.size)
     nova.putdata(saida)
     return nova

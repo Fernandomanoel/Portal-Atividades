@@ -54,12 +54,12 @@ ao lado do sprite em pé.
 | Máscara da Morte de Câncer | `cancer` | ✅ as 4 poses estão aqui |
 | Aiolia de Leão | `leao` | ✅ as 4 poses estão aqui |
 | Shaka de Virgem | `virgem` | ✅ as 4 poses estão aqui |
-| Dohko de Libra | `libra` | ⬜ falta |
+| Dohko de Libra | `libra` | ✅ as 4 poses estão aqui |
 | Milo de Escorpião | `escorpiao` | ✅ as 4 poses estão aqui |
 | Aiolos de Sagitário | `sagitario` | ✅ as 4 poses estão aqui |
 | Shura de Capricórnio | `capricornio` | ✅ as 4 poses estão aqui |
 | Camus de Aquário | `aquario` | ✅ as 4 poses estão aqui |
-| Afrodite de Peixes | `peixes` | ⬜ falta |
+| Afrodite de Peixes | `peixes` | ✅ as 4 poses estão aqui |
 
 Cada nome base gera quatro arquivos. Para `aries`, por exemplo:
 
@@ -81,6 +81,8 @@ O jogo **continua funcionando normalmente**. A busca é em cascata:
 
 Ou seja: dá para ir soltando os personagens aqui **um de cada vez**, e cada um
 passa a aparecer sozinho, sem precisar mexer em código nenhum.
+
+**Todos os 13 personagens estão instalados.** A batalha das 12 Casas está completa, com o Cavaleiro de Ouro certo em cada uma.
 
 ## Padrão técnico
 

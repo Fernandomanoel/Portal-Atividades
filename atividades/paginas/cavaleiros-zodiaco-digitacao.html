@@ -248,7 +248,12 @@
                background: radial-gradient(circle, rgba(246,196,69,.62), transparent 66%) }
 
     /* silhueta quando o sprite ainda não existe */
-    .silhueta {
+    /* :not([hidden]) é essencial aqui: um seletor de classe empata em
+       especificidade com a regra padrão do navegador [hidden]{display:none},
+       e como regra de autor sempre vence a de UA, "display: grid" sozinho
+       ignoraria o atributo hidden por completo — a silhueta ficaria visível
+       por cima do sprite real o tempo todo, mesmo com o arquivo carregado. */
+    .silhueta:not([hidden]) {
         width: min(74%, 190px);
         aspect-ratio: 3 / 4;
         border-radius: 46% 46% 18% 18% / 40% 40% 12% 12%;

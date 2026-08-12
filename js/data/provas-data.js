@@ -317,6 +317,12 @@ const PROVAS_MANIFEST = {
       "label": "Link - Avaliação Crédito e Cobrança .txt",
       "path": "provas/Crédido e Cobrança/Link - Avaliação Crédito e Cobrança .txt",
       "size": "110 B"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova credito e cobranca",
+      "path": "provas/Crédido e Cobrança/prova-credito-e-cobranca.prova.html",
+      "size": "34.1 KB"
     }
   ],
   "CSS": [

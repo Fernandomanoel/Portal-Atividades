@@ -647,6 +647,73 @@ const ATIVIDADES = [
     materiais: [],
   },
 
+  {
+    slug: "photoshop",
+    titulo: "Adobe Photoshop",
+    descricao: "Do primeiro clique a composições avançadas — curso completo em 8 graus.",
+    grupo: "cursos",
+    sigla: "PS",
+    cor: "#001e36",
+    materiais: [
+      {
+        titulo: "Grau 1 — Conhecendo a Ferramenta",
+        descricao:
+          "Guia explicativo para quem nunca abriu o Photoshop: reconhecer a tela, inserir uma imagem, recortar e remover fundo. Cerca de 1h.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau1-estilo-guia.html",
+      },
+      {
+        titulo: "Grau 2 — Seleções e Camadas Avançadas",
+        descricao:
+          "Seleção por cor, Laço Poligonal/Magnético, máscaras de camada e modos de mesclagem, com prática de montagem por máscara.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau2-selecoes-e-camadas.html",
+      },
+      {
+        titulo: "Grau 3 — Ajustes de Cor e Retoque",
+        descricao:
+          "Níveis, Curvas, Balanço de Cor e as ferramentas de retoque (Carimbo, Pincel de Recuperação, Correção Pontual) em camadas de ajuste não destrutivas.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau3-cor-e-retoque.html",
+      },
+      {
+        titulo: "Grau 4 — Texto, Formas e Composição",
+        descricao:
+          "Ferramenta Texto, estilos de camada, formas vetoriais, Regra dos Terços e a montagem de um post pronto para redes sociais.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau4-texto-formas-e-composicao.html",
+      },
+      {
+        titulo: "Grau 5 — Efeitos e Filtros Criativos",
+        descricao:
+          "Objetos Inteligentes, Filtros Inteligentes e a montagem de um efeito de dupla exposição.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau5-efeitos-e-filtros.html",
+      },
+      {
+        titulo: "Grau 6 — Composição Avançada",
+        descricao:
+          "Perspectiva, refinamento de seleção, harmonização de cor e luz entre elementos de fontes diferentes — a técnica por trás de qualquer montagem que engana o olho.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau6-composicao-avancada.html",
+      },
+      {
+        titulo: "Grau 7 — Projeto Final Integrador",
+        descricao:
+          "Um briefing de verdade, do planejamento à entrega organizada: peça principal, adaptação para Stories e exportação para diferentes usos.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau7-projeto-final.html",
+      },
+      {
+        titulo: "Grau 8 — Auras e Efeitos de Invocação (Bônus)",
+        descricao:
+          "Luz de contorno, auras coloridas e texto de efeito — o estilo por trás dos memes de personagem com elemento fantástico atrás dele.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau8-auras-e-invocacao.html",
+      },
+    ],
+  },
+
   // ======================= MAIS ATIVIDADES (cards) =======================
   {
     slug: "html-css",

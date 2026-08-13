@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop — Grau 1: Conhecendo a Ferramenta</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #001e36 0%, #00111f 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        :root {
+            --ps: #001e36;
+            --ps-claro: #e4f4ff;
+            --azul: #31a8ff;
+            --azul-claro: #e4f4ff;
+            --amarelo: #e0a800;
+            --cinza: #555555;
+            --verde: #1b6b3a;
+            --verde-claro: #e6f4ec;
+            --roxo: #6b3fa0;
+            --roxo-claro: #f1e9fb;
+        }
+
+        .presentation-container {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            width: 92%;
+            height: 92%;
+            max-width: 1400px;
+            max-height: 820px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.4);
+            padding: 45px 50px;
+            position: absolute;
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translateX(100px) scale(0.95);
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            pointer-events: auto;
+            z-index: 10;
+        }
+
+        .slide-header {
+            background: linear-gradient(90deg, var(--ps) 0%, #003a5c 100%);
+            color: white;
+            padding: 26px 30px;
+            border-radius: 15px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slide-header h1 {
+            font-size: 2.1em;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .slide-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .emoji-large {
+            font-size: 2.3em;
+        }
+
+        .slide-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            height: calc(100% - 110px);
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .slide-content::-webkit-scrollbar { width: 6px; }
+        .slide-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .slide-content::-webkit-scrollbar-thumb { background: var(--azul); border-radius: 10px; }
+
+        .content-box {
+            padding: 20px 22px;
+            border-radius: 12px;
+            border-left: 6px solid;
+            font-size: 0.98em;
+            line-height: 1.65;
+        }
+
+        .box-ps { background: var(--ps-claro); border-left-color: var(--ps); }
+        .box-azul { background: var(--azul-claro); border-left-color: var(--azul); }
+        .box-amarelo { background: #fff3e0; border-left-color: var(--amarelo); }
+        .box-verde { background: var(--verde-claro); border-left-color: var(--verde); }
+        .box-roxo { background: var(--roxo-claro); border-left-color: var(--roxo); }
+
+        .content-box h3 { color: var(--ps); margin-bottom: 12px; font-size: 1.1em; }
+        .content-box strong { color: var(--ps); }
+        .box-roxo strong { color: var(--roxo); }
+        .box-verde strong { color: var(--verde); }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; }
+        .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+
+        .card {
+            background: white;
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 18px;
+            text-align: center;
+        }
+
+        .card h4 { margin-bottom: 12px; font-size: 0.95em; }
+        .card-ps { border-color: var(--ps); }
+        .card-ps h4 { color: var(--ps); }
+        .card-verde { border-color: var(--verde); }
+        .card-verde h4 { color: var(--verde); }
+        .card-azul { border-color: var(--azul); }
+        .card-azul h4 { color: var(--azul); }
+        .card-roxo { border-color: var(--roxo); }
+        .card-roxo h4 { color: var(--roxo); }
+        .card.desativado { opacity: 0.55; border-style: dashed; }
+
+        .lista-bullets { list-style: none; padding-left: 0; }
+        .lista-bullets li { padding-left: 28px; position: relative; margin-bottom: 10px; }
+        .lista-bullets li::before {
+            content: "•"; position: absolute; left: 0;
+            color: var(--azul); font-weight: bold; font-size: 1.2em;
+        }
+
+        .passos-numerados { display: flex; flex-direction: column; gap: 13px; }
+        .passo {
+            display: flex; gap: 15px; padding: 14px 16px;
+            background: #f9f9f9; border-radius: 8px; border-left: 4px solid var(--azul);
+        }
+        .passo-numero {
+            min-width: 38px; height: 38px; background: var(--azul); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.05em; flex-shrink: 0;
+        }
+        .passo.opcional .passo-numero { background: var(--roxo); }
+        .passo-texto { flex: 1; }
+        .passo-texto .onde {
+            display: inline-block; margin-top: 6px; padding: 3px 10px;
+            background: #eef2ff; color: #3730a3; border-radius: 999px;
+            font-size: 0.82em; font-weight: 600;
+        }
+
+        .tema-tag {
+            background: var(--azul-claro); color: var(--ps);
+            padding: 7px 14px; border-radius: 20px; font-weight: 600; font-size: 0.86em;
+        }
+        .temas-list { display: flex; flex-wrap: wrap; gap: 9px; padding: 6px 0; }
+
+        .controls {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 40px; background: rgba(0, 0, 0, 0.3);
+        }
+
+        button {
+            background: var(--azul); color: white; border: none; padding: 12px 25px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1b8fe0; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(49, 168, 255, 0.35); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .slide-counter { color: white; font-weight: 600; font-size: 1em; }
+        .progress-bar { flex: 1; height: 6px; background: rgba(255, 255, 255, 0.2); margin: 0 30px; border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--azul); transition: width 0.3s; }
+
+        .slide-capa {
+            background: linear-gradient(135deg, var(--ps) 0%, #003a5c 100%);
+            color: white; height: 100%; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; gap: 22px;
+        }
+        .slide-capa .slide-header { background: none; margin-bottom: 0; }
+        .slide-capa h1 { color: white; font-size: 3em; }
+        .slide-capa .subtitulo { font-size: 1.3em; opacity: 0.95; }
+        .slide-capa .emoji-large { font-size: 3.6em; }
+
+        .capa-box {
+            background: rgba(255, 255, 255, 0.13); border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px; padding: 26px 30px; backdrop-filter: blur(10px); max-width: 620px;
+        }
+        .capa-box h2 { color: white; margin-bottom: 16px; font-size: 1.3em; }
+        .capa-box ul { list-style: none; text-align: left; }
+        .capa-box li { padding: 6px 0; font-size: 1.05em; color: white; }
+
+        .badge-duracao {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--azul); color: white; padding: 8px 20px;
+            border-radius: 999px; font-weight: 700; font-size: 1em;
+        }
+
+        .motivacao-box {
+            background: linear-gradient(135deg, var(--azul-claro) 0%, white 100%);
+            border: 3px solid var(--azul); border-radius: 15px; padding: 36px; text-align: center;
+        }
+        .motivacao-box h2 { color: var(--ps); font-size: 1.9em; margin-bottom: 18px; }
+        .motivacao-box p { color: var(--cinza); font-size: 1.05em; line-height: 1.8; margin-bottom: 14px; }
+        .motivacao-box .destaque { color: var(--azul); font-weight: bold; }
+
+        /* ---- mapa da tela do Photoshop (diagrama por CSS) ---- */
+        .mapa-tela {
+            display: grid;
+            grid-template-columns: 90px 1fr 150px;
+            grid-template-rows: 40px 34px 1fr;
+            gap: 6px;
+            height: 340px;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #cbd5e1;
+        }
+        .mapa-regiao {
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; font-weight: 700; font-size: 0.82em;
+            padding: 6px; line-height: 1.3;
+        }
+        .mapa-menu   { grid-column: 1 / 4; grid-row: 1; background: var(--ps); color: white; }
+        .mapa-opcoes { grid-column: 1 / 4; grid-row: 2; background: #5c7d99; color: white; font-size: 0.78em; }
+        .mapa-caixa  { grid-column: 1; grid-row: 3; background: #dbeafe; color: var(--ps); flex-direction: column; }
+        .mapa-tela-central { grid-column: 2; grid-row: 3; background: repeating-conic-gradient(#f1f5f9 0% 25%, #e2e8f0 0% 50%) 0 0/24px 24px; color: #64748b; }
+        .mapa-paineis { grid-column: 3; grid-row: 3; background: #ede9fe; color: var(--roxo); flex-direction: column; gap: 8px; }
+        .mapa-paineis .subpainel {
+            background: white; border: 1px solid var(--roxo); border-radius: 6px;
+            padding: 8px 6px; width: 88%; font-size: 0.78em;
+        }
+        .mapa-legenda { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 16px; font-size: 0.85em; }
+        .mapa-legenda span { display: flex; align-items: center; gap: 6px; }
+        .mapa-legenda i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+
+        .ferramenta-icone {
+            width: 46px; height: 46px; border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4em; margin: 0 auto 8px; color: white;
+        }
+
+        @media (max-width: 1024px) {
+            .slide { padding: 32px; }
+            .slide-header h1 { font-size: 1.7em; }
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+            .grid-5 { grid-template-columns: repeat(3, 1fr); }
+            .mapa-tela { height: 300px; grid-template-columns: 70px 1fr 120px; }
+        }
+
+        @media (max-width: 768px) {
+            .slide { padding: 22px; width: 96%; height: 96%; }
+            .slide-header { flex-direction: column; text-align: center; gap: 8px; }
+            .slide-header h1 { font-size: 1.4em; }
+            .controls { flex-direction: column; gap: 12px; padding: 14px; }
+            .progress-bar { margin: 8px 0; width: 100%; }
+            .slide-counter { font-size: 0.88em; }
+            button { width: 100%; }
+            .grid-5 { grid-template-columns: repeat(2, 1fr); }
+            .mapa-tela { grid-template-columns: 56px 1fr 90px; height: 260px; }
+            .mapa-paineis .subpainel { font-size: 0.68em; padding: 5px 3px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="slide-wrapper" id="slideWrapper"></div>
+
+        <div class="controls">
+            <button id="prevBtn" onclick="previousSlide()">← Anterior</button>
+            <div style="flex: 1; display: flex; align-items: center; gap: 20px;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">19</span></span>
+            </div>
+            <button id="nextBtn" onclick="nextSlide()">Próximo →</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+
+        const slides = [
+            // 1 — Capa
+            {
+                html: `
+                    <div class="slide-capa">
+                        <div class="emoji-large">🖌️🖼️</div>
+                        <h1>Adobe Photoshop</h1>
+                        <p class="subtitulo">Grau 1 — Conhecendo a Ferramenta</p>
+                        <div class="badge-duracao">⏱️ Duração estimada: 1 hora</div>
+                        <div class="capa-box">
+                            <h2>Nesta atividade você vai:</h2>
+                            <ul>
+                                <li>🧭 Conhecer a tela do Photoshop e onde cada coisa fica</li>
+                                <li>🖼️ Inserir uma imagem no seu documento</li>
+                                <li>✂️ Recortar (cortar) uma imagem</li>
+                                <li>🪄 Remover o fundo de uma imagem</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 2 — A trilha de 5 graus
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🗺️</div>
+                        <div>
+                            <h1>A Trilha do Photoshop</h1>
+                            <p>Este é o primeiro de 5 graus</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            O curso de Photoshop é dividido em <strong>5 graus</strong>, do mais simples ao mais avançado.
+                            Você está começando pelo <strong>Grau 1</strong>, feito para quem nunca abriu o Photoshop antes.
+                            Não tem problema nenhum não saber nada ainda — é exatamente para isso que ele existe.
+                        </div>
+                        <div class="grid-5">
+                            <div class="card card-ps">
+                                <h4>GRAU 1</h4>
+                                <p style="font-size: 1.6em; margin: 6px 0;">🧭</p>
+                                <p style="font-size: 0.85em;"><strong>Conhecendo a ferramenta</strong></p>
+                            </div>
+                            <div class="card desativado">
+                                <h4>GRAU 2</h4>
+                                <p style="font-size: 1.6em; margin: 6px 0;">🔒</p>
+                                <p style="font-size: 0.8em;">Em breve</p>
+                            </div>
+                            <div class="card desativado">
+                                <h4>GRAU 3</h4>
+                                <p style="font-size: 1.6em; margin: 6px 0;">🔒</p>
+                                <p style="font-size: 0.8em;">Em breve</p>
+                            </div>
+                            <div class="card desativado">
+                                <h4>GRAU 4</h4>
+                                <p style="font-size: 1.6em; margin: 6px 0;">🔒</p>
+                                <p style="font-size: 0.8em;">Em breve</p>
+                            </div>
+                            <div class="card desativado">
+                                <h4>GRAU 5</h4>
+                                <p style="font-size: 1.6em; margin: 6px 0;">🔒</p>
+                                <p style="font-size: 0.8em;">Em breve</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 3 — Objetivo do grau 1
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🎯</div>
+                        <div>
+                            <h1>Objetivo do Grau 1</h1>
+                            <p>O que você vai conseguir fazer sozinho ao final</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-ps" style="font-weight: 600; font-size: 1.05em;">
+                            Reconhecer as partes principais da tela do Photoshop e realizar 3 tarefas básicas:
+                            inserir uma imagem, recortar uma imagem e remover o fundo de uma imagem.
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>💡 Vá com calma</h3>
+                            <p>Esta atividade é longa de propósito: ela explica <strong>onde cada botão fica</strong> antes
+                            de pedir que você use. Leia cada tela, abra o Photoshop ao lado e vá repetindo os passos
+                            junto com o material — não precisa decorar nada de primeira.</p>
+                        </div>
+                        <div class="content-box box-verde">
+                            <h3>📸 Sobre as imagens que você vai usar</h3>
+                            <p>Você pode praticar com <strong>qualquer foto do seu computador ou celular</strong>: uma foto
+                            sua, de um objeto, de um produto. Não precisa de nenhum arquivo especial — o objetivo é
+                            aprender o caminho, e ele funciona com qualquer imagem.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 4 — O que é o Photoshop
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">❓</div>
+                        <div>
+                            <h1>O que é o Photoshop?</h1>
+                            <p>Antes de mexer, entenda para que ele serve</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-azul">
+                            O <strong>Adobe Photoshop</strong> é um programa de edição de imagens. Ele trabalha com
+                            fotografias e imagens digitais, permitindo alterar, combinar e criar praticamente
+                            qualquer coisa visual.
+                        </div>
+                        <h3 style="color: var(--ps);">No dia a dia, ele é usado para:</h3>
+                        <div class="grid-2">
+                            <div class="card card-azul">
+                                <p style="font-size: 1.6em;">🎨</p>
+                                <p style="font-size: 0.88em;">Retocar e melhorar fotos</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <p style="font-size: 1.6em;">📱</p>
+                                <p style="font-size: 0.88em;">Criar artes para redes sociais</p>
+                            </div>
+                            <div class="card card-verde">
+                                <p style="font-size: 1.6em;">🪄</p>
+                                <p style="font-size: 0.88em;">Remover fundo de imagens</p>
+                            </div>
+                            <div class="card card-ps">
+                                <p style="font-size: 1.6em;">🖼️</p>
+                                <p style="font-size: 0.88em;">Montar composições e cartazes</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 5 — Criando um novo documento
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📄</div>
+                        <div>
+                            <h1>Antes de Tudo: um Documento Novo</h1>
+                            <p>Todo trabalho no Photoshop começa aqui</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Abra o Photoshop. Na tela inicial, clique em <strong>Novo Arquivo</strong>
+                                (ou vá em <strong>Arquivo → Novo</strong>, atalho <strong>Ctrl+N</strong>).
+                                <span class="onde">fica no canto superior esquerdo, dentro do menu Arquivo</span></div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Uma janela vai abrir pedindo <strong>Largura</strong> e <strong>Altura</strong>.
+                                Você pode digitar um tamanho ou escolher uma predefinição pronta (ex.: "Foto", "Web").</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Deixe a <strong>Resolução</strong> em 72 se for para tela (redes sociais,
+                                web) ou 300 se for para imprimir. Não se preocupe muito com isso agora, dá para mudar depois.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Clique em <strong>Criar</strong>. Uma tela em branco (ou colorida)
+                                vai aparecer — esse é o seu documento, a sua "folha" de trabalho.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 6 — Mapa geral da tela
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🧭</div>
+                        <div>
+                            <h1>Panorama da Tela</h1>
+                            <p>As 5 regiões que você vai usar o tempo todo</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="mapa-tela">
+                            <div class="mapa-regiao mapa-menu">① Barra de Menus</div>
+                            <div class="mapa-regiao mapa-opcoes">② Barra de Opções (muda conforme a ferramenta)</div>
+                            <div class="mapa-regiao mapa-caixa">③ Caixa de<br>Ferramentas</div>
+                            <div class="mapa-regiao mapa-tela-central">④ Área de Trabalho<br>(sua imagem fica aqui)</div>
+                            <div class="mapa-regiao mapa-paineis">
+                                ⑤ Painéis
+                                <div class="subpainel">Camadas</div>
+                                <div class="subpainel">Ajustes</div>
+                            </div>
+                        </div>
+                        <div class="mapa-legenda">
+                            <span>① <strong>Menus</strong> — topo da tela, todos os comandos</span>
+                            <span>② <strong>Opções</strong> — logo abaixo, muda de acordo com a ferramenta ativa</span>
+                            <span>③ <strong>Ferramentas</strong> — coluna fina à esquerda</span>
+                            <span>④ <strong>Tela</strong> — centro, onde sua imagem aparece</span>
+                            <span>⑤ <strong>Painéis</strong> — direita, camadas e ajustes</span>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 7 — Barra de menus
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📋</div>
+                        <div>
+                            <h1>① A Barra de Menus</h1>
+                            <p>Bem no topo da tela — todos os comandos moram aqui</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo"><div class="passo-numero">📁</div><div class="passo-texto"><strong>Arquivo</strong> — abrir, salvar, criar novo documento, importar imagens.</div></div>
+                            <div class="passo"><div class="passo-numero">✏️</div><div class="passo-texto"><strong>Editar</strong> — desfazer (Ctrl+Z), copiar, colar, preferências.</div></div>
+                            <div class="passo"><div class="passo-numero">🖼️</div><div class="passo-texto"><strong>Imagem</strong> — tamanho da imagem, cor, ajustes de brilho/contraste.</div></div>
+                            <div class="passo"><div class="passo-numero">🗂️</div><div class="passo-texto"><strong>Camada</strong> — criar, organizar e combinar camadas.</div></div>
+                            <div class="passo"><div class="passo-numero">🎯</div><div class="passo-texto"><strong>Selecionar</strong> — ferramentas de seleção, como "Selecionar Assunto".</div></div>
+                            <div class="passo"><div class="passo-numero">🪟</div><div class="passo-texto"><strong>Janela</strong> — mostrar/esconder painéis (se sumir o de Camadas, é aqui que se acha de volta).</div></div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 8 — Caixa de ferramentas (seleção e movimento)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🧰</div>
+                        <div>
+                            <h1>③ Caixa de Ferramentas — Parte 1</h1>
+                            <p>Coluna fina na lateral esquerda da tela</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-ps">
+                            Passe o mouse em cima de qualquer ícone e <strong>espere um segundo</strong>: o Photoshop mostra
+                            o nome da ferramenta e o atalho do teclado. É a forma mais fácil de aprender onde cada uma fica.
+                        </div>
+                        <div class="grid-2">
+                            <div class="card card-azul">
+                                <div class="ferramenta-icone" style="background: var(--azul);">✥</div>
+                                <p><strong>Mover</strong> (V)</p>
+                                <p style="font-size: 0.82em;">Arrasta objetos e camadas pela tela</p>
+                            </div>
+                            <div class="card card-ps">
+                                <div class="ferramenta-icone" style="background: var(--ps);">▭</div>
+                                <p><strong>Seleção Retangular</strong> (M)</p>
+                                <p style="font-size: 0.82em;">Seleciona uma área quadrada/retangular</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <div class="ferramenta-icone" style="background: var(--roxo);">〰️</div>
+                                <p><strong>Laço</strong> (L)</p>
+                                <p style="font-size: 0.82em;">Desenha uma seleção à mão livre</p>
+                            </div>
+                            <div class="card card-verde">
+                                <div class="ferramenta-icone" style="background: var(--verde);">🪄</div>
+                                <p><strong>Seleção Rápida</strong> (W)</p>
+                                <p style="font-size: 0.82em;">"Pinta" por cima do objeto e ele seleciona sozinho</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 9 — Caixa de ferramentas (corte, pincel, cores)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🧰</div>
+                        <div>
+                            <h1>③ Caixa de Ferramentas — Parte 2</h1>
+                            <p>Corte, pintura e as cores lá embaixo</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="card card-ps">
+                                <div class="ferramenta-icone" style="background: var(--ps);">⛶</div>
+                                <p><strong>Corte / Crop</strong> (C)</p>
+                                <p style="font-size: 0.82em;">Recorta a imagem — vamos usar na Prática 2</p>
+                            </div>
+                            <div class="card card-azul">
+                                <div class="ferramenta-icone" style="background: var(--azul);">🖌️</div>
+                                <p><strong>Pincel</strong> (B)</p>
+                                <p style="font-size: 0.82em;">Pinta com a cor selecionada</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <div class="ferramenta-icone" style="background: var(--roxo);">🩹</div>
+                                <p><strong>Borracha</strong> (E)</p>
+                                <p style="font-size: 0.82em;">Apaga partes da camada (deixa transparente)</p>
+                            </div>
+                            <div class="card card-verde">
+                                <div class="ferramenta-icone" style="background: var(--verde);">🔍</div>
+                                <p><strong>Zoom</strong> (Z)</p>
+                                <p style="font-size: 0.82em;">Aproxima e afasta a visualização</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>🎨 Cores Frente e Fundo</h3>
+                            <p>Bem embaixo da caixa de ferramentas ficam dois quadradinhos sobrepostos — são as cores
+                            de <strong>frente</strong> (a de cima) e de <strong>fundo</strong> (a de baixo). Clique neles
+                            para escolher outra cor a qualquer momento.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 10 — Barra de opções
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">⚙️</div>
+                        <div>
+                            <h1>② A Barra de Opções</h1>
+                            <p>Ela muda dependendo da ferramenta que você escolheu</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-ps">
+                            Logo abaixo da barra de menus fica uma faixa fina — a <strong>Barra de Opções</strong>.
+                            Ela não é fixa: o conteúdo dela muda de acordo com a ferramenta ativa.
+                        </div>
+                        <div class="grid-2">
+                            <div class="card card-azul">
+                                <p><strong>Se a ferramenta ativa for o Corte</strong></p>
+                                <p style="font-size: 0.85em; margin-top: 8px;">a barra mostra opções de proporção
+                                (livre, 1:1, 16:9...)</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <p><strong>Se a ferramenta ativa for o Pincel</strong></p>
+                                <p style="font-size: 0.85em; margin-top: 8px;">a barra mostra tamanho, dureza
+                                e opacidade do traço</p>
+                            </div>
+                        </div>
+                        <div class="content-box box-verde">
+                            <h3>💡 Dica</h3>
+                            <p>Sempre que uma ferramenta parecer "não fazer nada", olhe primeiro para essa barra —
+                            geralmente a resposta está lá.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 11 — Painel de camadas
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🗂️</div>
+                        <div>
+                            <h1>⑤ Painel de Camadas</h1>
+                            <p>O painel mais importante do Photoshop</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-ps">
+                            Pense em <strong>camadas</strong> como folhas de papel transparente empilhadas.
+                            Cada imagem, texto ou desenho que você adiciona vira uma folha nova, uma por cima da outra.
+                            Você pode mexer em cada uma sem bagunçar as outras.
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">👁️</div>
+                                <div class="passo-texto"><strong>Ícone de olho</strong> — clique para mostrar ou esconder aquela camada.
+                                <span class="onde">à esquerda do nome de cada camada</span></div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">🖼️</div>
+                                <div class="passo-texto"><strong>Miniatura</strong> — uma prévia pequena do que tem naquela camada.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">➕</div>
+                                <div class="passo-texto"><strong>Nova Camada</strong> — botão para criar uma camada em branco.
+                                <span class="onde">parte de baixo do painel de Camadas</span></div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">🗑️</div>
+                                <div class="passo-texto"><strong>Lixeira</strong> — apaga a camada selecionada.
+                                <span class="onde">também na parte de baixo do painel</span></div>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>Não achou o painel de Camadas?</h3>
+                            <p>Vá em <strong>Janela → Camadas</strong> (ou tecle <strong>F7</strong>) para trazê-lo de volta à tela.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 12 — Zoom e navegação
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🔍</div>
+                        <div>
+                            <h1>Zoom e Navegação</h1>
+                            <p>Se movendo pela imagem sem se perder</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="card card-azul">
+                                <p style="font-size: 1.6em;">➕➖</p>
+                                <p><strong>Ctrl e "+" / Ctrl e "−"</strong></p>
+                                <p style="font-size: 0.85em;">Aumenta e diminui o zoom</p>
+                            </div>
+                            <div class="card card-ps">
+                                <p style="font-size: 1.6em;">🖐️</p>
+                                <p><strong>Barra de espaço</strong></p>
+                                <p style="font-size: 0.85em;">Segure e arraste para navegar pela imagem</p>
+                            </div>
+                            <div class="card card-roxo">
+                                <p style="font-size: 1.6em;">🖱️</p>
+                                <p><strong>Roda do mouse</strong></p>
+                                <p style="font-size: 0.85em;">Rola a imagem para cima/baixo</p>
+                            </div>
+                            <div class="card card-verde">
+                                <p style="font-size: 1.6em;">📐</p>
+                                <p><strong>Ctrl + 0</strong></p>
+                                <p style="font-size: 0.85em;">Encaixa a imagem inteira na tela</p>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 13 — Prática 1: inserir imagem (intro)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🖼️</div>
+                        <div>
+                            <h1>PRÁTICA 1 — Inserindo uma Imagem</h1>
+                            <p>Colocando uma foto dentro do seu documento</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-amarelo">
+                            Separe uma foto do seu computador ou celular antes de começar. Pode ser qualquer uma.
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Vá em <strong>Arquivo → Colocar Incorporado...</strong>
+                                <span class="onde">menu Arquivo, no topo da tela</span></div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Escolha a imagem na janela que abrir e clique em <strong>Colocar</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">A imagem aparece no centro do documento com um quadro ao redor
+                                (alças nos cantos) — isso significa que ela ainda pode ser ajustada.</div>
+                            </div>
+                            <div class="passo opcional">
+                                <div class="passo-numero">＋</div>
+                                <div class="passo-texto"><strong>Atalho alternativo:</strong> você também pode simplesmente
+                                arrastar o arquivo de imagem do seu computador direto para dentro da tela do Photoshop.</div>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 14 — Prática 1: redimensionando
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">📏</div>
+                        <div>
+                            <h1>PRÁTICA 1 — Ajustando o Tamanho</h1>
+                            <p>Deixando a imagem do tamanho que você quer</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Com a imagem selecionada (quadro com alças visível), aperte
+                                <strong>Ctrl+T</strong> — isso ativa a <strong>Transformação Livre</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique e arraste um dos <strong>cantos</strong> do quadro
+                                para redimensionar. Segure <strong>Shift</strong> enquanto arrasta para manter a proporção
+                                (não deixar a imagem esticada ou achatada).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Clique <strong>dentro</strong> da imagem e arraste para mover
+                                ela de posição na tela.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Quando estiver satisfeito, aperte <strong>Enter</strong> para
+                                confirmar a transformação.</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-verde">
+                            ✅ Pronto — você acabou de completar a primeira meta prática: inserir uma imagem no documento!
+                        </div>
+                    </div>
+                `
+            },
+
+            // 15 — Prática 2: recortar
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">✂️</div>
+                        <div>
+                            <h1>PRÁTICA 2 — Recortando a Imagem</h1>
+                            <p>Usando a ferramenta Corte (Crop)</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Selecione a <strong>Ferramenta de Corte</strong> na caixa de
+                                ferramentas (ícone ⛶) ou aperte a tecla <strong>C</strong>.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Uma grade aparece sobre a imagem, com alças nos cantos e nas bordas.
+                                Arraste essas alças para definir o que vai ficar dentro do corte — tudo que ficar fora
+                                (área escurecida) será removido.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Na <strong>Barra de Opções</strong> (topo), você pode escolher uma
+                                proporção fixa, como <strong>1:1</strong> (quadrado) ou <strong>16:9</strong> (widescreen),
+                                se quiser um formato específico.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Confirme apertando <strong>Enter</strong>. Pronto, a imagem foi
+                                recortada!</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-verde">
+                            ✅ Segunda meta concluída: recortar uma imagem.
+                        </div>
+                    </div>
+                `
+            },
+
+            // 16 — Prática 3: remover fundo (intro + caminho rápido)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🪄</div>
+                        <div>
+                            <h1>PRÁTICA 3 — Removendo o Fundo</h1>
+                            <p>Caminho rápido: um clique só</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="content-box box-ps">
+                            Nas versões mais novas do Photoshop existe um botão pronto para isso. Vamos começar por ele.
+                        </div>
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Clique na camada da sua imagem, no painel de <strong>Camadas</strong>,
+                                para deixá-la selecionada.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Abra o painel <strong>Propriedades</strong>
+                                (<strong>Janela → Propriedades</strong> se ele não estiver visível).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Clique no botão <strong>Remover Plano de Fundo</strong>.
+                                O Photoshop identifica o objeto principal sozinho e apaga o fundo em poucos segundos.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Um padrão <strong>quadriculado cinza e branco</strong> vai aparecer
+                                onde era o fundo — isso representa <strong>transparência</strong>, não é uma cor de verdade.</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>Não achou esse botão?</h3>
+                            <p>Sem problema — na próxima tela ensinamos o caminho manual, que funciona em qualquer
+                            versão do Photoshop.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 17 — Prática 3: remover fundo (caminho manual)
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">🪄</div>
+                        <div>
+                            <h1>PRÁTICA 3 — Removendo o Fundo</h1>
+                            <p>Caminho manual: funciona em qualquer versão</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="passos-numerados">
+                            <div class="passo">
+                                <div class="passo-numero">1</div>
+                                <div class="passo-texto">Selecione a <strong>Seleção Rápida</strong> (ícone 🪄, tecla <strong>W</strong>).</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">2</div>
+                                <div class="passo-texto">Clique e "pinte" por cima do objeto que você quer manter (a
+                                pessoa, o produto). O Photoshop vai expandindo a seleção sozinho conforme você passa o mouse.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">3</div>
+                                <div class="passo-texto">Com o objeto selecionado (linha pontilhada ao redor), vá em
+                                <strong>Selecionar → Inverter Seleção</strong> — agora é o <strong>fundo</strong> que
+                                está selecionado, não o objeto.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">4</div>
+                                <div class="passo-texto">Aperte a tecla <strong>Delete</strong> (ou Backspace) para apagar
+                                o fundo selecionado.</div>
+                            </div>
+                            <div class="passo">
+                                <div class="passo-numero">5</div>
+                                <div class="passo-texto">Aperte <strong>Ctrl+D</strong> para tirar a seleção e ver o
+                                resultado final.</div>
+                            </div>
+                        </div>
+                        <div class="content-box box-verde">
+                            ✅ Terceira e última meta concluída: remover o fundo de uma imagem!
+                        </div>
+                    </div>
+                `
+            },
+
+            // 18 — Salvando o trabalho
+            {
+                html: `
+                    <div class="slide-header">
+                        <div class="emoji-large">💾</div>
+                        <div>
+                            <h1>Salvando o Seu Trabalho</h1>
+                            <p>Dois formatos, dois propósitos diferentes</p>
+                        </div>
+                    </div>
+                    <div class="slide-content">
+                        <div class="grid-2">
+                            <div class="content-box box-ps">
+                                <h3>📁 Formato PSD</h3>
+                                <p>Guarda <strong>todas as camadas</strong>, separadas e editáveis. Use esse formato
+                                para continuar o trabalho depois. <strong>Arquivo → Salvar Como → Photoshop (.psd)</strong></p>
+                            </div>
+                            <div class="content-box box-roxo">
+                                <h3>🖼️ Formato PNG</h3>
+                                <p>Junta tudo em uma imagem só, pronta para compartilhar ou usar em outro programa.
+                                O PNG também guarda a transparência do fundo removido.
+                                <strong>Arquivo → Exportar → Exportar Como → PNG</strong></p>
+                            </div>
+                        </div>
+                        <div class="content-box box-amarelo">
+                            <h3>💡 Dica</h3>
+                            <p>Salve sempre os dois: o <strong>.psd</strong> para você (caso precise editar de novo)
+                            e o <strong>.png</strong> para usar ou enviar.</p>
+                        </div>
+                    </div>
+                `
+            },
+
+            // 19 — Checklist + próximos passos
+            {
+                html: `
+                    <div class="slide-content" style="justify-content: center;">
+                        <div class="motivacao-box">
+                            <div class="emoji-large" style="font-size: 3.2em; margin-bottom: 18px;">✅</div>
+                            <h2>Checklist do Grau 1</h2>
+                            <p style="text-align: left; max-width: 520px; margin: 0 auto;">
+                                ☐ Reconheço a Barra de Menus, a Barra de Opções, a Caixa de Ferramentas, a Área de Trabalho e os Painéis<br>
+                                ☐ Sei criar um documento novo<br>
+                                ☐ Inseri uma imagem no documento<br>
+                                ☐ Recortei uma imagem com a ferramenta Corte<br>
+                                ☐ Removi o fundo de uma imagem<br>
+                                ☐ Salvei o trabalho em PSD e exportei em PNG
+                            </p>
+                            <p style="margin-top: 22px; font-size: 1.15em; color: var(--azul); font-weight: 700;">
+                                🎉 Muito bem! Você concluiu o Grau 1.
+                            </p>
+                            <p style="margin-top: 10px; color: var(--cinza); font-size: 0.95em;">
+                                Os graus 2 a 5 vão aprofundar camadas, seleções, ajustes de cor e composições — em breve por aqui.
+                            </p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function initPresentation() {
+            const wrapper = document.getElementById('slideWrapper');
+
+            slides.forEach((slide, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'slide' + (index === 0 ? ' active' : '');
+                slideDiv.innerHTML = slide.html;
+                wrapper.appendChild(slideDiv);
+            });
+
+            document.getElementById('totalSlides').textContent = slides.length;
+            updateControls();
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide++;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function previousSlide() {
+            if (currentSlide > 0) {
+                document.querySelectorAll('.slide')[currentSlide].classList.remove('active');
+                currentSlide--;
+                document.querySelectorAll('.slide')[currentSlide].classList.add('active');
+                updateControls();
+            }
+        }
+
+        function updateControls() {
+            document.getElementById('currentSlide').textContent = currentSlide + 1;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === slides.length - 1;
+
+            const progress = ((currentSlide + 1) / slides.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        initPresentation();
+    </script>
+</body>
+</html>

@@ -634,6 +634,19 @@ const ATIVIDADES = [
     ],
   },
 
+  {
+    // Página e caminho já criados a pedido do professor; os materiais entram
+    // depois. Com `materiais` vazio, atividade.html mostra sozinho o aviso
+    // "Nenhum material publicado ainda." — não precisa de nenhum código a mais.
+    slug: "ingles",
+    titulo: "Inglês",
+    descricao: "Atividades de inglês para os cursos de informática.",
+    grupo: "cursos",
+    sigla: "EN",
+    cor: "#0ea5e9",
+    materiais: [],
+  },
+
   // ======================= MAIS ATIVIDADES (cards) =======================
   {
     slug: "html-css",

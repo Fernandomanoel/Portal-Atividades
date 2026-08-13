@@ -496,13 +496,6 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
       },
       {
-        titulo: "Sonic Digital Pro — Treino de Digitação",
-        descricao:
-          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
-        tipo: "link",
-        url: "atividades/paginas/kids-sonic-digitacao.html",
-      },
-      {
         titulo: "Missão Arquivos e Pastas",
         descricao:
           "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
@@ -515,6 +508,24 @@ const ATIVIDADES = [
           "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-aventura-windows11.html",
+      },
+    ],
+  },
+
+  {
+    slug: "digitacao",
+    titulo: "Jogos de Digitação",
+    descricao: "Treino de velocidade e precisão no teclado, em forma de jogo.",
+    grupo: "cursos",
+    sigla: "DG",
+    cor: "#3d5afe",
+    materiais: [
+      {
+        titulo: "Sonic Digital Pro — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-sonic-digitacao.html",
       },
       {
         titulo: "Super Mario do Teclado — Atalhos e Pontuação",

@@ -22,7 +22,9 @@
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
 //   grupo     → em qual seção da home o curso entra: "cursos"
-//               (Atividades disponíveis) ou "extras" (Mais Atividades)
+//               (Atividades disponíveis) ou "extras" (Mais Atividades).
+//               "nav" tira o curso das duas grades da home — ele só é
+//               alcançado por um link próprio no menu (ver components/layout.js)
 //   sigla     → 1-2 letras usadas na capa gerada do curso
 //   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
@@ -641,7 +643,7 @@ const ATIVIDADES = [
     slug: "ingles",
     titulo: "Inglês",
     descricao: "Atividades de inglês para os cursos de informática.",
-    grupo: "cursos",
+    grupo: "nav",
     sigla: "EN",
     cor: "#0ea5e9",
     materiais: [],

@@ -28,8 +28,11 @@ function textoSeguro(valor) {
 class AppNavbar extends HTMLElement {
   connectedCallback() {
     const rotaAtual = Rotas.atual();
-    // A página de uma atividade faz parte da área "Início".
-    const ativo = rotaAtual === "atividade" ? "inicio" : rotaAtual;
+    // A página de uma atividade faz parte da área "Início" — exceto o
+    // Inglês, que tem link próprio no menu e não pode ficar marcado como
+    // se fosse só mais um curso dentro de "Início".
+    const cursoDaUrl = rotaAtual === "atividade" ? Rotas.parametro("curso") : null;
+    const ativo = cursoDaUrl === "ingles" ? "ingles" : rotaAtual === "atividade" ? "inicio" : rotaAtual;
 
     this.className = "navbar";
     this.innerHTML = `
@@ -37,6 +40,7 @@ class AppNavbar extends HTMLElement {
 
       <ul class="navbar-links">
         <li><a href="${Rotas.url("inicio")}" class="nav-link ${ativo === "inicio" ? "active" : ""}">Início</a></li>
+        <li><a href="${Rotas.url("atividade", { curso: "ingles" })}" class="nav-link ${ativo === "ingles" ? "active" : ""}">Inglês</a></li>
         <li><a href="${Rotas.url("provas")}" class="nav-link ${ativo === "provas" ? "active" : ""}">Provas</a></li>
       </ul>
 
@@ -139,6 +143,7 @@ class AppFooter extends HTMLElement {
         <div class="footer-links">
           <h4>Navegação</h4>
           <a href="${Rotas.url("inicio")}">Início</a>
+          <a href="${Rotas.url("atividade", { curso: "ingles" })}">Inglês</a>
           <a href="${Rotas.url("provas")}">Provas</a>
         </div>
 

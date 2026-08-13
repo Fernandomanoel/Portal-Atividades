@@ -1267,16 +1267,29 @@ function testarAudio(src) {
     return new Promise((resolve) => {
         const a = new Audio();
         a.preload = "metadata";
-        const pronto = () => { limpar(); resolve(true); };
-        const falhou = () => { limpar(); resolve(false); };
-        const limpar = () => {
+        let terminou = false;
+        const pronto = () => { finalizar(true); };
+        const falhou = () => { finalizar(false); };
+        const finalizar = (ok) => {
+            if (terminou) return;
+            terminou = true;
             a.removeEventListener("loadedmetadata", pronto);
             a.removeEventListener("error", falhou);
+            // Libera a conexão de rede imediatamente (senão o navegador pode
+            // manter o download em aberto e atrasar o teste dos próximos
+            // arquivos da fila — foi o que causou falso-negativo em faixas
+            // maiores testadas em sequência).
+            a.src = "";
+            a.load();
+            resolve(ok);
         };
         a.addEventListener("loadedmetadata", pronto);
         a.addEventListener("error", falhou);
         a.src = src;
-        setTimeout(() => { limpar(); resolve(false); }, 4000);
+        // Arquivos de música pesam alguns MB — dá um tempo maior que o de
+        // uma imagem, principalmente com várias faixas sendo testadas uma
+        // atrás da outra no mesmo carregamento da página.
+        setTimeout(() => finalizar(false), 9000);
     });
 }
 

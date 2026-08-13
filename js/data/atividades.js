@@ -646,7 +646,15 @@ const ATIVIDADES = [
     grupo: "nav",
     sigla: "EN",
     cor: "#0ea5e9",
-    materiais: [],
+    materiais: [
+      {
+        titulo: "Inglês em Letras de Música — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 8 letras de música em inglês: cada acerto e cada erro tem uma reação própria no HUD, com estatísticas de precisão, velocidade e combo. Música toca durante a digitação assim que os arquivos forem adicionados.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-letras-digitacao.html",
+      },
+    ],
   },
 
   {

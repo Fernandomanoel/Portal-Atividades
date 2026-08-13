@@ -175,6 +175,17 @@
     .som-btn:disabled { opacity: .35; cursor: not-allowed; }
     .musica-controles input[type=range] { width: 80px; accent-color: #fff; }
     .dica-som { font-size: .72em; color: #fff; opacity: .85; min-width: 110px; }
+    #seletor-faixa {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: .8em;
+        max-width: 160px;
+    }
+    #seletor-faixa:disabled { opacity: .35; cursor: not-allowed; }
+    #seletor-faixa option { color: #111; }
 
     /* ---------- Divisão 30% / 70% ---------- */
     .jogo-layout {
@@ -392,6 +403,7 @@
             </div>
             <div class="musica-controles">
                 <button class="som-btn" id="btn-som" title="Ligar/desligar música">🔇</button>
+                <select id="seletor-faixa" title="Escolher música"></select>
                 <input type="range" id="volume" min="0" max="100" value="55">
                 <span class="dica-som" id="dica-som"></span>
             </div>
@@ -993,6 +1005,7 @@ const el = {
     tituloEnsaioAtual: document.getElementById("titulo-ensaio-atual"),
     temaEnsaioAtual: document.getElementById("tema-ensaio-atual"),
     btnSom: document.getElementById("btn-som"),
+    seletorFaixa: document.getElementById("seletor-faixa"),
     volume: document.getElementById("volume"),
     dicaSom: document.getElementById("dica-som"),
 
@@ -1250,18 +1263,52 @@ function esconderMensagem() {
 }
 
 /* ==================================================================
-   8) MÚSICA — mesma lógica de detecção graciosa do jogo do Zodíaco:
-      testa se o arquivo existe antes de habilitar os controles, e
-      nunca trava o jogo se a música ainda não tiver sido colocada.
+   8) MÚSICA — trilha sonora independente dos ensaios: por padrão toca
+      uma faixa aleatória (troca a cada ensaio novo), mas dá pra
+      escolher exatamente qual música ouvir no seletor. Mesma lógica
+      de detecção graciosa do jogo do Zodíaco: testa se o arquivo
+      existe antes de habilitar os controles, e nunca trava o jogo se
+      a música ainda não tiver sido colocada.
    ================================================================== */
+
+const TRILHA_SONORA = [
+    { titulo: "Chop Suey! — System Of A Down", audio: "assets/ingles-digitacao/audio/ensaio-1.mp3" },
+    { titulo: "Black — Pearl Jam", audio: "assets/ingles-digitacao/audio/ensaio-2.mp3" },
+    { titulo: "Your Biggest Fan — The Vampire Lestat", audio: "assets/ingles-digitacao/audio/ensaio-3.mp3" },
+    { titulo: "One Time — Justin Bieber", audio: "assets/ingles-digitacao/audio/ensaio-4.mp3" },
+    { titulo: "Beautiful Boy — John Lennon", audio: "assets/ingles-digitacao/audio/ensaio-5.mp3" },
+    { titulo: "Decode — Paramore", audio: "assets/ingles-digitacao/audio/ensaio-6.mp3" },
+    { titulo: "A Thousand Miles — Vanessa Carlton", audio: "assets/ingles-digitacao/audio/ensaio-7.mp3" },
+    { titulo: "Skyfall — Adele", audio: "assets/ingles-digitacao/audio/ensaio-8.mp3" },
+    { titulo: "All I Wanted — Paramore", audio: "assets/ingles-digitacao/audio/extra-1.mp3" },
+    { titulo: "Brutal Love — The Vampire Lestat", audio: "assets/ingles-digitacao/audio/extra-2.mp3" },
+    { titulo: "I'm Still Standing — Elton John", audio: "assets/ingles-digitacao/audio/extra-3.mp3" },
+];
 
 const musica = {
     ligado: false,
     volume: 0.55,
     tocador: null,
-    disponivel: {},
+    disponivel: {},      // índice em TRILHA_SONORA -> existe/carrega
+    faixaAtual: null,    // índice em TRILHA_SONORA tocando agora
+    aleatorio: true,     // true = sorteia uma faixa disponível a cada ensaio
     CHAVE: "ingles-musica-som",
 };
+
+function faixasDisponiveis() {
+    return TRILHA_SONORA.map((_, i) => i).filter((i) => musica.disponivel[i]);
+}
+
+function sortearFaixa() {
+    const opcoes = faixasDisponiveis();
+    if (!opcoes.length) return null;
+    // Evita repetir a mesma faixa que já estava tocando, se houver opção.
+    let candidatos = opcoes;
+    if (musica.faixaAtual !== null && opcoes.length > 1) {
+        candidatos = opcoes.filter((i) => i !== musica.faixaAtual);
+    }
+    return candidatos[Math.floor(Math.random() * candidatos.length)];
+}
 
 function testarAudio(src) {
     return new Promise((resolve) => {
@@ -1294,17 +1341,42 @@ function testarAudio(src) {
 }
 
 async function prepararMusicaGlobal() {
-    for (let i = 0; i < ENSAIOS.length; i++) {
-        musica.disponivel[i] = await testarAudio(ENSAIOS[i].audio);
+    for (let i = 0; i < TRILHA_SONORA.length; i++) {
+        musica.disponivel[i] = await testarAudio(TRILHA_SONORA[i].audio);
     }
 
     const salvo = lerPreferenciaSom();
     if (salvo) {
         musica.ligado = !!salvo.ligado;
         musica.volume = typeof salvo.volume === "number" ? salvo.volume : musica.volume;
+        if (typeof salvo.aleatorio === "boolean") musica.aleatorio = salvo.aleatorio;
+        if (typeof salvo.faixaAtual === "number") musica.faixaAtual = salvo.faixaAtual;
     }
     el.volume.value = Math.round(musica.volume * 100);
+    montarSeletorFaixas();
     atualizarBotaoSom();
+}
+
+function montarSeletorFaixas() {
+    el.seletorFaixa.innerHTML = "";
+
+    const optAleatorio = document.createElement("option");
+    optAleatorio.value = "aleatorio";
+    optAleatorio.textContent = "🔀 Aleatório";
+    el.seletorFaixa.appendChild(optAleatorio);
+
+    TRILHA_SONORA.forEach((faixa, i) => {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = faixa.titulo;
+        opt.disabled = !musica.disponivel[i];
+        el.seletorFaixa.appendChild(opt);
+    });
+
+    const semAudio = faixasDisponiveis().length === 0;
+    el.seletorFaixa.disabled = semAudio;
+    el.seletorFaixa.value =
+        !musica.aleatorio && musica.faixaAtual !== null ? String(musica.faixaAtual) : "aleatorio";
 }
 
 function lerPreferenciaSom() {
@@ -1313,21 +1385,33 @@ function lerPreferenciaSom() {
 }
 function salvarPreferenciaSom() {
     try {
-        localStorage.setItem(musica.CHAVE, JSON.stringify({ ligado: musica.ligado, volume: musica.volume }));
+        localStorage.setItem(musica.CHAVE, JSON.stringify({
+            ligado: musica.ligado,
+            volume: musica.volume,
+            aleatorio: musica.aleatorio,
+            faixaAtual: musica.faixaAtual,
+        }));
     } catch { /* sem localStorage: só não lembra a preferência */ }
 }
 
 function prepararAudioEnsaio() {
-    const disponivel = !!musica.disponivel[estado.ensaioAtual];
-    el.btnSom.disabled = !disponivel;
-    el.volume.disabled = !disponivel || !musica.ligado;
+    const semAudio = faixasDisponiveis().length === 0;
+    el.btnSom.disabled = semAudio;
+    el.seletorFaixa.disabled = semAudio;
+    el.volume.disabled = semAudio || !musica.ligado;
 
-    if (!disponivel) {
+    if (semAudio) {
         el.dicaSom.textContent = "áudio ainda não instalado";
-        el.btnSom.title = "O arquivo deste ensaio ainda não foi colocado em assets/ingles-digitacao/audio/";
+        el.btnSom.title = "Nenhum arquivo de música foi colocado em assets/ingles-digitacao/audio/";
         pararAudioEnsaio();
         return;
     }
+
+    // No modo aleatório, cada ensaio novo sorteia uma faixa diferente.
+    if (musica.aleatorio || musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) {
+        musica.faixaAtual = sortearFaixa();
+    }
+    el.seletorFaixa.value = musica.aleatorio ? "aleatorio" : String(musica.faixaAtual);
 
     el.btnSom.title = "Ligar/desligar música";
     atualizarBotaoSom();
@@ -1337,13 +1421,17 @@ function prepararAudioEnsaio() {
 function atualizarBotaoSom() {
     el.btnSom.textContent = musica.ligado ? "🔊" : "🔇";
     if (el.btnSom.disabled) return;
-    el.dicaSom.textContent = musica.ligado ? "música ligada" : "música desligada";
+    if (musica.ligado && musica.faixaAtual !== null) {
+        el.dicaSom.textContent = `tocando: ${TRILHA_SONORA[musica.faixaAtual].titulo}`;
+    } else {
+        el.dicaSom.textContent = "música desligada";
+    }
     el.volume.disabled = !musica.ligado;
 }
 
 function iniciarFaixa() {
-    const src = ENSAIOS[estado.ensaioAtual].audio;
-    if (!musica.disponivel[estado.ensaioAtual]) return;
+    if (musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) return;
+    const src = TRILHA_SONORA[musica.faixaAtual].audio;
 
     pararAudioEnsaio();
     const novo = new Audio(src);
@@ -1383,6 +1471,19 @@ el.btnSom.addEventListener("click", () => {
     salvarPreferenciaSom();
     if (musica.ligado) iniciarFaixa();
     else pararAudioEnsaio();
+});
+
+el.seletorFaixa.addEventListener("change", () => {
+    if (el.seletorFaixa.value === "aleatorio") {
+        musica.aleatorio = true;
+        musica.faixaAtual = sortearFaixa();
+    } else {
+        musica.aleatorio = false;
+        musica.faixaAtual = Number(el.seletorFaixa.value);
+    }
+    atualizarBotaoSom();
+    salvarPreferenciaSom();
+    if (musica.ligado) iniciarFaixa();
 });
 
 el.volume.addEventListener("input", () => {

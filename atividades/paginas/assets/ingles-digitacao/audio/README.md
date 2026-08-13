@@ -1,28 +1,38 @@
-# Músicas dos ensaios
+# Músicas do jogo
 
-O jogo tem 8 ensaios (um por letra de música). Para cada um tocar
-durante a digitação, basta colocar o MP3 aqui, exatamente com este
-nome:
+A música que toca durante a digitação **não é mais fixa por ensaio**:
+o jogo sorteia uma faixa da trilha sonora inteira a cada ensaio
+iniciado, e o aluno também pode escolher manualmente qual música
+ouvir no seletor ao lado do botão de som.
+
+Para adicionar ou trocar uma faixa, basta colocar o MP3 aqui,
+exatamente com o nome esperado:
 
 ```
-ensaio-1.mp3   (Rock)
-ensaio-2.mp3   (Pearl Jam)
-ensaio-3.mp3   (Vampiro)
-ensaio-4.mp3   (Pop)
-ensaio-5.mp3   (John Lennon)
-ensaio-6.mp3   (Paramore)
-ensaio-7.mp3   (As Branquelas)
-ensaio-8.mp3   (Agente 007)
+ensaio-1.mp3   (tema: Rock — Chop Suey!, System Of A Down)
+ensaio-2.mp3   (tema: Pearl Jam — Black)
+ensaio-3.mp3   (tema: Vampiro — Your Biggest Fan, The Vampire Lestat)
+ensaio-4.mp3   (tema: Pop — One Time, Justin Bieber)
+ensaio-5.mp3   (tema: John Lennon — Beautiful Boy)
+ensaio-6.mp3   (tema: Paramore — Decode)
+ensaio-7.mp3   (tema: As Branquelas — A Thousand Miles, Vanessa Carlton)
+ensaio-8.mp3   (tema: Agente 007 — Skyfall, Adele)
+extra-1.mp3    (All I Wanted, Paramore)
+extra-2.mp3    (Brutal Love, The Vampire Lestat)
+extra-3.mp3    (I'm Still Standing, Elton John)
 ```
 
-Não precisa editar nada no código nem avisar ninguém: o jogo testa
-sozinho, ao abrir a página, quais desses 8 arquivos existem. Os
-ensaios que já tiverem música tocam normalmente (com botão de
-liga/desliga e volume); os que ainda não chegaram ficam mudos sem
-travar o jogo — o aluno digita a letra normalmente, só sem música
-nesse ensaio.
+Os nomes `ensaio-1` a `ensaio-8` vieram da época em que cada ensaio
+tinha sua própria música fixa — hoje são só nomes de arquivo, todas as
+11 faixas (incluindo as 3 `extra-N`) entram juntas no mesmo sorteio e
+aparecem juntas no seletor. Para adicionar uma 12ª faixa (ou mais),
+basta colocar o MP3 nesta pasta com outro nome e acrescentar uma linha
+em `TRILHA_SONORA` dentro de
+`atividades/paginas/ingles-letras-digitacao.html`.
 
-A ordem (1 a 8) é a mesma ordem dos temas coladas em `ENSAIOS` dentro
-de `atividades/paginas/ingles-letras-digitacao.html`. Se quiser
-conferir qual letra é qual antes de nomear o arquivo, abra esse HTML e
-procure por `const ENSAIOS`.
+Não precisa editar nada no código nem avisar ninguém para os arquivos
+que já estão previstos: o jogo testa sozinho, ao abrir a página, quais
+desses MP3s existem. As faixas que já chegaram entram no sorteio e
+ficam disponíveis no seletor; as que ainda não chegaram ficam
+desativadas no seletor sem travar o jogo — o aluno digita a letra
+normalmente, só sem música se nenhum arquivo tiver chegado ainda.

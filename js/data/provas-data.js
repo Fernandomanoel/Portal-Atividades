@@ -673,6 +673,7 @@ const PROVAS_MANIFEST = {
       "size": "110 B"
     }
   ],
+  "Inglês": [],
   "Inteligência Artificial": [
     {
       "type": "file",
@@ -1343,6 +1344,12 @@ const PROVAS_CATEGORIES = [
     "name": "Games",
     "courses": [
       "Desenvolvimento de Games"
+    ]
+  },
+  {
+    "name": "Inglês",
+    "courses": [
+      "Inglês"
     ]
   }
 ];

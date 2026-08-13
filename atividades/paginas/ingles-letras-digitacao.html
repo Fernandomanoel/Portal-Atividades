@@ -1,0 +1,1520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inglês em Letras de Música — Treino de Digitação</title>
+<style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --roxo: #7c3aed;
+        --roxo-escuro: #4c1d95;
+        --roxo-claro: #c4b5fd;
+        --rosa: #ec4899;
+        --ciano: #22d3ee;
+        --amarelo: #fbbf24;
+        --verde: #22c55e;
+        --verde-claro: #dcfce7;
+        --vermelho: #ef4444;
+        --vermelho-claro: #fee2e2;
+        --texto: #e5e7eb;
+        --sombra: 0 10px 30px rgba(0, 0, 0, .35);
+        --raio: 16px;
+
+        /* Tema do ensaio atual — trocado via JS ao entrar em cada ensaio. */
+        --tema-a: var(--roxo);
+        --tema-b: var(--rosa);
+        --tema-acento: var(--ciano);
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: radial-gradient(circle at 50% -10%, #3b1f6b 0%, #1a1030 45%, #0d0818 100%);
+        background-attachment: fixed;
+        color: var(--texto);
+        min-height: 100vh;
+        padding: clamp(8px, 2vw, 24px);
+        line-height: 1.5;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: #170f28;
+        border-radius: clamp(12px, 2vw, 22px);
+        overflow: hidden;
+        box-shadow: var(--sombra);
+        border: 1px solid rgba(196, 181, 253, 0.15);
+        position: relative;
+    }
+
+    header {
+        background: linear-gradient(135deg, var(--roxo-escuro) 0%, var(--roxo) 55%, var(--rosa) 100%);
+        padding: clamp(18px, 3vw, 30px);
+        text-align: center;
+        color: #fff;
+    }
+
+    header h1 {
+        font-size: clamp(1.4rem, 4.4vw, 2.3rem);
+        text-shadow: 0 2px 10px rgba(0,0,0,.35);
+    }
+
+    header p {
+        margin-top: 6px;
+        opacity: .92;
+        font-size: clamp(.85rem, 2vw, 1rem);
+    }
+
+    .badge {
+        display: inline-block;
+        margin-top: 12px;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.35);
+        padding: 5px 14px;
+        border-radius: 20px;
+        font-size: .85em;
+    }
+
+    .tela { display: none; padding: clamp(16px, 3vw, 30px); }
+    .tela.ativa { display: block; }
+
+    /* ---------- Mapa de ensaios ---------- */
+    .ensaios-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+    }
+
+    .ensaio-card {
+        background: #201636;
+        border: 2px solid rgba(196, 181, 253, 0.25);
+        border-top: 5px solid var(--cor-a, var(--roxo));
+        border-radius: var(--raio);
+        padding: 18px;
+        cursor: pointer;
+        transition: transform .15s, border-color .15s, background .15s;
+        text-align: left;
+        position: relative;
+    }
+
+    .ensaio-card:hover {
+        transform: translateY(-3px);
+        background: #2a1c48;
+    }
+
+    .ensaio-card.bloqueado {
+        cursor: not-allowed;
+        opacity: .5;
+        filter: grayscale(.5);
+    }
+    .ensaio-card.bloqueado:hover { transform: none; }
+
+    .ensaio-card .num {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--cor-a, var(--roxo)), var(--cor-b, var(--rosa)));
+        font-weight: 800;
+        margin-bottom: 10px;
+    }
+
+    .ensaio-card h3 { font-size: 1.05em; margin-bottom: 4px; }
+    .ensaio-card .tema-nome { font-size: .78em; font-weight: 700; color: var(--cor-acento, var(--ciano)); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .ensaio-card .info { font-size: .82em; color: var(--roxo-claro); }
+    .ensaio-card .concluido {
+        position: absolute; top: 12px; right: 12px;
+        background: var(--verde); color: #06280f;
+        border-radius: 50%; width: 26px; height: 26px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: .85em; font-weight: 800;
+    }
+    .ensaio-card .cadeado {
+        position: absolute; top: 12px; right: 12px;
+        font-size: 1.1em;
+    }
+
+    /* ---------- Tela de jogo ---------- */
+    .jogo-topo {
+        display: flex; flex-wrap: wrap; gap: 10px;
+        justify-content: space-between; align-items: center;
+        margin-bottom: 18px;
+        padding: 14px 18px;
+        border-radius: 14px;
+        background: linear-gradient(120deg, var(--tema-a), var(--tema-b));
+        transition: background .3s;
+    }
+
+    .voltar-btn {
+        background: rgba(0,0,0,0.25);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        padding: 8px 14px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: .88em;
+    }
+    .voltar-btn:hover { background: rgba(0,0,0,0.4); }
+
+    .titulo-ensaio { font-size: 1.1em; font-weight: 700; text-align: center; flex: 1; min-width: 200px; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,.4); }
+    .titulo-ensaio .tema-tag { display: block; font-size: .7em; font-weight: 600; opacity: .9; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+    .musica-controles { display: flex; align-items: center; gap: 8px; }
+    .som-btn {
+        background: rgba(0,0,0,0.25);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        width: 38px; height: 38px; border-radius: 50%;
+        cursor: pointer; font-size: 1.1em;
+    }
+    .som-btn:disabled { opacity: .35; cursor: not-allowed; }
+    .musica-controles input[type=range] { width: 80px; accent-color: #fff; }
+    .dica-som { font-size: .72em; color: #fff; opacity: .85; min-width: 110px; }
+    #seletor-faixa {
+        background: rgba(0,0,0,0.3);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: #fff;
+        padding: 6px 8px;
+        border-radius: 8px;
+        font-size: .8em;
+        max-width: 160px;
+    }
+    #seletor-faixa:disabled { opacity: .35; cursor: not-allowed; }
+    #seletor-faixa option { color: #111; }
+
+    /* ---------- Divisão 30% / 70% ---------- */
+    .jogo-layout {
+        display: grid;
+        grid-template-columns: 30% 70%;
+        gap: 18px;
+        align-items: start;
+    }
+
+    .jogo-esquerda { display: flex; flex-direction: column; gap: 14px; }
+    .jogo-direita { display: flex; flex-direction: column; }
+
+    @media (max-width: 780px) {
+        .jogo-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ---------- Reação (HUD grande, estilo status bar do DOOM) ---------- */
+    .hud-reacao {
+        background: #0a0710;
+        border: 3px solid #3f3550;
+        border-radius: 12px;
+        padding: 14px;
+        box-shadow: inset 0 2px 6px rgba(0,0,0,.6), inset 0 -1px 0 rgba(255,255,255,.05);
+    }
+
+    .hud-rosto-caixa {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        background: #000;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 3px solid #56607a;
+        box-shadow:
+            inset 0 0 0 2px #000,
+            inset 0 3px 6px rgba(0,0,0,.7),
+            0 0 0 2px #14101f;
+        transition: box-shadow .12s;
+    }
+
+    .hud-rosto-caixa::before, .hud-rosto-caixa::after {
+        content: "";
+        position: absolute;
+        width: 7px; height: 7px;
+        border-radius: 50%;
+        background: radial-gradient(circle at 35% 35%, #cbd5e1, #475569 70%);
+        top: 5px;
+        z-index: 2;
+    }
+    .hud-rosto-caixa::before { left: 5px; }
+    .hud-rosto-caixa::after { right: 5px; }
+
+    #reacao-img {
+        width: 100%; height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: saturate(1.05) contrast(1.05);
+    }
+    #reacao-img.vazio { opacity: 0; }
+
+    .hud-rosto-caixa.flash-correto { box-shadow: inset 0 0 0 2px #000, inset 0 3px 6px rgba(0,0,0,.7), 0 0 0 4px var(--verde), 0 0 22px 4px rgba(34,197,94,.65); }
+    .hud-rosto-caixa.flash-erro    { box-shadow: inset 0 0 0 2px #000, inset 0 3px 6px rgba(0,0,0,.7), 0 0 0 4px var(--vermelho), 0 0 22px 4px rgba(239,68,68,.65); }
+    .hud-rosto-caixa.tremer { animation: hudTremer .3s; }
+    @keyframes hudTremer {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(-3px, 2px); }
+        50% { transform: translate(3px, -2px); }
+        75% { transform: translate(-2px, -2px); }
+    }
+
+    .hud-rosto-legenda { text-align: center; margin-top: 10px; }
+    .hud-rosto-titulo {
+        font-family: 'Courier New', monospace;
+        font-size: .75em;
+        letter-spacing: 2px;
+        color: #7dd3fc;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+    }
+    .hud-rosto-status {
+        font-size: 1.05em;
+        font-weight: 700;
+        color: var(--texto);
+        min-height: 1.3em;
+    }
+    .hud-rosto-status.correto { color: var(--verde); }
+    .hud-rosto-status.erro { color: var(--vermelho); }
+
+    /* ---------- Estatísticas (coluna esquerda) ---------- */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .stat {
+        background: #201636;
+        border: 1px solid rgba(196, 181, 253, 0.2);
+        border-radius: 12px;
+        padding: 12px 8px;
+        text-align: center;
+    }
+    .stat .valor { font-size: 1.25em; font-weight: 800; color: var(--tema-acento); }
+    .stat .nome { font-size: .72em; color: var(--roxo-claro); margin-top: 2px; }
+
+    /* ---------- Área de digitação (coluna direita) ---------- */
+    .progresso-linha {
+        height: 6px; background: rgba(255,255,255,0.1);
+        border-radius: 4px; overflow: hidden; margin-bottom: 16px;
+    }
+    .progresso-preenchido {
+        height: 100%; background: linear-gradient(90deg, var(--tema-a), var(--tema-acento));
+        transition: width .25s, background .3s;
+    }
+
+    .verso-box {
+        background: #0f0a1c;
+        border: 2px solid var(--tema-a);
+        border-radius: var(--raio);
+        padding: clamp(18px, 4vw, 32px);
+        text-align: center;
+        margin-bottom: 18px;
+        min-height: 140px;
+        display: flex; align-items: center; justify-content: center;
+        transition: border-color .3s;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.03), 0 8px 24px -8px var(--tema-a);
+    }
+
+    .verso-texto {
+        font-size: clamp(1.1rem, 3vw, 1.55rem);
+        letter-spacing: .3px;
+        font-family: 'Courier New', monospace;
+        line-height: 1.7;
+    }
+
+    .ch { position: relative; }
+    .ch.ok { color: var(--verde); }
+    .ch.erro { color: var(--vermelho); text-decoration: underline wavy; }
+    .ch.atual { border-bottom: 3px solid var(--amarelo); animation: piscar 1s infinite; }
+    @keyframes piscar { 50% { border-color: transparent; } }
+
+    #campo {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: 1.1rem;
+        font-family: 'Courier New', monospace;
+        border-radius: 12px;
+        border: 2px solid rgba(196, 181, 253, 0.35);
+        background: #0f0a1c;
+        color: var(--texto);
+        outline: none;
+    }
+    #campo:focus { border-color: var(--tema-acento); }
+    #campo.errando { border-color: var(--vermelho); }
+
+    .mensagem {
+        text-align: center; margin-top: 14px; padding: 10px;
+        border-radius: 10px; font-size: .92em; display: none;
+    }
+    .mensagem.mostrar { display: block; }
+    .mensagem.sucesso { background: var(--verde-claro); color: #14532d; }
+
+    @media (max-width: 560px) {
+        .hud-rosto-caixa { max-width: 200px; margin: 0 auto; }
+    }
+
+    /* ---------- Tela de resultado ---------- */
+    .resultado-box { text-align: center; padding: 10px 0 20px; }
+    .resultado-medalha { font-size: 4rem; }
+    .resultado-titulo { font-size: 1.6em; font-weight: 800; margin: 8px 0; color: var(--amarelo); }
+    .resultado-elogio { color: var(--roxo-claro); margin-bottom: 20px; }
+
+    .resultado-stats {
+        display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+        max-width: 480px; margin: 0 auto 24px;
+    }
+    .resultado-stats .stat .valor { font-size: 1.6em; }
+
+    .botoes-final { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+        padding: 12px 22px; border-radius: 12px; border: none;
+        font-size: .95em; font-weight: 700; cursor: pointer;
+    }
+    .btn-primario { background: linear-gradient(135deg, var(--roxo), var(--rosa)); color: #fff; }
+    .btn-secundario { background: rgba(255,255,255,0.1); color: var(--texto); border: 1px solid rgba(255,255,255,0.25); }
+    .btn:hover { filter: brightness(1.1); }
+
+    footer {
+        text-align: center; padding: 16px; font-size: .78em;
+        color: var(--roxo-claro); border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎤 Inglês em Letras de Música</h1>
+        <p>Digite a letra em inglês enquanto ela toca — cada acerto e cada erro tem reação.</p>
+        <div class="badge" id="badge-progresso">0 de 8 ensaios concluídos</div>
+    </header>
+
+    <!-- ===================== TELA 1 — MAPA DE ENSAIOS ===================== -->
+    <section class="tela ativa" id="tela-mapa">
+        <div class="ensaios-grid" id="ensaios-grid"></div>
+    </section>
+
+    <!-- ===================== TELA 2 — JOGO ===================== -->
+    <section class="tela" id="tela-jogo">
+        <div class="jogo-topo">
+            <button class="voltar-btn" id="btn-voltar-mapa">← Escolher outro ensaio</button>
+            <div class="titulo-ensaio">
+                <span id="titulo-ensaio-atual"></span>
+                <span class="tema-tag" id="tema-ensaio-atual"></span>
+            </div>
+            <div class="musica-controles">
+                <button class="som-btn" id="btn-som" title="Ligar/desligar música">🔇</button>
+                <select id="seletor-faixa" title="Escolher música"></select>
+                <input type="range" id="volume" min="0" max="100" value="55">
+                <span class="dica-som" id="dica-som"></span>
+            </div>
+        </div>
+
+        <div class="jogo-layout">
+            <!-- 30% — reação + estatísticas -->
+            <div class="jogo-esquerda">
+                <div class="hud-reacao">
+                    <div class="hud-rosto-caixa" id="hud-rosto-caixa">
+                        <img id="reacao-img" class="vazio" src="" alt="Reação">
+                    </div>
+                    <div class="hud-rosto-legenda">
+                        <div class="hud-rosto-titulo">Reação</div>
+                        <div class="hud-rosto-status" id="hud-rosto-status">Comece a digitar…</div>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat"><div class="valor" id="stat-linha">1/1</div><div class="nome">Linha</div></div>
+                    <div class="stat"><div class="valor" id="stat-precisao">100%</div><div class="nome">Precisão</div></div>
+                    <div class="stat"><div class="valor" id="stat-ppm">0</div><div class="nome">Palavras/min</div></div>
+                    <div class="stat"><div class="valor" id="stat-combo">0</div><div class="nome">Combo</div></div>
+                </div>
+            </div>
+
+            <!-- 70% — digitação -->
+            <div class="jogo-direita">
+                <div class="progresso-linha"><div class="progresso-preenchido" id="progresso-ensaio" style="width:0%"></div></div>
+
+                <div class="verso-box"><div class="verso-texto" id="verso-alvo"></div></div>
+
+                <input type="text" id="campo" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Digite a linha acima…">
+
+                <div class="mensagem" id="mensagem"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== TELA 3 — RESULTADO ===================== -->
+    <section class="tela" id="tela-resultado">
+        <div class="resultado-box">
+            <div class="resultado-medalha" id="resultado-medalha">🏆</div>
+            <div class="resultado-titulo" id="resultado-titulo"></div>
+            <div class="resultado-elogio" id="resultado-elogio"></div>
+
+            <div class="resultado-stats">
+                <div class="stat"><div class="valor" id="resultado-precisao">100%</div><div class="nome">Precisão</div></div>
+                <div class="stat"><div class="valor" id="resultado-ppm">0</div><div class="nome">Palavras/min</div></div>
+                <div class="stat"><div class="valor" id="resultado-combo">0</div><div class="nome">Melhor combo</div></div>
+            </div>
+
+            <div class="botoes-final">
+                <button class="btn btn-secundario" id="btn-repetir">🔁 Repetir este ensaio</button>
+                <button class="btn btn-primario" id="btn-outro-ensaio">🎤 Escolher outro ensaio</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> · Inglês — treino de digitação com letras de música</p>
+    </footer>
+</div>
+
+<script>
+/* ==================================================================
+   1) ENSAIOS — cole as letras aqui (uma versão já vem pronta)
+   Cada ensaio tem um tema visual próprio (cores: a, b, acento) e
+   avança em sequência: o ensaio N+1 só desbloqueia depois que o
+   ensaio N for concluído.
+   ================================================================== */
+const ENSAIOS = [
+    {
+        tema: "Rock",
+        cores: { a: "#b91c1c", b: "#18181b", acento: "#f43f5e" },
+        audio: "assets/ingles-digitacao/audio/ensaio-1.mp3",
+        versos: [
+            "Wake up (wake up)",
+            "Grab a brush and put a little makeup",
+            "Hide your scars to fade away the shakeup (hide the scars to fade away the shakeup)",
+            "Why'd you leave the keys upon the table?",
+            "Here you go, creating another fable",
+            "(You wanted to) grab a brush and put a little makeup",
+            "(You wanted to) hide the scars to fade away the shakeup",
+            "(You wanted to) why'd you leave the keys upon the table?",
+            "(You wanted to)",
+            "I don't think you trust",
+            "In my self-righteous suicide",
+            "I cry",
+            "When angels deserve to die",
+            "Wake up (wake up)",
+            "Grab a brush and put a little makeup (a little bit)",
+            "Hide the scars to fade away the (hide the scars to fade away the shakeup)",
+            "Why'd you leave the keys upon the table?",
+            "Here you go, creating another fable",
+            "(You wanted to) grab a brush and put a little makeup",
+            "(You wanted to) hide the scars to fade away the shakeup",
+            "(You wanted to) why'd you leave the keys upon the table?",
+            "(You wanted to)",
+            "I don't think you trust",
+            "In my self-righteous suicide",
+            "I cry",
+            "When angels deserve to die",
+            "In my self-righteous suicide",
+            "I cry",
+            "When angels deserve to die",
+            "Father (Father)",
+            "Father (Father)",
+            "Father (Father)",
+            "Father (Father)",
+            "Father, into Your hands I commend my spirit",
+            "Father, into Your hands",
+            "Why have You forsaken me?",
+            "In Your eyes, forsaken me",
+            "In Your thoughts, forsaken me",
+            "In Your heart, forsaken me, oh",
+            "Trust in my self-righteous suicide",
+            "I cry",
+            "When angels deserve to die",
+            "In my self-righteous suicide",
+            "I cry",
+            "When angels deserve to die",
+        ]
+    },
+    {
+        tema: "Pearl Jam",
+        cores: { a: "#556b2f", b: "#3e2f1c", acento: "#d4a017" },
+        audio: "assets/ingles-digitacao/audio/ensaio-2.mp3",
+        versos: [
+            "Sheets of empty canvas",
+            "Untouched sheets of clay",
+            "Were laid spread out before me",
+            "As her body once did",
+            "All five horizons",
+            "Revolved around her soul",
+            "As the earth to the sun",
+            "Now the air I tasted and breathed",
+            "Has taken a turn",
+            "Oh, and all I taught her was everything",
+            "Oh, I know she gave me all that she wore",
+            "And now my bitter hands",
+            "Chafe beneath the clouds",
+            "Of what was everything",
+            "Oh, the pictures have",
+            "All been washed in black",
+            "Tattooed everything",
+            "I take a walk outside",
+            "I'm surrounded by some kids at play",
+            "I can feel their laughter",
+            "So, why do I sear?",
+            "Oh, and twisted thoughts that spin round my head",
+            "I'm spinning, oh, I'm spinning",
+            "How quick the sun can drop away?",
+            "And now my bitter hands",
+            "Cradle broken glass",
+            "Of what was everything",
+            "All the pictures have",
+            "All been washed in black",
+            "Tattooed everything",
+            "All the love gone bad",
+            "Turned my world to black",
+            "Tattooed all I see",
+            "All that I am",
+            "All that I'll be, yeah",
+            "I know someday you'll have a beautiful life",
+            "I know you'll be a star",
+            "In somebody else's sky, but why? Why? Why",
+            "Can't it be, oh, can't it be mine?",
+        ]
+    },
+    {
+        tema: "Vampiro",
+        cores: { a: "#7f1d1d", b: "#1a0a12", acento: "#a3123a" },
+        audio: "assets/ingles-digitacao/audio/ensaio-3.mp3",
+        versos: [
+            "The day you were born",
+            "I was shakin' like a leaf on an old oak tree",
+            "Then you stayed like a thorn",
+            "Red roses rainin' down till they flooded me",
+            "Even when we parted ways",
+            "You never turn, never turn your gaze",
+            "And I can still",
+            "I can still hear you say",
+            "Don't break that stare",
+            "I'm burnin' in your mirror tonight",
+            "No, don't you dare call it yearnin'",
+            "It's the fear that I'm right",
+            "Don't you try to forget all the things you regret",
+            "In those stained glass",
+            "Stained glass eyes",
+            "Hey",
+            "Had our fun, like a child",
+            "Just a couple of knives cutting through twenty years",
+            "No one ever gets to keep my smile",
+            "But you can peel it off me like one of your souvenirs",
+            "Even when we parted ways",
+            "You never turn, never turn your gaze",
+            "Oh, I can still",
+            "I can still hear you say",
+            "Don't break that stare",
+            "I'm burnin' in your mirror tonight",
+            "And no, don't you dare call it yearnin'",
+            "It's the fear that I'm right",
+            "Don't you try to forget all the things you regret",
+            "Like the ashes you spread till you had nothin' left",
+            "In those stained glass",
+            "Stained glass eyes",
+            "Don't look away",
+            "No, no don't look away",
+            "I'm gonna haunt you",
+            "Haunt you until your dyin' days",
+            "Don't look away",
+            "No, don't look away",
+            "I'm gonna haunt you",
+            "I want you to beg as I taunt you",
+            "Look away",
+            "No, don't look away",
+            "Don't break that stare",
+            "I'm burnin' in your mirror tonight",
+            "No, don't you dare call it yearnin'",
+            "It's the fear that I'm right",
+            "Don't you try to forget all the things you regret",
+            "Like the ashes you spread till you had nothing left",
+            "Don't break that stare",
+            "I'm burnin' in your mirror tonight",
+            "No, don't you dare call it yearnin'",
+            "It's the fear that I'm right",
+            "Don't you try to forget all the things you regret",
+            "Like the ashes you spread till you had nothing left",
+            "You're down there in the dirt",
+            "You're just hiding from the hurt",
+            "In those stained glass",
+            "Stained glass eyes",
+        ]
+    },
+    {
+        tema: "Pop",
+        cores: { a: "#ec4899", b: "#8b5cf6", acento: "#22d3ee" },
+        audio: "assets/ingles-digitacao/audio/ensaio-4.mp3",
+        versos: [
+            "Aye, aye, aye, aye",
+            "Aye, aye, aye, aye",
+            "Me, plus you (I'ma tell you one time)",
+            "Me, plus you (I'ma tell you one time)",
+            "Me, plus you (I'ma tell you one time)",
+            "One time, one time",
+            "When I met you, girl, my heart went knock, knock",
+            "Now them butterflies in my stomach won't stop, stop",
+            "And even though it's a struggle, love is all we got",
+            "So we gon' keep, keep climbin' 'til the mountain top",
+            "Your world is my world",
+            "And my fight is your fight",
+            "My breath is your breath",
+            "When you're hurt (I'm not right)",
+            "And girl, you're my one love",
+            "My one heart",
+            "My one life for sure",
+            "Let me tell you one time (girl, I love, girl, I love you)",
+            "I'ma tell you one time (girl, I love, girl, I love you)",
+            "And I'ma be your one guy",
+            "You'll be my number one girl",
+            "Always making time for you",
+            "I'ma tell you one time (girl, I love, girl, I love you)",
+            "I'ma tell you one time (girl, I love, girl, I love you, hey)",
+            "You look so deep, you know that it humbles me",
+            "You by my side and troubles they don't trouble me",
+            "Many have called, but the chosen is you",
+            "Whatever you want, shawty, I'll give it to you",
+            "Your world is my world (your world)",
+            "And my fight is your fight (my fight is your fight)",
+            "My breath is your breath",
+            "When you're hurt (I'm not right)",
+            "And girl, you're my one love",
+            "My one heart",
+            "My one life for sure",
+            "Let me tell you one time (girl, I love, girl, I love you)",
+            "I'ma tell you one time (girl, I love, girl, I love you)",
+            "And I'ma be your one guy (one guy)",
+            "You'll be my number one girl",
+            "Always making time for you",
+            "I'ma tell you one time (girl, I love, girl, I love you)",
+            "I'ma tell you one time (girl, I love, girl, I love you, hey)",
+            "Shawty right there",
+            "She's got everything I need",
+            "And I'ma tell her one time (one time, one time)",
+            "Give you everything you need, down to my last dime",
+            "She makes me happy, I know where I'll be",
+            "Right by your side, 'cause she is the one for me",
+            "And girl you're my one love",
+            "My one heart (yeah, yeah, yeah, yeah)",
+            "My one life for sure",
+            "Let me tell you one time (girl, I love, girl, I love you)",
+            "I'ma tell you one time (girl, I love, girl, I love you)",
+            "And I'ma be your one guy",
+            "You'll be my number one girl",
+            "Always making time for you (making time for you, oh)",
+            "I'ma tell you one time (one time)",
+            "I'ma tell you one time (one time)",
+            "Me, plus you (I'ma tell you one time)",
+            "Me, plus you (I'ma tell you one time)",
+            "Me, plus you (I'ma tell you one time)",
+            "One time, one time",
+        ]
+    },
+    {
+        tema: "John Lennon",
+        cores: { a: "#c47f3c", b: "#7a5230", acento: "#e9c46a" },
+        audio: "assets/ingles-digitacao/audio/ensaio-5.mp3",
+        versos: [
+            "Close your eyes",
+            "Have no fear",
+            "The monster's gone",
+            "He's on the run and your daddy's here",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Before you go to sleep",
+            "Say a little prayer",
+            "Every day, in every way",
+            "It's getting better and better",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Out on the ocean, sailing away",
+            "I can hardly wait",
+            "To see you come of age",
+            "But I guess we'll both just have to be patient",
+            "'Cause it's a long way to go",
+            "A hard row to hoe",
+            "Yes, it's a long way to go",
+            "But, in the meantime",
+            "Before you cross the street",
+            "Take my hand",
+            "Life is what happens to you",
+            "While you're busy making other plans",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Before you go to sleep",
+            "Say a little prayer",
+            "Every day in every way",
+            "It's getting better and better",
+            "Beautiful, beautiful, beautiful",
+            "Beautiful boy",
+            "Darling, darling, darling",
+            "Darling Sean",
+            "(Good night, Sean)",
+            "(See you in the morning)",
+            "(Bright and early)",
+        ]
+    },
+    {
+        tema: "Paramore",
+        cores: { a: "#f97316", b: "#7c2d12", acento: "#fde047" },
+        audio: "assets/ingles-digitacao/audio/ensaio-6.mp3",
+        versos: [
+            "How can I decide what's right",
+            "When you're clouding up my mind?",
+            "I can't win your losing fight",
+            "All the time",
+            "Nor can I ever own what's mine",
+            "When you're always taking sides",
+            "But you won't take away my pride",
+            "No, not this time",
+            "Not this time",
+            "How did we get here",
+            "When I used to know you so well?",
+            "But how did we get here?",
+            "Well, I think I know",
+            "The truth is hiding in your eyes",
+            "And it's hanging on your tongue",
+            "Just boiling in my blood",
+            "But you think that I can't see",
+            "What kind of man that you are?",
+            "If you're a man at all",
+            "Well, I will figure this one out",
+            "On my own (I'm screaming: I love you so)",
+            "On my own (but my thoughts you can't decode)",
+            "But how did we get here",
+            "When I used to know you so well?",
+            "Yeah",
+            "How did we get here?",
+            "Well, I think I know",
+            "Do you see",
+            "What we've done?",
+            "We've gone and made such fools of ourselves",
+            "Do you see",
+            "What we've done?",
+            "We've gone and made such fools of ourselves",
+            "Yeah, yeah, hey",
+            "How did we get here",
+            "When I used to know you so well?",
+            "Yeah, yeah, yeah",
+            "Well, how did we get here",
+            "When I used to know you so well?",
+            "I think I know",
+            "I think I know",
+            "Ooh, there is something",
+            "I see in you",
+            "It might kill me",
+            "I want it to be true",
+        ]
+    },
+    {
+        tema: "As Branquelas",
+        cores: { a: "#f472b6", b: "#c026d3", acento: "#fbbf24" },
+        audio: "assets/ingles-digitacao/audio/ensaio-7.mp3",
+        versos: [
+            "Makin' my way downtown, walkin' fast",
+            "Faces pass and I'm homebound",
+            "Starin' blankly ahead, just makin' my way",
+            "Makin' a way through the crowd",
+            "And I need you",
+            "And I miss you",
+            "And now I wonder",
+            "If I could fall",
+            "Into the sky",
+            "Do you think time",
+            "Would pass me by?",
+            "'Cause you know I'd walk a thousand miles",
+            "If I could just see you",
+            "Tonight",
+            "It's always times like these when I think of you",
+            "And I wonder if you ever think of me",
+            "'Cause everything's so wrong and I don't belong",
+            "Livin' in your precious memory",
+            "'Cause I'll need you",
+            "And I'll miss you",
+            "And now I wonder",
+            "If I could fall",
+            "Into the sky",
+            "Do you think time",
+            "Would pass me by?",
+            "Oh, 'cause you know I'd walk a thousand miles",
+            "If I could just see you",
+            "Tonight",
+            "And I, I don't wanna let you know",
+            "I, I drown in your memory",
+            "I, I don't wanna let this go",
+            "I, I don't",
+            "Makin' my way downtown, walkin' fast",
+            "Faces pass and I'm homebound",
+            "Starin' blankly ahead, just makin' my way",
+            "Makin' a way through the crowd",
+            "And I still need you",
+            "I still miss you",
+            "And now I wonder",
+            "If I could fall",
+            "Into the sky",
+            "Do you think time",
+            "Would pass us by?",
+            "'Cause you know I'd walk a thousand miles",
+            "If I could just see you, oh, oh",
+            "If I could fall",
+            "Into the sky",
+            "Do you think time",
+            "Would pass me by?",
+            "'Cause you know I'd walk a thousand miles",
+            "If I could just see you",
+            "If I could just hold you",
+            "Tonight",
+        ]
+    },
+    {
+        tema: "Agente 007",
+        cores: { a: "#0f172a", b: "#1e293b", acento: "#d4af37" },
+        audio: "assets/ingles-digitacao/audio/ensaio-8.mp3",
+        versos: [
+            "This is the end",
+            "Hold your breath and count to ten",
+            "Feel the Earth move and then",
+            "Hear my heart burst again",
+            "For this is the end",
+            "I've drowned and dreamt this moment",
+            "So overdue, I owe them",
+            "Swept away, I'm stolen",
+            "Let the sky fall",
+            "When it crumbles",
+            "We will stand tall",
+            "Face it all together",
+            "Let the sky fall",
+            "When it crumbles",
+            "We will stand tall",
+            "Face it all together",
+            "At Skyfall",
+            "At Skyfall",
+            "Skyfall is where we start",
+            "A thousand miles and poles apart",
+            "Where worlds collide and days are dark",
+            "You may have my number, you can take my name",
+            "But you'll never have my heart",
+            "Let the sky fall (let she skyfall)",
+            "When it crumbles (when it crumbles)",
+            "We will stand tall (we will stand tall)",
+            "Face it all together",
+            "Let the sky fall (let the sky fall)",
+            "When it crumbles (when it crumbles)",
+            "We will stand tall (we will stand tall)",
+            "Face it all together",
+            "At Skyfall",
+            "(Let the sky fall)",
+            "(When it crumbles)",
+            "(We will stand tall)",
+            "(Let the sky fall)",
+            "(When it crumbles)",
+            "(We will stand tall)",
+            "Where you go, I go",
+            "What you see, I see",
+            "I know I'd never be me without the security",
+            "Of your loving arms keeping me from harm",
+            "Put your hand in my hand and we'll stand",
+            "Let the sky fall (let the sky fall)",
+            "When it crumbles (when it crumbles)",
+            "We will stand tall (we will stand tall)",
+            "Face it all together",
+            "Let the sky fall (let the Skyfall)",
+            "When it crumbles (when it crumbles)",
+            "We will stand tall (we will stand tall)",
+            "Face it all together",
+            "At Skyfall",
+            "Let the sky fall",
+            "We will stand tall",
+            "At Skyfall",
+            "Ooh",
+        ]
+    },
+];
+
+/* ==================================================================
+   2) REAÇÕES — imagem que aparece no HUD a cada acerto/erro
+   ================================================================== */
+
+const REACOES = {
+    correto: [
+        "assets/ingles-digitacao/faces/correto-1.jpg",
+        "assets/ingles-digitacao/faces/correto-2.jpg",
+        "assets/ingles-digitacao/faces/correto-3.jpg",
+        "assets/ingles-digitacao/faces/correto-4.jpg",
+    ],
+    erro: [
+        "assets/ingles-digitacao/faces/erro-1.jpg",
+        "assets/ingles-digitacao/faces/erro-2.jpg",
+        "assets/ingles-digitacao/faces/erro-3.jpg",
+        "assets/ingles-digitacao/faces/erro-4.jpg",
+        "assets/ingles-digitacao/faces/erro-5.jpg",
+        "assets/ingles-digitacao/faces/erro-6.jpg",
+        "assets/ingles-digitacao/faces/erro-7.jpg",
+    ],
+};
+
+const FRASES_REACAO = {
+    correto: ["Boa!", "Isso aí!", "Combo!", "Mandou bem!", "Sequência!"],
+    erro: ["Ops!", "Quase…", "Tenta de novo!", "Foi por pouco!", "Presta atenção!"],
+};
+
+let ultimaReacao = "";
+
+// Estilo "status bar do DOOM": um rostinho fixo no HUD que só troca de
+// cara e pisca a moldura a cada tecla — nada entra ou sai voando da tela.
+function mostrarReacao(tipo) {
+    const pool = REACOES[tipo];
+    let escolha = pool[Math.floor(Math.random() * pool.length)];
+    if (pool.length > 1) {
+        let tentativas = 0;
+        while (escolha === ultimaReacao && tentativas < 5) {
+            escolha = pool[Math.floor(Math.random() * pool.length)];
+            tentativas++;
+        }
+    }
+    ultimaReacao = escolha;
+
+    el.reacaoImg.src = escolha;
+    el.reacaoImg.classList.remove("vazio");
+
+    const frases = FRASES_REACAO[tipo];
+    el.hudRostoStatus.textContent = frases[Math.floor(Math.random() * frases.length)];
+    el.hudRostoStatus.className = `hud-rosto-status ${tipo}`;
+
+    el.hudRostoCaixa.classList.remove("flash-correto", "flash-erro", "tremer");
+    void el.hudRostoCaixa.offsetWidth; // força reflow pra poder repetir o tremor em teclas seguidas
+    el.hudRostoCaixa.classList.add(tipo === "correto" ? "flash-correto" : "flash-erro", "tremer");
+}
+
+/* ==================================================================
+   3) ELEMENTOS
+   ================================================================== */
+
+const el = {
+    telaMapa: document.getElementById("tela-mapa"),
+    telaJogo: document.getElementById("tela-jogo"),
+    telaResultado: document.getElementById("tela-resultado"),
+    ensaiosGrid: document.getElementById("ensaios-grid"),
+    badgeProgresso: document.getElementById("badge-progresso"),
+
+    btnVoltarMapa: document.getElementById("btn-voltar-mapa"),
+    tituloEnsaioAtual: document.getElementById("titulo-ensaio-atual"),
+    temaEnsaioAtual: document.getElementById("tema-ensaio-atual"),
+    btnSom: document.getElementById("btn-som"),
+    seletorFaixa: document.getElementById("seletor-faixa"),
+    volume: document.getElementById("volume"),
+    dicaSom: document.getElementById("dica-som"),
+
+    statLinha: document.getElementById("stat-linha"),
+    statPrecisao: document.getElementById("stat-precisao"),
+    statPPM: document.getElementById("stat-ppm"),
+    statCombo: document.getElementById("stat-combo"),
+    progressoEnsaio: document.getElementById("progresso-ensaio"),
+
+    versoAlvo: document.getElementById("verso-alvo"),
+    campo: document.getElementById("campo"),
+    mensagem: document.getElementById("mensagem"),
+
+    resultadoMedalha: document.getElementById("resultado-medalha"),
+    resultadoTitulo: document.getElementById("resultado-titulo"),
+    resultadoElogio: document.getElementById("resultado-elogio"),
+    resultadoPrecisao: document.getElementById("resultado-precisao"),
+    resultadoPPM: document.getElementById("resultado-ppm"),
+    resultadoCombo: document.getElementById("resultado-combo"),
+    btnRepetir: document.getElementById("btn-repetir"),
+    btnOutroEnsaio: document.getElementById("btn-outro-ensaio"),
+
+    hudRostoCaixa: document.getElementById("hud-rosto-caixa"),
+    hudRostoStatus: document.getElementById("hud-rosto-status"),
+    reacaoImg: document.getElementById("reacao-img"),
+};
+
+/* ==================================================================
+   4) ESTADO
+   ================================================================== */
+
+const estado = {
+    ensaioAtual: 0,
+    versoAtual: 0,
+    digitado: "",
+    acertosEnsaio: 0,
+    errosEnsaio: 0,
+    combo: 0,
+    melhorCombo: 0,
+    inicioEnsaio: null,
+    concluidos: new Set(),
+};
+
+function trocarTela(tela) {
+    [el.telaMapa, el.telaJogo, el.telaResultado].forEach((t) => t.classList.remove("ativa"));
+    tela.classList.add("ativa");
+}
+
+function aplicarTema(cores) {
+    const raiz = document.documentElement.style;
+    raiz.setProperty("--tema-a", cores.a);
+    raiz.setProperty("--tema-b", cores.b);
+    raiz.setProperty("--tema-acento", cores.acento);
+}
+
+/* ==================================================================
+   5) MAPA DE ENSAIOS
+   ================================================================== */
+
+function ensaioDesbloqueado(indice) {
+    return indice === 0 || estado.concluidos.has(indice - 1) || estado.concluidos.has(indice);
+}
+
+function desenharMapa() {
+    el.ensaiosGrid.innerHTML = "";
+    ENSAIOS.forEach((ensaio, indice) => {
+        const desbloqueado = ensaioDesbloqueado(indice);
+        const card = document.createElement("div");
+        card.className = "ensaio-card" + (desbloqueado ? "" : " bloqueado");
+        card.style.setProperty("--cor-a", ensaio.cores.a);
+        card.style.setProperty("--cor-b", ensaio.cores.b);
+        card.style.setProperty("--cor-acento", ensaio.cores.acento);
+        card.innerHTML = `
+            <div class="num">${indice + 1}</div>
+            <div class="tema-nome">${ensaio.tema}</div>
+            <h3>Ensaio ${indice + 1}</h3>
+            <div class="info">${ensaio.versos.length} linhas para digitar</div>
+            ${estado.concluidos.has(indice) ? '<div class="concluido">✓</div>' : ""}
+            ${!desbloqueado ? '<div class="cadeado">🔒</div>' : ""}
+        `;
+        if (desbloqueado) {
+            card.addEventListener("click", () => iniciarEnsaio(indice));
+        }
+        el.ensaiosGrid.appendChild(card);
+    });
+
+    el.badgeProgresso.textContent = `${estado.concluidos.size} de ${ENSAIOS.length} ensaios concluídos`;
+}
+
+/* ==================================================================
+   6) JOGO — digitação da letra
+   ================================================================== */
+
+function iniciarEnsaio(indice) {
+    estado.ensaioAtual = indice;
+    estado.versoAtual = 0;
+    estado.digitado = "";
+    estado.acertosEnsaio = 0;
+    estado.errosEnsaio = 0;
+    estado.combo = 0;
+    estado.melhorCombo = 0;
+    estado.inicioEnsaio = null;
+
+    const ensaio = ENSAIOS[indice];
+    aplicarTema(ensaio.cores);
+    el.tituloEnsaioAtual.textContent = `Ensaio ${indice + 1}`;
+    el.temaEnsaioAtual.textContent = ensaio.tema;
+    el.campo.value = "";
+    el.campo.disabled = false;
+    esconderMensagem();
+
+    el.reacaoImg.classList.add("vazio");
+    el.hudRostoCaixa.classList.remove("flash-correto", "flash-erro", "tremer");
+    el.hudRostoStatus.textContent = "Comece a digitar…";
+    el.hudRostoStatus.className = "hud-rosto-status";
+    ultimaReacao = "";
+
+    trocarTela(el.telaJogo);
+    desenharVerso();
+    atualizarEstatisticasJogo();
+    prepararAudioEnsaio();
+    el.campo.focus();
+}
+
+function versoAtualTexto() {
+    return ENSAIOS[estado.ensaioAtual].versos[estado.versoAtual] || "";
+}
+
+function desenharVerso() {
+    const alvo = versoAtualTexto();
+    const digitado = estado.digitado;
+    el.versoAlvo.innerHTML = "";
+
+    for (let i = 0; i < alvo.length; i++) {
+        const span = document.createElement("span");
+        const caractere = alvo[i];
+        span.className = "ch";
+        span.textContent = caractere === " " ? " " : caractere;
+
+        if (i < digitado.length) {
+            span.classList.add(digitado[i] === caractere ? "ok" : "erro");
+        } else if (i === digitado.length) {
+            span.classList.add("atual");
+        }
+        el.versoAlvo.appendChild(span);
+    }
+
+    el.statLinha.textContent = `${estado.versoAtual + 1}/${ENSAIOS[estado.ensaioAtual].versos.length}`;
+    el.progressoEnsaio.style.width =
+        (estado.versoAtual / ENSAIOS[estado.ensaioAtual].versos.length) * 100 + "%";
+}
+
+el.campo.addEventListener("input", () => {
+    const alvo = versoAtualTexto();
+    const valor = el.campo.value;
+
+    if (!estado.inicioEnsaio) estado.inicioEnsaio = Date.now();
+
+    if (valor.length > estado.digitado.length) {
+        const posicao = valor.length - 1;
+        const acertou = valor[posicao] === alvo[posicao];
+
+        if (acertou) {
+            estado.acertosEnsaio++;
+            estado.combo++;
+            estado.melhorCombo = Math.max(estado.melhorCombo, estado.combo);
+            mostrarReacao("correto");
+        } else {
+            estado.errosEnsaio++;
+            estado.combo = 0;
+            mostrarReacao("erro");
+        }
+    }
+
+    estado.digitado = valor;
+
+    const temErro = [...valor].some((c, i) => c !== alvo[i]);
+    el.campo.classList.toggle("errando", temErro);
+
+    desenharVerso();
+    atualizarEstatisticasJogo();
+
+    if (valor === alvo) concluirVerso();
+});
+
+function concluirVerso() {
+    estado.versoAtual++;
+
+    if (estado.versoAtual >= ENSAIOS[estado.ensaioAtual].versos.length) {
+        concluirEnsaio();
+        return;
+    }
+
+    estado.digitado = "";
+    el.campo.value = "";
+    el.campo.classList.remove("errando");
+    mostrarMensagem("sucesso", "✅ Boa! Próxima linha…");
+    setTimeout(esconderMensagem, 900);
+    desenharVerso();
+    atualizarEstatisticasJogo();
+}
+
+function concluirEnsaio() {
+    estado.concluidos.add(estado.ensaioAtual);
+    el.campo.disabled = true;
+    pararAudioEnsaio();
+
+    const precisao = calcularPrecisao();
+    const ppm = calcularPPM();
+
+    let medalha = "🎧", titulo = "Ensaio concluído!", elogio = "Você digitou a letra inteira. Bom treino!";
+    if (precisao >= 97 && ppm >= 30) { medalha = "🏆"; titulo = "PERFEITO!"; elogio = "Precisão e velocidade de quem já manja de inglês e de teclado."; }
+    else if (precisao >= 90 && ppm >= 20) { medalha = "🥈"; titulo = "MUITO BEM!"; elogio = "Ótima digitação — continue treinando para ficar ainda mais rápido."; }
+    else if (precisao >= 80) { medalha = "🥉"; titulo = "BOA!"; elogio = "Você terminou o ensaio. Repita para melhorar a precisão."; }
+
+    el.resultadoMedalha.textContent = medalha;
+    el.resultadoTitulo.textContent = titulo;
+    el.resultadoElogio.textContent = elogio;
+    el.resultadoPrecisao.textContent = precisao + "%";
+    el.resultadoPPM.textContent = ppm;
+    el.resultadoCombo.textContent = estado.melhorCombo;
+
+    trocarTela(el.telaResultado);
+}
+
+/* ==================================================================
+   7) ESTATÍSTICAS
+   ================================================================== */
+
+function calcularPrecisao() {
+    const total = estado.acertosEnsaio + estado.errosEnsaio;
+    return total === 0 ? 100 : Math.round((estado.acertosEnsaio / total) * 100);
+}
+
+function calcularPPM() {
+    if (!estado.inicioEnsaio) return 0;
+    const minutos = (Date.now() - estado.inicioEnsaio) / 60000;
+    if (minutos <= 0) return 0;
+    const ppm = Math.round((estado.acertosEnsaio / 5) / minutos);
+    return Math.max(0, Math.min(ppm, 999));
+}
+
+function atualizarEstatisticasJogo() {
+    el.statPrecisao.textContent = calcularPrecisao() + "%";
+    el.statPPM.textContent = calcularPPM();
+    el.statCombo.textContent = estado.combo;
+}
+
+function mostrarMensagem(tipo, texto) {
+    el.mensagem.textContent = texto;
+    el.mensagem.className = `mensagem mostrar ${tipo}`;
+}
+function esconderMensagem() {
+    el.mensagem.classList.remove("mostrar");
+}
+
+/* ==================================================================
+   8) MÚSICA — trilha sonora independente dos ensaios: por padrão toca
+      uma faixa aleatória (troca a cada ensaio novo), mas dá pra
+      escolher exatamente qual música ouvir no seletor. Mesma lógica
+      de detecção graciosa do jogo do Zodíaco: testa se o arquivo
+      existe antes de habilitar os controles, e nunca trava o jogo se
+      a música ainda não tiver sido colocada.
+   ================================================================== */
+
+const TRILHA_SONORA = [
+    { titulo: "Chop Suey! — System Of A Down", audio: "assets/ingles-digitacao/audio/ensaio-1.mp3" },
+    { titulo: "Black — Pearl Jam", audio: "assets/ingles-digitacao/audio/ensaio-2.mp3" },
+    { titulo: "Your Biggest Fan — The Vampire Lestat", audio: "assets/ingles-digitacao/audio/ensaio-3.mp3" },
+    { titulo: "One Time — Justin Bieber", audio: "assets/ingles-digitacao/audio/ensaio-4.mp3" },
+    { titulo: "Beautiful Boy — John Lennon", audio: "assets/ingles-digitacao/audio/ensaio-5.mp3" },
+    { titulo: "Decode — Paramore", audio: "assets/ingles-digitacao/audio/ensaio-6.mp3" },
+    { titulo: "A Thousand Miles — Vanessa Carlton", audio: "assets/ingles-digitacao/audio/ensaio-7.mp3" },
+    { titulo: "Skyfall — Adele", audio: "assets/ingles-digitacao/audio/ensaio-8.mp3" },
+    { titulo: "All I Wanted — Paramore", audio: "assets/ingles-digitacao/audio/extra-1.mp3" },
+    { titulo: "Brutal Love — The Vampire Lestat", audio: "assets/ingles-digitacao/audio/extra-2.mp3" },
+    { titulo: "I'm Still Standing — Elton John", audio: "assets/ingles-digitacao/audio/extra-3.mp3" },
+];
+
+const musica = {
+    ligado: false,
+    volume: 0.55,
+    tocador: null,
+    disponivel: {},      // índice em TRILHA_SONORA -> existe/carrega
+    faixaAtual: null,    // índice em TRILHA_SONORA tocando agora
+    aleatorio: true,     // true = sorteia uma faixa disponível a cada ensaio
+    CHAVE: "ingles-musica-som",
+};
+
+function faixasDisponiveis() {
+    return TRILHA_SONORA.map((_, i) => i).filter((i) => musica.disponivel[i]);
+}
+
+function sortearFaixa() {
+    const opcoes = faixasDisponiveis();
+    if (!opcoes.length) return null;
+    // Evita repetir a mesma faixa que já estava tocando, se houver opção.
+    let candidatos = opcoes;
+    if (musica.faixaAtual !== null && opcoes.length > 1) {
+        candidatos = opcoes.filter((i) => i !== musica.faixaAtual);
+    }
+    return candidatos[Math.floor(Math.random() * candidatos.length)];
+}
+
+function testarAudio(src) {
+    return new Promise((resolve) => {
+        const a = new Audio();
+        a.preload = "metadata";
+        let terminou = false;
+        const pronto = () => { finalizar(true); };
+        const falhou = () => { finalizar(false); };
+        const finalizar = (ok) => {
+            if (terminou) return;
+            terminou = true;
+            a.removeEventListener("loadedmetadata", pronto);
+            a.removeEventListener("error", falhou);
+            // Libera a conexão de rede imediatamente (senão o navegador pode
+            // manter o download em aberto e atrasar o teste dos próximos
+            // arquivos da fila — foi o que causou falso-negativo em faixas
+            // maiores testadas em sequência).
+            a.src = "";
+            a.load();
+            resolve(ok);
+        };
+        a.addEventListener("loadedmetadata", pronto);
+        a.addEventListener("error", falhou);
+        a.src = src;
+        // Arquivos de música pesam alguns MB — dá um tempo maior que o de
+        // uma imagem, principalmente com várias faixas sendo testadas uma
+        // atrás da outra no mesmo carregamento da página.
+        setTimeout(() => finalizar(false), 9000);
+    });
+}
+
+async function prepararMusicaGlobal() {
+    for (let i = 0; i < TRILHA_SONORA.length; i++) {
+        musica.disponivel[i] = await testarAudio(TRILHA_SONORA[i].audio);
+    }
+
+    const salvo = lerPreferenciaSom();
+    if (salvo) {
+        musica.ligado = !!salvo.ligado;
+        musica.volume = typeof salvo.volume === "number" ? salvo.volume : musica.volume;
+        if (typeof salvo.aleatorio === "boolean") musica.aleatorio = salvo.aleatorio;
+        if (typeof salvo.faixaAtual === "number") musica.faixaAtual = salvo.faixaAtual;
+    }
+    el.volume.value = Math.round(musica.volume * 100);
+    montarSeletorFaixas();
+    atualizarBotaoSom();
+}
+
+function montarSeletorFaixas() {
+    el.seletorFaixa.innerHTML = "";
+
+    const optAleatorio = document.createElement("option");
+    optAleatorio.value = "aleatorio";
+    optAleatorio.textContent = "🔀 Aleatório";
+    el.seletorFaixa.appendChild(optAleatorio);
+
+    TRILHA_SONORA.forEach((faixa, i) => {
+        const opt = document.createElement("option");
+        opt.value = String(i);
+        opt.textContent = faixa.titulo;
+        opt.disabled = !musica.disponivel[i];
+        el.seletorFaixa.appendChild(opt);
+    });
+
+    const semAudio = faixasDisponiveis().length === 0;
+    el.seletorFaixa.disabled = semAudio;
+    el.seletorFaixa.value =
+        !musica.aleatorio && musica.faixaAtual !== null ? String(musica.faixaAtual) : "aleatorio";
+}
+
+function lerPreferenciaSom() {
+    try { return JSON.parse(localStorage.getItem(musica.CHAVE) || "null"); }
+    catch { return null; }
+}
+function salvarPreferenciaSom() {
+    try {
+        localStorage.setItem(musica.CHAVE, JSON.stringify({
+            ligado: musica.ligado,
+            volume: musica.volume,
+            aleatorio: musica.aleatorio,
+            faixaAtual: musica.faixaAtual,
+        }));
+    } catch { /* sem localStorage: só não lembra a preferência */ }
+}
+
+function prepararAudioEnsaio() {
+    const semAudio = faixasDisponiveis().length === 0;
+    el.btnSom.disabled = semAudio;
+    el.seletorFaixa.disabled = semAudio;
+    el.volume.disabled = semAudio || !musica.ligado;
+
+    if (semAudio) {
+        el.dicaSom.textContent = "áudio ainda não instalado";
+        el.btnSom.title = "Nenhum arquivo de música foi colocado em assets/ingles-digitacao/audio/";
+        pararAudioEnsaio();
+        return;
+    }
+
+    // No modo aleatório, cada ensaio novo sorteia uma faixa diferente.
+    if (musica.aleatorio || musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) {
+        musica.faixaAtual = sortearFaixa();
+    }
+    el.seletorFaixa.value = musica.aleatorio ? "aleatorio" : String(musica.faixaAtual);
+
+    el.btnSom.title = "Ligar/desligar música";
+    atualizarBotaoSom();
+    if (musica.ligado) iniciarFaixa();
+}
+
+function atualizarBotaoSom() {
+    el.btnSom.textContent = musica.ligado ? "🔊" : "🔇";
+    if (el.btnSom.disabled) return;
+    if (musica.ligado && musica.faixaAtual !== null) {
+        el.dicaSom.textContent = `tocando: ${TRILHA_SONORA[musica.faixaAtual].titulo}`;
+    } else {
+        el.dicaSom.textContent = "música desligada";
+    }
+    el.volume.disabled = !musica.ligado;
+}
+
+function iniciarFaixa() {
+    if (musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) return;
+    const src = TRILHA_SONORA[musica.faixaAtual].audio;
+
+    pararAudioEnsaio();
+    const novo = new Audio(src);
+    novo.loop = true;
+    novo.volume = 0;
+    musica.tocador = novo;
+
+    novo.play().then(() => {
+        transicaoVolume(novo, musica.volume, 700);
+    }).catch(() => {
+        el.dicaSom.textContent = "clique em 🔊 para liberar o som";
+    });
+}
+
+function pararAudioEnsaio() {
+    if (musica.tocador) {
+        const antigo = musica.tocador;
+        transicaoVolume(antigo, 0, 400, () => antigo.pause());
+        musica.tocador = null;
+    }
+}
+
+function transicaoVolume(audio, alvo, ms, aoFim) {
+    const inicio = audio.volume;
+    const t0 = performance.now();
+    (function passo(agora) {
+        const p = Math.min(1, (agora - t0) / ms);
+        audio.volume = Math.max(0, Math.min(1, inicio + (alvo - inicio) * p));
+        if (p < 1) requestAnimationFrame(passo);
+        else if (aoFim) aoFim();
+    })(t0);
+}
+
+el.btnSom.addEventListener("click", () => {
+    musica.ligado = !musica.ligado;
+    atualizarBotaoSom();
+    salvarPreferenciaSom();
+    if (musica.ligado) iniciarFaixa();
+    else pararAudioEnsaio();
+});
+
+el.seletorFaixa.addEventListener("change", () => {
+    if (el.seletorFaixa.value === "aleatorio") {
+        musica.aleatorio = true;
+        musica.faixaAtual = sortearFaixa();
+    } else {
+        musica.aleatorio = false;
+        musica.faixaAtual = Number(el.seletorFaixa.value);
+    }
+    atualizarBotaoSom();
+    salvarPreferenciaSom();
+    if (musica.ligado) iniciarFaixa();
+});
+
+el.volume.addEventListener("input", () => {
+    musica.volume = el.volume.value / 100;
+    if (musica.tocador) musica.tocador.volume = musica.volume;
+    salvarPreferenciaSom();
+});
+
+/* ==================================================================
+   9) NAVEGAÇÃO ENTRE TELAS
+   ================================================================== */
+
+el.btnVoltarMapa.addEventListener("click", () => {
+    pararAudioEnsaio();
+    desenharMapa();
+    trocarTela(el.telaMapa);
+});
+
+el.btnRepetir.addEventListener("click", () => iniciarEnsaio(estado.ensaioAtual));
+
+el.btnOutroEnsaio.addEventListener("click", () => {
+    desenharMapa();
+    trocarTela(el.telaMapa);
+});
+
+/* ==================================================================
+   10) INÍCIO
+   ================================================================== */
+
+desenharMapa();
+prepararMusicaGlobal();
+</script>
+</body>
+</html>

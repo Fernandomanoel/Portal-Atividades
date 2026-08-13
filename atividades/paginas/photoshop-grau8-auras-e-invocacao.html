@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 8 (Auras e Efeitos de Invocação)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; }
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1e3a8a; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6;
+        }
+        .code-label {
+            background: #2563eb; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla { background: #2d2d2d; border: 1px solid #555; border-radius: 4px; padding: 1px 7px; color: #dcdcaa; font-size: 0.92em; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Material de apoio (imagens reais) */
+        .material-frame { max-width: 360px; margin: 18px auto; border: 2px solid #2563eb; border-radius: 8px; overflow: hidden; }
+        .material-frame img { display: block; width: 100%; height: auto; }
+        .material-download { display: inline-block; margin-top: 6px; padding: 4px 10px; background: #2563eb; color: #fff; border-radius: 4px; font-size: 0.78em; text-decoration: none; }
+        .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 18px 0; }
+        .material-card { border: 2px solid #bcd4f5; border-radius: 8px; overflow: hidden; text-align: center; }
+        .material-card img { display: block; width: 100%; height: 180px; object-fit: cover; object-position: top; }
+        .material-card-legenda { padding: 8px; font-size: 0.85em; font-weight: 700; color: #1e3a8a; background: #f0f7ff; }
+
+        /* Rim light diagram */
+        .rim-diagram { display: flex; gap: 30px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .rim-card { text-align: center; background: #111827; border-radius: 10px; padding: 20px; }
+        .rim-silhueta {
+            width: 90px; height: 130px; margin: 0 auto;
+            background: #1f2937;
+            clip-path: polygon(50% 0%, 65% 8%, 62% 30%, 78% 40%, 75% 100%, 25% 100%, 22% 40%, 38% 30%, 35% 8%);
+        }
+        .rim-wrap { position: relative; width: 90px; height: 130px; margin: 0 auto; }
+        .rim-back {
+            position: absolute; inset: 0;
+            clip-path: polygon(50% 0%, 65% 8%, 62% 30%, 78% 40%, 75% 100%, 25% 100%, 22% 40%, 38% 30%, 35% 8%);
+            background: #fbbf24;
+            transform: translate(-5px, -5px);
+            filter: blur(5px);
+        }
+        .rim-front {
+            position: absolute; inset: 0;
+            clip-path: polygon(50% 0%, 65% 8%, 62% 30%, 78% 40%, 75% 100%, 25% 100%, 22% 40%, 38% 30%, 35% 8%);
+            background: #1f2937;
+        }
+        .rim-label { color: #cbd5e1; font-size: 0.85em; margin-top: 12px; font-weight: 700; }
+
+        /* Aura glow diagram */
+        .aura-diagram { display: flex; justify-content: center; margin: 20px 0; }
+        .aura-scene { width: 220px; height: 220px; border-radius: 10px; background: #0f0f1a; position: relative; overflow: hidden; }
+        .aura-glow { position: absolute; left: 50%; top: 50%; width: 180px; height: 180px; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(168,85,247,0.55) 0%, rgba(168,85,247,0.18) 45%, transparent 70%); }
+        .aura-figura { position: absolute; left: 50%; bottom: 14px; width: 46px; height: 100px; transform: translateX(-50%); background: #e5e7eb; border-radius: 20px 20px 6px 6px; }
+
+        /* Texto de efeito */
+        .fx-text-demo { background: #111827; border-radius: 10px; padding: 30px; text-align: center; margin: 18px 0; }
+        .fx-text { font-size: 2.4em; font-weight: 900; color: #fef08a; -webkit-text-stroke: 2px #7c2d12; text-shadow: 0 0 18px #f97316, 0 0 34px #ea580c; font-family: Arial, sans-serif; letter-spacing: 2px; }
+
+        /* Exemplo final grande */
+        .exemplo-grande { max-width: 380px; margin: 18px auto; border: 3px solid #2563eb; border-radius: 10px; overflow: hidden; }
+        .exemplo-grande img { display: block; width: 100%; height: auto; }
+        .exemplo-legendas { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 10px; margin: 16px 0; }
+        .exemplo-item { background: #f0f7ff; border-left: 4px solid #2563eb; border-radius: 6px; padding: 10px 14px; font-size: 0.9em; }
+        .exemplo-item b { color: #1e3a8a; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 8</h1>
+            <p>Bônus: auras, luz de contorno e efeitos de "invocação" — o estilo por trás dos memes de personagem + elemento fantástico</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 10 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Concluiu os Graus 1 a 7<br>
+                        <strong>Tempo:</strong> ~1h10<br>
+                        <strong>Requisitos:</strong> Photoshop instalado, uma foto sua/de alguém, e um elemento gráfico para "invocar" atrás
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 8 — Bônus</h2>
+                    <p>Este grau é um extra, além dos 7 do curso principal. Ele pega a técnica de <strong>Composição
+                    Avançada</strong> do Grau 6 e aplica em um estilo bem específico e divertido: fazer parecer que
+                    um elemento gráfico — uma criatura, um "poder", uma aura — está sendo <strong>invocado</strong>
+                    atrás de uma pessoa, com brilho e efeitos de luz.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Recortar um sujeito com fundo não uniforme (sem chroma key)</li>
+                            <li>Aplicar luz de contorno (rim light) para "colar" o elemento na cena</li>
+                            <li>Criar uma aura/brilho colorido atrás de um elemento</li>
+                            <li>Usar texto de efeito (onomatopeia) como elemento gráfico</li>
+                            <li>Unificar tudo com grão, vinheta e temperatura de cor — igual ao Grau 6</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        💡 Esse é exatamente o gênero de edição dos memes "personagem + Stand/aura atrás dele"
+                        que circulam nas redes — cada efeito tem uma técnica de Photoshop por trás, e é isso que
+                        este grau ensina.
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. O Exemplo Completo</h2>
+                    <p>Este é um exemplo de referência, montado combinando uma foto de pessoa com uma ilustração
+                    de personagem, aplicando todas as técnicas deste grau:</p>
+
+                    <div class="exemplo-grande">
+                        <img src="assets/photoshop/grau8-exemplo-invocacao.jpg" alt="Exemplo: pessoa com personagem ilustrado invocado atrás dela, com aura e efeito de texto">
+                    </div>
+
+                    <div class="exemplo-legendas">
+                        <div class="exemplo-item"><b>Recorte:</b> os dois elementos foram recortados com fundo não uniforme (capítulo 3)</div>
+                        <div class="exemplo-item"><b>Luz de contorno:</b> brilho quente no topo/ombros de cada elemento (capítulo 4)</div>
+                        <div class="exemplo-item"><b>Aura:</b> brilho roxo/dourado atrás do personagem (capítulo 5)</div>
+                        <div class="exemplo-item"><b>Texto de efeito:</b> onomatopeia estilizada no canto (capítulo 6)</div>
+                        <div class="exemplo-item"><b>Unificação:</b> grão, vinheta e cor quente por cima de tudo (capítulo 7)</div>
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ Isso é referência de estilo, não um gabarito para copiar pixel a pixel. Sua prática
+                        (capítulo 9) usa os seus próprios elementos.
+                    </div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Recorte com Fundo Não Uniforme</h2>
+                    <p>No Grau 1, remover fundo era fácil porque o fundo era liso. Fotos reais (retratos,
+                    fotos de ambiente) têm fundo com várias cores e texturas diferentes — a Seleção Rápida sozinha
+                    não dá conta.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Seleção Rápida (tecla <span class="tecla">W</span>) sobre o sujeito, sem se preocupar com perfeição ainda</span><br>
+<span class="passo"><b>2.</b> <b>Selecionar e Máscara</b> (Grau 6) → pincel Aperfeiçoar Borda nos contornos difíceis (cabelo, ombros)</span><br>
+<span class="passo"><b>3.</b> Ative <b>Decontaminar Cores</b> se sobrar qualquer resquício do fundo antigo</span><br>
+<span class="passo"><b>4.</b> Saída para "Nova Camada com Máscara"</span></div>
+
+                    <div class="highlight">
+                        💡 Fundos escuros com roupas escuras (uma pessoa de preto em uma sala escura, por exemplo)
+                        são o caso mais difícil — vale a pena aumentar bastante o zoom e refinar aos poucos, região
+                        por região, em vez de tentar acertar tudo de uma vez.
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Luz de Contorno (Rim Light)</h2>
+                    <div class="rim-diagram">
+                        <div class="rim-card"><div class="rim-silhueta"></div><div class="rim-label">Sem luz de contorno</div></div>
+                        <div class="rim-card"><div class="rim-wrap"><div class="rim-back"></div><div class="rim-front"></div></div><div class="rim-label">Com luz de contorno</div></div>
+                    </div>
+                    <p class="diagrama-titulo">Um brilho fino na borda voltada para a fonte de luz da cena faz o elemento parecer parte dela, não colado por cima.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Nova camada, presa (clipping mask, Grau 5) ao elemento recortado</span><br>
+<span class="passo"><b>2.</b> Modo de mesclagem "Linear Dodge (Add)" ou "Tela" (Grau 2)</span><br>
+<span class="passo"><b>3.</b> Pincel macio, cor quente clara, pinte só na borda voltada para a luz da cena (topo, ombro)</span><br>
+<span class="passo"><b>4.</b> Reduza a Opacidade até ficar sutil</span></div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Auras e Brilhos Coloridos</h2>
+                    <div class="aura-diagram">
+                        <div class="aura-scene"><div class="aura-glow"></div><div class="aura-figura"></div></div>
+                    </div>
+                    <p class="diagrama-titulo">Uma aura é só um gradiente radial colorido, numa camada abaixo do elemento, desfocado nas bordas.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Nova camada, abaixo do elemento a "iluminar"</span><br>
+<span class="passo"><b>2.</b> Ferramenta Gradiente (Grau 2), radial, cor da aura no centro → transparente nas bordas</span><br>
+<span class="passo"><b>3.</b> Desfoque Gaussiano leve (Grau 5) para suavizar</span><br>
+<span class="passo"><b>4.</b> Modo de mesclagem "Tela" ou "Linear Dodge", opacidade a gosto</span></div>
+
+                    <div class="success">
+                        ✅ Duas auras sobrepostas — uma mais larga e fraca, outra mais concentrada e forte — dão
+                        mais profundidade do que uma única aura grande.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Texto de Efeito como Elemento Gráfico</h2>
+                    <div class="fx-text-demo">
+                        <div class="fx-text">BOOM!</div>
+                    </div>
+                    <p class="diagrama-titulo">Mesma lógica dos Estilos de Camada do Grau 4 (Contorno + Brilho), aplicada em texto de impacto/onomatopeia.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta Texto (Grau 4), fonte bem grossa/condensada</span><br>
+<span class="passo"><b>2.</b> Estilo de Camada → Contorno grosso + Brilho Externo colorido (Grau 4)</span><br>
+<span class="passo"><b>3.</b> Posicione em um canto vazio da composição, sem cobrir o rosto do sujeito</span></div>
+
+                    <div class="warning">
+                        ⚠️ Um exagero comum: texto grande demais competindo com o elemento principal. Ele deve
+                        ser um tempero, não o centro da composição.
+                    </div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Unificando Tudo</h2>
+                    <p>Recapitulando o Grau 6, agora com foco neste estilo específico:</p>
+                    <table>
+                        <tr><th>Técnica</th><th>Onde já foi ensinada</th></tr>
+                        <tr><td>Camada de cor global (gel quente/frio)</td><td>Grau 6, capítulo 11</td></tr>
+                        <tr><td>Ruído/grão por cima de tudo</td><td>Grau 6, capítulo 9</td></tr>
+                        <tr><td>Sombra de contato para o sujeito "pisar" na cena</td><td>Grau 6, capítulo 8</td></tr>
+                        <tr><td>Vinheta escurecendo as bordas</td><td>Novo — Filtro → Correção de Lente → aba Personalizado → Quantidade negativa</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 A vinheta direciona o olho para o centro da composição — sutil, quase imperceptível
+                        olhando direto, mas nota-se a falta dela ao comparar com/sem.
+                    </div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Desafio Bônus — Duas Fontes de Luz</h2>
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> em vez de uma aura só, experimente duas cores de luz de
+                        contorno diferentes nos dois lados do sujeito (ex: quente de um lado, fria do outro) —
+                        é a técnica de "iluminação de duas cores" usada em pôsteres de cinema e capas de álbum.
+                    </div>
+                </section>
+
+                <!-- 9 (Prática) -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Prática — Sua Invocação</h2>
+                    <p>Combine uma foto sua (ou de qualquer pessoa) com um elemento gráfico de sua escolha,
+                    aplicando pelo menos 4 técnicas deste grau.</p>
+
+                    <h3>Material de apoio (opcional)</h3>
+                    <p>Sem cenário à mão? Baixe este material — um corredor interno, com boa profundidade e uma
+                    fonte de luz central, ótimo para testar luz de contorno e aura:</p>
+                    <div class="material-frame">
+                        <img src="assets/photoshop/grau8-material-fundo.jpg" alt="Corredor interno decorado, com luminária central e tapete">
+                    </div>
+                    <p class="diagrama-titulo"><a class="material-download" href="assets/photoshop/grau8-material-fundo.jpg" download>⬇ Baixar cenário de fundo</a></p>
+
+                    <p>E se quiser reproduzir o exemplo do capítulo 2 exatamente com os mesmos elementos que
+                    usei, os dois estão aqui também:</p>
+                    <div class="material-grid">
+                        <div class="material-card">
+                            <img src="assets/photoshop/grau8-material-lestat.jpg" alt="Foto de referência do sujeito, usada no exemplo do capítulo 2">
+                            <div class="material-card-legenda">Sujeito (exemplo)<br><a class="material-download" href="assets/photoshop/grau8-material-lestat.jpg" download>⬇ Baixar</a></div>
+                        </div>
+                        <div class="material-card">
+                            <img src="assets/photoshop/grau8-material-killerqueen.jpg" alt="Ilustração de personagem, usada no exemplo do capítulo 2">
+                            <div class="material-card-legenda">Elemento a invocar (exemplo)<br><a class="material-download" href="assets/photoshop/grau8-material-killerqueen.jpg" download>⬇ Baixar</a></div>
+                        </div>
+                    </div>
+
+                    <div class="code-label">Checklist da prática</div>
+                    <div class="code-block"><span class="passo">☐ Sujeito recortado com fundo não uniforme</span><br>
+<span class="passo">☐ Luz de contorno aplicada</span><br>
+<span class="passo">☐ Aura/brilho atrás do elemento</span><br>
+<span class="passo">☐ Texto de efeito (opcional, mas recomendado)</span><br>
+<span class="passo">☐ Grão + vinheta + cor global unificando tudo</span></div>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Atalhos do Grau 8 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Ação</th><th>Caminho</th></tr>
+                        <tr><td>Selecionar e Máscara</td><td>Barra de Opções, com uma seleção ativa</td></tr>
+                        <tr><td>Clipping mask</td><td><span class="tecla">Alt</span> + clique entre camadas</td></tr>
+                        <tr><td>Ferramenta Gradiente (radial)</td><td>Tecla <span class="tecla">G</span></td></tr>
+                        <tr><td>Vinheta</td><td>Filtro → Correção de Lente → Personalizado</td></tr>
+                    </table>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Erros Comuns do Grau 8</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A aura parece um adesivo redondo, não um brilho."</strong><br>
+                        Falta desfoque. Aumente o Desfoque Gaussiano na camada da aura até a borda sumir
+                        gradualmente, sem contorno visível.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A luz de contorno está em volta do elemento inteiro."</strong><br>
+                        Pinte só no lado voltado para a fonte de luz da cena — luz de contorno em todos os lados
+                        ao mesmo tempo não existe na realidade e entrega a montagem.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"O texto de efeito ficou ilegível."</strong><br>
+                        Contorno grosso demais ou cor parecida com o fundo. Aumente o contraste entre o contorno
+                        e o fundo da cena.
+                    </div>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Checklist Final — Fim do Curso Completo</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 8, confirme:</h4>
+                        <ul>
+                            <li>✅ Recortei um sujeito com fundo não uniforme</li>
+                            <li>✅ Apliquei luz de contorno na direção certa</li>
+                            <li>✅ Criei uma aura/brilho colorido</li>
+                            <li>✅ Testei texto de efeito como elemento gráfico</li>
+                            <li>✅ Unifiquei com grão, vinheta e cor global</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉🎉🎉 <strong>Parabéns! Você concluiu os 8 graus do curso de Adobe Photoshop</strong> —
+                        do primeiro clique na Caixa de Ferramentas até efeitos de composição avançados e
+                        estilizados. Esse último grau foi puro estilo e diversão em cima de tudo que você já
+                        domina — a partir daqui, o limite é a sua criatividade.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 8</strong> | 12 capítulos | ~1h10 de aprendizado</p>
+            <p>Bônus: auras, luz de contorno e efeitos de invocação</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 12;
+
+        const chapters = [
+            "Bem-vindo ao Grau 8",
+            "O Exemplo Completo",
+            "Recorte com Fundo Não Uniforme",
+            "Luz de Contorno (Rim Light)",
+            "Auras e Brilhos Coloridos",
+            "Texto de Efeito",
+            "Unificando Tudo",
+            "Desafio Bônus — Duas Fontes de Luz",
+            "Prática — Sua Invocação",
+            "Atalhos do Grau 8",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

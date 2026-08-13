@@ -28,6 +28,7 @@ CATEGORY_ORDER = [
     "Saúde",
     "Comportamental",
     "Games",
+    "Inglês",
     "Outros",
 ]
 
@@ -105,6 +106,10 @@ CATEGORY_MAP = {
     "Auxiliar Médico": "Saúde",
     "Farmácia": "Saúde",
     "Recepcionista de saúde": "Saúde",
+
+    # Página e categoria criadas a pedido do professor; sem provas ainda —
+    # a pasta só tem um .gitkeep para o git rastrear a pasta vazia.
+    "Inglês": "Inglês",
 }
 
 

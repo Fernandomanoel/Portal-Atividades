@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 6 (Composição Avançada e Manipulação Fantástica)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; }
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1e3a8a; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6;
+        }
+        .code-label {
+            background: #2563eb; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla { background: #2d2d2d; border: 1px solid #555; border-radius: 4px; padding: 1px 7px; color: #dcdcaa; font-size: 0.92em; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Material de apoio (imagens reais) */
+        .material-frame { max-width: 320px; margin: 18px auto; border: 2px solid #2563eb; border-radius: 8px; overflow: hidden; }
+        .material-frame img { display: block; width: 100%; height: auto; }
+        .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 18px 0; }
+        .material-card { border: 2px solid #bcd4f5; border-radius: 8px; overflow: hidden; text-align: center; }
+        .material-card img { display: block; width: 100%; height: 180px; object-fit: cover; object-position: top; }
+        .material-card-legenda { padding: 8px; font-size: 0.85em; font-weight: 700; color: #1e3a8a; background: #f0f7ff; }
+        .material-download { display: inline-block; margin-top: 6px; padding: 4px 10px; background: #2563eb; color: #fff; border-radius: 4px; font-size: 0.78em; text-decoration: none; }
+
+        /* Perspectiva */
+        .persp-diagram { display: flex; gap: 30px; justify-content: center; align-items: center; margin: 20px 0; flex-wrap: wrap; }
+        .persp-card { text-align: center; }
+        .persp-grid {
+            width: 160px; height: 160px;
+            background-image: linear-gradient(#93c5fd 1px, transparent 1px), linear-gradient(90deg, #93c5fd 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #eff6ff;
+            border: 2px solid #2563eb; border-radius: 6px;
+        }
+        .persp-errado { transform: perspective(300px) rotateY(35deg); }
+        .persp-legenda { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.85em; }
+
+        /* Luz consistente */
+        .luz-diagram { display: flex; gap: 30px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .luz-card { text-align: center; background: #111827; border-radius: 10px; padding: 18px; }
+        .luz-esferas { display: flex; gap: 14px; }
+        .luz-esfera { width: 70px; height: 70px; border-radius: 50%; }
+        .le-certo-1, .le-certo-2 { background: radial-gradient(circle at 30% 30%, #fde68a, #92400e); }
+        .le-errado-1 { background: radial-gradient(circle at 30% 30%, #fde68a, #92400e); }
+        .le-errado-2 { background: radial-gradient(circle at 70% 70%, #fde68a, #92400e); }
+        .luz-label { color: #cbd5e1; font-size: 0.85em; margin-top: 10px; font-weight: 700; }
+        .luz-ok { color: #4ade80; }
+        .luz-no { color: #f87171; }
+
+        /* Sombra de contato */
+        .sombra-diagram { display: flex; gap: 40px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .sombra-card { text-align: center; }
+        .sombra-cena { width: 150px; height: 140px; background: linear-gradient(180deg, #dbeafe 0%, #dbeafe 70%, #cbd5e1 70%, #cbd5e1 100%); border-radius: 8px; position: relative; border: 2px solid #bcd4f5; }
+        .sombra-obj { width: 40px; height: 60px; background: #1e3a8a; border-radius: 8px 8px 4px 4px; position: absolute; left: 55px; }
+        .sombra-flutuante .sombra-obj { top: 40px; }
+        .sombra-chao .sombra-obj { top: 40px; }
+        .sombra-elipse { position: absolute; left: 45px; top: 98px; width: 60px; height: 14px; border-radius: 50%; background: rgba(0,0,0,0.35); filter: blur(3px); }
+        .sombra-legenda { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.85em; }
+
+        /* Camada de cor global */
+        .gel-diagram { display: flex; gap: 20px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+        .gel-card { text-align: center; }
+        .gel-cena { width: 170px; height: 130px; border-radius: 8px; border: 2px solid #bcd4f5; overflow: hidden; position: relative; }
+        .gel-fundo { position: absolute; inset: 0; background: linear-gradient(120deg, #86efac 0%, #fca5a5 50%, #93c5fd 100%); }
+        .gel-overlay { position: absolute; inset: 0; background: #f97316; mix-blend-mode: overlay; opacity: 0.45; }
+        .gel-legenda { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 6</h1>
+            <p>Composição avançada: combine fontes diferentes de forma que pareçam ter sido fotografadas juntas</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 30 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Já concluiu os Graus 1 a 5<br>
+                        <strong>Tempo:</strong> ~1h30<br>
+                        <strong>Requisitos:</strong> Photoshop instalado, e pelo menos duas imagens de fontes bem diferentes (uma foto sua/de uma pessoa + um elemento gráfico, ilustração ou segunda foto para combinar)
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 6</h2>
+                    <p>Este é o grau mais avançado do curso até aqui. Você já sabe selecionar (Grau 2), ajustar
+                    cor (Grau 3), compor com texto e regras visuais (Grau 4) e usar filtros não destrutivos
+                    (Grau 5). Agora tudo isso se junta em uma única habilidade: fazer <strong>duas imagens de
+                    origens completamente diferentes parecerem uma só cena real</strong>.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Corrigir perspectiva para encaixar um elemento na cena certa</li>
+                            <li>Refinar seleções difíceis (cabelo, pelo, bordas complexas)</li>
+                            <li>Harmonizar cor entre elementos de fontes diferentes</li>
+                            <li>Fazer luz e sombra baterem entre todos os elementos</li>
+                            <li>Unificar tudo com ruído/grão e uma camada de cor global</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        💡 Esse é exatamente o tipo de edição por trás dos memes e artes de "personagem +
+                        elemento fantástico atrás dele" que circulam nas redes — a técnica é séria mesmo quando
+                        o resultado é engraçado.
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. O Desafio da Composição Fantástica</h2>
+                    <p>Colar uma imagem em cima da outra é fácil. O difícil — e o que este grau ensina — é fazer
+                    o olho <strong>não perceber a colagem</strong>. Isso depende de 5 fatores, todos abordados
+                    neste guia:</p>
+
+                    <table>
+                        <tr><th>Fator</th><th>Pergunta a se fazer</th></tr>
+                        <tr><td>Perspectiva</td><td>Os elementos estão no mesmo ângulo de câmera?</td></tr>
+                        <tr><td>Borda da seleção</td><td>Sobrou fundo antigo colado, ou faltou pedaço do objeto?</td></tr>
+                        <tr><td>Cor</td><td>Os tons de cor combinam entre si?</td></tr>
+                        <tr><td>Luz e sombra</td><td>A luz vem da mesma direção em todos os elementos?</td></tr>
+                        <tr><td>Textura/grão</td><td>Uma imagem é nítida e a outra granulada?</td></tr>
+                    </table>
+
+                    <h3>Inspiração</h3>
+                    <p>Um exemplo do "gênero" de edição que este grau ensina — uma pessoa com um elemento
+                    gráfico totalmente diferente composto atrás dela, como se fizesse parte da cena:</p>
+                    <div class="material-frame">
+                        <img src="assets/photoshop/grau6-exemplo-inspiracao.jpg" alt="Exemplo de composição fantástica: pessoa com elemento gráfico composto atrás dela">
+                    </div>
+                    <p class="diagrama-titulo">Isso é só para dar a ideia do estilo — a sua composição na prática deste grau deve ser uma criação sua, não uma cópia.</p>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Escolhendo as Fontes</h2>
+                    <p>Antes de abrir o Photoshop, escolha bem: quanto mais parecidas as fontes já forem, menos
+                    trabalho de harmonização depois.</p>
+
+                    <div class="success">
+                        ✅ Bons sinais: resolução parecida, iluminação de intensidade parecida (não misturar uma
+                        foto de estúdio bem clara com uma foto de noite bem escura sem querer criar esse
+                        contraste de propósito).
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ Isso não significa que fontes muito diferentes não funcionam — só que vão exigir mais
+                        dos capítulos 6 e 7 (cor e luz) para se encaixarem.
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Correção de Perspectiva</h2>
+                    <div class="persp-diagram">
+                        <div class="persp-card"><div class="persp-grid"></div><div class="persp-legenda">Elemento "reto"</div></div>
+                        <div class="persp-card"><div class="persp-grid persp-errado"></div><div class="persp-legenda">Cena com perspectiva</div></div>
+                    </div>
+                    <p class="diagrama-titulo">Se a cena de fundo tem um ângulo de câmera, o elemento inserido precisa do mesmo ângulo para "grudar" nela.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Selecione a camada do elemento a encaixar</span><br>
+<span class="passo"><b>2.</b> <span class="tecla">Ctrl</span>+<span class="tecla">T</span> → botão direito → <b>Distorcer</b> ou <b>Perspectiva</b></span><br>
+<span class="passo"><b>3.</b> Arraste os cantos para acompanhar as linhas de perspectiva da cena de fundo (chão, paredes, horizonte)</span></div>
+
+                    <div class="highlight">
+                        💡 Para casos mais precisos, existe o filtro <b>Ponto de Fuga</b> (Filtro → Ponto de Fuga)
+                        — ele deixa você marcar os planos de perspectiva da cena antes de colar o elemento.
+                    </div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Selecionando com Precisão — Cabelo e Pelo</h2>
+                    <p>Você já usou <b>Selecionar e Máscara</b> no Grau 2. Para composições fantásticas, o
+                    detalhe da borda é o que mais entrega uma edição malfeita — vale voltar a esse recurso com
+                    mais calma.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Faça a seleção inicial (Seleção Rápida ou Laço)</span><br>
+<span class="passo"><b>2.</b> <b>Selecionar e Máscara</b> → pincel <b>Aperfeiçoar Borda</b> sobre fios de cabelo/pelo</span><br>
+<span class="passo"><b>3.</b> Ative <b>Decontaminar Cores</b> para remover resquício da cor do fundo antigo nas pontas dos fios</span><br>
+<span class="passo"><b>4.</b> Saída para "Nova Camada com Máscara"</span></div>
+
+                    <div class="warning">
+                        ⚠️ "Decontaminar Cores" cria uma nova camada (a original fica intacta) — isso é
+                        importante porque o processo altera levemente a cor dos pixels da borda.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Harmonização de Cor entre Elementos</h2>
+                    <p>Mesmo com a seleção perfeita, cores de temperatura diferente (uma imagem mais fria/azul,
+                    outra mais quente/amarela) denunciam a montagem instantaneamente.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Camada de ajuste <b>Balanço de Cor</b> (Grau 3) <b>presa</b> (clipping mask) só no elemento inserido</span><br>
+<span class="passo"><b>2.</b> Compare lado a lado com a cena de fundo e ajuste até os tons combinarem</span><br>
+<span class="passo"><b>3.</b> Repita com <b>Matiz/Saturação</b> se a intensidade de cor também estiver diferente</span></div>
+
+                    <div class="success">
+                        ✅ Truque rápido: use o Conta-gotas para comparar a cor de uma sombra da cena de fundo
+                        com a sombra do elemento inserido — se os valores de RGB forem muito diferentes, ainda
+                        há trabalho de harmonização a fazer.
+                    </div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Luz e Sombra Consistentes</h2>
+                    <div class="luz-diagram">
+                        <div class="luz-card">
+                            <div class="luz-esferas"><div class="luz-esfera le-certo-1"></div><div class="luz-esfera le-certo-2"></div></div>
+                            <div class="luz-label luz-ok">✓ Mesma direção de luz</div>
+                        </div>
+                        <div class="luz-card">
+                            <div class="luz-esferas"><div class="luz-esfera le-errado-1"></div><div class="luz-esfera le-errado-2"></div></div>
+                            <div class="luz-label luz-no">✗ Direções diferentes</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">O olho humano percebe inconsistência de luz mesmo sem conseguir explicar por quê.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Identifique de onde vem a luz principal na cena de fundo</span><br>
+<span class="passo"><b>2.</b> Use Subexposição/Superexposição (Grau 3) no elemento inserido, na mesma direção</span><br>
+<span class="passo"><b>3.</b> Se necessário, pinte uma luz de contorno (rim light) sutil no lado do elemento voltado para a fonte de luz</span></div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Sombras de Contato</h2>
+                    <div class="sombra-diagram">
+                        <div class="sombra-card">
+                            <div class="sombra-cena sombra-flutuante"><div class="sombra-obj"></div></div>
+                            <div class="sombra-legenda">Sem sombra = "flutuando"</div>
+                        </div>
+                        <div class="sombra-card">
+                            <div class="sombra-cena sombra-chao"><div class="sombra-obj"></div><div class="sombra-elipse"></div></div>
+                            <div class="sombra-legenda">Com sombra = no chão</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Uma sombra de contato suave e escura embaixo do elemento é o que "prende" ele na cena.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Nova camada, abaixo do elemento inserido</span><br>
+<span class="passo"><b>2.</b> Elipse preta (Grau 4), suavizada com Desfoque Gaussiano (Grau 5)</span><br>
+<span class="passo"><b>3.</b> Reduza a Opacidade da camada até parecer natural (raramente 100%)</span></div>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Ruído e Grão Unificados</h2>
+                    <p>Uma ilustração vetorial nítida colada em uma foto granulada de celular à noite sempre vai
+                    parecer "colada" — porque tecnicamente é uma textura diferente da outra.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Observe o grão da imagem de fundo (mais visível em fotos escuras/noturnas)</span><br>
+<span class="passo"><b>2.</b> Nova camada por cima de tudo, preenchida com 50% cinza</span><br>
+<span class="passo"><b>3.</b> Filtro → Ruído → Adicionar Ruído (Grau 5), depois modo de mesclagem "Sobrepor"</span><br>
+<span class="passo"><b>4.</b> Ajuste a Opacidade até o grão cobrir a imagem inteira de forma pareja</span></div>
+
+                    <div class="highlight">
+                        💡 Esse passo sozinho já resolve boa parte da sensação de "colagem" — é rápido e o efeito
+                        é grande.
+                    </div>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Escala e Profundidade</h2>
+                    <table>
+                        <tr><th>Sinal de profundidade</th><th>Como aplicar</th></tr>
+                        <tr><td>Tamanho relativo</td><td>Elementos mais distantes da câmera devem ser menores</td></tr>
+                        <tr><td>Desfoque de profundidade</td><td>Desfoque Gaussiano leve (Grau 5) em elementos de fundo, nitidez total no elemento principal</td></tr>
+                        <tr><td>Saturação atmosférica</td><td>Elementos muito distantes ficam levemente mais “lavados”/azulados — neblina natural do ar</td></tr>
+                    </table>
+
+                    <div class="warning">
+                        ⚠️ Um elemento perfeitamente nítido "colado" em um fundo com profundidade de campo
+                        (fundo desfocado de propósito) sempre vai parecer artificial — combine os dois níveis de
+                        foco.
+                    </div>
+                </section>
+
+                <!-- 11 (desafio/inovação) -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Desafio Bônus — Camada de Cor Global (Color Gel)</h2>
+                    <div class="gel-diagram">
+                        <div class="gel-card"><div class="gel-cena"><div class="gel-fundo"></div></div><div class="gel-legenda">Sem gel</div></div>
+                        <div class="gel-card"><div class="gel-cena"><div class="gel-fundo"></div><div class="gel-overlay"></div></div><div class="gel-legenda">Com gel laranja (Sobrepor)</div></div>
+                    </div>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> crie uma camada preenchida com uma única cor (a cor
+                        dominante da sua cena — quente para pôr do sol, azul para noite), modo de mesclagem
+                        "Sobrepor" ou "Cor", opacidade entre 10-20%, por cima de <strong>toda</strong> a
+                        composição, inclusive o fundo. É o mesmo truque usado em cinema para unificar a cor de
+                        cenas gravadas em locais diferentes.
+                    </div>
+                </section>
+
+                <!-- 12 (Prática, aberta/criativa, sem gabarito) -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Prática — Sua Composição Fantástica</h2>
+                    <p>Aqui não existe uma imagem-modelo para copiar — a ideia é você aplicar as técnicas dos
+                    capítulos anteriores na sua própria criação.</p>
+
+                    <div class="box">
+                        <h4>🎨 O desafio</h4>
+                        <p>Escolha uma foto sua (ou de qualquer pessoa/objeto) e combine com um segundo elemento
+                        de fonte totalmente diferente — pode ser outra foto, uma ilustração, um recorte de
+                        personagem, um efeito de luz. Pense em algo que te divirta: um "poder" saindo das mãos,
+                        uma criatura ao lado, um objeto gigante flutuando. A única regra é usar pelo menos
+                        <strong>4 das técnicas</strong> deste grau.</p>
+                    </div>
+
+                    <h3>Material de apoio (opcional)</h3>
+                    <p>Não tem uma foto sua à mão, ou quer só treinar a técnica primeiro? Baixe algumas opções
+                    de elemento para compor abaixo, e use qualquer foto sua como cenário de fundo. Usar ou não
+                    usar é livre, o importante é praticar as técnicas.</p>
+
+                    <div class="material-grid">
+                        <div class="material-card">
+                            <img src="assets/photoshop/grau6-material-estatua.jpg" alt="Busto de escultura em preto e branco">
+                            <div class="material-card-legenda">Elemento — escultura<br><a class="material-download" href="assets/photoshop/grau6-material-estatua.jpg" download>⬇ Baixar</a></div>
+                        </div>
+                        <div class="material-card">
+                            <img src="assets/photoshop/grau6-material-retrato-1.jpg" alt="Retrato de homem em ambiente de escritório">
+                            <div class="material-card-legenda">Sujeito — retrato 1<br><a class="material-download" href="assets/photoshop/grau6-material-retrato-1.jpg" download>⬇ Baixar</a></div>
+                        </div>
+                        <div class="material-card">
+                            <img src="assets/photoshop/grau6-material-retrato-2.jpg" alt="Retrato de mulher em estúdio">
+                            <div class="material-card-legenda">Sujeito — retrato 2<br><a class="material-download" href="assets/photoshop/grau6-material-retrato-2.jpg" download>⬇ Baixar</a></div>
+                        </div>
+                    </div>
+
+                    <div class="code-label">Checklist da prática</div>
+                    <div class="code-block"><span class="passo">☐ Perspectiva corrigida entre os elementos</span><br>
+<span class="passo">☐ Borda da seleção refinada (sem fundo antigo colado)</span><br>
+<span class="passo">☐ Cor harmonizada (Balanço de Cor ou Matiz/Saturação)</span><br>
+<span class="passo">☐ Luz e sombra na mesma direção em tudo</span><br>
+<span class="passo">☐ Sombra de contato adicionada</span><br>
+<span class="passo">☐ Ruído/grão unificado</span><br>
+<span class="passo">☐ Camada de cor global (gel) por cima de tudo</span></div>
+
+                    <div class="success">
+                        ✅ Não existe "resultado certo" aqui — existe resultado que engana o olho. Se alguém que
+                        não viu as duas fotos originais achar que é uma foto só, a prática funcionou.
+                    </div>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Atalhos do Grau 6 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Ação</th><th>Caminho</th></tr>
+                        <tr><td>Distorcer/Perspectiva</td><td><span class="tecla">Ctrl</span>+<span class="tecla">T</span> → botão direito</td></tr>
+                        <tr><td>Ponto de Fuga</td><td>Filtro → Ponto de Fuga</td></tr>
+                        <tr><td>Decontaminar Cores</td><td>Selecionar e Máscara → opção na saída</td></tr>
+                        <tr><td>Clipping mask</td><td><span class="tecla">Alt</span> + clique entre camadas</td></tr>
+                        <tr><td>Preencher com 50% cinza</td><td>Editar → Preencher → 50% cinza</td></tr>
+                    </table>
+                </section>
+
+                <!-- 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Erros Comuns do Grau 6</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Fiz tudo certo e ainda parece colado."</strong><br>
+                        Confira sombra de contato e grão primeiro — são os dois detalhes que mais entregam uma
+                        composição, mesmo quando cor e luz já estão certas.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A borda do cabelo ficou com um contorno claro estranho."</strong><br>
+                        Resquício de fundo antigo grudado nos fios. Volte em Selecionar e Máscara e ative
+                        Decontaminar Cores.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A camada de cor global deixou tudo estranho, não unificado."</strong><br>
+                        Opacidade alta demais. Esse efeito deve ser quase imperceptível olhando direto — só
+                        notado se ligar e desligar a camada para comparar.
+                    </div>
+                </section>
+
+                <!-- 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Checklist Final e Prévia do Grau 7</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 6, confirme:</h4>
+                        <ul>
+                            <li>✅ Corrigi a perspectiva de pelo menos um elemento</li>
+                            <li>✅ Refinei uma seleção difícil com Decontaminar Cores</li>
+                            <li>✅ Harmonizei a cor entre os elementos</li>
+                            <li>✅ Apliquei luz/sombra consistente e uma sombra de contato</li>
+                            <li>✅ Unifiquei com ruído e uma camada de cor global</li>
+                            <li>✅ Completei minha própria composição fantástica, sem copiar modelo</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 6 — o mais técnico do curso. No <strong>Grau 7</strong>,
+                        o último do curso principal, tudo se junta em um <strong>projeto final</strong> com
+                        briefing, organização de arquivos e exportação para diferentes usos — do jeito que se
+                        trabalha profissionalmente. Depois dele ainda tem o <strong>Grau 8</strong>, um bônus só
+                        de estilo e efeitos.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 6</strong> | 15 capítulos | ~1h30 de aprendizado</p>
+            <p>Composição avançada: perspectiva, harmonização de cor e luz, e manipulação fantástica</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 15;
+
+        const chapters = [
+            "Bem-vindo ao Grau 6",
+            "O Desafio da Composição Fantástica",
+            "Escolhendo as Fontes",
+            "Correção de Perspectiva",
+            "Seleção de Cabelo e Pelo",
+            "Harmonização de Cor",
+            "Luz e Sombra Consistentes",
+            "Sombras de Contato",
+            "Ruído e Grão Unificados",
+            "Escala e Profundidade",
+            "Desafio Bônus — Camada de Cor Global",
+            "Prática — Sua Composição Fantástica",
+            "Atalhos do Grau 6",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

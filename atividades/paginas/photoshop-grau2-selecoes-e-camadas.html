@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 2 (Seleções e Camadas Avançadas)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block;
+            margin-top: 14px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px;
+            background: #f5f5f5;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+
+        .sidebar a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.88em;
+        }
+
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            font-size: 2em;
+        }
+
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+
+        .code-label {
+            background: #2563eb;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px 4px 0 0;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: -5px;
+        }
+
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla {
+            background: #2d2d2d;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 1px 7px;
+            color: #dcdcaa;
+            font-size: 0.92em;
+        }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Máscara de camada — diagrama */
+        .mask-diagram { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 20px 0; flex-wrap: wrap; }
+        .mask-item { text-align: center; }
+        .mask-box { width: 110px; height: 110px; border-radius: 8px; border: 2px solid #2563eb; overflow: hidden; position: relative; }
+        .mask-layer { background: linear-gradient(135deg, #93c5fd, #1e3a8a); }
+        .mask-mask { background: linear-gradient(90deg, #fff 0%, #fff 45%, #000 55%, #000 100%); }
+        .mask-result { background: repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 0 0/16px 16px; }
+        .mask-result::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(135deg, #93c5fd, #1e3a8a);
+            clip-path: inset(0 55% 0 0);
+        }
+        .mask-op { font-size: 1.8em; color: #2563eb; font-weight: 700; align-self: center; }
+        .mask-label { margin-top: 8px; font-size: 0.85em; font-weight: 700; color: #1e3a8a; }
+
+        /* Painel de camadas com máscara */
+        .layers-panel { max-width: 360px; border: 2px solid #2563eb; border-radius: 8px; overflow: hidden; margin: 16px 0; }
+        .layers-head { background: #1e3a8a; color: #fff; padding: 8px 12px; font-weight: 600; font-size: 0.9em; display: flex; justify-content: space-between; }
+        .layer-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border-top: 1px solid #dbeafe; background: #f8fafc; font-size: 0.88em; }
+        .layer-row.selecionada { background: #dbeafe; }
+        .layer-olho { width: 18px; text-align: center; color: #2563eb; }
+        .layer-thumb { width: 30px; height: 30px; border-radius: 4px; background: linear-gradient(135deg, #93c5fd, #1e3a8a); border: 1px solid #cbd5e1; }
+        .layer-mask-thumb { width: 30px; height: 30px; border-radius: 4px; background: linear-gradient(90deg, #fff 0%, #fff 45%, #000 55%, #000 100%); border: 2px solid #1e3a8a; }
+
+        /* Modos de mesclagem */
+        .blend-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 14px; margin: 18px 0; }
+        .blend-card { background: #111827; border-radius: 8px; padding: 14px; text-align: center; }
+        .blend-swatch { position: relative; width: 90px; height: 70px; margin: 0 auto 8px; }
+        .blend-swatch .c1 { position: absolute; width: 52px; height: 52px; border-radius: 50%; background: #f97316; left: 4px; top: 9px; }
+        .blend-swatch .c2 { position: absolute; width: 52px; height: 52px; border-radius: 50%; background: #2563eb; left: 34px; top: 9px; }
+        .bm-multiply .c2 { mix-blend-mode: multiply; }
+        .bm-screen .c2 { mix-blend-mode: screen; }
+        .bm-overlay .c2 { mix-blend-mode: overlay; }
+        .blend-nome { color: #fff; font-size: 0.85em; font-weight: 700; }
+
+        /* Seleção por cor */
+        .colorrange-demo { display: flex; gap: 16px; justify-content: center; margin: 18px 0; flex-wrap: wrap; }
+        .cr-caixa { width: 140px; height: 140px; border-radius: 8px; border: 2px solid #bcd4f5; position: relative; overflow: hidden; }
+        .cr-original { background: linear-gradient(100deg, #fca5a5 0 33%, #93c5fd 33% 66%, #86efac 66% 100%); }
+        .cr-selecionado { background: repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 0 0/14px 14px; }
+        .cr-selecionado::before { content: ''; position: absolute; left: 33%; width: 33%; top: 0; bottom: 0; background: #93c5fd; outline: 2px dashed #1e3a8a; outline-offset: -2px; }
+        .cr-legenda { text-align: center; font-size: 0.85em; font-weight: 700; color: #1e3a8a; margin-top: 6px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 2</h1>
+            <p>Seleções e camadas avançadas: máscaras, modos de mesclagem e montagens não destrutivas</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 20 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Já concluiu o Grau 1<br>
+                        <strong>Tempo:</strong> ~1h20<br>
+                        <strong>Requisitos:</strong> Photoshop instalado e duas fotos diferentes para a montagem
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 2</h2>
+                    <p>No Grau 1 você aprendeu a reconhecer a tela, inserir uma imagem, recortar e remover fundo.
+                    Agora o foco muda: em vez de <strong>apagar</strong> pedaços da imagem, você vai aprender a
+                    <strong>esconder e revelar</strong> partes dela sem perder nada — a base de qualquer montagem
+                    profissional.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Selecionar por cor e por forma com mais precisão</li>
+                            <li>Usar máscaras de camada — a forma não destrutiva de esconder partes de uma imagem</li>
+                            <li>Combinar duas imagens com modos de mesclagem</li>
+                            <li>Organizar camadas em grupos</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        💡 "Não destrutivo" significa que você nunca perde a imagem original — pode desfazer o
+                        efeito a qualquer momento, mesmo dias depois de salvar o arquivo .PSD.
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Por que Selecionar Bem Importa</h2>
+                    <p>Toda edição no Photoshop parte de uma pergunta: <strong>"o que exatamente vou afetar?"</strong>
+                    Uma seleção mal feita — com sobras de fundo ou pedaços cortados do objeto — aparece na hora em
+                    qualquer montagem. Selecionar bem é o que separa um recorte amador de um profissional.</p>
+
+                    <div class="warning">
+                        ⚠️ No Grau 1 você usou a Seleção Rápida (tecla <span class="tecla">W</span>) para remover
+                        fundo. Ela é ótima para objetos com bordas nítidas, mas cabelo, pelo e transparências
+                        (vidro, fumaça) precisam de ferramentas mais finas — é isso que este grau ensina.
+                    </div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Seleção por Cor (Faixa de Cor)</h2>
+                    <p>Em vez de arrastar o mouse sobre a forma do objeto, esta ferramenta seleciona
+                    <strong>todos os pixels de uma cor parecida</strong> na imagem inteira — ótima para fundos de
+                    cor sólida (ex: fundo verde, azul ou branco de estúdio).</p>
+
+                    <div class="colorrange-demo">
+                        <div class="cr-item">
+                            <div class="cr-caixa cr-original"></div>
+                            <div class="cr-legenda">Imagem original</div>
+                        </div>
+                        <div class="cr-item">
+                            <div class="cr-caixa cr-selecionado"></div>
+                            <div class="cr-legenda">Só o azul selecionado</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Clicar com o conta-gotas na cor azul seleciona todas as áreas parecidas com ela, em qualquer parte da imagem.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Menu <b>Selecionar → Faixa de Cor...</b></span><br>
+<span class="passo"><b>2.</b> Clique com o conta-gotas na cor que você quer selecionar (ex: o fundo)</span><br>
+<span class="passo"><b>3.</b> Ajuste o controle <b>Intervalo</b> (Fuzziness) para pegar mais ou menos tons parecidos</span><br>
+<span class="passo"><b>4.</b> Clique em <b>OK</b></span></div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Laço Poligonal e Laço Magnético</h2>
+                    <p>A ferramenta <strong>Laço</strong> (tecla <span class="tecla">L</span>) tem três variações
+                    escondidas atrás do mesmo ícone — clique e segure o ícone na Caixa de Ferramentas para ver
+                    as opções.</p>
+
+                    <table>
+                        <tr><th>Variação</th><th>Quando usar</th></tr>
+                        <tr><td><strong>Laço</strong></td><td>Desenho livre à mão, para formas orgânicas e imprecisas</td></tr>
+                        <tr><td><strong>Laço Poligonal</strong></td><td>Cliques em linha reta — ideal para objetos com bordas retas (caixas, prédios, telas)</td></tr>
+                        <tr><td><strong>Laço Magnético</strong></td><td>"Gruda" sozinho nas bordas de maior contraste — bom para contornos bem definidos</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 Segurar <span class="tecla">Alt</span> enquanto usa qualquer Laço permite alternar
+                        temporariamente para o modo poligonal (cliques retos) mesmo estando no modo livre.
+                    </div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Aperfeiçoar Borda (Selecionar e Máscara)</h2>
+                    <p>Depois de fazer qualquer seleção, a Barra de Opções mostra o botão <strong>Selecionar e
+                    Máscara</strong>. Ele abre um modo especial para refinar a borda — essencial em cabelo, pelo de
+                    animal e tecidos com textura.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Faça uma seleção com qualquer ferramenta</span><br>
+<span class="passo"><b>2.</b> Barra de Opções → botão <b>Selecionar e Máscara</b></span><br>
+<span class="passo"><b>3.</b> Use o pincel <b>Aperfeiçoar Borda</b> sobre as áreas de cabelo/pelo</span><br>
+<span class="passo"><b>4.</b> Ajuste <b>Suavizar</b>, <b>Pena</b> e <b>Contrair/Expandir</b> conforme necessário</span><br>
+<span class="passo"><b>5.</b> Em <b>Saída Para</b>, escolha "Seleção" ou "Nova Camada com Máscara"</span></div>
+
+                    <div class="success">
+                        ✅ Escolher "Nova Camada com Máscara" na saída já entrega o resultado pronto para o
+                        próximo capítulo — máscaras de camada.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Máscaras de Camada — o Conceito</h2>
+                    <p>Uma máscara de camada é como um <strong>estêncil em preto e branco</strong> colado sobre a
+                    camada: onde a máscara é <strong>branca</strong>, a camada aparece; onde é <strong>preta</strong>,
+                    a camada fica escondida (mas continua lá, intacta).</p>
+
+                    <div class="mask-diagram">
+                        <div class="mask-item">
+                            <div class="mask-box mask-layer"></div>
+                            <div class="mask-label">Camada</div>
+                        </div>
+                        <div class="mask-op">+</div>
+                        <div class="mask-item">
+                            <div class="mask-box mask-mask"></div>
+                            <div class="mask-label">Máscara</div>
+                        </div>
+                        <div class="mask-op">=</div>
+                        <div class="mask-item">
+                            <div class="mask-box mask-result"></div>
+                            <div class="mask-label">Resultado</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Metade branca da máscara = metade visível do resultado. O quadriculado é a área escondida (transparente).</p>
+
+                    <div class="success">
+                        ✅ A grande vantagem: se errar, é só pintar a máscara de volta para branco. Nada é apagado
+                        de verdade — diferente da Borracha, que você usou no Grau 1.
+                    </div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Criando sua Primeira Máscara de Camada</h2>
+                    <div class="layers-panel">
+                        <div class="layers-head"><span>Camadas</span><span>⚙️</span></div>
+                        <div class="layer-row selecionada">
+                            <span class="layer-olho">👁️</span>
+                            <span class="layer-thumb"></span>
+                            <span class="layer-mask-thumb"></span>
+                            <span>Foto 2 (com máscara)</span>
+                        </div>
+                        <div class="layer-row">
+                            <span class="layer-olho">👁️</span>
+                            <span class="layer-thumb"></span>
+                            <span>Foto 1 (fundo)</span>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">O segundo quadrado ao lado da miniatura da camada é a máscara — clicar nele faz a máscara ficar ativa para edição.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Selecione a camada no painel de Camadas</span><br>
+<span class="passo"><b>2.</b> Botão <b>Adicionar Máscara de Camada</b> (ícone de retângulo com círculo, no rodapé do painel)</span><br>
+<span class="passo"><b>3.</b> Uma miniatura branca aparece ao lado da camada — isso é a máscara, totalmente visível por enquanto</span></div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Pintando na Máscara</h2>
+                    <p>Com a máscara selecionada (clique na miniatura dela), use o <strong>Pincel</strong>
+                    (tecla <span class="tecla">B</span>) para pintar:</p>
+
+                    <table>
+                        <tr><th>Cor do pincel</th><th>Efeito na máscara</th></tr>
+                        <tr><td>⬛ Preto</td><td>Esconde aquela área da camada</td></tr>
+                        <tr><td>⬜ Branco</td><td>Revela (mostra) aquela área da camada</td></tr>
+                        <tr><td>◻️ Cinza</td><td>Mostra parcialmente — bom para transições suaves</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 Atalho <span class="tecla">X</span> troca a cor de frente/fundo instantaneamente — pinte
+                        um pouco, aperte <span class="tecla">X</span>, corrija, sem trocar de ferramenta.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ Confira sempre se a <strong>miniatura da máscara</strong> (não a da imagem) está com
+                        uma borda de destaque antes de pintar — é fácil pintar sem querer direto na foto.
+                    </div>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Modos de Mesclagem — Visão Geral</h2>
+                    <p>O menu de <strong>Modo de Mesclagem</strong> fica no topo do painel de Camadas (onde está
+                    escrito "Normal"). Ele muda matematicamente como os pixels da camada de cima se combinam com
+                    os de baixo.</p>
+
+                    <div class="blend-grid">
+                        <div class="blend-card">
+                            <div class="blend-swatch"><div class="c1"></div><div class="c2"></div></div>
+                            <div class="blend-nome">Normal</div>
+                        </div>
+                        <div class="blend-card bm-multiply">
+                            <div class="blend-swatch"><div class="c1"></div><div class="c2"></div></div>
+                            <div class="blend-nome">Multiplicar</div>
+                        </div>
+                        <div class="blend-card bm-screen">
+                            <div class="blend-swatch"><div class="c1"></div><div class="c2"></div></div>
+                            <div class="blend-nome">Tela (Screen)</div>
+                        </div>
+                        <div class="blend-card bm-overlay">
+                            <div class="blend-swatch"><div class="c1"></div><div class="c2"></div></div>
+                            <div class="blend-nome">Sobrepor</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Renderizado ao vivo pelo navegador, com o mesmo cálculo de mistura de cor que o Photoshop usa.</p>
+
+                    <table>
+                        <tr><th>Modo</th><th>Efeito geral</th></tr>
+                        <tr><td><strong>Multiplicar</strong></td><td>Escurece — ótimo para sombras e texturas escuras</td></tr>
+                        <tr><td><strong>Tela</strong></td><td>Clareia — ótimo para brilhos, luzes e fumaça</td></tr>
+                        <tr><td><strong>Sobrepor</strong></td><td>Aumenta o contraste, misturando os dois efeitos acima</td></tr>
+                    </table>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Grupos de Camadas e Organização</h2>
+                    <p>Documentos com muitas camadas ficam confusos rápido. Grupos funcionam como pastas.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo">Selecione várias camadas (<span class="tecla">Ctrl</span> + clique em cada uma) e aperte <span class="tecla">Ctrl</span> + <span class="tecla">G</span></span><br>
+<span class="passo">Duplo clique no nome do grupo (ou da camada) para renomear</span></div>
+
+                    <div class="highlight">
+                        💡 Nomeie camadas e grupos com nomes que descrevem o conteúdo ("Fundo", "Personagem",
+                        "Ajustes de Cor") em vez de deixar "Camada 1", "Camada 2" — em projetos grandes isso
+                        economiza muito tempo.
+                    </div>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Opacidade vs. Preenchimento</h2>
+                    <p>Os dois campos ficam lado a lado no topo do painel de Camadas e parecem fazer a mesma
+                    coisa, mas são diferentes:</p>
+
+                    <table>
+                        <tr><th>Campo</th><th>O que controla</th></tr>
+                        <tr><td><strong>Opacidade</strong></td><td>Transparência da camada inteira, incluindo estilos de camada (sombra, brilho...)</td></tr>
+                        <tr><td><strong>Preenchimento</strong></td><td>Transparência só do conteúdo da camada — estilos aplicados continuam 100% visíveis</td></tr>
+                    </table>
+
+                    <div class="warning">
+                        ⚠️ Se você reduzir a Opacidade e uma sombra aplicada à camada sumir junto, era isso que
+                        você não queria — use Preenchimento para manter os estilos de camada intactos.
+                    </div>
+                </section>
+
+                <!-- 12 (desafio bônus / inovação) -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Desafio Bônus — Seleção de Objeto com IA</h2>
+                    <p>Versões recentes do Photoshop trazem a ferramenta <strong>Seleção de Objeto</strong>, que
+                    usa inteligência artificial para reconhecer objetos inteiros com um clique — sem precisar
+                    arrastar como na Seleção Rápida.</p>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> abra uma foto com vários objetos (ex: uma mesa com itens em
+                        cima). Passe o mouse sobre cada objeto com a ferramenta <strong>Seleção de Objeto</strong>
+                        ativa — o Photoshop realça o objeto automaticamente antes mesmo de você clicar. Tente
+                        selecionar 3 objetos diferentes só de clique, sem arrastar.
+                    </div>
+
+                    <div class="highlight">
+                        💡 Se a sua versão do Photoshop não tiver essa ferramenta, use a Seleção Rápida do Grau 1
+                        para o mesmo desafio — o objetivo é treinar o olho para reconhecer bordas, com IA ou sem.
+                    </div>
+                </section>
+
+                <!-- 13 (Prática) -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Prática — Montagem com Máscara</h2>
+                    <p>Use as duas fotos diferentes que você separou para este grau.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Abra a <b>Foto 1</b> (vai ser o fundo)</span><br>
+<span class="passo"><b>2.</b> Arraste a <b>Foto 2</b> para dentro do mesmo documento (ela vira uma nova camada, por cima)</span><br>
+<span class="passo"><b>3.</b> Com a Foto 2 selecionada, clique em <b>Adicionar Máscara de Camada</b></span><br>
+<span class="passo"><b>4.</b> Pinte de <b>preto</b> na máscara, nas partes da Foto 2 que você quer esconder, revelando a Foto 1 por baixo</span></div>
+
+                    <div class="success">
+                        ✅ Resultado esperado: as duas fotos se misturando em uma única composição, sem nenhuma
+                        borda "colada" — se aparecer uma borda dura, volte à máscara e suavize com um pincel de
+                        borda macia.
+                    </div>
+                </section>
+
+                <!-- 14 (Prática) -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Prática — Transição Suave com Gradiente</h2>
+                    <p>Para uma transição gradual entre as duas fotos (em vez de um recorte definido), use a
+                    ferramenta <strong>Gradiente</strong> direto na máscara.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Clique na miniatura da máscara para selecioná-la</span><br>
+<span class="passo"><b>2.</b> Ferramenta <b>Gradiente</b> (tecla <span class="tecla">G</span>), predefinição preto-para-branco</span><br>
+<span class="passo"><b>3.</b> Clique e arraste sobre a área de transição — quanto mais longo o arraste, mais suave a mistura</span></div>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio extra:</strong> experimente o mesmo gradiente com o Modo de Mesclagem
+                        "Tela" na camada de cima e compare com o modo "Normal". A diferença mostra por que
+                        fotógrafos usam mesclagem para simular luz.
+                    </div>
+                </section>
+
+                <!-- 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Atalhos do Grau 2 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Atalho</th><th>Ação</th></tr>
+                        <tr><td><span class="tecla">L</span></td><td>Laço (segure para variações)</td></tr>
+                        <tr><td><span class="tecla">Alt</span> (com Laço ativo)</td><td>Alternar para modo poligonal</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">G</span></td><td>Agrupar camadas selecionadas</td></tr>
+                        <tr><td><span class="tecla">G</span></td><td>Ferramenta Gradiente</td></tr>
+                        <tr><td><span class="tecla">X</span></td><td>Trocar cor de frente/fundo (preto ↔ branco na máscara)</td></tr>
+                        <tr><td><span class="tecla">B</span></td><td>Pincel (para pintar a máscara)</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+clique na miniatura</td><td>Carregar a máscara/camada como seleção</td></tr>
+                    </table>
+                </section>
+
+                <!-- 16 -->
+                <section class="chapter" data-chapter="16">
+                    <h2>16. Erros Comuns do Grau 2</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Pintei na máscara e a foto inteira sumiu."</strong><br>
+                        Você provavelmente pintou de preto com uma seleção ativa cobrindo tudo — confira se há
+                        uma seleção ativa (borda tracejada) antes de pintar, e desmarque com
+                        <span class="tecla">Ctrl</span>+<span class="tecla">D</span> se não precisar dela.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A máscara não aparece na camada."</strong><br>
+                        Confira se você clicou em <strong>Adicionar Máscara de Camada</strong> e não em
+                        "Nova Camada" — são botões vizinhos no rodapé do painel.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"O modo de mesclagem deixou tudo estranho."</strong><br>
+                        Nem toda combinação de cores funciona com todo modo. Volte para "Normal" e teste um por
+                        um — não existe modo "certo" fixo, depende da imagem.
+                    </div>
+                </section>
+
+                <!-- 17 -->
+                <section class="chapter" data-chapter="17">
+                    <h2>17. Checklist Final e Prévia do Grau 3</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 2, confirme:</h4>
+                        <ul>
+                            <li>✅ Selecionei uma área por cor (Faixa de Cor)</li>
+                            <li>✅ Usei o Laço Poligonal ou Magnético em algum objeto</li>
+                            <li>✅ Criei uma máscara de camada e pintei nela (preto/branco)</li>
+                            <li>✅ Testei pelo menos 2 modos de mesclagem diferentes</li>
+                            <li>✅ Agrupei camadas com <span class="tecla">Ctrl</span>+<span class="tecla">G</span></li>
+                            <li>✅ Fiz a montagem com transição por gradiente na máscara</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 2. No <strong>Grau 3</strong> o foco muda para
+                        <strong>cor e retoque</strong>: Níveis, Curvas, e as ferramentas que profissionais usam
+                        para limpar imperfeições de uma foto sem deixar rastro.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 2</strong> | 17 capítulos | ~1h20 de aprendizado</p>
+            <p>Seleções e camadas avançadas: máscaras, modos de mesclagem e montagens não destrutivas</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 17;
+
+        const chapters = [
+            "Bem-vindo ao Grau 2",
+            "Por que Selecionar Bem Importa",
+            "Seleção por Cor",
+            "Laço Poligonal e Magnético",
+            "Aperfeiçoar Borda",
+            "Máscaras de Camada — Conceito",
+            "Criando sua Primeira Máscara",
+            "Pintando na Máscara",
+            "Modos de Mesclagem",
+            "Grupos de Camadas",
+            "Opacidade vs. Preenchimento",
+            "Desafio Bônus — Seleção com IA",
+            "Prática — Montagem com Máscara",
+            "Prática — Transição com Gradiente",
+            "Atalhos do Grau 2",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

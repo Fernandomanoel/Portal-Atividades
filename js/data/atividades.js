@@ -22,7 +22,9 @@
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
 //   grupo     → em qual seção da home o curso entra: "cursos"
-//               (Atividades disponíveis) ou "extras" (Mais Atividades)
+//               (Atividades disponíveis) ou "extras" (Mais Atividades).
+//               "nav" tira o curso das duas grades da home — ele só é
+//               alcançado por um link próprio no menu (ver components/layout.js)
 //   sigla     → 1-2 letras usadas na capa gerada do curso
 //   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
@@ -496,13 +498,6 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
       },
       {
-        titulo: "Sonic Digital Pro — Treino de Digitação",
-        descricao:
-          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
-        tipo: "link",
-        url: "atividades/paginas/kids-sonic-digitacao.html",
-      },
-      {
         titulo: "Missão Arquivos e Pastas",
         descricao:
           "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
@@ -515,6 +510,24 @@ const ATIVIDADES = [
           "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-aventura-windows11.html",
+      },
+    ],
+  },
+
+  {
+    slug: "digitacao",
+    titulo: "Jogos de Digitação",
+    descricao: "Treino de velocidade e precisão no teclado, em forma de jogo.",
+    grupo: "cursos",
+    sigla: "DG",
+    cor: "#3d5afe",
+    materiais: [
+      {
+        titulo: "Sonic Digital Pro — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 16 fases (da posição das mãos até frases longas): a cada acerto o Sonic ganha anéis e corre mais rápido. Mostra precisão, palavras por minuto e placar final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-sonic-digitacao.html",
       },
       {
         titulo: "Super Mario do Teclado — Atalhos e Pontuação",
@@ -619,6 +632,94 @@ const ATIVIDADES = [
           "Exercício para reconhecer tentativas de golpe e phishing antes de clicar em qualquer link.",
         tipo: "pdf",
         arquivo: "atividades/pdfs/Segurança na Era Digital/EmailsSuspeito.pdf",
+      },
+    ],
+  },
+
+  {
+    // Página e caminho já criados a pedido do professor; os materiais entram
+    // depois. Com `materiais` vazio, atividade.html mostra sozinho o aviso
+    // "Nenhum material publicado ainda." — não precisa de nenhum código a mais.
+    slug: "ingles",
+    titulo: "Inglês",
+    descricao: "Atividades de inglês para os cursos de informática.",
+    grupo: "nav",
+    sigla: "EN",
+    cor: "#0ea5e9",
+    materiais: [
+      {
+        titulo: "Inglês em Letras de Música — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 8 letras de música em inglês: cada acerto e cada erro tem uma reação própria no HUD, com estatísticas de precisão, velocidade e combo. Música toca durante a digitação assim que os arquivos forem adicionados.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-letras-digitacao.html",
+      },
+    ],
+  },
+
+  {
+    slug: "photoshop",
+    titulo: "Adobe Photoshop",
+    descricao: "Do primeiro clique a composições avançadas — curso completo em 8 graus.",
+    grupo: "cursos",
+    sigla: "PS",
+    cor: "#001e36",
+    materiais: [
+      {
+        titulo: "Grau 1 — Conhecendo a Ferramenta",
+        descricao:
+          "Guia explicativo para quem nunca abriu o Photoshop: reconhecer a tela, inserir uma imagem, recortar e remover fundo. Cerca de 1h.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau1-estilo-guia.html",
+      },
+      {
+        titulo: "Grau 2 — Seleções e Camadas Avançadas",
+        descricao:
+          "Seleção por cor, Laço Poligonal/Magnético, máscaras de camada e modos de mesclagem, com prática de montagem por máscara.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau2-selecoes-e-camadas.html",
+      },
+      {
+        titulo: "Grau 3 — Ajustes de Cor e Retoque",
+        descricao:
+          "Níveis, Curvas, Balanço de Cor e as ferramentas de retoque (Carimbo, Pincel de Recuperação, Correção Pontual) em camadas de ajuste não destrutivas.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau3-cor-e-retoque.html",
+      },
+      {
+        titulo: "Grau 4 — Texto, Formas e Composição",
+        descricao:
+          "Ferramenta Texto, estilos de camada, formas vetoriais, Regra dos Terços e a montagem de um post pronto para redes sociais.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau4-texto-formas-e-composicao.html",
+      },
+      {
+        titulo: "Grau 5 — Efeitos e Filtros Criativos",
+        descricao:
+          "Objetos Inteligentes, Filtros Inteligentes e a montagem de um efeito de dupla exposição.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau5-efeitos-e-filtros.html",
+      },
+      {
+        titulo: "Grau 6 — Composição Avançada",
+        descricao:
+          "Perspectiva, refinamento de seleção, harmonização de cor e luz entre elementos de fontes diferentes — a técnica por trás de qualquer montagem que engana o olho.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau6-composicao-avancada.html",
+      },
+      {
+        titulo: "Grau 7 — Projeto Final Integrador",
+        descricao:
+          "Um briefing de verdade, do planejamento à entrega organizada: peça principal, adaptação para Stories e exportação para diferentes usos.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau7-projeto-final.html",
+      },
+      {
+        titulo: "Grau 8 — Auras e Efeitos de Invocação (Bônus)",
+        descricao:
+          "Luz de contorno, auras coloridas e texto de efeito — o estilo por trás dos memes de personagem com elemento fantástico atrás dele.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau8-auras-e-invocacao.html",
       },
     ],
   },

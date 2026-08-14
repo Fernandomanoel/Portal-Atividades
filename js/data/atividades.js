@@ -872,8 +872,8 @@ const ATIVIDADES = [
         titulo: "Simulador de Caixa Eletrônico",
         descricao:
           "O aluno desenvolve um simulador de caixa eletrônico com saldo inicial, menu de opções (ver saldo, depositar, sacar e sair), validação de saldo e execução contínua até encerrar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - Simulador de Caixa Eletrônico.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-caixa-eletronico.html",
       },
       {
         titulo: "Jogo de Adivinhação com Tentativas Limitadas",

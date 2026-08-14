@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python — Lista de Atividades</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before {
+            content: counter(passo); position: absolute; left: 0; top: 0;
+            background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📝 Lista de Atividades — Python</h1>
+        <p>Atividade Complementar — Python</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=python">← Voltar para Python</a>
+
+    <div class="content">
+        <h2>1️⃣ Atividade 1 — Soma de Números</h2>
+        <p><strong>Objetivo:</strong> Aprender print, input, variáveis, conversão de tipos e cálculo simples.</p>
+
+        <h3>Passo 1 – Criar o arquivo</h3>
+        <p>Crie um arquivo chamado:</p>
+        <div class="code-block">atividade_python.py</div>
+
+        <h3>Passo 2 – Mostrar uma mensagem na tela</h3>
+        <div class="code-block"><span class="fn">print</span>(<span class="str">"Olá, seja bem-vindo ao Python!"</span>)</div>
+        <p>👉 Esse comando serve para mostrar mensagens na tela.</p>
+
+        <h3>Passo 3 – Pedir o nome do usuário</h3>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)</div>
+        <p>👉 Aqui o programa:</p>
+        <ul>
+            <li>Pede uma informação</li>
+            <li>Guarda o valor digitado na variável <code>nome</code></li>
+        </ul>
+
+        <h3>Passo 4 – Pedir dois números e fazer a soma</h3>
+        <div class="code-block"><span class="var">numero1</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite o primeiro número: "</span>))
+<span class="var">numero2</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite o segundo número: "</span>))
+
+<span class="var">soma</span> = numero1 + numero2</div>
+        <p>👉 O <code>int()</code> é usado para transformar o texto digitado em número.</p>
+
+        <h3>Passo 5 – Mostrar o resultado final</h3>
+        <div class="code-block"><span class="fn">print</span>(<span class="str">"Olá,"</span>, nome)
+<span class="fn">print</span>(<span class="str">"A soma dos números é:"</span>, soma)</div>
+
+        <h3>Código completo (para o aluno copiar e rodar)</h3>
+        <div class="code-block"><span class="fn">print</span>(<span class="str">"Olá, seja bem-vindo ao Python!"</span>)
+
+<span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)
+
+<span class="var">numero1</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite o primeiro número: "</span>))
+<span class="var">numero2</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite o segundo número: "</span>))
+
+<span class="var">soma</span> = numero1 + numero2
+
+<span class="fn">print</span>(<span class="str">"Olá,"</span>, nome)
+<span class="fn">print</span>(<span class="str">"A soma dos números é:"</span>, soma)</div>
+
+        <div class="box">
+            <h4>⭐ Desafio opcional (iniciante)</h4>
+            <p>Peça para o aluno:</p>
+            <ul>
+                <li>Trocar a soma por multiplicação</li>
+            </ul>
+            <div class="code-block"><span class="var">multiplicacao</span> = numero1 * numero2
+<span class="fn">print</span>(<span class="str">"A multiplicação é:"</span>, multiplicacao)</div>
+        </div>
+
+        <h2>2️⃣ Atividade 2 — Maior de Idade</h2>
+        <p><strong>🎯 Objetivo:</strong> Ensinar variáveis, input, conversão de tipos e estrutura condicional (if / else).</p>
+
+        <h3>Passo 1 – Criar o arquivo</h3>
+        <div class="code-block">atividade_python_idade.py</div>
+
+        <h3>Passo 2 – Pedir o nome do usuário</h3>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)</div>
+
+        <h3>Passo 3 – Pedir a idade</h3>
+        <div class="code-block"><span class="var">idade</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite sua idade: "</span>))</div>
+        <p>👉 O <code>int()</code> transforma o valor digitado em número.</p>
+
+        <h3>Passo 4 – Criar a condição</h3>
+        <div class="code-block"><span class="kw">if</span> idade &gt;= <span class="num">18</span>:
+    <span class="var">mensagem</span> = <span class="str">"Você é maior de idade."</span>
+<span class="kw">else</span>:
+    <span class="var">mensagem</span> = <span class="str">"Você é menor de idade."</span></div>
+        <p>👉 Aqui o programa <strong>toma uma decisão.</strong></p>
+
+        <h3>Passo 5 – Mostrar o resultado</h3>
+        <div class="code-block"><span class="fn">print</span>(<span class="str">"Olá,"</span>, nome)
+<span class="fn">print</span>(mensagem)</div>
+
+        <h3>✅ Código completo (para copiar e executar)</h3>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)
+
+<span class="var">idade</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite sua idade: "</span>))
+
+<span class="kw">if</span> idade &gt;= <span class="num">18</span>:
+    <span class="var">mensagem</span> = <span class="str">"Você é maior de idade."</span>
+<span class="kw">else</span>:
+    <span class="var">mensagem</span> = <span class="str">"Você é menor de idade."</span>
+
+<span class="fn">print</span>(<span class="str">"Olá,"</span>, nome)
+<span class="fn">print</span>(mensagem)</div>
+
+        <div class="box">
+            <h4>⭐ Desafio opcional</h4>
+            <ul>
+                <li>Mude a idade mínima para 16 anos</li>
+                <li>Acrescente uma mensagem de boas-vindas personalizada</li>
+            </ul>
+            <p>Exemplo:</p>
+            <div class="code-block"><span class="fn">print</span>(<span class="str">"Seja bem-vindo ao sistema!"</span>)</div>
+        </div>
+    </div>
+
+    <footer>Microlins – Unidade São José — Atividade Complementar de Python</footer>
+</div>
+</body>
+</html>

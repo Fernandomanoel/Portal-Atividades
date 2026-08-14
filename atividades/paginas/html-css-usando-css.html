@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Primeiro CSS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-block .tag { color: #569cd6; }
+
+        .code-chip {
+            display: inline-block; background: #1e1e1e; color: #9cdcfe; padding: 4px 10px;
+            border-radius: 5px; font-family: 'Courier New', monospace; font-size: 0.9em; margin: 4px 0;
+        }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎨 Meu Primeiro CSS</h1>
+        <p>Atividade Complementar — HTML e CSS</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=html-css">← Voltar para Html e CSS</a>
+
+    <div class="content">
+        <h2>1. O que é HTML?</h2>
+        <p><strong>HTML</strong> é a estrutura da página.</p>
+        <p>Ele cria <strong>títulos, textos e imagens</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block">&lt;h1&gt;Olá!&lt;/h1&gt;
+
+&lt;p&gt;Esta é minha página.&lt;/p&gt;</div>
+        <ul>
+            <li><code>&lt;h1&gt;</code> → cria um <strong>título</strong></li>
+            <li><code>&lt;p&gt;</code> → cria um <strong>parágrafo (texto)</strong></li>
+        </ul>
+
+        <h2>2. O que é CSS?</h2>
+        <p><strong>CSS é usado para decorar a página.</strong></p>
+        <p>Ele muda:</p>
+        <ul>
+            <li>cores 🎨</li>
+            <li>tamanho do texto 🔍</li>
+            <li>fundo da página 🖼️</li>
+            <li>tamanho das imagens 📷</li>
+        </ul>
+        <p>Pense assim:</p>
+        <p>HTML = <strong>esqueleto da casa</strong><br>CSS = <strong>pintura e decoração</strong></p>
+
+        <h2>3. Estrutura básica da página</h2>
+        <p>Veja um exemplo completo:</p>
+        <div class="code-block"><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;</span>
+
+<span class="tag">&lt;head&gt;</span>
+<span class="tag">&lt;title&gt;</span>Minha Página<span class="tag">&lt;/title&gt;</span>
+
+<span class="tag">&lt;style&gt;</span>
+<span class="tag">&lt;/style&gt;</span>
+
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="tag">&lt;body&gt;</span>
+
+<span class="tag">&lt;h1&gt;</span>Minha Página<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;p&gt;</span>Estou aprendendo programação!<span class="tag">&lt;/p&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+        <p>Agora vamos entender <strong>cada parte</strong>.</p>
+
+        <h2>4. Explicando cada parte</h2>
+
+        <p class="code-chip">&lt;!DOCTYPE html&gt;</p>
+        <p>Significa que estamos criando uma <strong>página HTML</strong>.</p>
+
+        <p class="code-chip">&lt;html&gt;</p>
+        <p>É onde <strong>toda a página começa</strong>.</p>
+
+        <p class="code-chip">&lt;head&gt;</p>
+        <p>Aqui ficam <strong>informações da página</strong>.</p>
+
+        <p class="code-chip">&lt;title&gt;Minha Página&lt;/title&gt;</p>
+        <p>Esse é o <strong>nome que aparece na aba do navegador</strong>.</p>
+
+        <h3>&lt;style&gt;</h3>
+        <div class="code-block">&lt;style&gt;
+&lt;/style&gt;</div>
+        <p>Aqui é onde escrevemos o <strong>CSS</strong>.</p>
+        <p>É onde vamos <strong>mudar cores e estilos</strong>.</p>
+
+        <h3>&lt;body&gt;</h3>
+        <div class="code-block">&lt;body&gt;
+
+&lt;/body&gt;</div>
+        <p>Aqui fica <strong>tudo que aparece na tela</strong>.</p>
+        <p>Exemplo:</p>
+        <ul>
+            <li>textos</li>
+            <li>títulos</li>
+            <li>imagens</li>
+        </ul>
+
+        <h2>5. Criando um título</h2>
+        <div class="code-block">&lt;h1&gt;Minha Página Colorida&lt;/h1&gt;</div>
+        <p>h1 significa <strong>título grande</strong>.</p>
+
+        <h2>6. Criando um texto</h2>
+        <div class="code-block">&lt;p&gt;Eu estou aprendendo CSS!&lt;/p&gt;</div>
+        <p>p significa <strong>parágrafo (texto)</strong>.</p>
+
+        <h2>7. Colocando uma imagem</h2>
+        <div class="code-block">&lt;img
+src="https://upload.wikimedia.org/wikipedia/commons/3/32/House_sparrow04.jpg"
+&gt;</div>
+        <p>Explicação:</p>
+        <p>img = imagem<br>src = endereço da imagem</p>
+
+        <h2>8. Agora vamos usar CSS</h2>
+        <p>Dentro do <code>&lt;style&gt;</code> escrevemos assim:</p>
+        <div class="code-block">h1{
+color: red;
+}</div>
+        <p>Explicação:</p>
+        <ul>
+            <li>h1 → estamos mudando o título</li>
+            <li>color → muda a cor</li>
+            <li>red → vermelho</li>
+        </ul>
+
+        <h2>9. Mudando a cor do fundo</h2>
+        <div class="code-block">body{
+background-color: lightblue;
+}</div>
+        <p>Explicação:</p>
+        <ul>
+            <li>body → toda a página</li>
+            <li>background-color → cor do fundo</li>
+            <li>lightblue → azul claro</li>
+        </ul>
+
+        <h2>10. Mudando o tamanho do texto</h2>
+        <div class="code-block">p{
+font-size: 20px;
+}</div>
+        <p>Explicação:</p>
+        <ul>
+            <li>p → parágrafo</li>
+            <li>font-size → tamanho da letra</li>
+            <li>20px → tamanho</li>
+        </ul>
+
+        <h2>11. Mudando o tamanho da imagem</h2>
+        <div class="code-block">img{
+width: 200px;
+}</div>
+        <p>Explicação:</p>
+        <ul>
+            <li>img → imagem</li>
+            <li>width → largura</li>
+            <li>200px → tamanho</li>
+        </ul>
+
+        <h2>13. Código completo</h2>
+        <div class="code-block"><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html&gt;</span>
+
+<span class="tag">&lt;head&gt;</span>
+
+    <span class="tag">&lt;title&gt;</span>Minha Página<span class="tag">&lt;/title&gt;</span>
+
+    <span class="tag">&lt;style&gt;</span>
+        body {
+            background-color: lightblue;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        p {
+            font-size: 20px;
+        }
+
+        img {
+            width: 200px;
+        }
+    <span class="tag">&lt;/style&gt;</span>
+
+<span class="tag">&lt;/head&gt;</span>
+
+<span class="tag">&lt;body&gt;</span>
+
+    <span class="tag">&lt;h1&gt;</span>Minha Página com CSS<span class="tag">&lt;/h1&gt;</span>
+
+    <span class="tag">&lt;p&gt;</span>Estou aprendendo CSS!<span class="tag">&lt;/p&gt;</span>
+
+    <span class="tag">&lt;img src=</span><span class="str">"https://upload.wikimedia.org/wikipedia/commons/3/32/House_sparrow04.jpg"</span><span class="tag">&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+    </div>
+
+    <footer>Microlins São José — Atividade Complementar de HTML e CSS</footer>
+</div>
+</body>
+</html>

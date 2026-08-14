@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apostila Básica de SQL para Iniciantes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        table { border-collapse: collapse; width: 100%; margin: 14px 0; }
+        table th, table td { text-align: left; padding: 8px 14px; border-bottom: 1px solid #e0e0e0; }
+        table th { color: #1e3a8a; font-size: 0.95em; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📘 Apostila Básica de SQL para Iniciantes</h1>
+        <p>Microlins — Unidade São José</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=banco-dados-sql">← Voltar para Banco de Dados / SQL</a>
+
+    <div class="content">
+        <h2>1️⃣ O que é Banco de Dados</h2>
+        <p>Banco de dados é um <strong>local onde armazenamos informações organizadas</strong>.</p>
+        <p>Exemplo de informações armazenadas:</p>
+        <ul>
+            <li>cadastro de alunos</li>
+            <li>cadastro de produtos</li>
+            <li>cadastro de clientes</li>
+            <li>vendas de uma loja</li>
+        </ul>
+        <p>Esses dados ficam organizados em <strong>tabelas</strong>.</p>
+        <h3>Exemplo de tabela</h3>
+        <table>
+            <tr><th>id</th><th>nome</th><th>idade</th></tr>
+            <tr><td>1</td><td>Ana</td><td>20</td></tr>
+            <tr><td>2</td><td>Carlos</td><td>22</td></tr>
+            <tr><td>3</td><td>Maria</td><td>19</td></tr>
+        </table>
+
+        <h2>2️⃣ O que é SQL</h2>
+        <p>SQL significa:</p>
+        <p><strong>Structured Query Language</strong></p>
+        <p>É a linguagem usada para <strong>consultar e manipular bancos de dados</strong>.</p>
+        <p>Com SQL podemos:</p>
+        <ul>
+            <li>criar tabelas</li>
+            <li>inserir dados</li>
+            <li>consultar dados</li>
+            <li>atualizar dados</li>
+            <li>excluir dados</li>
+        </ul>
+
+        <h2>3️⃣ Criando uma tabela</h2>
+        <p>Para criar uma tabela usamos o comando <strong>CREATE TABLE</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">CREATE TABLE</span> alunos (
+  id <span class="kw">INT</span>,
+  nome <span class="kw">VARCHAR</span>(<span class="num">50</span>),
+  idade <span class="kw">INT</span>
+);</div>
+        <p>Explicação:</p>
+        <table>
+            <tr><th>comando</th><th>significado</th></tr>
+            <tr><td>CREATE</td><td>criar</td></tr>
+            <tr><td>TABLE</td><td>tabela</td></tr>
+            <tr><td>INT</td><td>número inteiro</td></tr>
+            <tr><td>VARCHAR</td><td>texto</td></tr>
+        </table>
+
+        <h2>4️⃣ Inserindo dados na tabela</h2>
+        <p>Para inserir dados usamos <strong>INSERT INTO</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">INSERT INTO</span> alunos <span class="kw">VALUES</span>
+(<span class="num">1</span>,<span class="str">'Ana'</span>,<span class="num">20</span>),
+(<span class="num">2</span>,<span class="str">'Carlos'</span>,<span class="num">22</span>),
+(<span class="num">3</span>,<span class="str">'Maria'</span>,<span class="num">19</span>);</div>
+        <p>Esse comando adiciona registros na tabela.</p>
+
+        <h2>5️⃣ Consultando dados</h2>
+        <p>Para visualizar dados usamos <strong>SELECT</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos;</div>
+        <p>Explicação:</p>
+        <table>
+            <tr><th>comando</th><th>significado</th></tr>
+            <tr><td>SELECT</td><td>selecionar dados</td></tr>
+        </table>
+        <ul>
+            <li>| todos os campos |<br>FROM | da tabela |</li>
+        </ul>
+
+        <h2>6️⃣ Filtrando informações</h2>
+        <p>Podemos filtrar dados usando <strong>WHERE</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">WHERE</span> idade > <span class="num">20</span>;</div>
+        <p>Esse comando mostra apenas alunos com idade maior que 20.</p>
+
+        <h2>7️⃣ Ordenando dados</h2>
+        <p>Para organizar os dados usamos <strong>ORDER BY</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">ORDER BY</span> nome;</div>
+        <p>Esse comando organiza os alunos em <strong>ordem alfabética</strong>.</p>
+
+        <h2>8️⃣ Atualizando dados</h2>
+        <p>Para atualizar informações usamos <strong>UPDATE</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">UPDATE</span> alunos
+<span class="kw">SET</span> idade = <span class="num">21</span>
+<span class="kw">WHERE</span> nome = <span class="str">'Ana'</span>;</div>
+
+        <h2>9️⃣ Deletando dados</h2>
+        <p>Para apagar dados usamos <strong>DELETE</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">DELETE FROM</span> alunos
+<span class="kw">WHERE</span> id = <span class="num">3</span>;</div>
+
+        <h2>🧠 Exercícios</h2>
+        <div class="box">
+            <h4>Exercício 1</h4>
+            <p>Criar tabela <strong>produtos</strong> com os campos:</p>
+            <ul>
+                <li>id</li>
+                <li>nome</li>
+                <li>preço</li>
+            </ul>
+        </div>
+        <div class="box">
+            <h4>Exercício 2</h4>
+            <p>Inserir 5 produtos.</p>
+        </div>
+        <div class="box">
+            <h4>Exercício 3</h4>
+            <p>Mostrar todos os produtos.</p>
+        </div>
+        <div class="box">
+            <h4>Exercício 4</h4>
+            <p>Mostrar produtos com preço maior que 50.</p>
+        </div>
+        <div class="box">
+            <h4>Exercício 5</h4>
+            <p>Ordenar produtos pelo nome.</p>
+        </div>
+
+        <h2>💡 Dica de estudo</h2>
+        <p>Pratique SQL <strong>3 vezes por semana</strong>.</p>
+        <p>Sugestão:</p>
+        <div class="success">
+            <p>Segunda → estudar teoria</p>
+            <p>Quarta → praticar exercícios</p>
+            <p style="margin-bottom: 0;">Sexta → revisar comandos</p>
+        </div>
+    </div>
+
+    <footer>Microlins — Unidade São José</footer>
+</div>
+</body>
+</html>

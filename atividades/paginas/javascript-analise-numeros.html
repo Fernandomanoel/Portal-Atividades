@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript — Sistema de Análise de Números</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before {
+            content: counter(passo); position: absolute; left: 0; top: 0;
+            background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔢 Atividade — Sistema de Análise de Números</h1>
+        <p>Atividade Complementar — JavaScript</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=javascript">← Voltar para Javascript</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Você vai criar um programa que:</p>
+        <ol>
+            <li>Peça um número inicial</li>
+            <li>Peça um número final</li>
+            <li>Mostre:
+                <ul>
+                    <li>Todos os números do intervalo</li>
+                    <li>Quais são pares</li>
+                    <li>Quais são ímpares</li>
+                    <li>A soma total dos números</li>
+                </ul>
+            </li>
+            <li>No final, diga se a soma é maior que 100 ou não</li>
+        </ol>
+
+        <div class="box">
+            <h4>🚀 Com isso você vai treinar</h4>
+            <ul>
+                <li>✅ Variáveis</li>
+                <li>✅ if / else</li>
+                <li>✅ for</li>
+                <li>✅ while</li>
+                <li>✅ Funções</li>
+                <li>✅ Operações matemáticas</li>
+            </ul>
+        </div>
+
+        <h2>🧩 Parte 1 – Criando a função principal</h2>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">analisarNumeros</span>() {</div>
+        <p>Aqui criamos uma função chamada <code>analisarNumeros</code>.<br>Tudo que estiver dentro dela será executado quando chamarmos essa função.</p>
+
+        <h2>🧩 Parte 2 – Criando variáveis e recebendo dados</h2>
+        <div class="code-block">    <span class="kw">let</span> <span class="var">inicio</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite o número inicial:"</span>));</div>
+        <ul>
+            <li><code>let</code> cria uma variável.</li>
+            <li><code>inicio</code> guarda o valor digitado.</li>
+            <li><code>prompt()</code> pede um valor ao usuário.</li>
+            <li><code>parseInt()</code> converte o texto para número inteiro.</li>
+        </ul>
+
+        <div class="code-block">    <span class="kw">let</span> <span class="var">fim</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite o número final:"</span>));</div>
+        <p>Mesma lógica, mas agora guardando o número final.</p>
+
+        <div class="code-block">    <span class="kw">let</span> <span class="var">soma</span> = <span class="num">0</span>;</div>
+        <p>Criamos uma variável chamada <code>soma</code>.<br>Ela começa com valor 0 porque vamos acumular valores nela.</p>
+
+        <h2>🧩 Parte 3 – Usando FOR (laço de repetição)</h2>
+        <div class="code-block">    <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = inicio; i &lt;= fim; i++) {</div>
+        <p>Vamos entender isso com calma:</p>
+        <ul>
+            <li><code>let i = inicio</code> → começa pelo número inicial</li>
+            <li><code>i &lt;= fim</code> → continua enquanto i for menor ou igual ao final</li>
+            <li><code>i++</code> → aumenta 1 a cada repetição</li>
+        </ul>
+        <p>Isso faz o programa repetir várias vezes automaticamente.</p>
+
+        <div class="code-block">        console.<span class="fn">log</span>(<span class="str">"Número:"</span>, i);</div>
+        <p>Mostra cada número no console.</p>
+
+        <h2>🧩 Parte 4 – Usando IF / ELSE</h2>
+        <div class="code-block">        <span class="kw">if</span> (i % <span class="num">2</span> === <span class="num">0</span>) {</div>
+        <ul>
+            <li><code>%</code> é o operador de resto da divisão.</li>
+            <li>Se o resto da divisão por 2 for 0 → número é par.</li>
+        </ul>
+
+        <div class="code-block">            console.<span class="fn">log</span>(<span class="str">"É par"</span>);</div>
+        <p>Se for par, mostra essa mensagem.</p>
+
+        <div class="code-block">        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"É ímpar"</span>);
+        }</div>
+        <p>Se não for par, é ímpar.</p>
+
+        <h2>🧩 Parte 5 – Somando os números</h2>
+        <div class="code-block">        soma = soma + i;</div>
+        <p>A cada repetição, adicionamos o número atual à variável soma.</p>
+        <p>Exemplo:</p>
+        <ul>
+            <li>soma começa em 0</li>
+            <li>depois vira 0 + 1</li>
+            <li>depois 1 + 2</li>
+            <li>depois 3 + 3</li>
+            <li>e assim por diante...</li>
+        </ul>
+
+        <p>Fechamos o for:</p>
+        <div class="code-block">    }</div>
+
+        <h2>🧩 Parte 6 – Usando WHILE</h2>
+        <p>Agora vamos usar um while só para treinar outro tipo de repetição.</p>
+        <div class="code-block">    <span class="kw">let</span> <span class="var">contador</span> = inicio;</div>
+        <p>Criamos uma variável auxiliar.</p>
+
+        <div class="code-block">    <span class="kw">while</span> (contador &lt;= fim) {
+        contador++;
+    }</div>
+        <p>Esse while só percorre os números novamente.<br>Ele repete enquanto a condição for verdadeira.</p>
+
+        <h2>🧩 Parte 7 – Verificando a soma</h2>
+        <div class="code-block">    <span class="kw">if</span> (soma &gt; <span class="num">100</span>) {
+        console.<span class="fn">log</span>(<span class="str">"A soma é maior que 100"</span>);
+    } <span class="kw">else</span> {
+        console.<span class="fn">log</span>(<span class="str">"A soma é menor ou igual a 100"</span>);
+    }</div>
+        <p>Aqui usamos if novamente para comparar o valor final da soma.</p>
+
+        <h2>🧩 Parte 8 – Mostrando resultado final</h2>
+        <div class="code-block">    console.<span class="fn">log</span>(<span class="str">"Soma total:"</span>, soma);
+}</div>
+        <p>Mostramos o valor total e fechamos a função.</p>
+
+        <h2>🚀 Código Completo</h2>
+        <p>Agora tudo junto:</p>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">analisarNumeros</span>() {
+    <span class="kw">let</span> <span class="var">inicio</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite o número inicial:"</span>));
+    <span class="kw">let</span> <span class="var">fim</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite o número final:"</span>));
+
+    <span class="kw">let</span> <span class="var">soma</span> = <span class="num">0</span>;
+
+    <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = inicio; i &lt;= fim; i++) {
+        console.<span class="fn">log</span>(<span class="str">"Número:"</span>, i);
+
+        <span class="kw">if</span> (i % <span class="num">2</span> === <span class="num">0</span>) {
+            console.<span class="fn">log</span>(<span class="str">"É par"</span>);
+        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"É ímpar"</span>);
+        }
+
+        soma = soma + i;
+    }
+
+    <span class="kw">let</span> <span class="var">contador</span> = inicio;
+    <span class="kw">while</span> (contador &lt;= fim) {
+        contador++;
+    }
+
+    <span class="kw">if</span> (soma &gt; <span class="num">100</span>) {
+        console.<span class="fn">log</span>(<span class="str">"A soma é maior que 100"</span>);
+    } <span class="kw">else</span> {
+        console.<span class="fn">log</span>(<span class="str">"A soma é menor ou igual a 100"</span>);
+    }
+
+    console.<span class="fn">log</span>(<span class="str">"Soma total:"</span>, soma);
+}
+
+<span class="fn">analisarNumeros</span>();</div>
+
+        <div class="success">
+            <strong>Execute o código</strong>
+            <ol class="passos" style="margin-top: 10px;">
+                <li>Abra o Google Chrome</li>
+                <li>Aperte F12</li>
+                <li>Vá na aba Console</li>
+                <li>Cole o código</li>
+                <li>Aperte Enter</li>
+            </ol>
+            <p style="margin-top: 10px; margin-bottom: 0;">Vai aparecer o <code>prompt()</code> pedindo os números.</p>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade Complementar de JavaScript</footer>
+</div>
+</body>
+</html>

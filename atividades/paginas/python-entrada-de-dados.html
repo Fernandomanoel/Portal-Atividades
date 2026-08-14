@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python — Entrada de Dados em Python (Input)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before {
+            content: counter(passo); position: absolute; left: 0; top: 0;
+            background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐍 Entrada de Dados em Python (Input)</h1>
+        <p>Atividade Introdutória — Python</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=python">← Voltar para Python</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Aprender a <strong>receber dados digitados pelo usuário</strong> usando o comando <code>input()</code>.</p>
+
+        <h2>📥 O que é o input()?</h2>
+        <p>O <code>input()</code> é usado quando o programa <strong>faz uma pergunta</strong> e espera o usuário <strong>digitar uma resposta</strong> no teclado.</p>
+        <p>Tudo que o usuário digita com <code>input()</code> entra como <strong>texto (string)</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)</div>
+
+        <h3>Preparando o arquivo no Visual Studio Code</h3>
+        <ol>
+            <li>Abra o <strong>Visual Studio Code</strong></li>
+            <li>Clique em <strong>Arquivo &gt; Novo Arquivo</strong></li>
+            <li>Salve como: <strong>entrada_dados.py</strong></li>
+        </ol>
+
+        <h3>Primeiro programa com input()</h3>
+        <p>Digite o código abaixo:</p>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)
+<span class="fn">print</span>(<span class="str">"Olá,"</span>, nome)</div>
+
+        <h3>Executando</h3>
+        <ul>
+            <li>Clique com o botão direito no arquivo</li>
+            <li>Escolha <strong>Run Python File in Terminal</strong></li>
+            <li>Digite seu nome no terminal e pressione <strong>Enter</strong></li>
+        </ul>
+
+        <h2>🔢 input() com números</h2>
+        <div class="box">
+            <h4>⚠️ Importante</h4>
+            <p>O <code>input()</code> sempre recebe <strong>texto</strong>.</p>
+            <p>Para usar números, precisamos converter:</p>
+            <ul>
+                <li><code>int()</code> → números inteiros</li>
+                <li><code>float()</code> → números com vírgula</li>
+            </ul>
+        </div>
+
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="var">idade</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite sua idade: "</span>))
+<span class="fn">print</span>(<span class="str">"Você tem"</span>, idade, <span class="str">"anos"</span>)</div>
+
+        <h3>Comentários no código</h3>
+        <div class="code-block"><span class="cm"># Programa que pergunta o nome do usuário</span>
+<span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)
+<span class="fn">print</span>(<span class="str">"Bem-vindo,"</span>, nome)</div>
+
+        <h2>✅ Exercícios Práticos</h2>
+
+        <h3>Exercício 1 – Nome do usuário</h3>
+        <p>Crie um programa que:</p>
+        <ol>
+            <li>Pergunte o nome do usuário</li>
+            <li>Mostre a mensagem: <strong>Bem-vindo, [nome]!</strong></li>
+        </ol>
+        <p>Exemplo de solução:</p>
+        <div class="code-block"><span class="var">nome</span> = <span class="fn">input</span>(<span class="str">"Digite seu nome: "</span>)
+<span class="fn">print</span>(<span class="str">"Bem-vindo,"</span>, nome)</div>
+
+        <h3>Exercício 2 – Idade</h3>
+        <p>Crie um programa que:</p>
+        <ol>
+            <li>Pergunte a idade do usuário</li>
+            <li>Mostre quantos anos ele tem</li>
+        </ol>
+        <p>Exemplo de solução:</p>
+        <div class="code-block"><span class="var">idade</span> = <span class="fn">int</span>(<span class="fn">input</span>(<span class="str">"Digite sua idade: "</span>))
+<span class="fn">print</span>(<span class="str">"Você tem"</span>, idade, <span class="str">"anos"</span>)</div>
+    </div>
+
+    <footer>Microlins São José — Atividade Introdutória de Python</footer>
+</div>
+</body>
+</html>

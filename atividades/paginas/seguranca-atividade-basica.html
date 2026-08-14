@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Segurança na Era Digital — Identificando E-mails Falsos</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .email-card { border: 1px solid #d8dde3; border-radius: 10px; padding: 20px 24px; margin: 18px 0 26px; background: #fafbfc; }
+        .email-card .meta { font-size: 0.95em; margin-bottom: 14px; }
+        .email-card .meta strong { color: #1e3a8a; }
+
+        .opcoes { list-style: none; margin: 0 0 14px; }
+        .opcoes li { margin-bottom: 6px; font-family: 'Courier New', monospace; }
+
+        .resposta-linha { border-bottom: 1px solid #c9ced4; height: 1.8em; margin: 4px 0 18px; }
+
+        hr.divisor { border: none; border-top: 2px solid #e5e8ec; margin: 30px 0; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .email-card { padding: 16px 18px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🛡️ Atividade Prática — Identificando E-mails Falsos (Phishing)</h1>
+        <p>Atividade Complementar — Segurança na Era Digital</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=seguranca-era-digital">← Voltar para Segurança na Era Digital</a>
+
+    <div class="content">
+        <h2>📌 Instruções</h2>
+        <div class="box">
+            <ul>
+                <li>Leia os e-mails com atenção.</li>
+                <li><strong>Não clique em nenhum link.</strong></li>
+                <li>Abra um documento em branco no Word e responda.</li>
+            </ul>
+        </div>
+
+        <hr class="divisor">
+
+        <h2>📧 E-mail 1</h2>
+        <div class="email-card">
+            <p class="meta"><strong>Assunto:</strong> ⚠️ URGENTE: Atualização de segurança<br>
+            <strong>Remetente:</strong> atendimento@banco-seguro24.com</p>
+
+            <p><strong>1. Este e-mail é:</strong></p>
+            <ul class="opcoes">
+                <li>( ) Seguro</li>
+                <li>( ) Phishing</li>
+            </ul>
+
+            <p><strong>2. Marque os sinais de perigo que você encontrou:</strong></p>
+            <ul class="opcoes">
+                <li>( ) Pedido de dados pessoais</li>
+                <li>( ) Urgência/ameaça</li>
+                <li>( ) Link estranho</li>
+                <li>( ) Remetente suspeito</li>
+            </ul>
+        </div>
+
+        <hr class="divisor">
+
+        <h2>📧 E-mail 2</h2>
+        <div class="email-card">
+            <p class="meta"><strong>Assunto:</strong> 🎁 Você ganhou um prêmio<br>
+            <strong>Remetente:</strong> promoções@ofertas-imperdiveis.net</p>
+
+            <p><strong>3. Este e-mail é:</strong></p>
+            <ul class="opcoes">
+                <li>( ) Seguro</li>
+                <li>( ) Phishing</li>
+            </ul>
+
+            <p><strong>4. Por que esse e-mail pode ser perigoso?</strong></p>
+            <div class="resposta-linha"></div>
+        </div>
+
+        <hr class="divisor">
+
+        <h2>📧 E-mail 3</h2>
+        <div class="email-card">
+            <p class="meta"><strong>Assunto:</strong> Novo aviso em sua conta<br>
+            <strong>Remetente:</strong> notificacoes@plataformaeducacional.com</p>
+
+            <p><strong>5. Este e-mail é:</strong></p>
+            <ul class="opcoes">
+                <li>( ) Seguro</li>
+                <li>( ) Phishing</li>
+            </ul>
+
+            <p><strong>6. O que torna esse e-mail mais confiável?</strong></p>
+            <div class="resposta-linha"></div>
+        </div>
+
+        <hr class="divisor">
+
+        <h2>🧠 Pergunta Final</h2>
+        <p><strong>7. Cite 1 cuidado importante ao receber e-mails desconhecidos:</strong></p>
+        <div class="resposta-linha"></div>
+
+        <div class="success">
+            <strong>Como responder</strong>
+            <p style="margin: 8px 0 0;">Abra um documento em branco no Word e escreva suas respostas para as 7 perguntas acima, sem clicar em nenhum dos links mostrados.</p>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade Complementar de Segurança na Era Digital</footer>
+</div>
+</body>
+</html>

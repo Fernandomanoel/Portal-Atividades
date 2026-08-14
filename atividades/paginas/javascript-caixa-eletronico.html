@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript — Simulador de Caixa Eletrônico</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before {
+            content: counter(passo); position: absolute; left: 0; top: 0;
+            background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎮 Atividade 3 — Simulador de Caixa Eletrônico</h1>
+        <p>Atividade Complementar — JavaScript</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=javascript">← Voltar para Javascript</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Criar um programa que:</p>
+        <ol>
+            <li>Tenha um saldo inicial</li>
+            <li>Mostre um menu com opções:
+                <ul>
+                    <li>Ver saldo</li>
+                    <li>Depositar</li>
+                    <li>Sacar</li>
+                    <li>Sair</li>
+                </ul>
+            </li>
+            <li>Não permita sacar mais do que tem no saldo</li>
+            <li>Continue rodando até o usuário escolher sair</li>
+        </ol>
+
+        <div class="box">
+            <h4>🚀 Você vai treinar</h4>
+            <ul>
+                <li>✅ Variáveis</li>
+                <li>✅ Funções</li>
+                <li>✅ while</li>
+                <li>✅ if / else</li>
+                <li>✅ Operadores matemáticos</li>
+                <li>✅ Controle de fluxo</li>
+                <li>✅ Validação de saldo</li>
+            </ul>
+        </div>
+
+        <h2>🧩 Parte 1 — Criando a função</h2>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">caixaEletronico</span>() {</div>
+        <p>Criamos uma função chamada <code>caixaEletronico</code>.</p>
+
+        <h3>🧩 Parte 2 — Criando o saldo</h3>
+        <div class="code-block">    <span class="kw">let</span> <span class="var">saldo</span> = <span class="num">1000</span>;</div>
+        <p>Aqui criamos a variável <code>saldo</code> com valor inicial de 1000.</p>
+
+        <h3>🧩 Parte 3 — Criando controle do programa</h3>
+        <div class="code-block">    <span class="kw">let</span> <span class="var">continuar</span> = <span class="kw">true</span>;</div>
+        <p>Essa variável vai controlar o <code>while</code>.</p>
+
+        <h3>🧩 Parte 4 — Criando o menu com WHILE</h3>
+        <div class="code-block">    <span class="kw">while</span> (continuar) {</div>
+        <p>Enquanto <code>continuar</code> for <code>true</code>, o menu aparece novamente.</p>
+
+        <h3>🧩 Parte 5 — Mostrando opções</h3>
+        <div class="code-block">        <span class="kw">let</span> <span class="var">opcao</span> = <span class="fn">prompt</span>(
+            <span class="str">"Escolha uma opção:\n"</span> +
+            <span class="str">"1 - Ver saldo\n"</span> +
+            <span class="str">"2 - Depositar\n"</span> +
+            <span class="str">"3 - Sacar\n"</span> +
+            <span class="str">"4 - Sair"</span>
+        );</div>
+        <p>Aqui mostramos um menu usando <code>\n</code> para quebrar linha.</p>
+
+        <h2>🧩 Parte 6 — Usando IF / ELSE</h2>
+
+        <h3>🔷 Opção 1 — Ver saldo</h3>
+        <div class="code-block">        <span class="kw">if</span> (opcao === <span class="str">"1"</span>) {
+            console.<span class="fn">log</span>(<span class="str">"Seu saldo é: R$ "</span> + saldo);</div>
+        <p>Se escolher 1, mostramos o saldo.</p>
+
+        <h3>🔷 Opção 2 — Depositar</h3>
+        <div class="code-block">        } <span class="kw">else if</span> (opcao === <span class="str">"2"</span>) {
+            <span class="kw">let</span> <span class="var">deposito</span> = <span class="fn">parseFloat</span>(<span class="fn">prompt</span>(<span class="str">"Digite o valor para depositar:"</span>));
+            saldo = saldo + deposito;
+            console.<span class="fn">log</span>(<span class="str">"Depósito realizado. Novo saldo: R$ "</span> + saldo);</div>
+        <ul>
+            <li>Pedimos valor</li>
+            <li>Somamos ao saldo</li>
+            <li>Mostramos novo saldo</li>
+        </ul>
+
+        <h3>🔷 Opção 3 — Sacar</h3>
+        <div class="code-block">        } <span class="kw">else if</span> (opcao === <span class="str">"3"</span>) {
+            <span class="kw">let</span> <span class="var">saque</span> = <span class="fn">parseFloat</span>(<span class="fn">prompt</span>(<span class="str">"Digite o valor para sacar:"</span>));</div>
+        <p>Pedimos valor do saque.</p>
+        <p>Agora validamos:</p>
+        <div class="code-block">            <span class="kw">if</span> (saque &lt;= saldo) {
+                saldo = saldo - saque;
+                console.<span class="fn">log</span>(<span class="str">"Saque realizado. Novo saldo: R$ "</span> + saldo);
+            } <span class="kw">else</span> {
+                console.<span class="fn">log</span>(<span class="str">"Saldo insuficiente!"</span>);
+            }</div>
+        <p>Se tiver saldo suficiente, subtrai.<br>Se não, mostra erro.</p>
+
+        <h3>🔷 Opção 4 — Sair</h3>
+        <div class="code-block">        } <span class="kw">else if</span> (opcao === <span class="str">"4"</span>) {
+            continuar = <span class="kw">false</span>;
+            console.<span class="fn">log</span>(<span class="str">"Obrigado por usar o caixa eletrônico."</span>);</div>
+        <p>Muda <code>continuar</code> para <code>false</code> e encerra o loop.</p>
+
+        <h3>🔷 Opção inválida</h3>
+        <div class="code-block">        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"Opção inválida!"</span>);
+        }</div>
+        <p>Se digitar algo diferente de 1, 2, 3 ou 4.</p>
+
+        <p>Fechamos tudo:</p>
+        <div class="code-block">    }
+}</div>
+
+        <p>E chamamos a função:</p>
+        <div class="code-block"><span class="fn">caixaEletronico</span>();</div>
+
+        <h2>✅ Código Completo</h2>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">caixaEletronico</span>() {
+    <span class="kw">let</span> <span class="var">saldo</span> = <span class="num">1000</span>;
+    <span class="kw">let</span> <span class="var">continuar</span> = <span class="kw">true</span>;
+
+    <span class="kw">while</span> (continuar) {
+        <span class="kw">let</span> <span class="var">opcao</span> = <span class="fn">prompt</span>(
+            <span class="str">"Escolha uma opção:\n"</span> +
+            <span class="str">"1 - Ver saldo\n"</span> +
+            <span class="str">"2 - Depositar\n"</span> +
+            <span class="str">"3 - Sacar\n"</span> +
+            <span class="str">"4 - Sair"</span>
+        );
+
+        <span class="kw">if</span> (opcao === <span class="str">"1"</span>) {
+            console.<span class="fn">log</span>(<span class="str">"Seu saldo é: R$ "</span> + saldo);
+
+        } <span class="kw">else if</span> (opcao === <span class="str">"2"</span>) {
+            <span class="kw">let</span> <span class="var">deposito</span> = <span class="fn">parseFloat</span>(<span class="fn">prompt</span>(<span class="str">"Digite o valor para depositar:"</span>));
+            saldo = saldo + deposito;
+            console.<span class="fn">log</span>(<span class="str">"Depósito realizado. Novo saldo: R$ "</span> + saldo);
+
+        } <span class="kw">else if</span> (opcao === <span class="str">"3"</span>) {
+            <span class="kw">let</span> <span class="var">saque</span> = <span class="fn">parseFloat</span>(<span class="fn">prompt</span>(<span class="str">"Digite o valor para sacar:"</span>));
+
+            <span class="kw">if</span> (saque &lt;= saldo) {
+                saldo = saldo - saque;
+                console.<span class="fn">log</span>(<span class="str">"Saque realizado. Novo saldo: R$ "</span> + saldo);
+            } <span class="kw">else</span> {
+                console.<span class="fn">log</span>(<span class="str">"Saldo insuficiente!"</span>);
+            }
+
+        } <span class="kw">else if</span> (opcao === <span class="str">"4"</span>) {
+            continuar = <span class="kw">false</span>;
+            console.<span class="fn">log</span>(<span class="str">"Obrigado por usar o caixa eletrônico."</span>);
+
+        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"Opção inválida!"</span>);
+        }
+    }
+}
+
+<span class="fn">caixaEletronico</span>();</div>
+
+        <div class="success">
+            <strong>Execute o código</strong>
+            <ol class="passos" style="margin-top: 10px;">
+                <li>Abra o Google Chrome</li>
+                <li>Aperte F12</li>
+                <li>Vá na aba Console</li>
+                <li>Cole o código</li>
+                <li>Aperte Enter</li>
+            </ol>
+            <p style="margin-top: 10px; margin-bottom: 0;">Vai aparecer o <code>prompt()</code> pedindo os números.</p>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade Complementar de JavaScript</footer>
+</div>
+</body>
+</html>

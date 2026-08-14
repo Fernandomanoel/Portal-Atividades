@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript — Simulador de Tabuada Inteligente</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before {
+            content: counter(passo); position: absolute; left: 0; top: 0;
+            background: #2563eb; color: #fff; width: 22px; height: 22px; border-radius: 50%;
+            font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧮 Atividade 2 — Simulador de Tabuada Inteligente</h1>
+        <p>Atividade Complementar — JavaScript</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=javascript">← Voltar para Javascript</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Você vai criar um programa que:</p>
+        <ol>
+            <li>Peça um número ao usuário</li>
+            <li>Mostre a tabuada desse número (de 1 a 10)</li>
+            <li>Conte quantos resultados são pares</li>
+            <li>Some todos os resultados</li>
+            <li>No final:
+                <ul>
+                    <li>Diga se a soma é maior que 100</li>
+                    <li>Pergunte se o usuário quer repetir o programa</li>
+                </ul>
+            </li>
+        </ol>
+
+        <div class="box">
+            <h4>🚀 O que você vai treinar</h4>
+            <ul>
+                <li>✅ Variáveis</li>
+                <li>✅ Funções</li>
+                <li>✅ if / else</li>
+                <li>✅ for</li>
+                <li>✅ while</li>
+                <li>✅ Operações matemáticas</li>
+                <li>✅ Acumuladores</li>
+                <li>✅ Estrutura de repetição com controle</li>
+            </ul>
+        </div>
+
+        <h2>🧩 Parte 1 – Criando a função principal</h2>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">tabuadaInteligente</span>() {</div>
+        <p>Aqui criamos uma função chamada <code>tabuadaInteligente</code>.<br>Tudo ficará dentro dela.</p>
+
+        <h2>🧩 Parte 2 – Criando variável de controle (while)</h2>
+        <div class="code-block">    <span class="kw">let</span> <span class="var">continuar</span> = <span class="kw">true</span>;</div>
+        <p>Criamos uma variável booleana.<br>Ela vai controlar se o programa continua rodando ou não.</p>
+
+        <h2>🧩 Parte 3 – Criando o while principal</h2>
+        <div class="code-block">    <span class="kw">while</span> (continuar) {</div>
+        <p>Isso significa:</p>
+        <p>👉 Enquanto <code>continuar</code> for <code>true</code>, o programa repete.</p>
+
+        <h2>🧩 Parte 4 – Pedindo o número</h2>
+        <div class="code-block">        <span class="kw">let</span> <span class="var">numero</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite um número para ver a tabuada:"</span>));</div>
+        <ul>
+            <li><code>prompt()</code> pede o número</li>
+            <li><code>parseInt()</code> transforma texto em número</li>
+        </ul>
+
+        <h2>🧩 Parte 5 – Criando acumuladores</h2>
+        <div class="code-block">        <span class="kw">let</span> <span class="var">soma</span> = <span class="num">0</span>;
+        <span class="kw">let</span> <span class="var">quantidadePares</span> = <span class="num">0</span>;</div>
+        <ul>
+            <li><code>soma</code> vai guardar a soma dos resultados</li>
+            <li><code>quantidadePares</code> vai contar quantos resultados são pares</li>
+        </ul>
+
+        <h2>🧩 Parte 6 – Usando FOR para fazer a tabuada</h2>
+        <div class="code-block">        <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = <span class="num">1</span>; i &lt;= <span class="num">10</span>; i++) {</div>
+        <ul>
+            <li>Começa em 1</li>
+            <li>Vai até 10</li>
+            <li>Incrementa 1 por vez</li>
+        </ul>
+
+        <div class="code-block">            <span class="kw">let</span> <span class="var">resultado</span> = numero * i;</div>
+        <p>Multiplica o número pelo contador.</p>
+
+        <div class="code-block">            console.<span class="fn">log</span>(numero + <span class="str">" x "</span> + i + <span class="str">" = "</span> + resultado);</div>
+        <p>Mostra a conta no console.</p>
+
+        <h2>🧩 Parte 7 – Somando resultados</h2>
+        <div class="code-block">            soma = soma + resultado;</div>
+        <p>Acumula os resultados.</p>
+
+        <h2>🧩 Parte 8 – Verificando se é par</h2>
+        <div class="code-block">            <span class="kw">if</span> (resultado % <span class="num">2</span> === <span class="num">0</span>) {
+                quantidadePares++;
+            }</div>
+        <p>Se o resto da divisão por 2 for 0 → é par.<br>Então aumentamos o contador.</p>
+
+        <p>Fechamos o for:</p>
+        <div class="code-block">        }</div>
+
+        <h2>🧩 Parte 9 – Verificando a soma</h2>
+        <div class="code-block">        <span class="kw">if</span> (soma &gt; <span class="num">100</span>) {
+            console.<span class="fn">log</span>(<span class="str">"A soma é maior que 100"</span>);
+        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"A soma é menor ou igual a 100"</span>);
+        }</div>
+        <p>Comparação usando if e else.</p>
+
+        <h2>🧩 Parte 10 – Mostrando estatísticas</h2>
+        <div class="code-block">        console.<span class="fn">log</span>(<span class="str">"Soma total:"</span>, soma);
+        console.<span class="fn">log</span>(<span class="str">"Quantidade de resultados pares:"</span>, quantidadePares);</div>
+        <p>Mostramos os dados finais.</p>
+
+        <h2>🧩 Parte 11 – Perguntar se quer repetir</h2>
+        <div class="code-block">        <span class="kw">let</span> <span class="var">resposta</span> = <span class="fn">prompt</span>(<span class="str">"Quer calcular outra tabuada? (s/n)"</span>);</div>
+        <p>Pedimos uma resposta.</p>
+
+        <div class="code-block">        <span class="kw">if</span> (resposta.<span class="fn">toLowerCase</span>() !== <span class="str">"s"</span>) {
+            continuar = <span class="kw">false</span>;
+        }</div>
+        <ul>
+            <li><code>toLowerCase()</code> transforma em minúscula</li>
+            <li>Se não for "s", paramos o programa</li>
+            <li>Mudamos <code>continuar</code> para <code>false</code></li>
+        </ul>
+
+        <p>Fechamos tudo:</p>
+        <div class="code-block">    }
+}</div>
+
+        <p>E chamamos a função:</p>
+        <div class="code-block"><span class="fn">tabuadaInteligente</span>();</div>
+
+        <h2>✅ Código Completo</h2>
+        <div class="code-block"><span class="kw">function</span> <span class="fn">tabuadaInteligente</span>() {
+    <span class="kw">let</span> <span class="var">continuar</span> = <span class="kw">true</span>;
+
+    <span class="kw">while</span> (continuar) {
+        <span class="kw">let</span> <span class="var">numero</span> = <span class="fn">parseInt</span>(<span class="fn">prompt</span>(<span class="str">"Digite um número para ver a tabuada:"</span>));
+
+        <span class="kw">let</span> <span class="var">soma</span> = <span class="num">0</span>;
+        <span class="kw">let</span> <span class="var">quantidadePares</span> = <span class="num">0</span>;
+
+        <span class="kw">for</span> (<span class="kw">let</span> <span class="var">i</span> = <span class="num">1</span>; i &lt;= <span class="num">10</span>; i++) {
+            <span class="kw">let</span> <span class="var">resultado</span> = numero * i;
+
+            console.<span class="fn">log</span>(numero + <span class="str">" x "</span> + i + <span class="str">" = "</span> + resultado);
+
+            soma = soma + resultado;
+
+            <span class="kw">if</span> (resultado % <span class="num">2</span> === <span class="num">0</span>) {
+                quantidadePares++;
+            }
+        }
+
+        <span class="kw">if</span> (soma &gt; <span class="num">100</span>) {
+            console.<span class="fn">log</span>(<span class="str">"A soma é maior que 100"</span>);
+        } <span class="kw">else</span> {
+            console.<span class="fn">log</span>(<span class="str">"A soma é menor ou igual a 100"</span>);
+        }
+
+        console.<span class="fn">log</span>(<span class="str">"Soma total:"</span>, soma);
+        console.<span class="fn">log</span>(<span class="str">"Quantidade de resultados pares:"</span>, quantidadePares);
+
+        <span class="kw">let</span> <span class="var">resposta</span> = <span class="fn">prompt</span>(<span class="str">"Quer calcular outra tabuada? (s/n)"</span>);
+
+        <span class="kw">if</span> (resposta.<span class="fn">toLowerCase</span>() !== <span class="str">"s"</span>) {
+            continuar = <span class="kw">false</span>;
+        }
+    }
+}
+
+<span class="fn">tabuadaInteligente</span>();</div>
+
+        <div class="success">
+            <strong>Execute o código</strong>
+            <ol class="passos" style="margin-top: 10px;">
+                <li>Abra o Google Chrome</li>
+                <li>Aperte F12</li>
+                <li>Vá na aba Console</li>
+                <li>Cole o código</li>
+                <li>Aperte Enter</li>
+            </ol>
+            <p style="margin-top: 10px; margin-bottom: 0;">Vai aparecer o <code>prompt()</code> pedindo os números.</p>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade Complementar de JavaScript</footer>
+</div>
+</body>
+</html>

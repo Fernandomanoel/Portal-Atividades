@@ -658,6 +658,34 @@ const ATIVIDADES = [
   },
 
   {
+    // Atividades de projeto, sem prazo de entrega fixo — o aluno entrega
+    // mantendo o próprio repositório no Git atualizado (ver o primeiro
+    // material). Mais 4 atividades entram aqui depois.
+    slug: "criar-seu-site",
+    titulo: "Criando seu Site",
+    descricao: "Projetos reais de HTML, CSS e JavaScript, do primeiro repositório no Git a sites completos.",
+    grupo: "nav",
+    sigla: "GIT",
+    cor: "#f05033",
+    materiais: [
+      {
+        titulo: "Git e GitHub — Criando seu Repositório",
+        descricao:
+          "Guia completo, passo a passo: instalar o Git, criar sua conta e seu repositório no GitHub, e aprender os comandos que você vai usar em toda atividade (init, add, commit, push e mais). Comece por aqui.",
+        tipo: "link",
+        url: "atividades/paginas/site-git-repositorio.html",
+      },
+      {
+        titulo: "Atividade 1 — Site SaaS",
+        descricao:
+          "Construa a landing page de um produto SaaS fictício: cabeçalho, seção de destaque, recursos, planos e contato. Tema livre, imagens que você mesmo busca, sem prazo de entrega — salve o progresso no seu repositório.",
+        tipo: "link",
+        url: "atividades/paginas/site-atividade1-saas.html",
+      },
+    ],
+  },
+
+  {
     slug: "photoshop",
     titulo: "Adobe Photoshop",
     descricao: "Do primeiro clique a composições avançadas — curso completo em 8 graus.",

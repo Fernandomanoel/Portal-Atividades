@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade 1 — Site SaaS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
+
+    header { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); color: #fff; padding: 40px 50px; text-align: center; }
+    header h1 { font-size: 2.2em; margin-bottom: 10px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .duracao-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .voltar-topo { display: block; padding: 10px 50px; color: #7c3aed; text-decoration: none; font-weight: 600; }
+
+    /* Layout principal em flex: colunas lado a lado, cada uma ocupando
+       espaço proporcional — nada de coluna única estreitinha no meio da tela. */
+    .layout { display: flex; flex-wrap: wrap; gap: 0; flex: 1; width: 100%; }
+    .col-principal { flex: 3 1 560px; padding: 40px 50px; min-width: 0; }
+    .col-lateral { flex: 1 1 300px; padding: 40px 40px; background: #faf5ff; border-left: 2px solid #ede9fe; }
+
+    h2 { color: #4c1d95; margin: 34px 0 16px; border-bottom: 3px solid #7c3aed; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #7c3aed; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #4c1d95; }
+
+    .box { background: #faf5ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #4c1d95; margin-bottom: 10px; }
+
+    .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+    .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #721c24; }
+
+    .requisitos-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0; }
+    .requisito-card {
+        flex: 1 1 240px; background: #fff; border: 2px solid #ede9fe; border-radius: 10px;
+        padding: 18px 20px;
+    }
+    .requisito-card h4 { color: #4c1d95; margin-bottom: 8px; font-size: 1em; }
+    .requisito-card p { font-size: 0.92em; margin-bottom: 0; color: #555; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before {
+        content: "☐"; position: absolute; left: 0; top: 0; color: #7c3aed; font-size: 1.2em;
+    }
+
+    .sidebar-bloco { margin-bottom: 30px; }
+    .sidebar-bloco h3 { color: #4c1d95; font-size: 1em; text-transform: uppercase; border-bottom: 2px solid #7c3aed; padding-bottom: 8px; margin-top: 0; margin-bottom: 14px; }
+    .sidebar-bloco ul { margin-left: 20px; font-size: 0.92em; }
+    .sidebar-bloco li { margin-bottom: 8px; }
+
+    .tema-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tema-tag { background: #ede9fe; color: #4c1d95; padding: 5px 12px; border-radius: 16px; font-size: 0.82em; font-weight: 600; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 900px) {
+        .layout { flex-direction: column; }
+        .col-lateral { border-left: none; border-top: 2px solid #ede9fe; }
+    }
+    @media (max-width: 600px) {
+        header { padding: 28px 22px; }
+        .voltar-topo { padding: 10px 22px; }
+        .col-principal, .col-lateral { padding: 26px 22px; }
+        h1 { font-size: 1.5em; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🚀 Atividade 1 — Site SaaS</h1>
+        <p>Seu primeiro projeto completo: a página de um produto SaaS (Software as a Serviço) fictício</p>
+        <span class="duracao-badge">Sem prazo fixo — salve seu progresso no Git a cada etapa</span>
+    </header>
+
+    <a class="voltar-topo" href="../../atividade.html?curso=criar-seu-site">← Voltar para Criando seu Site</a>
+
+    <div class="layout">
+        <main class="col-principal">
+            <h2>🎯 O que você vai construir</h2>
+            <p>Você vai criar, do zero, o site de apresentação (a "landing page") de uma empresa <strong>SaaS</strong> — ou seja, uma empresa que vende um software por assinatura (pense em ferramentas como Spotify, Netflix, Canva: você não compra o programa, paga uma mensalidade para usar).</p>
+            <p>A empresa e o produto são <strong>inventados por você</strong> — pode ser um app de estudos, uma ferramenta de organização de tarefas, um editor de imagens, o que você quiser.</p>
+
+            <div class="box">
+                <h4>🎨 Tema totalmente livre</h4>
+                <p>Escolha a ideia do produto, o nome da empresa, as cores e o estilo visual. As imagens você mesmo vai buscar (bancos de imagem gratuitos, como Unsplash ou Pexels, ou ícones de sites como Flaticon) — este é um exercício de montar um site real, então a pesquisa de material faz parte do processo.</p>
+            </div>
+
+            <h2>🧩 Seções obrigatórias</h2>
+            <p>Seu site precisa ter, no mínimo, estas seções — a ordem e o visual de cada uma são decisão sua:</p>
+
+            <div class="requisitos-grid">
+                <div class="requisito-card">
+                    <h4>1. Cabeçalho (header)</h4>
+                    <p>Logo/nome da empresa e um menu de navegação linkando para as seções da própria página.</p>
+                </div>
+                <div class="requisito-card">
+                    <h4>2. Hero (destaque inicial)</h4>
+                    <p>Título chamativo explicando o que o produto faz, um texto de apoio, e um botão de call-to-action (ex: "Começar grátis").</p>
+                </div>
+                <div class="requisito-card">
+                    <h4>3. Recursos (features)</h4>
+                    <p>Pelo menos 3 cartões mostrando funcionalidades do produto, cada um com ícone/imagem, título e descrição curta.</p>
+                </div>
+                <div class="requisito-card">
+                    <h4>4. Planos e preços</h4>
+                    <p>Pelo menos 2 planos diferentes (ex: Básico e Premium), com preço, lista do que está incluso e um botão de assinar.</p>
+                </div>
+                <div class="requisito-card">
+                    <h4>5. Contato / rodapé</h4>
+                    <p>Um formulário simples (nome, e-mail, mensagem) ou informações de contato, mais links úteis e redes sociais.</p>
+                </div>
+            </div>
+
+            <h2>⚙️ Requisitos técnicos</h2>
+            <ul>
+                <li><strong>HTML semântico</strong> — use as tags certas para cada parte (<code>&lt;header&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;nav&gt;</code>), não tudo em <code>&lt;div&gt;</code>;</li>
+                <li><strong>CSS todo seu</strong> — sem frameworks prontos tipo Bootstrap; o objetivo é praticar CSS de verdade;</li>
+                <li><strong>Responsivo</strong> — o site precisa funcionar bem tanto no computador quanto no celular (use <code>@media</code>);</li>
+                <li><strong>Um pouco de JavaScript</strong> — pelo menos uma interação real, por exemplo: menu que abre/fecha no celular, um botão que muda de plano em destaque, ou uma validação simples no formulário de contato;</li>
+                <li><strong>Imagens leves</strong> — comprima as imagens antes de usar, para o site carregar rápido.</li>
+            </ul>
+
+            <h2>📦 Entrega — como salvar seu progresso</h2>
+            <p>Esta atividade <strong>não tem data de entrega marcada</strong> — ela é grande de propósito, para você desenvolver com calma ao longo de várias aulas. A forma de "entregar" é simples:</p>
+
+            <div class="success">
+                Sempre que terminar uma parte (uma seção, um efeito, uma correção), faça um commit descrevendo o que fez, e dê <code>git push</code>. Não sabe como? Veja o guia <a href="site-git-repositorio.html" style="color:#0a5c2e;font-weight:700;">Git e GitHub — Criando seu Repositório</a> antes de começar.
+            </div>
+
+            <p>Seu instrutor vai acompanhar o histórico de commits do seu repositório no GitHub — múltiplos commits ao longo do tempo mostram seu processo de trabalho.</p>
+
+            <h2>✅ Checklist antes de considerar concluído</h2>
+            <ul class="checklist">
+                <li>Todas as 5 seções obrigatórias estão presentes e com conteúdo coerente com o produto escolhido;</li>
+                <li>O site fica legível e utilizável tanto no celular quanto no computador;</li>
+                <li>Existe pelo menos uma interação em JavaScript funcionando;</li>
+                <li>As imagens usadas têm crédito/fonte anotado (mesmo que num comentário no HTML);</li>
+                <li>O repositório no GitHub tem vários commits, não só um único commit final;</li>
+                <li>O código está organizado em arquivos separados: <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+            </ul>
+        </main>
+
+        <aside class="col-lateral">
+            <div class="sidebar-bloco">
+                <h3>Nesta atividade</h3>
+                <ul>
+                    <li><strong>Nível:</strong> Iniciante</li>
+                    <li><strong>Pré-requisito:</strong> concluir o guia de Git</li>
+                    <li><strong>Prazo:</strong> sem prazo fixo</li>
+                    <li><strong>Entrega:</strong> commits no seu repositório</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Ideias de produto SaaS</h3>
+                <div class="tema-tags">
+                    <span class="tema-tag">App de estudos</span>
+                    <span class="tema-tag">Gestor de tarefas</span>
+                    <span class="tema-tag">Editor de imagens</span>
+                    <span class="tema-tag">Controle financeiro</span>
+                    <span class="tema-tag">Agenda de treinos</span>
+                    <span class="tema-tag">Assistente de receitas</span>
+                    <span class="tema-tag">Plataforma de cursos</span>
+                    <span class="tema-tag">Gestor de redes sociais</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Onde buscar imagens</h3>
+                <ul>
+                    <li>Unsplash (fotos)</li>
+                    <li>Pexels (fotos)</li>
+                    <li>unDraw (ilustrações)</li>
+                    <li>Flaticon / Font Awesome (ícones)</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Lembrete</h3>
+                <p style="font-size:0.9em;color:#555;">Commit cedo, commit sempre. Não espere o site "ficar pronto" para dar o primeiro commit — o primeiro commit pode ser só a estrutura HTML vazia.</p>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p><strong>Criando seu Site</strong> — Atividade 1 de 5</p>
+        <p>Microlins São José — HTML, CSS e JavaScript aplicados a um projeto real</p>
+    </footer>
+</div>
+</body>
+</html>

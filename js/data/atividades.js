@@ -170,8 +170,8 @@ const ATIVIDADES = [
         titulo: "Planilha Empresarial (EOBRA S/A)",
         descricao:
           "Atividade prática que simula um relatório de vendas de uma empresa, trabalhando organização de dados e cálculos como total, média, maior e menor valor.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - RELATÓRIO SIMPLES DE VENDAS MENSAIS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-relatorio-vendas-mensais.html",
       },
       {
         titulo: "Fórmulas e Funções",
@@ -254,8 +254,8 @@ const ATIVIDADES = [
         titulo: "Iniciando com o PROCV",
         descricao:
           "Primeira atividade do Excel Avançado: buscar informações em outra tabela com a função PROCV.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO I - INICIANDO COM O PROCV.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-procv.html",
       },
       {
         titulo: "Controle de Vendas e Comissões (Cálculo Avançado)",
@@ -623,15 +623,15 @@ const ATIVIDADES = [
         titulo: "Atividade de Segurança",
         descricao:
           "Atividade prática sobre os cuidados básicos de segurança no uso do computador e da internet.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Segurança na Era Digital/AtividadeSegurança.pdf",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-atividade-basica.html",
       },
       {
         titulo: "Identificando E-mails Suspeitos",
         descricao:
           "Exercício para reconhecer tentativas de golpe e phishing antes de clicar em qualquer link.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Segurança na Era Digital/EmailsSuspeito.pdf",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-emails-suspeitos.html",
       },
     ],
   },
@@ -743,8 +743,8 @@ const ATIVIDADES = [
       {
         titulo: "Usando o CSS e colocando imagens em HTML",
         descricao: "Adição do CSS em uma página do HTML e inserção de imagens nessa página.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Html e CSS/CSS - USANDO O CSS EM SITE.pdf",
+        tipo: "link",
+        url: "atividades/paginas/html-css-usando-css.html",
       },
       {
         titulo: "Slides — HTML, Parte 1",
@@ -797,8 +797,8 @@ const ATIVIDADES = [
         titulo: "Entrada de Dados em Python",
         descricao:
           "Atividade introdutória para aprender os primeiros comandos e conceitos básicos da linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Entrada de Dados em Python.pdf",
+        tipo: "link",
+        url: "atividades/paginas/python-entrada-de-dados.html",
       },
       {
         titulo: "Usando e aprendendo Operadores Matemáticos",
@@ -809,8 +809,8 @@ const ATIVIDADES = [
       {
         titulo: "Lista de Atividades",
         descricao: "Lista de atividades com o foco de reforçar as aulas de Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Atividade Complementar - Python.pdf",
+        tipo: "link",
+        url: "atividades/paginas/python-atividade-complementar.html",
       },
     ],
   },
@@ -851,15 +851,15 @@ const ATIVIDADES = [
         titulo: "Sistema de Análise de Números",
         descricao:
           "O aluno cria um programa em JavaScript que solicita um número inicial e um número final, exibe os valores do intervalo e identifica números pares e ímpares.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - SistemadeAnálisedeNúmeros.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-analise-numeros.html",
       },
       {
         titulo: "Simulador de Tabuada Inteligente",
         descricao:
           "O aluno cria um programa em JavaScript que gera a tabuada de um número informado pelo usuário.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - SimuladordeTabuadaInteligente.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-tabuada-inteligente.html",
       },
       {
         titulo: "Guia: Criando sua Primeira API REST",
@@ -879,8 +879,8 @@ const ATIVIDADES = [
         titulo: "Jogo de Adivinhação com Tentativas Limitadas",
         descricao:
           "O aluno cria um jogo em JavaScript que gera um número aleatório entre 1 e 50 e permite até 5 tentativas para adivinhar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - Jogo Adivinhaçao.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-jogo-adivinhacao.html",
       },
       {
         titulo: "Slides — Javascript, Parte 1",
@@ -944,14 +944,14 @@ const ATIVIDADES = [
       {
         titulo: "Apostila — Banco de Dados SQL",
         descricao: "Introdução ao banco de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/Apostila - Banco de Dados - SQL.pdf",
+        tipo: "link",
+        url: "atividades/paginas/sql-apostila.html",
       },
       {
         titulo: "Meu Primeiro Banco de Dados",
         descricao: "Exercícios de atividade básica de SQL.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/ATIVIDADE PRÁTICA - MEU PRIMEIRO BANCO DE DADOS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/sql-primeiro-banco-de-dados.html",
       },
       {
         titulo: "Cadastrando Dados no SQL",

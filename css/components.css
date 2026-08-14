@@ -175,13 +175,18 @@
 
 /* ================= LISTA DE MATERIAIS ================= */
 
+/* Grade flexível de cards, mesmo modelo usado nas atividades de
+   Photoshop: cada material vira um card e eles se organizam lado a
+   lado, quebrando linha sozinhos conforme a largura da tela. */
 .materiais {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .material {
+  flex: 1 1 340px;
+  max-width: 480px;
   display: flex;
   align-items: center;
   gap: 22px;

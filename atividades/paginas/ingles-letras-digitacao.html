@@ -471,9 +471,9 @@
 <script>
 /* ==================================================================
    1) ENSAIOS — cole as letras aqui (uma versão já vem pronta)
-   Cada ensaio tem um tema visual próprio (cores: a, b, acento) e
-   avança em sequência: o ensaio N+1 só desbloqueia depois que o
-   ensaio N for concluído.
+   Cada ensaio tem um tema visual próprio (cores: a, b, acento).
+   Todas as fases ficam liberadas desde o início — o aluno escolhe
+   livremente por onde começar.
    ================================================================== */
 const ENSAIOS = [
     {
@@ -1066,7 +1066,9 @@ function aplicarTema(cores) {
    ================================================================== */
 
 function ensaioDesbloqueado(indice) {
-    return indice === 0 || estado.concluidos.has(indice - 1) || estado.concluidos.has(indice);
+    // Todas as fases ficam liberadas desde o início — o aluno escolhe
+    // por onde começar, sem precisar concluir o ensaio anterior.
+    return true;
 }
 
 function desenharMapa() {
@@ -1291,7 +1293,7 @@ const musica = {
     tocador: null,
     disponivel: {},      // índice em TRILHA_SONORA -> existe/carrega
     faixaAtual: null,    // índice em TRILHA_SONORA tocando agora
-    aleatorio: true,     // true = sorteia uma faixa disponível a cada ensaio
+    aleatorio: true,     // true = sorteia uma faixa disponível (uma vez; depois mantém a mesma)
     CHAVE: "ingles-musica-som",
 };
 
@@ -1407,8 +1409,10 @@ function prepararAudioEnsaio() {
         return;
     }
 
-    // No modo aleatório, cada ensaio novo sorteia uma faixa diferente.
-    if (musica.aleatorio || musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) {
+    // No modo aleatório, sorteia uma faixa só na primeira vez (ou se a
+    // faixa atual sumiu). Depois a mesma música continua de um ensaio
+    // para o outro — terminar uma fase não troca para a próxima faixa.
+    if (musica.faixaAtual === null || !musica.disponivel[musica.faixaAtual]) {
         musica.faixaAtual = sortearFaixa();
     }
     el.seletorFaixa.value = musica.aleatorio ? "aleatorio" : String(musica.faixaAtual);

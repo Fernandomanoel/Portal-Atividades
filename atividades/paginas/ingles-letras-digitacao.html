@@ -248,6 +248,7 @@
 
     .hud-rosto-caixa.flash-correto { box-shadow: inset 0 0 0 2px #000, inset 0 3px 6px rgba(0,0,0,.7), 0 0 0 4px var(--verde), 0 0 22px 4px rgba(34,197,94,.65); }
     .hud-rosto-caixa.flash-erro    { box-shadow: inset 0 0 0 2px #000, inset 0 3px 6px rgba(0,0,0,.7), 0 0 0 4px var(--vermelho), 0 0 22px 4px rgba(239,68,68,.65); }
+    .hud-rosto-caixa.flash-recompensa { box-shadow: inset 0 0 0 2px #000, inset 0 3px 6px rgba(0,0,0,.7), 0 0 0 4px #fbbf24, 0 0 30px 8px rgba(251,191,36,.8); }
     .hud-rosto-caixa.tremer { animation: hudTremer .3s; }
     @keyframes hudTremer {
         0%, 100% { transform: translate(0, 0); }
@@ -273,6 +274,7 @@
     }
     .hud-rosto-status.correto { color: var(--verde); }
     .hud-rosto-status.erro { color: var(--vermelho); }
+    .hud-rosto-status.recompensa { color: #fbbf24; }
 
     /* ---------- Estatísticas (coluna esquerda) ---------- */
     .stats-grid {
@@ -939,55 +941,99 @@ const ENSAIOS = [
    2) REAÇÕES — imagem que aparece no HUD a cada acerto/erro
    ================================================================== */
 
-const REACOES = {
-    correto: [
-        "assets/ingles-digitacao/faces/correto-1.jpg",
-        "assets/ingles-digitacao/faces/correto-2.jpg",
-        "assets/ingles-digitacao/faces/correto-3.jpg",
-        "assets/ingles-digitacao/faces/correto-4.jpg",
-    ],
-    erro: [
-        "assets/ingles-digitacao/faces/erro-1.jpg",
-        "assets/ingles-digitacao/faces/erro-2.jpg",
-        "assets/ingles-digitacao/faces/erro-3.jpg",
-        "assets/ingles-digitacao/faces/erro-4.jpg",
-        "assets/ingles-digitacao/faces/erro-5.jpg",
-        "assets/ingles-digitacao/faces/erro-6.jpg",
-        "assets/ingles-digitacao/faces/erro-7.jpg",
-    ],
-};
+// As reações agora seguem um PADRÃO por sequência, não sorteio:
+//
+//  • Erros seguidos sobem a escada erro-1 → erro-7 (1 erro = erro-1,
+//    2 erros seguidos = erro-2, e assim por diante; passou de 7, fica no 7).
+//  • Acertos seguidos (o combo) sobem correto-1 → correto-4 e, nos combos
+//    mais altos, liberam os GIFs de recompensa: primeiro o Patrick Bateman
+//    e, no topo, a Sabrina — a recompensa máxima.
+const FACES_CORRETO = [
+    "assets/ingles-digitacao/faces/correto-1.jpg",
+    "assets/ingles-digitacao/faces/correto-2.jpg",
+    "assets/ingles-digitacao/faces/correto-3.jpg",
+    "assets/ingles-digitacao/faces/correto-4.jpg",
+];
+const FACES_ERRO = [
+    "assets/ingles-digitacao/faces/erro-1.jpg",
+    "assets/ingles-digitacao/faces/erro-2.jpg",
+    "assets/ingles-digitacao/faces/erro-3.jpg",
+    "assets/ingles-digitacao/faces/erro-4.jpg",
+    "assets/ingles-digitacao/faces/erro-5.jpg",
+    "assets/ingles-digitacao/faces/erro-6.jpg",
+    "assets/ingles-digitacao/faces/erro-7.jpg",
+];
+
+// GIFs de recompensa por combo alto. Basta soltar os arquivos nestes
+// caminhos — enquanto não chegam, o jogo cai de volta para o correto-4
+// sozinho (a frase de recompensa ainda aparece).
+const GIF_BATEMAN = "assets/ingles-digitacao/faces/acerto-bateman.gif";
+const GIF_SABRINA = "assets/ingles-digitacao/faces/acerto-sabrina.gif";
+const COMBO_BATEMAN = 15; // combo alto   → Patrick Bateman
+const COMBO_SABRINA = 30; // combo máximo → Sabrina (recompensa máxima)
 
 const FRASES_REACAO = {
-    correto: ["Boa!", "Isso aí!", "Combo!", "Mandou bem!", "Sequência!"],
+    correto: ["Boa!", "Isso aí!", "Mandou bem!", "Sequência!"],
     erro: ["Ops!", "Quase…", "Tenta de novo!", "Foi por pouco!", "Presta atenção!"],
+    bateman: ["Em chamas!", "Combo alto!", "Tá voando!"],
+    sabrina: ["PERFEITO!", "Recompensa máxima!", "Lendário!"],
 };
+
+// Qual carinha/gif de acerto mostrar conforme o tamanho do combo.
+function faceDeAcerto(combo) {
+    if (combo >= COMBO_SABRINA) return { src: GIF_SABRINA, nivel: "sabrina" };
+    if (combo >= COMBO_BATEMAN) return { src: GIF_BATEMAN, nivel: "bateman" };
+    const i = Math.max(0, Math.min(combo, FACES_CORRETO.length) - 1);
+    return { src: FACES_CORRETO[i], nivel: "correto" };
+}
+
+// Qual carinha de erro mostrar conforme quantos erros seguidos.
+function faceDeErro(streak) {
+    const i = Math.max(0, Math.min(streak, FACES_ERRO.length) - 1);
+    return FACES_ERRO[i];
+}
 
 let ultimaReacao = "";
 
 // Estilo "status bar do DOOM": um rostinho fixo no HUD que só troca de
 // cara e pisca a moldura a cada tecla — nada entra ou sai voando da tela.
 function mostrarReacao(tipo) {
-    const pool = REACOES[tipo];
-    let escolha = pool[Math.floor(Math.random() * pool.length)];
-    if (pool.length > 1) {
-        let tentativas = 0;
-        while (escolha === ultimaReacao && tentativas < 5) {
-            escolha = pool[Math.floor(Math.random() * pool.length)];
-            tentativas++;
-        }
+    let src, chaveFrase, classeStatus, ehRecompensa = false;
+
+    if (tipo === "correto") {
+        const r = faceDeAcerto(estado.combo);
+        src = r.src;
+        chaveFrase = r.nivel;                    // correto | bateman | sabrina
+        ehRecompensa = r.nivel !== "correto";
+        classeStatus = ehRecompensa ? "recompensa" : "correto";
+    } else {
+        src = faceDeErro(estado.erroStreak);
+        chaveFrase = "erro";
+        classeStatus = "erro";
     }
-    ultimaReacao = escolha;
 
-    el.reacaoImg.src = escolha;
-    el.reacaoImg.classList.remove("vazio");
+    ultimaReacao = src;
+    trocarImagemReacao(src);
 
-    const frases = FRASES_REACAO[tipo];
+    const frases = FRASES_REACAO[chaveFrase];
     el.hudRostoStatus.textContent = frases[Math.floor(Math.random() * frases.length)];
-    el.hudRostoStatus.className = `hud-rosto-status ${tipo}`;
+    el.hudRostoStatus.className = `hud-rosto-status ${classeStatus}`;
 
-    el.hudRostoCaixa.classList.remove("flash-correto", "flash-erro", "tremer");
+    const flash = tipo === "erro" ? "flash-erro" : (ehRecompensa ? "flash-recompensa" : "flash-correto");
+    el.hudRostoCaixa.classList.remove("flash-correto", "flash-erro", "flash-recompensa", "tremer");
     void el.hudRostoCaixa.offsetWidth; // força reflow pra poder repetir o tremor em teclas seguidas
-    el.hudRostoCaixa.classList.add(tipo === "correto" ? "flash-correto" : "flash-erro", "tremer");
+    el.hudRostoCaixa.classList.add(flash, "tremer");
+}
+
+// Troca a imagem do HUD. Se um GIF de recompensa ainda não foi colocado
+// na pasta, cai de volta para a última carinha de acerto sem quebrar.
+function trocarImagemReacao(src) {
+    el.reacaoImg.onerror = () => {
+        el.reacaoImg.onerror = null;
+        el.reacaoImg.src = FACES_CORRETO[FACES_CORRETO.length - 1];
+    };
+    el.reacaoImg.src = src;
+    el.reacaoImg.classList.remove("vazio");
 }
 
 /* ==================================================================
@@ -1044,6 +1090,7 @@ const estado = {
     acertosEnsaio: 0,
     errosEnsaio: 0,
     combo: 0,
+    erroStreak: 0,
     melhorCombo: 0,
     inicioEnsaio: null,
     concluidos: new Set(),
@@ -1108,6 +1155,7 @@ function iniciarEnsaio(indice) {
     estado.acertosEnsaio = 0;
     estado.errosEnsaio = 0;
     estado.combo = 0;
+    estado.erroStreak = 0;
     estado.melhorCombo = 0;
     estado.inicioEnsaio = null;
 
@@ -1173,11 +1221,13 @@ el.campo.addEventListener("input", () => {
         if (acertou) {
             estado.acertosEnsaio++;
             estado.combo++;
+            estado.erroStreak = 0;
             estado.melhorCombo = Math.max(estado.melhorCombo, estado.combo);
             mostrarReacao("correto");
         } else {
             estado.errosEnsaio++;
             estado.combo = 0;
+            estado.erroStreak++;
             mostrarReacao("erro");
         }
     }

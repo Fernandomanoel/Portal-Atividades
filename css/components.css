@@ -159,6 +159,21 @@
    PÁGINA DE UMA ATIVIDADE (atividade.html)
    ========================================================================== */
 
+/* Capa (foto de topo) opcional do curso — some sozinha se não houver
+   imagem, então não deixa buraco em curso nenhum. */
+.atividade-capa {
+  margin: 0 0 24px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
+}
+.atividade-capa img {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+}
+
 .atividade-barra {
   display: flex;
   align-items: center;

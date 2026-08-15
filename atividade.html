@@ -29,6 +29,12 @@
 
     <app-banner id="atividade-banner" titulo="Carregando..."></app-banner>
 
+    <!-- Capa opcional do curso: só aparece se o curso tiver o campo
+         `imagem` no catálogo e o arquivo carregar. -->
+    <div class="atividade-capa hidden" id="atividade-capa">
+      <img id="atividade-capa-img" alt="">
+    </div>
+
     <div class="atividade-barra" id="atividade-barra">
       <span class="atividade-contador" id="contador-materiais"></span>
       <input type="search" class="busca" id="busca-material" placeholder="Buscar material..."

@@ -667,6 +667,7 @@ const ATIVIDADES = [
     grupo: "nav",
     sigla: "GIT",
     cor: "#f05033",
+    imagem: "img/criar-seu-site.jpg",
     materiais: [
       {
         titulo: "Git e GitHub — Criando seu Repositório",

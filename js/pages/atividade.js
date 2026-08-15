@@ -37,6 +37,17 @@ if (!cursoAtual) {
   banner.setAttribute("texto", cursoAtual.descricao);
   banner.setAttribute("cor", `linear-gradient(135deg, ${cursoAtual.cor}, ${cursoAtual.cor}b3)`);
 
+  // Capa opcional: só cursos com o campo `imagem` ganham a foto de topo.
+  // Enquanto o arquivo não chega (ou se falhar), o bloco fica escondido.
+  if (cursoAtual.imagem) {
+    const capaWrap = document.getElementById("atividade-capa");
+    const capaImg = document.getElementById("atividade-capa-img");
+    capaImg.alt = `Capa — ${cursoAtual.titulo}`;
+    capaImg.addEventListener("load", () => capaWrap.classList.remove("hidden"));
+    capaImg.addEventListener("error", () => capaWrap.classList.add("hidden"));
+    capaImg.src = cursoAtual.imagem;
+  }
+
   contador.textContent =
     materiais.length === 1 ? "1 material disponível" : `${materiais.length} materiais disponíveis`;
 

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criando o Primeiro Jogo 3D — Desenvolvimento de Games</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #2f5f87 0%, #478cbf 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #2f5f87; margin: 34px 0 16px; border-bottom: 3px solid #478cbf; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #478cbf; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #eaf3fa; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #2f5f87; }
+        .box { background: #eaf3fa; border: 2px solid #478cbf; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #2f5f87; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #478cbf; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #569cd6; } /* extends, func, var, if */
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #478cbf; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+        .passos li::before { counter-increment: passo; content: counter(passo); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: #478cbf; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.9em; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #478cbf; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0; }
+        .card { background: #f7fafc; border: 1px solid #d7e6f2; border-radius: 8px; padding: 16px 18px; }
+        .card h4 { color: #2f5f87; margin-bottom: 8px; font-size: 1em; }
+        .card.vs { border-color: #478cbf; }
+        .table-wrap { overflow-x: auto; margin: 14px 0; }
+        table.props { border-collapse: collapse; width: 100%; margin: 0; table-layout: fixed; }
+        table.props th, table.props td { border: 1px solid #d7e6f2; padding: 10px 14px; text-align: left; font-size: 0.95em; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
+        table.props th { background: #2f5f87; color: #fff; }
+        table.props tr:nth-child(even) { background: #f7fafc; }
+        table.props th:first-child, table.props td:first-child { width: 30%; }
+        table.props code { white-space: normal; word-break: break-word; }
+        .ideias { list-style: none; margin-left: 0; }
+        .ideias li { background: #f7fafc; border: 1px solid #d7e6f2; border-radius: 8px; padding: 14px 18px; margin-bottom: 12px; }
+        .ideias li strong { color: #2f5f87; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.78em; padding: 14px; } .grid2 { grid-template-columns: 1fr; } table.props { font-size: 0.85em; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🪙 Criando o Primeiro Jogo 3D</h1>
+        <p>Desenvolvimento de Games — Godot Engine · Projeto "Pegue a Moeda"</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=godot">← Voltar para Desenvolvimento de Games</a>
+
+    <div class="content">
+
+        <h2>🎯 O que vamos construir</h2>
+        <p>Nesta atividade você vai montar um jogo pequeno, mas completo, do início ao fim: um jogador controlado pelas setas do teclado que precisa tocar em uma moeda para vencer. É o exercício clássico para aprender os três pilares de qualquer jogo 2D na Godot: <strong>Nodes com física</strong> (o jogador), <strong>Nodes de detecção</strong> (a moeda) e <strong>código GDScript</strong> (o movimento e a lógica de vitória).</p>
+
+        <div class="box">
+            <h4>Pré-requisito</h4>
+            <p style="margin-bottom:0">Esta atividade parte do zero, mas usa os mesmos conceitos de Node, Inspector e cena vistos na atividade <strong>"Conhecendo o Godot"</strong>. Se ainda tem dúvida sobre o que é um Node ou como usar o Inspector, vale revisar aquela atividade antes de continuar.</p>
+        </div>
+
+        <h2>1️⃣ Criando o projeto</h2>
+        <ol class="passos">
+            <li>Abra o Godot.</li>
+            <li>Clique em <code>New Project</code>.</li>
+            <li>Nome do projeto: <code>Pegue a Moeda</code></li>
+            <li>Clique em <code>Create &amp; Edit</code>.</li>
+        </ol>
+
+        <h2>2️⃣ Criando o jogador</h2>
+        <p>O jogador precisa de três coisas: um "corpo" que se move e colide com o cenário, uma imagem para aparecer na tela, e uma forma de colisão que define os limites físicos desse corpo.</p>
+        <ol class="passos">
+            <li>Clique em <code>+</code> para adicionar o primeiro Node da cena.</li>
+            <li>Adicione um <code>CharacterBody2D</code>.</li>
+            <li>Renomeie para: <code>Jogador</code></li>
+            <li>Adicione como filho: <code>Sprite2D</code></li>
+            <li>Escolha uma imagem qualquer para o <code>Texture</code> do Sprite2D.</li>
+            <li>Adicione também: <code>CollisionShape2D</code></li>
+            <li>No Inspector do CollisionShape2D, defina o <code>Shape</code> como <code>RectangleShape2D</code>.</li>
+            <li>Ajuste o tamanho do retângulo para cobrir o personagem.</li>
+        </ol>
+
+        <h2>3️⃣ Criando a moeda</h2>
+        <p>A moeda não precisa colidir fisicamente com nada — ela só precisa <strong>perceber</strong> quando o jogador chega perto. Por isso ela usa um tipo de Node diferente do jogador (veja o comparativo logo abaixo).</p>
+        <ol class="passos">
+            <li>Volte para a cena principal.</li>
+            <li>Adicione um <code>Area2D</code>.</li>
+            <li>Renomeie para: <code>Moeda</code></li>
+            <li>Adicione como filho: <code>Sprite2D</code></li>
+            <li>Escolha uma imagem de moeda.</li>
+            <li>Adicione também: <code>CollisionShape2D</code></li>
+            <li>Ajuste o tamanho da forma de colisão para cobrir a moeda.</li>
+            <li>Posicione a moeda longe do jogador na Viewport, usando a ferramenta de movimentação.</li>
+        </ol>
+
+        <h3>CharacterBody2D × Area2D — qual a diferença?</h3>
+        <div class="grid2">
+            <div class="card vs">
+                <h4>🧍 CharacterBody2D (Jogador)</h4>
+                <p style="margin-bottom:0">É um Node feito para objetos que <strong>se movem e colidem de verdade</strong> com o cenário: ele é barrado por paredes, para em cima de plataformas, empurra e é empurrado. É o tipo certo para personagens controláveis. Junto com um <code>CollisionShape2D</code>, ele define um "corpo sólido" que a física do jogo respeita.</p>
+            </div>
+            <div class="card vs">
+                <h4>🪙 Area2D (Moeda)</h4>
+                <p style="margin-bottom:0">É um Node que define uma <strong>zona de detecção</strong>, sem física de colisão sólida — nada é barrado por ela, os objetos simplesmente atravessam. O que ela sabe fazer é <strong>avisar</strong> quando algo entra ou sai dessa zona, através de um sinal. É exatamente o que uma moeda precisa: não deve travar o jogador, só perceber quando ele chega perto para então "ser coletada".</p>
+            </div>
+        </div>
+        <div class="highlight">💡 Regra prática: se o objeto precisa <strong>bloquear</strong> ou <strong>ser bloqueado</strong> fisicamente, use <code>CharacterBody2D</code> (ou <code>StaticBody2D</code>/<code>RigidBody2D</code> para cenário e objetos com física). Se o objeto só precisa <strong>perceber contato</strong> — moedas, gatilhos, áreas de dano, portas invisíveis — use <code>Area2D</code>.</div>
+
+        <h2>4️⃣ Criando o texto de vitória</h2>
+        <ol class="passos">
+            <li>Adicione um <code>Label</code> na cena principal.</li>
+            <li>Digite o texto: <code>VOCÊ GANHOU!</code></li>
+            <li>No Inspector, aumente o tamanho da fonte (procure por <code>Theme Overrides &gt; Font Sizes</code>) para que fique bem visível.</li>
+            <li>Desmarque a propriedade <code>Visible</code> no Inspector, deixando o texto invisível no início do jogo — ele só deve aparecer quando o jogador vencer.</li>
+        </ol>
+
+        <h2>5️⃣ Programando o movimento</h2>
+        <p>Chegou a hora de dar vida ao Jogador com código. Selecione o Node <code>Jogador</code>, clique com o botão direito e escolha <strong>Attach Script</strong> (Anexar Script) para criar um novo arquivo GDScript, e cole o código abaixo:</p>
+
+        <span class="code-label">Jogador.gd</span>
+        <div class="code-block"><span class="tag">extends</span> CharacterBody2D
+
+<span class="tag">var</span> <span class="var">velocidade</span> = <span class="val">200</span>
+
+<span class="tag">func</span> _physics_process(<span class="var">delta</span>):
+    <span class="tag">var</span> <span class="var">direcao</span> = Vector2.ZERO
+
+    <span class="tag">if</span> Input.is_action_pressed(<span class="str">"ui_right"</span>):
+        <span class="var">direcao</span>.x += <span class="val">1</span>
+    <span class="tag">if</span> Input.is_action_pressed(<span class="str">"ui_left"</span>):
+        <span class="var">direcao</span>.x -= <span class="val">1</span>
+    <span class="tag">if</span> Input.is_action_pressed(<span class="str">"ui_down"</span>):
+        <span class="var">direcao</span>.y += <span class="val">1</span>
+    <span class="tag">if</span> Input.is_action_pressed(<span class="str">"ui_up"</span>):
+        <span class="var">direcao</span>.y -= <span class="val">1</span>
+
+    velocity = <span class="var">direcao</span>.normalized() * <span class="var">velocidade</span>
+    move_and_slide()</div>
+
+        <h3>Entendendo o código linha por linha</h3>
+        <div class="table-wrap">
+        <table class="props">
+            <tr><th>Trecho</th><th>O que significa</th></tr>
+            <tr><td><code>extends CharacterBody2D</code></td><td>Toda script GDScript começa dizendo qual tipo de Node ela está controlando. Aqui, o script "estende" (herda de) <code>CharacterBody2D</code> — ou seja, além de tudo que esse Node já sabe fazer sozinho, ele ganha o comportamento que vamos escrever.</td></tr>
+            <tr><td><code>var velocidade = 200</code></td><td><code>var</code> declara uma <strong>variável</strong> — um espaço com nome para guardar um valor que pode mudar. Aqui criamos <code>velocidade</code> guardando <code>200</code>, que representa a rapidez do jogador em pixels por segundo. Por estar fora de qualquer função, ela existe durante todo o jogo e pode ser lida em qualquer parte do script.</td></tr>
+            <tr><td><code>func _physics_process(delta):</code></td><td><code>func</code> declara uma <strong>função</strong> (um bloco de código nomeado). <code>_physics_process</code> é uma função especial que a própria Godot chama automaticamente <strong>a cada quadro de física</strong> (dezenas de vezes por segundo), o lugar certo para código de movimento. O parâmetro <code>delta</code> é o tempo em segundos desde o último quadro — útil para movimentos que dependem de tempo real, embora não seja usado diretamente neste script.</td></tr>
+            <tr><td><code>var direcao = Vector2.ZERO</code></td><td>Cria uma variável <strong>local</strong> (só existe dentro desta função) chamada <code>direcao</code>, do tipo <code>Vector2</code> — um par de números (x, y) usado para representar posições e direções em 2D. <code>Vector2.ZERO</code> é um atalho para <code>(0, 0)</code>: começamos assumindo que o jogador não está se movendo para nenhum lado.</td></tr>
+            <tr><td><code>Input.is_action_pressed("ui_right")</code></td><td><code>Input</code> é o sistema da Godot que sabe o que o jogador está apertando no teclado, mouse ou controle. <code>is_action_pressed(...)</code> pergunta "essa tecla está pressionada agora?". <code>"ui_right"</code>, <code>"ui_left"</code>, <code>"ui_up"</code> e <code>"ui_down"</code> são ações já configuradas por padrão em todo projeto Godot, ligadas às setas do teclado.</td></tr>
+            <tr><td><code>direcao.x += 1</code> / <code>direcao.y -= 1</code> etc.</td><td>Cada <code>if</code> soma ou subtrai <code>1</code> do eixo x ou y de <code>direcao</code> conforme a tecla correspondente estiver pressionada. Se o jogador apertar duas setas ao mesmo tempo (como direita + baixo), os dois eixos são ajustados juntos, resultando num movimento diagonal.</td></tr>
+            <tr><td><code>velocity = direcao.normalized() * velocidade</code></td><td><code>velocity</code> é uma propriedade especial já embutida em todo <code>CharacterBody2D</code> — é ela que controla para onde e quão rápido o corpo se move. <code>normalized()</code> "corrige" o vetor <code>direcao</code> para ter sempre o mesmo comprimento (1), <strong>mesmo na diagonal</strong> — sem isso, o jogador se moveria mais rápido na diagonal do que na horizontal ou vertical, porque x e y somados diagonalmente resultam num vetor maior. Multiplicar pela <code>velocidade</code> aplica a rapidez desejada.</td></tr>
+            <tr><td><code>move_and_slide()</code></td><td>Função pronta do <code>CharacterBody2D</code> que efetivamente move o corpo na direção de <code>velocity</code>, respeitando colisões com paredes e o cenário — "deslizando" ao longo de obstáculos em vez de travar bruscamente neles.</td></tr>
+        </table>
+        </div>
+
+        <h2>6️⃣ Detectando a moeda</h2>
+        <p>Agora precisamos que o jogo <strong>perceba</strong> quando o Jogador toca a Moeda. Para isso usamos um <strong>sinal</strong>.</p>
+
+        <div class="box">
+            <h4>O que é um sinal (signal) na Godot?</h4>
+            <p style="margin-bottom:0">Um <strong>sinal</strong> é um aviso que um Node emite quando algo acontece com ele — como um alarme que dispara sozinho. Você não precisa ficar checando "a moeda foi tocada?" a cada quadro; em vez disso, você <strong>conecta</strong> uma função ao sinal, e a Godot chama essa função automaticamente no momento certo. O <code>Area2D</code> já vem com um sinal chamado <code>body_entered</code>, que dispara sempre que um corpo físico (como o nosso <code>CharacterBody2D</code>) entra na área de colisão dele.</p>
+        </div>
+
+        <ol class="passos">
+            <li>Selecione o Node <code>Moeda</code>.</li>
+            <li>Abra a aba <strong>Node</strong> (ao lado do Inspector) para ver a lista de sinais disponíveis.</li>
+            <li>Dê um duplo clique no sinal <code>body_entered</code> e conecte-o à cena principal — a Godot cria automaticamente uma função vazia pronta para receber esse aviso.</li>
+            <li>Complete a função com o código abaixo:</li>
+        </ol>
+
+        <span class="code-label">CenaPrincipal.gd</span>
+        <div class="code-block"><span class="tag">func</span> _on_moeda_body_entered(<span class="var">body</span>):
+    $Label.visible = <span class="tag">true</span>
+    $Moeda.queue_free()</div>
+
+        <div class="table-wrap">
+        <table class="props">
+            <tr><th>Trecho</th><th>O que significa</th></tr>
+            <tr><td><code>func _on_moeda_body_entered(body):</code></td><td>Essa é a função chamada automaticamente pelo sinal <code>body_entered</code>. O parâmetro <code>body</code> é preenchido pela própria Godot com uma referência ao corpo físico que entrou na área — no nosso caso, o Jogador.</td></tr>
+            <tr><td><code>$Label.visible = true</code></td><td>O <code>$</code> é um atalho da Godot para "buscar um Node filho pelo nome" — aqui, o Node <code>Label</code>. Alterar sua propriedade <code>visible</code> para <code>true</code> faz o texto "VOCÊ GANHOU!" aparecer na tela, que estava escondido desde a Parte 4.</td></tr>
+            <tr><td><code>$Moeda.queue_free()</code></td><td><code>queue_free()</code> é o comando padrão da Godot para <strong>remover um Node do jogo</strong> de forma segura. Aqui, a própria moeda se remove assim que é coletada, para não continuar aparecendo na tela.</td></tr>
+        </table>
+        </div>
+
+        <h2>7️⃣ Testando</h2>
+        <ol class="passos">
+            <li>Pressione <code>F5</code> para rodar o jogo.</li>
+            <li>O personagem deve se mover usando as setas do teclado: <code>↑</code> <code>↓</code> <code>←</code> <code>→</code></li>
+            <li>Ao encostar na moeda, o texto <strong>VOCÊ GANHOU!</strong> deve aparecer na tela e a moeda deve sumir.</li>
+        </ol>
+
+        <h2>🚀 E se... (para ir além)</h2>
+        <p>O jogo básico está funcionando — mas um bom jeito de aprender de verdade é modificar e quebrar as coisas por conta própria. Algumas ideias para testar sozinho:</p>
+        <ul class="ideias">
+            <li><strong>E se você adicionar uma segunda moeda?</strong> Duplique o Node <code>Moeda</code> (Ctrl+D), posicione em outro lugar da tela e conecte o sinal <code>body_entered</code> dela também. Repare que vai precisar de uma função separada (ou adaptar a mesma) para cada moeda.</li>
+            <li><strong>E se você criar um contador de moedas coletadas?</strong> Adicione uma variável global (por exemplo <code>var pontos = 0</code> no script da cena principal) e some <code>1</code> a ela dentro de <code>_on_moeda_body_entered</code>. Depois exiba esse número em um <code>Label</code> separado, atualizando o texto com algo como <code>$LabelPontos.text = str(pontos)</code>.</li>
+            <li><strong>E se, em vez do texto de vitória, você tocasse um som?</strong> Adicione um Node <code>AudioStreamPlayer2D</code> com um efeito sonoro de moeda e chame <code>$AudioStreamPlayer2D.play()</code> dentro da mesma função — o texto e o som podem, inclusive, acontecer juntos.</li>
+        </ul>
+
+        <h2>📤 Enviando a atividade no Portal do Aluno</h2>
+        <p>Com o jogo funcionando e salvo, envie os arquivos pelo Portal do Aluno Microlins:</p>
+        <ol class="passos">
+            <li>Faça login no site do aluno: <a href="https://portaldoaluno.microlins.com.br/home/" target="_blank" rel="noopener">https://portaldoaluno.microlins.com.br/home/</a></li>
+            <li>Na parte esquerda, ou seja, na lateral do menu.</li>
+            <li>Aperte em <strong>"Meus Documentos"</strong>.</li>
+            <li>Selecione o curso <strong>Desenvolvimento de Games</strong> ou qualquer outro.</li>
+            <li>Aperte em <strong>Enviar Arquivo</strong>.</li>
+            <li>Clique em <strong>Clique Aqui</strong> e selecione a pasta na qual você salvou esta atividade.</li>
+            <li>Por fim, aperte em <strong>Enviar Arquivo</strong>.</li>
+        </ol>
+
+    </div>
+
+    <footer>Microlins São José — Atividade de Desenvolvimento de Games</footer>
+</div>
+</body>
+</html>

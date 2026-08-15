@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estilizando uma Página — HTML e CSS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; }
+
+    header { background: linear-gradient(135deg, #c2367d 0%, #ff4da6 100%); color: #fff; padding: 40px; text-align: center; }
+    header h1 { font-size: 2.1em; margin-bottom: 8px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .duracao-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+    h2 { color: #c2367d; margin: 34px 0 16px; border-bottom: 3px solid #ff4da6; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #ff4da6; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #fce4f1; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #c2367d; }
+
+    .box { background: #fdf1f8; border: 2px solid #ff4da6; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #c2367d; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #ff4da6;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-label {
+        background: #ff4da6; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    .passo { border: 2px solid #ffd0e8; border-radius: 12px; padding: 22px 24px; margin: 22px 0; position: relative; }
+    .passo-num {
+        position: absolute; top: -16px; left: 20px;
+        background: #ff4da6; color: #fff; font-weight: 800; font-size: 0.95em;
+        width: 34px; height: 34px; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        box-shadow: 0 3px 8px rgba(255,77,166,0.4);
+    }
+    .passo h3 { margin-top: 6px; }
+
+    .antes-depois { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+    .antes-depois > div { flex: 1 1 220px; border-radius: 8px; padding: 16px; font-size: 0.9em; }
+    .antes-depois .antes { background: #f5f5f5; border: 2px dashed #bbb; color: #777; }
+    .antes-depois .depois { background: #fdf1f8; border: 2px solid #ff4da6; color: #c2367d; font-weight: 600; }
+    .antes-depois strong { display: block; margin-bottom: 6px; font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.03em; }
+
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+    .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before {
+        content: "☐"; position: absolute; left: 0; top: 0; color: #ff4da6; font-size: 1.2em;
+    }
+
+    .voltar { display: inline-block; margin: 30px 50px 0; color: #ff4da6; text-decoration: none; font-weight: 600; }
+    .voltar:hover { text-decoration: underline; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 700px) {
+        header { padding: 28px 22px; }
+        .content { padding: 26px 22px 40px; }
+        .voltar { margin: 30px 22px 0; }
+        .code-block { font-size: 0.8em; padding: 14px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎨 Estilizando uma Página do Zero</h1>
+        <p>Você recebe uma página HTML sem nenhum estilo — sua missão é transformá-la com CSS, um passo de cada vez</p>
+        <span class="duracao-badge">Atividade prática — leve o tempo que precisar</span>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=html-css">← Voltar para Html e CSS</a>
+
+    <div class="content">
+        <h2>🎯 Como funciona esta atividade</h2>
+        <p>É assim que se trabalha de verdade: primeiro alguém monta o <strong>HTML</strong> (a estrutura, o conteúdo, o "esqueleto" da página) e só depois entra o <strong>CSS</strong> (as cores, os espaçamentos, o layout — a "roupa" da página).</p>
+        <p>Abaixo tem uma página HTML <strong>pronta e completa, mas sem nenhum estilo</strong> — hoje ela é só texto puro, sem cor, sem organização visual. Seu trabalho é copiar esse HTML, criar o CSS do zero e ir estilizando ela <strong>seção por seção</strong>, seguindo os passos. No final, sua página vai ter cabeçalho colorido, cards organizados em grade e efeitos ao passar o mouse — tudo isso só com CSS, sem tocar no HTML.</p>
+
+        <div class="box">
+            <h4>📂 Antes de começar</h4>
+            <p>Crie uma pasta pra essa atividade com dois arquivos:</p>
+            <ul>
+                <li><code>index.html</code> — cole o código HTML da seção abaixo;</li>
+                <li><code>style.css</code> — comece vazio; é aqui que você vai escrever cada passo.</li>
+            </ul>
+            <p>No <code>index.html</code>, dentro do <code>&lt;head&gt;</code>, já existe a linha que liga os dois arquivos: <code>&lt;link rel="stylesheet" href="style.css"&gt;</code>. Basta salvar os dois na mesma pasta.</p>
+        </div>
+
+        <h2>📄 O arquivo HTML de partida (copie exatamente assim)</h2>
+        <p>Repare: é só estrutura. Nenhuma tag <code>&lt;style&gt;</code>, nenhum atributo de cor, nada. Abra esse arquivo no navegador agora, antes de mexer em qualquer CSS — vai aparecer tudo em preto e branco, empilhado. É esse visual "cru" que você vai transformar.</p>
+
+        <div class="code-block"><span class="code-label">index.html</span><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang=</span><span class="str">"pt-BR"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name=</span><span class="str">"viewport"</span> <span class="attr">content=</span><span class="str">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Meu Perfil<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+
+  <span class="tag">&lt;header</span> <span class="attr">class=</span><span class="str">"topo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Oi, eu sou a(o) SeuNome<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;nav</span> <span class="attr">class=</span><span class="str">"menu"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#sobre"</span><span class="tag">&gt;</span>Sobre<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#habilidades"</span><span class="tag">&gt;</span>Habilidades<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#contato"</span><span class="tag">&gt;</span>Contato<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/nav&gt;</span>
+  <span class="tag">&lt;/header&gt;</span>
+
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"sobre"</span> <span class="attr">class=</span><span class="str">"secao"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Sobre mim<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Estou aprendendo HTML e CSS na Microlins. Este é um perfil de treino: todo o conteúdo já está pronto, só falta o estilo.<span class="tag">&lt;/p&gt;</span>
+  <span class="tag">&lt;/section&gt;</span>
+
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"habilidades"</span> <span class="attr">class=</span><span class="str">"secao"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h2&gt;</span>Habilidades<span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"grade-habilidades"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h3&gt;</span>HTML<span class="tag">&lt;/h3&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Estrutura páginas com tags semânticas.<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h3&gt;</span>CSS<span class="tag">&lt;/h3&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Estiliza cores, espaçamentos e layout.<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h3&gt;</span>Git<span class="tag">&lt;/h3&gt;</span>
+        <span class="tag">&lt;p&gt;</span>Salva o progresso dos projetos no repositório.<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/section&gt;</span>
+
+  <span class="tag">&lt;footer</span> <span class="attr">id=</span><span class="str">"contato"</span> <span class="attr">class=</span><span class="str">"rodape"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;p&gt;</span>Quer falar comigo? <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#"</span><span class="tag">&gt;</span>Envie um e-mail<span class="tag">&lt;/a&gt;&lt;/p&gt;</span>
+  <span class="tag">&lt;/footer&gt;</span>
+
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+
+        <div class="highlight">
+            <strong>Depois de dominar os passos abaixo:</strong> troque "SeuNome" pelo seu nome, mude os textos e os cartões de habilidade para falar de você. A ideia é primeiro aprender a estilizar seguindo o roteiro, depois deixar a página com a sua cara.
+        </div>
+
+        <h2>🧩 Agora, passo a passo: escrevendo o CSS</h2>
+        <p>Cada passo abaixo é um pedaço que você adiciona no <code>style.css</code>. Salve e recarregue o navegador depois de cada um — assim você vê a página mudando aos poucos, e entende exatamente o que cada regra fez.</p>
+
+        <div class="passo">
+            <span class="passo-num">1</span>
+            <h3>Reset e fonte da página inteira</h3>
+            <p>Toda folha de CSS começa "zerando" as margens padrão do navegador e escolhendo a fonte. É a base de tudo o que vem depois.</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* zera margem/padding padrão e deixa o box-sizing intuitivo */</span>
+<span class="prop">*</span> {
+  <span class="prop">margin</span>: <span class="val">0</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="prop">body</span> {
+  <span class="prop">font-family</span>: <span class="val">'Segoe UI', Arial, sans-serif</span>;
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;
+}</div>
+            <div class="antes-depois">
+                <div class="antes"><strong>Antes</strong>Fonte serifada padrão do navegador, texto colado nas bordas.</div>
+                <div class="depois"><strong>Depois deste passo</strong>Fonte mais limpa, mas ainda sem cor nem organização — é só a base.</div>
+            </div>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">2</span>
+            <h3>Estilizando o cabeçalho (header)</h3>
+            <p>Vamos dar cor de fundo ao <code>&lt;header class="topo"&gt;</code> e organizar o título e o menu lado a lado com <strong>Flexbox</strong>.</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.topo</span> {
+  <span class="prop">background</span>: <span class="val">linear-gradient(135deg, #ff4da6, #c2367d)</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">padding</span>: <span class="val">30px 40px</span>;
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">gap</span>: <span class="val">16px</span>;
+}
+
+<span class="prop">.topo h1</span> {
+  <span class="prop">font-size</span>: <span class="val">1.6em</span>;
+}
+
+<span class="prop">.menu</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="val">22px</span>;
+}
+
+<span class="prop">.menu a</span> {
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+}</div>
+            <p>O segredo é o <code>display: flex</code> no <code>.topo</code>: ele coloca o <code>&lt;h1&gt;</code> e o <code>&lt;nav&gt;</code> lado a lado automaticamente, e o <code>justify-content: space-between</code> empurra um pra cada ponta.</p>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">3</span>
+            <h3>Espaçamento e título das seções</h3>
+            <p>Agora damos um "respiro" (padding) para cada <code>&lt;section class="secao"&gt;</code> e destacamos os títulos <code>&lt;h2&gt;</code>.</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.secao</span> {
+  <span class="prop">padding</span>: <span class="val">50px 40px</span>;
+  <span class="prop">max-width</span>: <span class="val">1000px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.secao h2</span> {
+  <span class="prop">color</span>: <span class="val">#c2367d</span>;
+  <span class="prop">font-size</span>: <span class="val">1.8em</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">16px</span>;
+  <span class="prop">border-bottom</span>: <span class="val">3px solid #ff4da6</span>;
+  <span class="prop">padding-bottom</span>: <span class="val">8px</span>;
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+}
+
+<span class="prop">.secao p</span> {
+  <span class="prop">font-size</span>: <span class="val">1.05em</span>;
+  <span class="prop">color</span>: <span class="val">#555</span>;
+}</div>
+            <p><code>padding</code> empurra o conteúdo pra dentro da caixa (o "recheio"); <code>margin</code> empurra a caixa inteira pra longe de outras coisas (o "espaço ao redor"). São as duas peças do <strong>box model</strong> — a base de todo layout em CSS.</p>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">4</span>
+            <h3>Os cards de habilidade em grade (Flexbox de novo)</h3>
+            <p>Os três <code>&lt;div class="card"&gt;</code> hoje estão empilhados um embaixo do outro. Vamos colocá-los lado a lado, com um visual de "cartão".</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.grade-habilidades</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="val">20px</span>;
+  <span class="prop">margin-top</span>: <span class="val">20px</span>;
+}
+
+<span class="prop">.card</span> {
+  <span class="prop">flex</span>: <span class="val">1 1 200px</span>;
+  <span class="prop">background</span>: <span class="val">#fdf1f8</span>;
+  <span class="prop">border</span>: <span class="val">2px solid #ffd0e8</span>;
+  <span class="prop">border-radius</span>: <span class="val">10px</span>;
+  <span class="prop">padding</span>: <span class="val">22px</span>;
+}
+
+<span class="prop">.card h3</span> {
+  <span class="prop">color</span>: <span class="val">#c2367d</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">8px</span>;
+}</div>
+            <p><code>flex: 1 1 200px</code> quer dizer: cada card tenta ter pelo menos 200px, mas cresce pra dividir o espaço igualmente com os outros. Com 3 cards eles ficam lado a lado; se a tela for estreita, o <code>flex-wrap: wrap</code> deixa eles quebrarem pra próxima linha.</p>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">5</span>
+            <h3>Efeito ao passar o mouse (hover)</h3>
+            <p>Um toque de interatividade: o card "sobe" e ganha sombra quando o mouse passa por cima. Isso é <strong>puro CSS</strong>, sem nenhuma linha de JavaScript.</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.card</span> {
+  <span class="cm">/* ...as regras do passo anterior continuam aqui... */</span>
+  <span class="prop">transition</span>: <span class="val">transform 0.2s, box-shadow 0.2s</span>;
+}
+
+<span class="prop">.card:hover</span> {
+  <span class="prop">transform</span>: <span class="val">translateY(-6px)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 10px 24px rgba(255,77,166,0.25)</span>;
+}
+
+<span class="prop">.menu a:hover</span> {
+  <span class="prop">text-decoration</span>: <span class="val">underline</span>;
+}</div>
+            <p><code>transition</code> é o que faz a mudança ser suave em vez de instantânea — sem ele, o card "pularia" direto para a posição nova. <code>:hover</code> é um <strong>pseudo-seletor</strong>: só vale enquanto o mouse está em cima do elemento.</p>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">6</span>
+            <h3>Rodapé</h3>
+            <p>Por último, um estilo simples para o <code>&lt;footer class="rodape"&gt;</code>.</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.rodape</span> {
+  <span class="prop">background</span>: <span class="val">#2b2b2b</span>;
+  <span class="prop">color</span>: <span class="val">#eee</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+  <span class="prop">padding</span>: <span class="val">26px</span>;
+}
+
+<span class="prop">.rodape a</span> {
+  <span class="prop">color</span>: <span class="val">#ff8ac4</span>;
+  <span class="prop">font-weight</span>: <span class="val">700</span>;
+}</div>
+        </div>
+
+        <div class="passo">
+            <span class="passo-num">7</span>
+            <h3>Deixando responsivo (funcionar bem no celular)</h3>
+            <p>No final do <code>style.css</code>, adicione um bloco <code>@media</code> — ele só vale quando a tela é estreita, e ajusta o que precisa mudar.</p>
+            <div class="code-block"><span class="code-label">style.css (no final do arquivo)</span><span class="prop">@media</span> (<span class="prop">max-width</span>: <span class="val">600px</span>) {
+  <span class="prop">.topo</span> {
+    <span class="prop">flex-direction</span>: <span class="val">column</span>;
+    <span class="prop">text-align</span>: <span class="val">center</span>;
+  }
+  <span class="prop">.secao</span> {
+    <span class="prop">padding</span>: <span class="val">36px 22px</span>;
+  }
+  <span class="prop">.card</span> {
+    <span class="prop">flex</span>: <span class="val">1 1 100%</span>;
+  }
+}</div>
+            <p>Teste apertando <code>F12</code> no navegador e ativando o modo de simulação de celular (ícone de tablet/celular) — arraste a largura e veja o cabeçalho empilhar e os cards ficarem um por linha.</p>
+        </div>
+
+        <div class="success">
+            <strong>Pronto!</strong> Com esses 7 passos, a mesma página HTML que começou em preto e branco agora tem cabeçalho colorido, menu organizado, cards em grade com efeito hover, e funciona bem no celular — tudo isso mudando <strong>só o CSS</strong>, sem tocar numa linha do HTML. É exatamente essa separação (estrutura de um lado, estilo do outro) que torna sites fáceis de manter.
+        </div>
+
+        <h2>🚀 Agora vá além (desafios opcionais)</h2>
+        <p>Depois de reproduzir os 7 passos, tente sozinho, sem roteiro:</p>
+        <ul>
+            <li>Troque as cores rosa por uma paleta sua — mude só os valores de cor, mantendo a estrutura;</li>
+            <li>Adicione um 4º card de habilidade;</li>
+            <li>Faça o <code>&lt;h1&gt;</code> do cabeçalho ganhar uma sombra de texto (<code>text-shadow</code>);</li>
+            <li>Troque a fonte por outra (pesquise "Google Fonts" para importar uma fonte diferente);</li>
+            <li>Adicione uma borda arredondada bem grande (<code>border-radius</code>) nos cards para um visual mais "bolha".</li>
+        </ul>
+        <p>Não existe resposta errada aqui — o objetivo é você ganhar confiança para escrever CSS sem depender do roteiro.</p>
+
+        <h2>✅ Checklist antes de considerar concluído</h2>
+        <ul class="checklist">
+            <li>O <code>index.html</code> não foi alterado — só o <code>style.css</code> foi escrito;</li>
+            <li>O cabeçalho tem cor de fundo e o menu fica ao lado do título;</li>
+            <li>Os 3 cards de habilidade aparecem lado a lado (em tela larga) e um por linha no celular;</li>
+            <li>Passar o mouse em cima de um card produz um efeito visual;</li>
+            <li>A página não quebra (sem rolagem horizontal estranha) numa tela de celular simulada;</li>
+            <li>Pelo menos um dos desafios opcionais foi tentado.</li>
+        </ul>
+    </div>
+
+    <footer>Microlins São José — Atividade prática de HTML e CSS</footer>
+</div>
+</body>
+</html>

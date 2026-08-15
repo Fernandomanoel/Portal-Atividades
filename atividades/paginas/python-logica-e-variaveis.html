@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lógica de Programação em Python — Python</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #cc7a2e 0%, #ff9f43 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #cc7a2e; margin: 34px 0 16px; border-bottom: 3px solid #ff9f43; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #ff9f43; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #fff1e0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #cc7a2e; }
+        .box { background: #fff8f0; border: 2px solid #ff9f43; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #cc7a2e; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #ff9f43; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #c586c0; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #ff9f43; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .exercicio { border: 2px dashed #ff9f43; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+        .exercicio-tag { display: inline-block; background: #fff1e0; color: #cc7a2e; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #721c24; }
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #ff9f43; font-size: 1.2em; }
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before { content: counter(passo); position: absolute; left: 0; top: 0; background: #ff9f43; color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .explicacao-linhas { background: #fafafa; border: 1px solid #e6e6e6; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .explicacao-linhas ul { margin-bottom: 0; margin-left: 20px; }
+        .explicacao-linhas li { font-size: 0.95em; }
+        .caixa-analogia { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin: 18px 0; }
+        .caixa-desenho { flex: 0 0 auto; background: #fff1e0; border: 3px dashed #ff9f43; border-radius: 10px; padding: 18px 26px; text-align: center; font-family: 'Courier New', monospace; }
+        .caixa-desenho .rotulo { font-weight: 700; color: #cc7a2e; font-size: 0.85em; text-transform: uppercase; margin-bottom: 6px; }
+        .caixa-desenho .conteudo { font-size: 1.3em; color: #333; }
+        .fluxo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; font-size: 0.9em; }
+        .fluxo span { background: #fff8f0; border: 1px solid #ffd9ad; border-radius: 8px; padding: 8px 12px; font-weight: 600; color: #cc7a2e; }
+        .fluxo .seta { background: none; border: none; color: #ff9f43; font-weight: 700; padding: 0; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #ff9f43; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.8em; padding: 14px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐍 Lógica de Programação em Python</h1>
+        <p>Python — Variáveis, input() e f-strings</p>
+    </header>
+    <a class="voltar" href="../../atividade.html?curso=python">← Voltar para Python</a>
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Entender <strong>variáveis</strong>, aprender a receber dados digitados pelo usuário com <code>input()</code>, saber por que quase sempre é preciso <strong>converter</strong> o que o usuário digita, e conhecer as <strong>f-strings</strong> — um jeito mais legível de montar mensagens.</p>
+
+        <h2>🧠 Como todo programa "pensa"</h2>
+        <p>Quase todo programa de computador segue a mesma lógica básica, em três etapas:</p>
+        <div class="fluxo">
+            <span>1. Receber informações</span>
+            <span class="seta">→</span>
+            <span>2. Processar essas informações</span>
+            <span class="seta">→</span>
+            <span>3. Mostrar o resultado</span>
+        </div>
+        <p>Nesta atividade você vai praticar exatamente essas três etapas: receber dados com <code>input()</code>, processá-los guardando e (quando precisar) convertendo em variáveis, e mostrar o resultado com <code>print()</code>.</p>
+
+        <h2>📦 O que é uma variável?</h2>
+        <p>Pense numa variável como uma <strong>caixa com um nome escrito nela</strong>. Você guarda um valor dentro da caixa, e sempre que quiser usar aquele valor de novo, basta chamar a caixa pelo nome — sem precisar digitar o valor de novo.</p>
+        <div class="caixa-analogia">
+            <div class="caixa-desenho">
+                <div class="rotulo">caixa "nome"</div>
+                <div class="conteudo">"Ana"</div>
+            </div>
+            <div class="caixa-desenho">
+                <div class="rotulo">caixa "idade"</div>
+                <div class="conteudo">17</div>
+            </div>
+        </div>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">nome</span> = <span class="str">"Ana"</span>
+<span class="var">idade</span> = <span class="val">17</span></div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li><code>nome</code> e <code>idade</code> são os <strong>nomes das caixas</strong> (as variáveis);</li>
+                <li>o sinal <code>=</code> não significa "igual" como na matemática — significa <strong>"guarde este valor dentro desta caixa"</strong>;</li>
+                <li>depois disso, sempre que você escrever <code>nome</code> no código, o Python vai usar <code>"Ana"</code> no lugar.</li>
+            </ul>
+        </div>
+        <p>Uma coisa importante: o conteúdo da caixa pode <strong>trocar</strong> a qualquer momento — daí o nome "variável". Se você escrever <code>idade = 18</code> mais adiante, a caixa passa a guardar 18 no lugar de 17.</p>
+
+        <h2>⌨️ input() — pedindo informação ao usuário</h2>
+        <p>O <code>input()</code> é usado quando o programa precisa <strong>fazer uma pergunta</strong> e esperar o usuário <strong>digitar uma resposta</strong> no teclado. O programa "pausa" até a pessoa digitar algo e apertar Enter.</p>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">nome</span> = <span class="tag">input</span>(<span class="str">"Digite seu nome: "</span>)
+<span class="tag">print</span>(<span class="str">"Olá,"</span>, nome)</div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li><code>input()</code> → mostra o texto entre aspas na tela e espera o usuário digitar algo;</li>
+                <li><code>"Digite seu nome: "</code> → a mensagem/pergunta que aparece no terminal (repare no espaço antes do fim das aspas — deixa a digitação mais confortável);</li>
+                <li><code>nome =</code> → guarda o que o usuário digitou dentro da variável <code>nome</code>;</li>
+                <li>a vírgula dentro do <code>print()</code> → separa texto fixo e variáveis, exatamente como você já viu na atividade anterior.</li>
+            </ul>
+        </div>
+
+        <h2>⚠️ input() sempre devolve texto — cuidado com números!</h2>
+        <p>Aqui está o ponto mais importante desta atividade, e é um erro muito comum de quem está começando: <strong>tudo</strong> que o usuário digita com <code>input()</code> chega ao programa como <strong>texto</strong> (tipo <code>str</code>) — mesmo que a pessoa digite só números.</p>
+        <div class="warning">
+            <strong>Por que isso importa?</strong> Se você tentar somar dois valores vindos direto de um <code>input()</code>, o Python não vai fazer uma conta — ele vai <strong>colar os textos um no outro</strong>. Se a pessoa digitar <code>5</code> e <code>3</code>, o resultado de <code>"5" + "3"</code> é <code>"53"</code>, não <code>8</code>!
+        </div>
+        <p>Para transformar o texto digitado em um número de verdade, você precisa <strong>converter</strong> o valor usando uma destas funções:</p>
+        <div class="box">
+            <h4>🔄 Funções de conversão</h4>
+            <ul>
+                <li><code>int()</code> → transforma o texto em número <strong>inteiro</strong> (sem casas decimais). Ex.: idade, quantidade de itens;</li>
+                <li><code>float()</code> → transforma o texto em número <strong>decimal</strong> (com vírgula/ponto). Ex.: altura, preço, nota.</li>
+            </ul>
+        </div>
+        <div class="code-block"><span class="code-label">exemplo — convertendo idade</span><span class="var">idade</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Digite sua idade: "</span>))
+<span class="tag">print</span>(<span class="str">"Você tem"</span>, idade, <span class="str">"anos"</span>)</div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li>primeiro o Python executa o <code>input(...)</code> mais interno, que pega o texto digitado;</li>
+                <li>esse texto entra dentro de <code>int( )</code>, que o transforma em número inteiro;</li>
+                <li>só depois disso o resultado (já número) é guardado na variável <code>idade</code>.</li>
+            </ul>
+        </div>
+        <p>É como embrulhar uma função dentro da outra: de dentro para fora, primeiro pergunta (<code>input</code>), depois converte (<code>int</code> ou <code>float</code>), e só então guarda na variável.</p>
+
+        <h2>✨ f-strings — um jeito mais legível de montar texto</h2>
+        <p>Até agora você separou textos e variáveis no <code>print()</code> usando vírgulas. Existe um jeito mais moderno e legível: as <strong>f-strings</strong>. Você coloca um <code>f</code> antes das aspas, e pode escrever as variáveis <strong>direto dentro do texto</strong>, entre chaves <code>{ }</code>.</p>
+        <div class="code-block"><span class="code-label">comparação</span><span class="cm"># Com vírgula (como você já viu):</span>
+<span class="tag">print</span>(<span class="str">"Olá,"</span>, nome, <span class="str">"! Você tem"</span>, idade, <span class="str">"anos."</span>)
+
+<span class="cm"># Com f-string (mais legível):</span>
+<span class="tag">print</span>(<span class="str">f"Olá, {nome}! Você tem {idade} anos."</span>)</div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li>o <code>f</code> logo antes das aspas avisa o Python: "esta string tem variáveis dentro dela";</li>
+                <li>cada <code>{variavel}</code> é substituído pelo valor daquela variável na hora de mostrar o texto;</li>
+                <li>o resultado final é exatamente igual ao da versão com vírgulas — só que mais fácil de ler, principalmente quando a frase é grande.</li>
+            </ul>
+        </div>
+        <div class="highlight">
+            <strong>Dica:</strong> à medida que as frases forem ficando maiores, prefira f-strings. Elas deixam o código bem mais parecido com a frase final que vai aparecer na tela.
+        </div>
+
+        <h2>✅ Exercícios práticos</h2>
+        <p>Crie um arquivo <code>.py</code> novo para cada exercício, e teste rodando (botão direito &gt; Run Python File in Terminal). A dificuldade sobe aos poucos — não pule etapas.</p>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 1 · Nome do usuário</span>
+            <p>Crie <code>ola_nome.py</code> que pergunte o nome da pessoa e mostre <strong>Olá, [nome]!</strong> usando f-string.</p>
+            <div class="code-block"><span class="var">nome</span> = <span class="tag">input</span>(<span class="str">"Digite seu nome: "</span>)
+<span class="tag">print</span>(<span class="str">f"Olá, {nome}!"</span>)</div>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 2 · Cidade onde mora</span>
+            <p>Crie <code>minha_cidade.py</code> que pergunte a cidade onde o aluno mora e mostre <strong>Você mora em [cidade].</strong></p>
+            <div class="code-block"><span class="var">cidade</span> = <span class="tag">input</span>(<span class="str">"Em que cidade você mora? "</span>)
+<span class="tag">print</span>(<span class="str">f"Você mora em {cidade}."</span>)</div>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 3 · Em que ano você fará 100 anos?</span>
+            <p>Crie <code>cem_anos.py</code> que pergunte o nome e a idade da pessoa, <strong>converta a idade para número com <code>int()</code></strong>, calcule em quantos anos ela completa 100 anos, e mostre uma frase final com f-string.</p>
+            <div class="code-block"><span class="var">nome</span> = <span class="tag">input</span>(<span class="str">"Qual é o seu nome? "</span>)
+<span class="var">idade</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Quantos anos você tem? "</span>))
+
+<span class="var">faltam</span> = <span class="val">100</span> - idade
+
+<span class="tag">print</span>(<span class="str">f"{nome}, faltam {faltam} anos para você completar 100 anos!"</span>)</div>
+            <p>Esse exercício só funciona porque a idade foi convertida com <code>int()</code> — sem a conversão, a linha <code>100 - idade</code> daria erro, pois o Python não sabe subtrair um número de um texto.</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 4 · Mini formulário de cadastro</span>
+            <p>Crie <code>mini_formulario.py</code> que faça pelo menos <strong>3 perguntas</strong> diferentes — misturando texto e número — e no final mostre um resumo com todas as respostas usando f-string. Use <code>int()</code> ou <code>float()</code> em toda pergunta numérica.</p>
+            <div class="code-block"><span class="var">nome</span> = <span class="tag">input</span>(<span class="str">"Nome completo: "</span>)
+<span class="var">idade</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Idade: "</span>))
+<span class="var">cidade</span> = <span class="tag">input</span>(<span class="str">"Cidade: "</span>)
+<span class="var">altura</span> = <span class="tag">float</span>(<span class="tag">input</span>(<span class="str">"Altura (em metros, ex: 1.70): "</span>))
+
+<span class="tag">print</span>(<span class="str">"----- RESUMO DO CADASTRO -----"</span>)
+<span class="tag">print</span>(<span class="str">f"Nome: {nome}"</span>)
+<span class="tag">print</span>(<span class="str">f"Idade: {idade} anos"</span>)
+<span class="tag">print</span>(<span class="str">f"Cidade: {cidade}"</span>)
+<span class="tag">print</span>(<span class="str">f"Altura: {altura} m"</span>)</div>
+            <p>Repare que <code>altura</code> usa <code>float()</code>, não <code>int()</code> — porque uma altura como 1,70 tem casas decimais. Se você usar <code>int()</code> nesse caso, o Python dá erro ao tentar converter um texto com vírgula/ponto para inteiro.</p>
+        </div>
+
+        <h2>✅ Checklist antes de seguir para a próxima atividade</h2>
+        <ul class="checklist">
+            <li>Sei explicar o que é uma variável usando a analogia da caixa com nome;</li>
+            <li>Sei que <code>input()</code> sempre devolve texto, mesmo quando a pessoa digita números;</li>
+            <li>Sei converter o retorno do <code>input()</code> com <code>int()</code> (números inteiros) e <code>float()</code> (números decimais);</li>
+            <li>Sei montar mensagens com f-string usando <code>f"texto {variavel}"</code>;</li>
+            <li>Fiz os 4 exercícios acima, incluindo a conta dos 100 anos e o mini formulário.</li>
+        </ul>
+    </div>
+    <footer>Microlins São José — Atividade de Python</footer>
+</div>
+</body>
+</html>

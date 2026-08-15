@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usando e aprendendo Operadores Matemáticos — Python</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #cc7a2e 0%, #ff9f43 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #cc7a2e; margin: 34px 0 16px; border-bottom: 3px solid #ff9f43; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #ff9f43; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #fff1e0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #cc7a2e; }
+        .box { background: #fff8f0; border: 2px solid #ff9f43; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #cc7a2e; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #ff9f43; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #c586c0; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #ff9f43; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .exercicio { border: 2px dashed #ff9f43; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+        .exercicio-tag { display: inline-block; background: #fff1e0; color: #cc7a2e; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #ff9f43; font-size: 1.2em; }
+        .explicacao-linhas { background: #fafafa; border: 1px solid #e6e6e6; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .explicacao-linhas ul { margin-bottom: 0; margin-left: 20px; }
+        .explicacao-linhas li { font-size: 0.95em; }
+        .tabela-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #e6d5c0; border-radius: 8px; }
+        table.op-tabela { border-collapse: collapse; width: 100%; min-width: 480px; }
+        table.op-tabela th, table.op-tabela td { border: 1px solid #e6d5c0; padding: 10px 16px; text-align: left; }
+        table.op-tabela th { background: #fff1e0; color: #cc7a2e; font-weight: 700; }
+        table.op-tabela td.simb { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.1em; text-align: center; color: #cc7a2e; width: 60px; }
+        table.op-tabela td.res { font-family: 'Courier New', monospace; color: #555; }
+        .divisao-compara { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+        .divisao-card { flex: 1 1 260px; border-radius: 10px; padding: 16px 20px; }
+        .divisao-card.real { background: #fff8f0; border: 2px solid #ffd9ad; }
+        .divisao-card.inteira { background: #f0f7ff; border: 2px solid #bcd9f7; }
+        .divisao-card h4 { margin-bottom: 8px; }
+        .divisao-card.real h4 { color: #cc7a2e; }
+        .divisao-card.inteira h4 { color: #1e3a8a; }
+        .divisao-card .resultado { font-family: 'Courier New', monospace; font-weight: 700; font-size: 1.15em; margin-top: 8px; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #ff9f43; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.8em; padding: 14px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐍 Usando e aprendendo Operadores Matemáticos</h1>
+        <p>Python — Operadores Aritméticos e de Comparação</p>
+    </header>
+    <a class="voltar" href="../../atividade.html?curso=python">← Voltar para Python</a>
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Aprender a usar os operadores matemáticos básicos do Python para fazer cálculos, entender a diferença entre divisão real e divisão inteira, e conhecer os operadores de comparação — que devolvem <code>True</code> ou <code>False</code> e são a base de toda decisão que um programa toma.</p>
+
+        <h2>➗ O que são operadores matemáticos?</h2>
+        <p>Operadores matemáticos são símbolos usados para <strong>realizar cálculos</strong>, como soma, subtração, multiplicação e divisão — exatamente como na matemática que você já conhece, só que escritos do jeito que o Python entende.</p>
+        <div class="tabela-wrap">
+            <table class="op-tabela">
+                <tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr>
+                <tr><td class="simb">+</td><td>Soma</td><td class="res">10 + 5</td><td class="res">15</td></tr>
+                <tr><td class="simb">-</td><td>Subtração</td><td class="res">10 - 5</td><td class="res">5</td></tr>
+                <tr><td class="simb">*</td><td>Multiplicação</td><td class="res">10 * 5</td><td class="res">50</td></tr>
+                <tr><td class="simb">/</td><td>Divisão (real, com decimais)</td><td class="res">10 / 5</td><td class="res">2.0</td></tr>
+                <tr><td class="simb">%</td><td>Resto da divisão</td><td class="res">10 % 3</td><td class="res">1</td></tr>
+            </table>
+        </div>
+        <p>Vamos ver cada um em código, um de cada vez.</p>
+
+        <h3>Soma (+)</h3>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">num1</span> = <span class="val">10</span>
+<span class="var">num2</span> = <span class="val">5</span>
+
+<span class="var">soma</span> = num1 + num2
+<span class="tag">print</span>(<span class="str">"Soma:"</span>, soma)  <span class="cm"># Soma: 15</span></div>
+
+        <h3>Subtração (-)</h3>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">num1</span> = <span class="val">10</span>
+<span class="var">num2</span> = <span class="val">5</span>
+
+<span class="var">subtracao</span> = num1 - num2
+<span class="tag">print</span>(<span class="str">"Subtração:"</span>, subtracao)  <span class="cm"># Subtração: 5</span></div>
+
+        <h3>Multiplicação (*)</h3>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">num1</span> = <span class="val">10</span>
+<span class="var">num2</span> = <span class="val">5</span>
+
+<span class="var">multiplicacao</span> = num1 * num2
+<span class="tag">print</span>(<span class="str">"Multiplicação:"</span>, multiplicacao)  <span class="cm"># Multiplicação: 50</span></div>
+
+        <h3>Resto da divisão (%)</h3>
+        <p>O operador <code>%</code> (chamado de "módulo") mostra o que <strong>sobra</strong> de uma divisão, não o resultado da divisão em si. É muito usado, por exemplo, para descobrir se um número é par (resto da divisão por 2 igual a zero).</p>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">num1</span> = <span class="val">10</span>
+<span class="var">num2</span> = <span class="val">3</span>
+
+<span class="var">resto</span> = num1 % num2
+<span class="tag">print</span>(<span class="str">"Resto da divisão:"</span>, resto)  <span class="cm"># Resto da divisão: 1 (pois 10 ÷ 3 = 3, e sobra 1)</span></div>
+
+        <h2>➗ / vs // — a divisão tem dois modos em Python</h2>
+        <p>Aqui vai um detalhe que muita gente não vê logo de cara: o Python tem <strong>dois</strong> operadores de divisão, e eles se comportam de jeitos bem diferentes.</p>
+        <div class="divisao-compara">
+            <div class="divisao-card real">
+                <h4>/ — divisão real</h4>
+                <p>Faz a divisão exata, com casas decimais, igual você faria numa calculadora.</p>
+                <p class="resultado">10 / 3 = 3.333333...</p>
+            </div>
+            <div class="divisao-card inteira">
+                <h4>// — divisão inteira</h4>
+                <p>Faz a divisão e <strong>descarta</strong> a parte decimal, devolvendo só a parte inteira.</p>
+                <p class="resultado">10 // 3 = 3</p>
+            </div>
+        </div>
+        <div class="code-block"><span class="code-label">comparando / e //</span><span class="var">num1</span> = <span class="val">10</span>
+<span class="var">num2</span> = <span class="val">3</span>
+
+<span class="tag">print</span>(<span class="str">"Divisão real:"</span>, num1 / num2)     <span class="cm"># Divisão real: 3.3333333333333335</span>
+<span class="tag">print</span>(<span class="str">"Divisão inteira:"</span>, num1 // num2)  <span class="cm"># Divisão inteira: 3</span></div>
+        <div class="box">
+            <h4>💡 Quando usar cada uma?</h4>
+            <ul>
+                <li>Use <code>/</code> quando o resultado pode ter casas decimais — por exemplo, dividir uma conta de restaurante entre amigos;</li>
+                <li>Use <code>//</code> quando você só quer a parte inteira — por exemplo, "quantas caixas de 6 ovos eu preciso comprar para ter pelo menos 20 ovos" (aí você combinaria com <code>%</code> para saber quantos ovos sobram).</li>
+            </ul>
+        </div>
+
+        <h2>⚖️ Operadores de comparação</h2>
+        <p>Além de calcular, o Python também <strong>compara</strong> valores. Um operador de comparação sempre devolve um destes dois valores especiais: <code>True</code> (verdadeiro) ou <code>False</code> (falso) — esse tipo de dado se chama <strong>bool</strong> (booleano), e é a base de toda decisão que um programa toma (o famoso <code>if</code>, que você vai estudar mais à frente).</p>
+        <div class="tabela-wrap">
+            <table class="op-tabela">
+                <tr><th>Operador</th><th>Significado</th><th>Exemplo</th><th>Resultado</th></tr>
+                <tr><td class="simb">==</td><td>Igual a</td><td class="res">5 == 5</td><td class="res">True</td></tr>
+                <tr><td class="simb">!=</td><td>Diferente de</td><td class="res">5 != 3</td><td class="res">True</td></tr>
+                <tr><td class="simb">&gt;</td><td>Maior que</td><td class="res">7 &gt; 10</td><td class="res">False</td></tr>
+                <tr><td class="simb">&lt;</td><td>Menor que</td><td class="res">7 &lt; 10</td><td class="res">True</td></tr>
+                <tr><td class="simb">&gt;=</td><td>Maior ou igual a</td><td class="res">10 &gt;= 10</td><td class="res">True</td></tr>
+                <tr><td class="simb">&lt;=</td><td>Menor ou igual a</td><td class="res">9 &lt;= 8</td><td class="res">False</td></tr>
+            </table>
+        </div>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">idade</span> = <span class="val">17</span>
+
+<span class="tag">print</span>(idade == <span class="val">18</span>)   <span class="cm"># False — 17 não é igual a 18</span>
+<span class="tag">print</span>(idade != <span class="val">18</span>)   <span class="cm"># True  — 17 é diferente de 18</span>
+<span class="tag">print</span>(idade &gt;= <span class="val">18</span>)   <span class="cm"># False — 17 não é maior nem igual a 18</span>
+<span class="tag">print</span>(idade &lt; <span class="val">18</span>)    <span class="cm"># True  — 17 é menor que 18</span></div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li><code>==</code> (dois sinais de igual) compara se dois valores são iguais — <strong>nunca confunda com <code>=</code></strong>, que serve para guardar um valor numa variável;</li>
+                <li>o resultado de uma comparação nunca é um número — é sempre <code>True</code> ou <code>False</code>;</li>
+                <li>essas comparações são exatamente o que, mais pra frente, você vai colocar dentro de um <code>if</code> para o programa tomar decisões sozinho.</li>
+            </ul>
+        </div>
+        <div class="highlight">
+            <strong>Erro clássico de iniciante:</strong> escrever <code>if idade = 18:</code> em vez de <code>if idade == 18:</code>. Um sinal de igual <em>guarda</em> valor, dois sinais de igual <em>comparam</em> valor — são coisas completamente diferentes.
+        </div>
+
+        <h2>✅ Exercícios práticos</h2>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 1 · Soma de dois números</span>
+            <p>Peça dois números ao usuário (use <code>input()</code> convertendo com <code>int()</code>) e mostre a soma.</p>
+            <div class="code-block"><span class="var">num1</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Digite o primeiro número: "</span>))
+<span class="var">num2</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Digite o segundo número: "</span>))
+
+<span class="var">soma</span> = num1 + num2
+<span class="tag">print</span>(<span class="str">f"A soma é {soma}"</span>)</div>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 2 · Par ou ímpar</span>
+            <p>Peça um número ao usuário e mostre o resultado de <code>numero % 2</code>. Depois responda no comentário do próprio código: quando esse resultado é <code>0</code>, o número é par ou ímpar?</p>
+            <div class="code-block"><span class="var">numero</span> = <span class="tag">int</span>(<span class="tag">input</span>(<span class="str">"Digite um número: "</span>))
+
+<span class="var">resto</span> = numero % <span class="val">2</span>
+<span class="tag">print</span>(<span class="str">f"O resto da divisão de {numero} por 2 é {resto}"</span>)
+<span class="cm"># Se o resto for 0, o número é par. Se for 1, é ímpar.</span></div>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 3 · Calculadora simples completa</span>
+            <p>Crie um programa que peça <strong>dois números</strong> ao usuário e mostre <strong>todas</strong> as operações aprendidas: soma, subtração, multiplicação, divisão real, divisão inteira e resto — e ainda diga se o primeiro número é maior, menor ou igual ao segundo, usando operadores de comparação.</p>
+            <div class="code-block"><span class="var">num1</span> = <span class="tag">float</span>(<span class="tag">input</span>(<span class="str">"Digite o primeiro número: "</span>))
+<span class="var">num2</span> = <span class="tag">float</span>(<span class="tag">input</span>(<span class="str">"Digite o segundo número: "</span>))
+
+<span class="tag">print</span>(<span class="str">"----- RESULTADOS -----"</span>)
+<span class="tag">print</span>(<span class="str">f"Soma: {num1 + num2}"</span>)
+<span class="tag">print</span>(<span class="str">f"Subtração: {num1 - num2}"</span>)
+<span class="tag">print</span>(<span class="str">f"Multiplicação: {num1 * num2}"</span>)
+<span class="tag">print</span>(<span class="str">f"Divisão real: {num1 / num2}"</span>)
+<span class="tag">print</span>(<span class="str">f"Divisão inteira: {num1 // num2}"</span>)
+<span class="tag">print</span>(<span class="str">f"Resto da divisão: {num1 % num2}"</span>)
+
+<span class="tag">print</span>(<span class="str">"----- COMPARAÇÕES -----"</span>)
+<span class="tag">print</span>(<span class="str">f"{num1} == {num2}? "</span>, num1 == num2)
+<span class="tag">print</span>(<span class="str">f"{num1} &gt; {num2}? "</span>, num1 &gt; num2)
+<span class="tag">print</span>(<span class="str">f"{num1} &lt; {num2}? "</span>, num1 &lt; num2)</div>
+            <p>Usamos <code>float()</code> em vez de <code>int()</code> aqui de propósito — assim a calculadora funciona também com números decimais, como 7.5 ou 2.25, deixando o programa mais completo.</p>
+        </div>
+
+        <h2>✅ Checklist antes de seguir para a próxima atividade</h2>
+        <ul class="checklist">
+            <li>Sei usar os 5 operadores aritméticos: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>;</li>
+            <li>Sei explicar a diferença entre <code>/</code> (divisão real) e <code>//</code> (divisão inteira);</li>
+            <li>Sei usar os operadores de comparação (<code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>) e sei que eles devolvem <code>True</code> ou <code>False</code>;</li>
+            <li>Sei diferenciar <code>=</code> (guardar valor) de <code>==</code> (comparar valores);</li>
+            <li>Fiz os 3 exercícios acima, incluindo a calculadora simples completa.</li>
+        </ul>
+    </div>
+    <footer>Microlins São José — Atividade de Python</footer>
+</div>
+</body>
+</html>

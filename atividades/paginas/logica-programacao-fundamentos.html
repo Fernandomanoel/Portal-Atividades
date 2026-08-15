@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desvendando a Lógica de Programação! — Lógica de Programação</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #33488a 0%, #4a69bd 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #33488a; margin: 34px 0 16px; border-bottom: 3px solid #4a69bd; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #4a69bd; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #eef1fb; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #33488a; }
+        .box { background: #eef1fb; border: 2px solid #4a69bd; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #33488a; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #4a69bd; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #569cd6; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #4a69bd; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .desafio { border: 2px dashed #4a69bd; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+        .desafio-tag { display: inline-block; background: #eef1fb; color: #33488a; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px; }
+        .fluxo { background: #f7f8fc; border: 1px solid #d6dcf0; border-radius: 8px; padding: 18px 22px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 0.92em; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #4a69bd; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 18px 0; }
+        .card { background: #f7f8fc; border: 1px solid #d6dcf0; border-radius: 8px; padding: 16px 18px; }
+        .card strong { color: #33488a; display: block; margin-bottom: 6px; }
+        table.tabela { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.95em; }
+        table.tabela th, table.tabela td { border: 1px solid #d6dcf0; padding: 10px 14px; text-align: left; }
+        table.tabela th { background: #33488a; color: #fff; }
+        table.tabela tr:nth-child(even) td { background: #f7f8fc; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.8em; padding: 14px; } .cards { grid-template-columns: 1fr; } table.tabela { font-size: 0.85em; } table.tabela th, table.tabela td { padding: 7px 8px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧠 Desvendando a Lógica de Programação!</h1>
+        <p>Lógica de Programação</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=logica-programacao">← Voltar para Lógica de Programação</a>
+
+    <div class="content">
+        <h2>🚀 Antes de tudo: o que é programar?</h2>
+        <p>Todo jogo, aplicativo ou site que você usa no celular ou no computador é, no fundo, uma sequência gigante de instruções que alguém escreveu para o computador seguir. O computador não tem "bom senso": ele não improvisa e não adivinha o que você quer. Ele só faz exatamente o que está escrito, na ordem em que está escrito.</p>
+        <p>Por isso, antes de aprender qualquer linguagem de programação (Python, Java, JavaScript...), a habilidade mais importante que você precisa desenvolver é a <strong>lógica de programação</strong>: a capacidade de quebrar um problema em passos pequenos, claros e na ordem certa. É exatamente isso que vamos treinar nesta atividade.</p>
+
+        <h2>🍞 O segredo por trás dos códigos: o algoritmo</h2>
+        <p>Um <strong>algoritmo</strong> é uma sequência finita e ordenada de passos lógicos para resolver um problema ou realizar uma tarefa. A palavra parece complicada, mas você já segue algoritmos várias vezes por dia sem perceber. Vamos usar algumas analogias do dia a dia para deixar isso bem concreto.</p>
+
+        <div class="box">
+            <h4>🎂 Analogia 1 — Receita de bolo</h4>
+            <p>Uma receita de bolo é um algoritmo perfeito: ela tem uma lista de ingredientes (os <em>dados de entrada</em>) e um passo a passo numerado que precisa ser seguido <strong>na ordem certa</strong> — misturar antes de assar, e não o contrário. Se você pular um passo ou trocar a ordem, o resultado não sai como esperado. Com um programa de computador é a mesma coisa: a ordem das instruções importa.</p>
+        </div>
+
+        <div class="box">
+            <h4>🥪 Analogia 2 — Fazendo um sanduíche</h4>
+            <p>Pegar o pão, passar a manteiga, colocar o queijo, colocar o presunto, fechar o sanduíche. Cada uma dessas ações é um passo simples e objetivo. Sozinhas, elas não significam muita coisa — mas em sequência, elas resolvem um problema (matar a fome). É exatamente assim que o computador "pensa": ele não entende "faça um sanduíche", ele entende cada passo pequeno, um de cada vez.</p>
+        </div>
+
+        <div class="box">
+            <h4>🗺️ Analogia 3 — O GPS traçando uma rota</h4>
+            <p>Quando você pede uma rota no GPS, ele não te dá só o destino — ele te dá uma sequência de instruções: "siga em frente por 500 metros", "vire à direita na próxima rua", "seu destino está à esquerda". Isso é um algoritmo de navegação: passos claros, numerados, executados em ordem, que levam de um ponto de partida a um resultado final.</p>
+        </div>
+
+        <div class="box">
+            <h4>🪑 Analogia 4 — Manual de montagem de móvel</h4>
+            <p>Quando você compra um móvel desmontado, ele vem com um manual numerado: passo 1, passo 2, passo 3... Se você tentar montar o móvel pulando etapas ou fora de ordem, ele simplesmente não vai fechar direito. Um algoritmo de computador segue a mesma regra: <strong>passos finitos</strong> (têm um fim), <strong>passos ordenados</strong> (têm uma sequência certa) e <strong>passos claros</strong> (sem ambiguidade, sem "dá um jeito aí").</p>
+        </div>
+
+        <p>Resumindo: um algoritmo bem escrito é <strong>claro</strong> (qualquer pessoa consegue entender e seguir), <strong>finito</strong> (tem começo, meio e fim — não fica repetindo para sempre sem motivo) e <strong>ordenado</strong> (a sequência dos passos importa). Quando escrevemos um algoritmo em código, o computador executa exatamente esses passos, na ordem, sem pular nada.</p>
+
+        <h2>📦 Guardando dados: as variáveis</h2>
+        <p>Todo programa precisa guardar informações temporariamente — a idade que o usuário digitou, o resultado de uma soma, o nome de alguém. Para isso usamos <strong>variáveis</strong>.</p>
+
+        <div class="box">
+            <h4>🗄️ Caixas de memória com etiqueta</h4>
+            <p>Imagine a memória do computador como um armário gigante cheio de caixas. Cada caixa tem uma <strong>etiqueta com um nome</strong> (o nome da variável) e guarda <strong>um valor</strong> dentro. Quando você escreve <code>idade = 20</code>, é como se você pegasse a caixa etiquetada "idade" e colocasse o número 20 dentro dela. Mais tarde, sempre que o programa precisar desse valor, ele só abre a caixa "idade" de novo.</p>
+        </div>
+
+        <p>O valor guardado dentro da caixa pode mudar ao longo do programa — por isso o nome "variável": o conteúdo <em>varia</em>, mas o nome da caixa continua o mesmo. E cada variável precisa de um <strong>nome único</strong> para que o programa saiba exatamente qual caixa abrir.</p>
+
+        <h3>Por que declarar o tipo da variável importa</h3>
+        <p>Em Portugol (e na maioria das linguagens de programação "de verdade"), antes de usar uma caixa você precisa dizer <strong>que tipo de coisa</strong> vai guardar dentro dela. Isso se chama <strong>declarar o tipo</strong> da variável. Isso existe porque o computador trata número, texto e valor lógico de formas completamente diferentes por dentro — e declarar o tipo evita erros bobos, como tentar "somar" duas palavras ou comparar um número com um texto.</p>
+
+        <div class="cards">
+            <div class="card"><strong>inteiro</strong>Números sem casas decimais, positivos ou negativos. Ex: idade, quantidade de itens.<br><code>inteiro idade</code></div>
+            <div class="card"><strong>real</strong>Números com casas decimais. Ex: preço, nota, média.<br><code>real preco</code></div>
+            <div class="card"><strong>texto</strong>Uma sequência de caracteres (letras, números, símbolos), sempre entre aspas. Ex: nome, mensagem.<br><code>texto nome</code></div>
+            <div class="card"><strong>logico</strong>Só pode valer <code>verdadeiro</code> ou <code>falso</code>. Usado em decisões. Ex: "aprovado?".<br><code>logico aprovado</code></div>
+        </div>
+
+        <div class="highlight">💡 <strong>Dica:</strong> pense no tipo como o "formato da caixa". Uma caixa do tipo <code>inteiro</code> só cabe números inteiros; se você tentar guardar um texto nela, o programa vai reclamar. Declarar o tipo certo desde o início evita bugs difíceis de encontrar depois.</div>
+
+        <h2>🔀 O computador fazendo escolhas: SE / SENÃO</h2>
+        <p>Programas raramente seguem um caminho único do início ao fim — na maioria das vezes eles precisam <strong>decidir</strong> o que fazer dependendo da situação. Essa decisão é feita com a estrutura <code>se</code> / <code>senao</code>: "SE uma condição for verdadeira, faça isso; SENÃO, faça aquilo".</p>
+
+        <div class="box">
+            <h4>🌦️ Exemplo do dia a dia</h4>
+            <p><strong>SE</strong> estiver chovendo, eu levo o guarda-chuva. <strong>SENÃO</strong>, eu vou de óculos de sol. Repare que só um dos dois caminhos é seguido — nunca os dois ao mesmo tempo, e nunca nenhum dos dois.</p>
+        </div>
+
+        <p>Em forma de fluxograma, a estrutura de decisão do exercício "verificador de maioridade" (que vamos programar mais abaixo) fica assim:</p>
+
+        <div class="fluxo">        INÍCIO
+          │
+          ▼
+   leia a idade
+          │
+          ▼
+   ┌─────────────┐
+   │ idade >= 18 ?│
+   └──────┬──────┘
+     SIM  │   NÃO
+   ┌──────┘   └──────┐
+   ▼                  ▼
+"Você já é      "Você ainda é
+ maior de        menor de
+ idade!"         idade."
+   │                  │
+   └────────┬─────────┘
+            ▼
+           FIM</div>
+
+        <p>A mesma lógica pode ser resumida em uma tabela de casos — muito útil para organizar o raciocínio antes de escrever o código:</p>
+
+        <table class="tabela">
+            <tr><th>Condição testada</th><th>Resultado (o que o programa faz)</th></tr>
+            <tr><td><code>SE (idade &gt;= 18)</code></td><td>Exibe "Maior de idade"</td></tr>
+            <tr><td><code>SENÃO</code></td><td>Exibe "Menor de idade"</td></tr>
+        </table>
+
+        <p>Em Portugol, a sintaxe é:</p>
+        <div class="code-block"><span class="tag">se</span> (<span class="var">condição</span>) {
+    <span class="cm">// executado quando a condição é VERDADEIRA</span>
+} <span class="tag">senao</span> {
+    <span class="cm">// executado quando a condição é FALSA</span>
+}</div>
+
+        <h2>⌨️ Mão na massa com o Portugol</h2>
+        <p>Para treinar lógica sem se preocupar com a sintaxe exata de uma linguagem real (como Python ou Java), vamos usar o <strong>Portugol</strong>: uma pseudolinguagem de programação escrita em português. Ele usa os mesmos conceitos de qualquer linguagem — variáveis, entrada e saída de dados, decisões — só que com palavras em português, o que ajuda a focar no raciocínio lógico em vez de decorar sintaxe.</p>
+        <p>Todo programa em Portugol segue esta estrutura básica:</p>
+        <div class="code-block"><span class="tag">programa</span> {
+    <span class="tag">funcao</span> inicio() {
+        <span class="cm">// seu código vai aqui dentro</span>
+    }
+}</div>
+        <p>Os comandos mais usados são <code>escreva()</code>, que exibe uma mensagem ou valor na tela, e <code>leia()</code>, que lê um valor digitado pelo usuário e guarda dentro de uma variável.</p>
+
+        <h2>💪 Atividades práticas</h2>
+
+        <div class="desafio">
+            <span class="desafio-tag">Atividade 1 · Olá, Mundo!</span>
+            <p>O primeiro passo de todo programador é fazer o computador "falar" alguma coisa na tela. Este é tradicionalmente o primeiro programa que qualquer pessoa escreve ao aprender a programar.</p>
+            <div class="code-block"><span class="tag">programa</span> {
+    <span class="tag">funcao</span> inicio() {
+        <span class="tag">escreva</span>(<span class="str">"Olá, Mundo! Meu primeiro programa!"</span>)
+    }
+}</div>
+            <p>O comando <code>escreva</code> é responsável por exibir mensagens na tela. Tudo o que estiver entre aspas é tratado como <strong>texto literal</strong> e aparece exatamente como foi escrito.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Atividade 2 · Somando dois números</span>
+            <p>Aqui aprendemos o fluxo mais comum de qualquer programa: <strong>ler</strong> dados do usuário, <strong>processar</strong> esses dados e <strong>mostrar</strong> o resultado.</p>
+            <div class="code-block"><span class="tag">inteiro</span> <span class="var">n1</span>, <span class="var">n2</span>, <span class="var">soma</span>
+
+<span class="tag">escreva</span>(<span class="str">"Digite o primeiro número: "</span>)
+<span class="tag">leia</span>(<span class="var">n1</span>)
+<span class="tag">escreva</span>(<span class="str">"Digite o segundo número: "</span>)
+<span class="tag">leia</span>(<span class="var">n2</span>)
+
+<span class="var">soma</span> = <span class="var">n1</span> + <span class="var">n2</span>
+<span class="tag">escreva</span>(<span class="str">"A soma é: "</span>, <span class="var">soma</span>)</div>
+            <p>Primeiro declaramos três caixas do tipo <code>inteiro</code>: <code>n1</code>, <code>n2</code> e <code>soma</code>. Depois pedimos e lemos os dois números digitados, guardamos o resultado da soma na variável <code>soma</code>, e por fim mostramos o resultado na tela.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Atividade 3 · Verificador de maioridade</span>
+            <p>Agora juntamos leitura de dados com a estrutura de decisão <code>se</code> / <code>senao</code> explicada acima.</p>
+            <div class="code-block"><span class="tag">inteiro</span> <span class="var">idade</span>
+
+<span class="tag">escreva</span>(<span class="str">"Digite sua idade: "</span>)
+<span class="tag">leia</span>(<span class="var">idade</span>)
+
+<span class="tag">se</span> (<span class="var">idade</span> &gt;= <span class="val">18</span>) {
+    <span class="tag">escreva</span>(<span class="str">"Você já é maior de idade!"</span>)
+} <span class="tag">senao</span> {
+    <span class="tag">escreva</span>(<span class="str">"Você ainda é menor de idade."</span>)
+}</div>
+            <p>O programa lê a idade digitada e testa a condição <code>idade &gt;= 18</code>. Se for verdadeira, executa o primeiro bloco; se for falsa, executa o bloco depois do <code>senao</code>. Nunca os dois ao mesmo tempo.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Atividade 4 (novo) · Par ou ímpar</span>
+            <p>Um exercício clássico para praticar o operador de <strong>resto da divisão</strong> (também chamado de operador módulo, representado por <code>%</code>). O resto da divisão de um número por 2 só pode ser 0 (número par) ou 1 (número ímpar) — é exatamente essa propriedade que vamos usar.</p>
+            <div class="code-block"><span class="tag">inteiro</span> <span class="var">numero</span>, <span class="var">resto</span>
+
+<span class="tag">escreva</span>(<span class="str">"Digite um número inteiro: "</span>)
+<span class="tag">leia</span>(<span class="var">numero</span>)
+
+<span class="var">resto</span> = <span class="var">numero</span> % <span class="val">2</span>
+
+<span class="tag">se</span> (<span class="var">resto</span> == <span class="val">0</span>) {
+    <span class="tag">escreva</span>(<span class="var">numero</span>, <span class="str">" é um número PAR."</span>)
+} <span class="tag">senao</span> {
+    <span class="tag">escreva</span>(<span class="var">numero</span>, <span class="str">" é um número ÍMPAR."</span>)
+}</div>
+            <p>Lemos o número, calculamos o resto da divisão por 2 e guardamos em <code>resto</code>. Se <code>resto</code> for igual a 0, o número é par; caso contrário, é ímpar. Note o uso de <code>==</code> (dois sinais de igual) para <strong>comparar</strong> valores — diferente de um único <code>=</code>, que <strong>atribui</strong> um valor a uma variável.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Atividade 5 (novo) · Média de duas notas</span>
+            <p>Um exercício que combina cálculo com números decimais (<code>real</code>) e uma decisão baseada no resultado — muito parecido com o que um sistema acadêmico faz de verdade.</p>
+            <div class="code-block"><span class="tag">real</span> <span class="var">nota1</span>, <span class="var">nota2</span>, <span class="var">media</span>
+
+<span class="tag">escreva</span>(<span class="str">"Digite a primeira nota: "</span>)
+<span class="tag">leia</span>(<span class="var">nota1</span>)
+<span class="tag">escreva</span>(<span class="str">"Digite a segunda nota: "</span>)
+<span class="tag">leia</span>(<span class="var">nota2</span>)
+
+<span class="var">media</span> = (<span class="var">nota1</span> + <span class="var">nota2</span>) / <span class="val">2</span>
+
+<span class="tag">se</span> (<span class="var">media</span> &gt;= <span class="val">6</span>) {
+    <span class="tag">escreva</span>(<span class="str">"Aprovado! Média: "</span>, <span class="var">media</span>)
+} <span class="tag">senao</span> {
+    <span class="tag">escreva</span>(<span class="str">"Reprovado. Média: "</span>, <span class="var">media</span>)
+}</div>
+            <p>As notas são guardadas como <code>real</code> porque podem ter casas decimais (ex: 7,5). Calculamos a média somando as duas notas e dividindo por 2, e depois usamos <code>se</code> / <code>senao</code> para decidir a mensagem final, considerando 6 como nota mínima para aprovação.</p>
+        </div>
+
+        <div class="highlight">✅ <strong>Para praticar mais:</strong> tente adaptar a Atividade 5 para receber três notas em vez de duas, ou adaptar a Atividade 4 para dizer também se o número é positivo, negativo ou zero. Quanto mais você tentar variar os exercícios com as próprias mãos, mais rápido a lógica vira hábito.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Lógica de Programação</footer>
+</div>
+</body>
+</html>

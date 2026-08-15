@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Além do Básico — Lógica Avançada — Lógica de Programação</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #33488a 0%, #4a69bd 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #33488a; margin: 34px 0 16px; border-bottom: 3px solid #4a69bd; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #4a69bd; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #eef1fb; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #33488a; }
+        .box { background: #eef1fb; border: 2px solid #4a69bd; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #33488a; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #4a69bd; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #569cd6; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #4a69bd; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .desafio { border: 2px dashed #4a69bd; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+        .desafio-tag { display: inline-block; background: #eef1fb; color: #33488a; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px; }
+        .fluxo { background: #f7f8fc; border: 1px solid #d6dcf0; border-radius: 8px; padding: 18px 22px; margin: 16px 0; font-family: 'Courier New', monospace; font-size: 0.92em; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #4a69bd; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        .nota-aviso { background: #f0f0f0; border-left: 4px solid #8a8a8a; padding: 12px 18px; border-radius: 6px; margin: 14px 0; color: #555; font-size: 0.9em; }
+        table.tabela { border-collapse: collapse; width: 100%; margin: 14px 0; font-size: 0.95em; }
+        table.tabela th, table.tabela td { border: 1px solid #d6dcf0; padding: 10px 14px; text-align: left; }
+        table.tabela th { background: #33488a; color: #fff; }
+        table.tabela tr:nth-child(even) td { background: #f7f8fc; }
+        .armarios { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+        .armario { background: linear-gradient(180deg, #4a69bd, #33488a); color: #fff; border-radius: 6px; padding: 14px 10px; text-align: center; min-width: 56px; flex: 1; }
+        .armario .idx { font-size: 0.72em; opacity: 0.8; margin-bottom: 4px; }
+        .armario .val2 { font-weight: 700; font-size: 1.05em; }
+        .matriz-wrap { overflow-x: auto; margin: 16px 0; }
+        table.matriz { border-collapse: collapse; }
+        table.matriz td { border: 2px solid #4a69bd; width: 60px; height: 44px; text-align: center; font-family: 'Courier New', monospace; font-size: 0.85em; background: #eef1fb; color: #33488a; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.78em; padding: 14px; } table.tabela { font-size: 0.85em; } table.tabela th, table.tabela td { padding: 7px 8px; } .armario { min-width: 44px; padding: 10px 6px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧩 Além do Básico — Lógica Avançada</h1>
+        <p>Lógica de Programação</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=logica-programacao">← Voltar para Lógica de Programação</a>
+
+    <div class="content">
+        <h2>🎓 Preparando para o nível "Programador Pro"</h2>
+        <p>Na primeira atividade, você aprendeu os alicerces: algoritmos, variáveis e decisões com <code>se</code> / <code>senao</code>. Agora é hora de dar um passo além, trabalhando com <strong>estruturas de dados</strong> (que guardam várias informações de uma vez) e <strong>modularização</strong> (que organiza o código em blocos reutilizáveis). São exatamente esses conceitos que separam quem só resolve exercícios simples de quem consegue montar programas maiores e mais organizados.</p>
+
+        <h2>🗄️ Listas inteligentes: os vetores</h2>
+        <p>Imagine que você precisa guardar as notas de 50 alunos. Criar 50 variáveis (<code>nota1</code>, <code>nota2</code>, <code>nota3</code>... <code>nota50</code>) seria péssimo: o código ficaria enorme e repetitivo, e ainda seria quase impossível percorrer todas elas automaticamente. É exatamente para isso que existem os <strong>vetores</strong> (também chamados de <em>arrays</em>).</p>
+
+        <div class="box">
+            <h4>🗄️ A analogia dos armários numerados</h4>
+            <p>Pense em um vetor como uma fileira de armários pequenos, todos com o mesmo nome na porta principal, mas numerados por dentro: armário 0, armário 1, armário 2... Cada número é chamado de <strong>índice</strong>. Para guardar ou consultar um valor, você não precisa de um nome novo — só precisa dizer o número do armário que quer abrir.</p>
+        </div>
+
+        <p>Em Portugol, um vetor de 5 números reais é declarado assim:</p>
+        <div class="code-block"><span class="tag">real</span> <span class="var">notas</span>[<span class="val">5</span>]</div>
+        <p>Isso cria 5 "armários" numerados de <strong>0 a 4</strong> — repare que a contagem começa em 0, não em 1. Essa é uma regra praticamente universal em programação.</p>
+
+        <div class="armarios">
+            <div class="armario"><div class="idx">notas[0]</div><div class="val2">7.5</div></div>
+            <div class="armario"><div class="idx">notas[1]</div><div class="val2">8.0</div></div>
+            <div class="armario"><div class="idx">notas[2]</div><div class="val2">6.0</div></div>
+            <div class="armario"><div class="idx">notas[3]</div><div class="val2">9.5</div></div>
+            <div class="armario"><div class="idx">notas[4]</div><div class="val2">10.0</div></div>
+        </div>
+
+        <p>Para acessar o valor guardado na terceira posição, por exemplo, usamos <code>notas[2]</code> (lembrando que a posição "terceira" corresponde ao índice 2, já que começamos do 0). Isso permite usar um <strong>laço de repetição</strong> para preencher ou ler todas as posições automaticamente, em vez de escrever uma linha para cada aluno.</p>
+
+        <h2>🧮 Vetor x matriz: de uma dimensão para duas</h2>
+        <p>Um <strong>vetor</strong> tem apenas <strong>uma dimensão</strong> — é uma única fileira de armários, um atrás do outro. Já uma <strong>matriz</strong> tem <strong>duas dimensões</strong>: é como um armário dentro de outro armário, organizado em <strong>linhas e colunas</strong>, parecido com um tabuleiro de jogo da velha ou uma planilha do Excel.</p>
+
+        <p>Para acessar uma posição de uma matriz, você precisa de <strong>dois</strong> índices: um para a linha e outro para a coluna. Uma matriz 3x3 declarada como <code>inteiro mat[3][3]</code> se organiza assim:</p>
+
+        <div class="matriz-wrap">
+            <table class="matriz">
+                <tr><td>mat[0][0]</td><td>mat[0][1]</td><td>mat[0][2]</td></tr>
+                <tr><td>mat[1][0]</td><td>mat[1][1]</td><td>mat[1][2]</td></tr>
+                <tr><td>mat[2][0]</td><td>mat[2][1]</td><td>mat[2][2]</td></tr>
+            </table>
+        </div>
+
+        <p>Para percorrer uma matriz inteira, usamos um laço <strong>dentro</strong> de outro laço — chamado de <strong>laços aninhados</strong>: o laço de fora anda pelas linhas, e para cada linha, o laço de dentro anda por todas as colunas daquela linha. Vamos ver isso em ação no Desafio 3.</p>
+
+        <h2>🔧 Funções: reutilizando código</h2>
+        <p>Conforme um programa cresce, é comum precisar repetir o mesmo cálculo em vários lugares — por exemplo, calcular a área de um retângulo várias vezes, em pontos diferentes do programa. Copiar e colar o mesmo código várias vezes é uma péssima prática: se um dia você precisar corrigir um erro nesse cálculo, vai ter que lembrar de corrigir em <strong>todos</strong> os lugares onde ele foi copiado.</p>
+
+        <p>A solução é criar uma <strong>função</strong>: um bloco de código com nome próprio, que recebe alguns valores de entrada (chamados de <strong>parâmetros</strong>), faz um processamento, e devolve um resultado através de um <strong>retorno</strong>. Depois de criada, a função pode ser <strong>chamada</strong> (usada) quantas vezes forem necessárias, em qualquer parte do programa, sem repetir o código.</p>
+
+        <div class="box">
+            <h4>↩️ O que é "retorno"?</h4>
+            <p>Retornar um valor é a função "devolver" um resultado para quem a chamou, assim como uma calculadora devolve o resultado de uma conta quando você aperta "=". A palavra-chave <code>retorne</code> em Portugol indica exatamente qual valor a função vai devolver.</p>
+        </div>
+
+        <p>Essa prática de evitar repetir código tem até um nome conhecido no mundo da programação profissional: <strong>DRY</strong> (do inglês <em>Don't Repeat Yourself</em>, "não se repita").</p>
+
+        <h2>🔁 Laço enquanto x laço para</h2>
+        <p>Na primeira atividade de lógica você trabalhou com decisões (<code>se</code>/<code>senao</code>). Aqui, os desafios usam bastante os <strong>laços de repetição</strong> (também chamados de loops), que fazem o programa repetir um bloco de instruções várias vezes sem precisar copiar e colar o código.</p>
+
+        <table class="tabela">
+            <tr><th>Laço</th><th>Quando usar</th><th>Como funciona</th></tr>
+            <tr><td><code>para</code></td><td>Quando você já sabe <strong>quantas vezes</strong> quer repetir.</td><td>Repete um número fixo de vezes, controlado por um contador (ex: de 0 até 4, 5 vezes).</td></tr>
+            <tr><td><code>enquanto</code></td><td>Quando você <strong>não sabe</strong> de antemão quantas vezes vai repetir — depende de uma condição.</td><td>Repete <strong>enquanto</strong> uma condição continuar verdadeira. Pode repetir 0, 1 ou 100 vezes — depende do que o usuário digitar.</td></tr>
+        </table>
+
+        <p>Um bom exemplo: se você quer pedir 5 notas, sabe exatamente que vai repetir 5 vezes — use <code>para</code>. Mas se você quer insistir até o usuário digitar um valor válido, você não sabe quantas tentativas ele vai precisar — use <code>enquanto</code>.</p>
+
+        <div class="code-block"><span class="tag">para</span> (<span class="tag">inteiro</span> <span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">5</span>; <span class="var">i</span>++) {
+    <span class="cm">// repete exatamente 5 vezes, com i valendo 0, 1, 2, 3 e 4</span>
+}
+
+<span class="tag">enquanto</span> (<span class="var">condição</span>) {
+    <span class="cm">// repete enquanto a condição continuar verdadeira</span>
+}</div>
+
+        <h2>💪 Os 5 desafios "Programador Pro"</h2>
+
+        <div class="desafio">
+            <span class="desafio-tag">Desafio 1 · Média com vetores</span>
+            <p>Digite 5 notas e calcule a média, usando um vetor para guardar todas as notas em vez de 5 variáveis separadas.</p>
+            <div class="code-block"><span class="tag">real</span> <span class="var">notas</span>[<span class="val">5</span>], <span class="var">soma</span> = <span class="val">0.0</span>, <span class="var">media</span>
+
+<span class="tag">para</span> (<span class="tag">inteiro</span> <span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">5</span>; <span class="var">i</span>++) {
+    <span class="tag">escreva</span>(<span class="str">"Nota aluno "</span>, <span class="var">i</span> + <span class="val">1</span>, <span class="str">": "</span>)
+    <span class="tag">leia</span>(<span class="var">notas</span>[<span class="var">i</span>])
+    <span class="var">soma</span> = <span class="var">soma</span> + <span class="var">notas</span>[<span class="var">i</span>]
+}
+
+<span class="var">media</span> = <span class="var">soma</span> / <span class="val">5</span>
+<span class="tag">escreva</span>(<span class="str">"Média da turma: "</span>, <span class="var">media</span>)</div>
+            <p>O laço <code>para</code> roda 5 vezes, com <code>i</code> indo de 0 a 4. A cada volta, lemos uma nota e guardamos direto na posição <code>notas[i]</code> do vetor, já somando o valor em <code>soma</code>. Ao final, dividimos a soma total por 5 para obter a média.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Desafio 2 · Busca em vetor</span>
+            <p>Preencha um vetor com 5 valores e depois procure um número específico dentro dele — é assim que, por exemplo, um sistema procura um produto pelo código.</p>
+            <div class="code-block"><span class="tag">inteiro</span> <span class="var">nums</span>[<span class="val">5</span>], <span class="var">busca</span>, <span class="var">i</span>
+<span class="tag">logico</span> <span class="var">encontrado</span> = <span class="val">falso</span>
+
+<span class="tag">para</span> (<span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">5</span>; <span class="var">i</span>++) {
+    <span class="tag">escreva</span>(<span class="str">"Digite valor "</span>, <span class="var">i</span>+<span class="val">1</span>, <span class="str">": "</span>)
+    <span class="tag">leia</span>(<span class="var">nums</span>[<span class="var">i</span>])
+}
+
+<span class="tag">escreva</span>(<span class="str">"Qual valor buscar? "</span>)
+<span class="tag">leia</span>(<span class="var">busca</span>)
+
+<span class="tag">para</span> (<span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">5</span>; <span class="var">i</span>++) {
+    <span class="tag">se</span> (<span class="var">nums</span>[<span class="var">i</span>] == <span class="var">busca</span>) {
+        <span class="tag">escreva</span>(<span class="str">"Encontrado na posição "</span>, <span class="var">i</span>)
+        <span class="var">encontrado</span> = <span class="val">verdadeiro</span>
+    }
+}
+
+<span class="tag">se</span> (<span class="tag">nao</span> <span class="var">encontrado</span>) { <span class="tag">escreva</span>(<span class="str">"Valor não encontrado!"</span>) }</div>
+            <p>Primeiro laço: preenche as 5 posições do vetor. Segundo laço: percorre o vetor de novo, comparando cada posição com o valor buscado (<code>nums[i] == busca</code>). Quando encontra, marca a variável lógica <code>encontrado</code> como <code>verdadeiro</code>. No final, se nenhuma posição bateu, <code>nao encontrado</code> continua verdadeiro e a mensagem de "não encontrado" é exibida.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Desafio 3 · Matriz 3x3</span>
+            <p>Preencha e exiba uma matriz 3x3 (3 linhas por 3 colunas) usando laços aninhados — um laço <code>para</code> dentro de outro laço <code>para</code>.</p>
+            <div class="code-block"><span class="tag">inteiro</span> <span class="var">mat</span>[<span class="val">3</span>][<span class="val">3</span>], <span class="var">i</span>, <span class="var">j</span>
+
+<span class="tag">para</span> (<span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">3</span>; <span class="var">i</span>++) {
+    <span class="tag">para</span> (<span class="var">j</span> = <span class="val">0</span>; <span class="var">j</span> &lt; <span class="val">3</span>; <span class="var">j</span>++) {
+        <span class="tag">escreva</span>(<span class="str">"mat["</span>, <span class="var">i</span>, <span class="str">"]["</span>, <span class="var">j</span>, <span class="str">"]: "</span>)
+        <span class="tag">leia</span>(<span class="var">mat</span>[<span class="var">i</span>][<span class="var">j</span>])
+    }
+}
+
+<span class="tag">escreva</span>(<span class="str">"--- Matriz ---"</span>)
+<span class="tag">para</span> (<span class="var">i</span> = <span class="val">0</span>; <span class="var">i</span> &lt; <span class="val">3</span>; <span class="var">i</span>++) {
+    <span class="tag">para</span> (<span class="var">j</span> = <span class="val">0</span>; <span class="var">j</span> &lt; <span class="val">3</span>; <span class="var">j</span>++) {
+        <span class="tag">escreva</span>(<span class="var">mat</span>[<span class="var">i</span>][<span class="var">j</span>], <span class="str">" "</span>)
+    }
+    <span class="tag">escreva</span>(<span class="str">"\n"</span>)
+}</div>
+            <p>No primeiro par de laços, <code>i</code> controla a linha e <code>j</code> controla a coluna — para cada linha (0, 1, 2), o laço interno percorre todas as 3 colunas, lendo um valor por vez em <code>mat[i][j]</code>. No segundo par de laços, a mesma lógica é usada para <strong>exibir</strong> a matriz: ao terminar de imprimir uma linha inteira, o comando <code>escreva("\n")</code> pula para a linha seguinte na tela.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Desafio 4 · Funções e retorno</span>
+            <p>Crie uma função que calcula a área de um retângulo e chame-a a partir do programa principal.</p>
+            <div class="code-block"><span class="tag">funcao</span> <span class="tag">real</span> calcularArea(<span class="tag">real</span> <span class="var">base</span>, <span class="tag">real</span> <span class="var">altura</span>) {
+    <span class="tag">retorne</span> <span class="var">base</span> * <span class="var">altura</span>
+}
+
+<span class="tag">real</span> <span class="var">b</span>, <span class="var">h</span>, <span class="var">area</span>
+
+<span class="tag">escreva</span>(<span class="str">"Base: "</span>)
+<span class="tag">leia</span>(<span class="var">b</span>)
+<span class="tag">escreva</span>(<span class="str">"Altura: "</span>)
+<span class="tag">leia</span>(<span class="var">h</span>)
+
+<span class="var">area</span> = calcularArea(<span class="var">b</span>, <span class="var">h</span>)
+<span class="tag">escreva</span>(<span class="str">"Área = "</span>, <span class="var">area</span>)</div>
+            <p>A função <code>calcularArea</code> recebe dois parâmetros (<code>base</code> e <code>altura</code>, ambos do tipo <code>real</code>) e devolve, com <code>retorne</code>, o resultado da multiplicação entre eles. No programa principal, lemos a base e a altura digitadas pelo usuário e <strong>chamamos</strong> a função passando esses dois valores: <code>calcularArea(b, h)</code>. O valor retornado é guardado na variável <code>area</code> e depois exibido na tela. Se amanhã você precisar calcular a área de um retângulo em outro ponto do programa, basta chamar <code>calcularArea(...)</code> de novo — sem reescrever a conta.</p>
+        </div>
+
+        <div class="desafio">
+            <span class="desafio-tag">Desafio 5 · Validação de dados</span>
+            <p>Faça o programa rejeitar notas inválidas até o usuário digitar um valor entre 0 e 10 — um uso clássico do laço <code>enquanto</code>, já que não sabemos de antemão quantas tentativas o usuário vai precisar.</p>
+            <div class="code-block"><span class="tag">real</span> <span class="var">nota</span>
+
+<span class="tag">escreva</span>(<span class="str">"Digite uma nota (0 a 10): "</span>)
+<span class="tag">leia</span>(<span class="var">nota</span>)
+
+<span class="tag">enquanto</span> (<span class="var">nota</span> &lt; <span class="val">0</span> <span class="tag">ou</span> <span class="var">nota</span> &gt; <span class="val">10</span>) {
+    <span class="tag">escreva</span>(<span class="str">"Nota inválida! Digite novamente: "</span>)
+    <span class="tag">leia</span>(<span class="var">nota</span>)
+}
+
+<span class="tag">escreva</span>(<span class="str">"Nota válida: "</span>, <span class="var">nota</span>)</div>
+            <p>O programa lê a primeira nota e entra no laço <code>enquanto</code>, que testa a condição <code>nota &lt; 0 ou nota &gt; 10</code>. Enquanto essa condição continuar verdadeira (ou seja, enquanto a nota continuar fora do intervalo permitido), o programa pede um novo valor repetidamente. Assim que o usuário digitar uma nota válida, a condição vira falsa, o laço para automaticamente, e o programa segue em frente exibindo a nota aceita.</p>
+        </div>
+
+        <h2>🏆 Conclusão: rumo ao "Programador Pro"</h2>
+        <table class="tabela">
+            <tr><th>Conceito</th><th>Função profissional</th></tr>
+            <tr><td>Vetores / Matrizes</td><td>Organização de dados em massa</td></tr>
+            <tr><td>Funções</td><td>Reutilização de código e código limpo (princípio DRY)</td></tr>
+            <tr><td>Validação (<code>enquanto</code>)</td><td>Segurança e robustez do software</td></tr>
+        </table>
+        <div class="highlight">🚀 <strong>Próximo passo:</strong> vetores dinâmicos (que crescem e diminuem de tamanho conforme a necessidade) e persistência de dados (salvar informações em arquivos ou bancos de dados para não perdê-las quando o programa fecha)!</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Lógica de Programação</footer>
+</div>
+</body>
+</html>

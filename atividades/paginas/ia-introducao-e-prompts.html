@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdução à IA e Engenharia de Prompt — Inteligência Artificial</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #cc3333 0%, #ff4d4d 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #cc3333; margin: 34px 0 16px; border-bottom: 3px solid #ff4d4d; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #ff4d4d; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+
+        code { background: #fff0f0; color: #cc3333; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; }
+
+        .box { border: 2px solid #ff4d4d; border-radius: 8px; padding: 20px 24px; margin: 18px 0; background: #fff5f5; }
+        .box h4 { color: #cc3333; margin-bottom: 10px; }
+
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #ff4d4d; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .kw { color: #569cd6; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+
+        .code-label { background: #ff4d4d; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+        .perigo { background: #fdecea; border-left: 4px solid #c0392b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a231b; }
+        .certo-box { background: #eafaf1; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .conceito-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+        .conceito-grid > div { flex: 1 1 220px; border: 2px solid #ffd0d0; border-radius: 8px; padding: 16px 18px; background: #fffafa; }
+        .conceito-grid h4 { color: #cc3333; margin-bottom: 8px; font-size: 1em; }
+        .conceito-grid p { margin-bottom: 0; font-size: 0.95em; }
+
+        .comparativo { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+        .comparativo > div { flex: 1 1 260px; border-radius: 8px; padding: 16px 18px; }
+        .comparativo .ruim { background: #fdecea; border: 2px solid #f5b7b1; }
+        .comparativo .bom { background: #eafaf1; border: 2px solid #a3e4c1; }
+        .comparativo .tag { display: inline-block; font-size: 0.75em; font-weight: 700; padding: 2px 9px; border-radius: 10px; margin-bottom: 8px; color: #fff; }
+        .comparativo .ruim .tag { background: #c0392b; }
+        .comparativo .bom .tag { background: #1e8449; }
+        .comparativo p { margin-bottom: 0; font-style: italic; }
+
+        .exercicio { border: 2px solid #ff4d4d; border-radius: 8px; padding: 18px 22px; margin: 16px 0; background: #fff; }
+        .exercicio .num { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: #ff4d4d; color: #fff; font-weight: 700; margin-right: 8px; }
+        .exercicio h4 { display: inline; color: #cc3333; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #ff4d4d; font-size: 1.2em; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #ff4d4d; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🤖 Introdução à IA e Engenharia de Prompt</h1>
+        <p>Inteligência Artificial</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=inteligencia-artificial">← Voltar para Inteligência Artificial</a>
+
+    <div class="content">
+
+        <h2>1️⃣ O que é Inteligência Artificial, de verdade</h2>
+        <p>Esqueça a ideia de "robô que pensa" ou "máquina mágica". Na prática, uma IA como o ChatGPT, o Gemini ou o Claude é um <strong>sistema treinado com uma quantidade gigantesca de exemplos de texto</strong> (livros, sites, conversas, códigos) para aprender <strong>padrões</strong> de como as palavras costumam aparecer juntas.</p>
+        <p>Quando você faz uma pergunta, a IA não está "pensando" nem "sabendo" a resposta como uma pessoa sabe. Ela está calculando, palavra por palavra, <strong>qual é a continuação mais provável</strong> considerando tudo que já viu durante o treinamento e o que você escreveu. É estatística e padrão em uma escala enorme — não consciência.</p>
+
+        <div class="box">
+            <h4>Por que isso importa para você</h4>
+            <p style="margin-bottom: 0;">Entender que a IA "prevê a próxima palavra mais provável" explica também por que ela às vezes erra com muita confiança: ela não está checando um fato num banco de dados, está gerando o texto que <em>parece</em> mais correto com base em padrões. Vamos falar mais disso adiante.</p>
+        </div>
+
+        <h3>Os termos que você vai ouvir por aí</h3>
+        <div class="conceito-grid">
+            <div>
+                <h4>Inteligência Artificial (IA)</h4>
+                <p>O nome geral para sistemas de computador feitos para realizar tarefas que normalmente exigiriam raciocínio humano, como reconhecer imagens, entender texto ou tomar decisões.</p>
+            </div>
+            <div>
+                <h4>Machine Learning (Aprendizado de Máquina)</h4>
+                <p>Uma forma de fazer IA em que o sistema <strong>aprende com dados e exemplos</strong>, em vez de seguir regras escritas manualmente por um programador.</p>
+            </div>
+            <div>
+                <h4>IA Generativa</h4>
+                <p>IA que <strong>cria coisas novas</strong> — textos, imagens, músicas, código — em vez de só classificar ou prever números. É a categoria do ChatGPT, do Gemini e de geradores de imagem.</p>
+            </div>
+            <div>
+                <h4>LLM (Modelo de Linguagem)</h4>
+                <p>Sigla de <em>Large Language Model</em>. É o tipo de IA generativa especializada em <strong>texto</strong>: entender o que você escreve e gerar respostas em linguagem natural. ChatGPT, Gemini e Claude são LLMs.</p>
+            </div>
+        </div>
+        <p>Ou seja: <strong>IA</strong> é a categoria geral, <strong>Machine Learning</strong> é a técnica de aprender com dados, <strong>IA Generativa</strong> é quando o sistema cria conteúdo novo, e <strong>LLM</strong> é o modelo de linguagem específico que você usa para conversar.</p>
+
+        <h2>2️⃣ Para que serve no dia a dia</h2>
+        <p>IA generativa já faz parte de tarefas comuns de estudo e trabalho. Alguns exemplos reais:</p>
+        <ul>
+            <li><strong>Assistentes de texto</strong> (ChatGPT, Gemini, Claude) — tirar dúvidas, explicar um assunto de outra forma, revisar um texto, ajudar a organizar ideias.</li>
+            <li><strong>Geração de imagem</strong> — criar ilustrações, artes e rascunhos visuais a partir de uma descrição em texto.</li>
+            <li><strong>Tradução</strong> — traduzir textos entre idiomas com boa qualidade e rapidez.</li>
+            <li><strong>Resumo de textos</strong> — transformar um artigo longo ou um capítulo de livro em um resumo dos pontos principais.</li>
+            <li><strong>Ajuda em programação</strong> — explicar um erro de código, sugerir uma função, ajudar a entender uma linguagem nova.</li>
+        </ul>
+
+        <div class="perigo">
+            <strong>⚠️ Mas atenção às limitações:</strong> a IA pode <strong>errar com total confiança</strong>, um fenômeno chamado de <strong>"alucinação"</strong> — quando ela inventa uma informação, uma fonte ou um dado que parece real mas não é verdadeiro. Isso acontece porque, como vimos, ela está prevendo o texto mais provável, não consultando uma fonte confirmada. Por isso: <strong>nunca use uma resposta de IA sem checar</strong>, principalmente em datas, números, citações e fatos importantes.
+        </div>
+
+        <h2>3️⃣ Engenharia de Prompt — a parte prática</h2>
+        <p><strong>Prompt</strong> é o nome que se dá à instrução ou pergunta que você escreve para uma IA. "Engenharia de prompt" é simplesmente a habilidade de <strong>escrever bons pedidos</strong> para conseguir boas respostas — quanto melhor o prompt, melhor (e mais útil) é o resultado.</p>
+
+        <h3>Boas práticas na hora de escrever um prompt</h3>
+        <ul>
+            <li><strong>Seja específico.</strong> Em vez de um pedido vago, diga exatamente o que você quer.</li>
+            <li><strong>Dê contexto.</strong> Explique para quem é, com que finalidade, qual é o nível de conhecimento envolvido.</li>
+            <li><strong>Peça o formato de saída.</strong> Quer uma lista? Uma tabela? Um texto curto? Diga isso no prompt.</li>
+            <li><strong>Dê exemplos quando possível.</strong> Mostrar um exemplo do que você espera ajuda demais a IA acertar o tom e o formato.</li>
+            <li><strong>Itere.</strong> Se a primeira resposta não veio boa, não desista — refine o prompt, adicione mais detalhes ou peça para a IA ajustar algo específico da resposta anterior.</li>
+        </ul>
+
+        <h3>Prompt ruim × prompt bom</h3>
+
+        <div class="comparativo">
+            <div class="ruim">
+                <span class="tag">PROMPT RUIM</span>
+                <p>"me fale sobre cachorros"</p>
+            </div>
+            <div class="bom">
+                <span class="tag">PROMPT BOM</span>
+                <p>"Liste 5 raças de cachorro boas para quem mora em apartamento pequeno, com 1 frase explicando o motivo de cada uma."</p>
+            </div>
+        </div>
+
+        <div class="comparativo">
+            <div class="ruim">
+                <span class="tag">PROMPT RUIM</span>
+                <p>"me ajuda com meu trabalho de história"</p>
+            </div>
+            <div class="bom">
+                <span class="tag">PROMPT BOM</span>
+                <p>"Estou no 2º ano do ensino médio e preciso entender a Revolução Industrial para uma prova. Explique em tópicos simples: o que foi, quando aconteceu e 3 consequências principais."</p>
+            </div>
+        </div>
+
+        <div class="comparativo">
+            <div class="ruim">
+                <span class="tag">PROMPT RUIM</span>
+                <p>"escreve um email"</p>
+            </div>
+            <div class="bom">
+                <span class="tag">PROMPT BOM</span>
+                <p>"Escreva um e-mail formal e curto (até 5 frases) pedindo ao professor um novo prazo para entregar um trabalho, explicando que fiquei doente essa semana."</p>
+            </div>
+        </div>
+
+        <div class="aviso">💡 Repare no padrão: os prompts bons dizem <strong>quem</strong> é o público, <strong>o quê</strong> exatamente é preciso, e <strong>como</strong> a resposta deve ser entregue (formato, tamanho, tom).</div>
+
+        <h2>4️⃣ Atividade prática guiada</h2>
+        <p>Abra uma IA de conversação gratuita — <strong>ChatGPT</strong>, <strong>Gemini</strong>, <strong>Claude</strong> ou outra de sua preferência — e complete os 3 exercícios abaixo, na ordem.</p>
+
+        <div class="exercicio">
+            <span class="num">1</span><h4>Prompt simples</h4>
+            <p style="margin-top: 10px;">Escreva um prompt bem simples e direto, por exemplo: <code>"me dê dicas de estudo"</code>. Observe a resposta: ela é genérica? Específica? Faltou alguma coisa que você gostaria de saber?</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="num">2</span><h4>Mesmo pedido, mais contexto</h4>
+            <p style="margin-top: 10px;">Reescreva o mesmo pedido do exercício 1, mas agora com contexto e formato — por exemplo: <code>"Estou estudando para uma prova de matemática sobre equações do 2º grau, tenho 3 dias antes da prova e costumo me distrair fácil. Me dê um plano de estudo de 3 dias, em tópicos."</code> Compare as duas respostas: o que mudou?</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="num">3</span><h4>Desafio aberto</h4>
+            <p style="margin-top: 10px;">Escolha um assunto que você está estudando de verdade agora (de qualquer matéria) e peça para a IA te ajudar a planejar um <strong>resumo</strong> dele, especificando: os tópicos que você quer que apareçam, o nível de detalhe (resumo bem curto ou mais completo) e o formato (tópicos, texto corrido, tabela). Leia o resultado com atenção — ele cobriu bem o que você pediu?</p>
+        </div>
+
+        <h2>5️⃣ Uso responsável</h2>
+        <ul>
+            <li><strong>Não copie e cole sem checar.</strong> Como vimos, a IA pode alucinar — sempre confirme fatos, números e datas importantes em outra fonte.</li>
+            <li><strong>Não use para fazer o trabalho por você sem entender o conteúdo.</strong> Use a IA para aprender e destravar ideias, não para substituir o seu próprio entendimento — no fim, quem precisa saber a matéria é você, não a IA.</li>
+            <li><strong>Cuidado com dados pessoais.</strong> Evite colocar em prompts informações sensíveis como CPF, endereço, senhas ou dados de terceiros — o que você digita pode ficar registrado no serviço.</li>
+        </ul>
+
+        <h2>✅ Checklist da atividade</h2>
+        <ul class="checklist">
+            <li>Entendi a diferença entre IA, Machine Learning, IA Generativa e LLM.</li>
+            <li>Sei explicar por que a IA pode "alucinar" e por que preciso checar as respostas.</li>
+            <li>Pratiquei as boas práticas de prompt: ser específico, dar contexto, pedir formato, usar exemplos e iterar.</li>
+            <li>Completei os 3 exercícios guiados numa IA de conversação gratuita.</li>
+            <li>Entendi os cuidados de uso responsável, incluindo dados pessoais.</li>
+        </ul>
+
+    </div>
+
+    <footer>Microlins São José — Atividade de Inteligência Artificial</footer>
+</div>
+</body>
+</html>

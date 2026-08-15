@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade 2 — Site Pessoal com Python</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #0f2027 0%, #16324f 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
+
+    header { background: linear-gradient(135deg, #306998 0%, #1e3a5f 100%); color: #fff; padding: 40px 50px; text-align: center; }
+    header h1 { font-size: 2.2em; margin-bottom: 10px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .duracao-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,212,59,0.2); border: 1px solid rgba(255,212,59,0.6);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .voltar-topo { display: block; padding: 10px 50px; color: #306998; text-decoration: none; font-weight: 600; }
+
+    /* Layout principal em flex: colunas lado a lado, cada uma ocupando
+       espaço proporcional — nada de coluna única estreitinha no meio da tela. */
+    .layout { display: flex; flex-wrap: wrap; gap: 0; flex: 1; width: 100%; min-width: 0; }
+    .col-principal { flex: 3 1 560px; padding: 40px 50px; min-width: 0; }
+    .col-lateral { flex: 1 1 300px; padding: 40px 40px; background: #eef4fa; border-left: 2px solid #d6e6f2; }
+
+    h2 { color: #1e3a5f; margin: 34px 0 16px; border-bottom: 3px solid #306998; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #306998; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #eef2f6; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1e3a5f; }
+
+    .box { background: #eef4fa; border: 2px solid #306998; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #1e3a5f; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #ffd43b;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #dcdcaa; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #b5cea8; }
+    .code-label {
+        background: #306998; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+    .code-label.py { background: #ffd43b; color: #1e3a5f; }
+
+    /* Caixa de "modelo": mostra UM exemplo e deixa claro que é ponto de
+       partida para o aluno duplicar/adaptar à vontade, não um número
+       fixo de itens obrigatórios. */
+    .modelo { border: 2px dashed #306998; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+    .modelo-tag {
+        display: inline-block; background: #dbeafe; color: #1e3a5f; font-size: 0.78em; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+    }
+    .modelo p:last-child { margin-bottom: 0; }
+
+    .arvore-pastas { font-family: 'Courier New', monospace; }
+
+    .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+    .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #721c24; }
+
+    .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+    .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+    .passos li::before {
+        counter-increment: passo; content: counter(passo);
+        position: absolute; left: 0; top: 0;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: #306998; color: #fff; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+    }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before {
+        content: "☐"; position: absolute; left: 0; top: 0; color: #306998; font-size: 1.2em;
+    }
+
+    .sidebar-bloco { margin-bottom: 30px; }
+    .sidebar-bloco h3 { color: #1e3a5f; font-size: 1em; text-transform: uppercase; border-bottom: 2px solid #306998; padding-bottom: 8px; margin-top: 0; margin-bottom: 14px; }
+    .sidebar-bloco ul { margin-left: 20px; font-size: 0.92em; }
+    .sidebar-bloco li { margin-bottom: 8px; }
+
+    .tema-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tema-tag { background: #dbeafe; color: #1e3a5f; padding: 5px 12px; border-radius: 16px; font-size: 0.82em; font-weight: 600; }
+
+    .fluxo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 16px 0; font-size: 0.9em; }
+    .fluxo span { background: #eef4fa; border: 1px solid #d6e6f2; border-radius: 8px; padding: 8px 12px; font-weight: 600; color: #1e3a5f; }
+    .fluxo .seta { background: none; border: none; color: #306998; font-weight: 700; padding: 0; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 900px) {
+        .layout { flex-direction: column; }
+        .col-principal, .col-lateral { width: 100%; max-width: 100%; }
+        .col-lateral { border-left: none; border-top: 2px solid #d6e6f2; }
+    }
+    @media (max-width: 600px) {
+        header { padding: 28px 22px; }
+        .voltar-topo { padding: 10px 22px; }
+        .col-principal, .col-lateral { padding: 26px 22px; }
+        h1 { font-size: 1.5em; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐍 Atividade 2 — Site Pessoal com Python</h1>
+        <p>Um site sobre você (portfólio), agora com um cérebro em Python por trás usando o Flask</p>
+        <span class="duracao-badge">Sem prazo fixo — salve seu progresso no Git a cada etapa</span>
+    </header>
+
+    <a class="voltar-topo" href="../../atividade.html?curso=criar-seu-site">← Voltar para Criando seu Site</a>
+
+    <div class="layout">
+        <main class="col-principal">
+            <h2>🎯 O que você vai construir</h2>
+            <p>Na Atividade 1 você fez um site só com HTML, CSS e JavaScript — tudo acontecia no navegador. Agora você vai construir o seu <strong>site pessoal</strong> (um portfólio: uma página que fala de você, mostra seus projetos e deixa as pessoas entrarem em contato) e vai dar a ele um <strong>back-end em Python</strong>.</p>
+            <p>Ou seja: além da parte visual, vai existir um programa em Python rodando "por trás" do site — é ele que vai <strong>entregar</strong> as páginas, <strong>montar</strong> a lista de projetos a partir de dados, <strong>receber</strong> as mensagens do formulário de contato e até <strong>contar</strong> quantas visitas o site teve.</p>
+
+            <div class="box">
+                <h4>🎨 Tema livre, mas sobre você</h4>
+                <p>O conteúdo é você: seu nome, uma foto (ou um avatar), o que você gosta de fazer, os projetos que já criou (inclusive o site da Atividade 1!), e um jeito de te encontrar. As cores, o estilo e a organização ficam por sua conta — capriche, é a sua cara na internet.</p>
+            </div>
+
+            <h2>🧠 Front-end e back-end — qual a diferença?</h2>
+            <p>Até agora você só mexeu no <strong>front-end</strong>: a parte que roda no navegador do visitante (HTML, CSS, JavaScript). O <strong>back-end</strong> é a parte que roda num servidor, longe do visitante — é onde entra o Python.</p>
+
+            <div class="fluxo">
+                <span>Visitante (navegador)</span>
+                <span class="seta">→ pede a página →</span>
+                <span>Python / Flask (servidor)</span>
+                <span class="seta">→ devolve o HTML →</span>
+                <span>Visitante vê o site</span>
+            </div>
+
+            <p>Por que colocar Python no meio disso? Porque o back-end consegue fazer coisas que o HTML sozinho não faz:</p>
+            <ul>
+                <li><strong>Guardar informação</strong> — salvar as mensagens que as pessoas mandam pelo formulário;</li>
+                <li><strong>Montar páginas dinâmicas</strong> — gerar a lista de projetos a partir de uma lista em Python, sem você reescrever o HTML de cada card na mão;</li>
+                <li><strong>Reagir a ações</strong> — contar visitas, mostrar conteúdo diferente, processar dados.</li>
+            </ul>
+            <p>A ferramenta que vamos usar para isso se chama <strong>Flask</strong> — um "microframework" de Python feito exatamente para criar sites e pequenos servidores web com pouca configuração.</p>
+
+            <h2>🔧 Instalando o Python e o Flask</h2>
+            <p>Antes de tudo, o Python precisa estar instalado no computador. No laboratório provavelmente já está — confira abrindo o terminal (Prompt de Comando no Windows) e digitando:</p>
+            <div class="code-block"><span class="code-label">terminal</span>python --version</div>
+            <p>Se aparecer algo como <code>Python 3.12.0</code>, está tudo certo. Se der erro, baixe o Python em <code>python.org/downloads</code> e, no Windows, <strong>marque a caixinha "Add Python to PATH"</strong> durante a instalação.</p>
+
+            <p>Com o Python funcionando, instale o Flask usando o <code>pip</code> (o instalador de pacotes do Python):</p>
+            <div class="code-block"><span class="code-label">terminal</span><span class="cm"># instala o Flask no computador</span>
+pip install flask</div>
+
+            <div class="highlight">
+                <strong>Dica profissional (opcional):</strong> programadores costumam criar um "ambiente virtual" (<code>venv</code>) para cada projeto, para não misturar as bibliotecas. Se quiser aprender, rode <code>python -m venv venv</code> e depois <code>venv\Scripts\activate</code> (Windows) ou <code>source venv/bin/activate</code> (Linux/Mac) antes do <code>pip install</code>. Não é obrigatório para esta atividade, mas é um ótimo hábito.
+            </div>
+
+            <h2>📂 Planejamento de pastas</h2>
+            <p>Um projeto Flask tem uma organização própria: o Python fica na raiz, os HTML vão numa pasta <code>templates/</code> e o CSS/imagens numa pasta <code>static/</code>. O Flask procura os arquivos nesses lugares automaticamente. Mantenha simples:</p>
+
+            <div class="code-block arvore-pastas"><span class="code-label">estrutura do projeto</span>
+meu-portfolio/
+├── app.py                <span class="cm"># o programa Python (o back-end)</span>
+├── requirements.txt       <span class="cm"># lista o que precisa instalar (flask)</span>
+├── templates/             <span class="cm"># aqui vão os arquivos .html</span>
+│   ├── index.html          <span class="cm"># sua página principal</span>
+│   └── obrigado.html        <span class="cm"># página de "mensagem enviada"</span>
+└── static/                 <span class="cm"># CSS, imagens, js</span>
+    ├── style.css
+    └── imagens/
+        └── foto.jpg</div>
+
+            <div class="highlight">
+                <strong>Por que essa divisão?</strong> O Flask tem uma regra: HTML fica em <code>templates/</code> e arquivos "estáticos" (CSS, imagens, JS) ficam em <code>static/</code>. Você não escolhe os nomes dessas duas pastas — eles têm que ser exatamente <code>templates</code> e <code>static</code>, senão o Flask não encontra.
+            </div>
+
+            <p>Continuamos com a regra da atividade anterior: <strong>no máximo 3 páginas HTML</strong>. Aqui já usamos duas (<code>index.html</code> e <code>obrigado.html</code>) — sobra espaço para no máximo mais uma, se você quiser.</p>
+
+            <h2>👋 Primeiro "Olá" com Flask</h2>
+            <p>Vamos começar pelo menor site Flask possível, só para ver o Python servindo uma página. Crie o arquivo <code>app.py</code> na raiz do projeto:</p>
+            <div class="code-block"><span class="code-label py">app.py</span><span class="cm"># importa as ferramentas do Flask que vamos usar</span>
+<span class="tag">from</span> flask <span class="tag">import</span> Flask, render_template
+
+<span class="cm"># cria a aplicação</span>
+app = Flask(__name__)
+
+<span class="cm"># "quando alguém acessar a página inicial (/), rode esta função"</span>
+<span class="prop">@app.route</span>(<span class="str">"/"</span>)
+<span class="tag">def</span> <span class="attr">inicio</span>():
+    <span class="tag">return</span> <span class="str">"Olá! Meu site em Python está no ar."</span>
+
+<span class="cm"># liga o servidor quando você roda "python app.py"</span>
+<span class="tag">if</span> __name__ == <span class="str">"__main__"</span>:
+    app.run(debug=<span class="val">True</span>)</div>
+
+            <p>Agora rode no terminal, dentro da pasta do projeto:</p>
+            <div class="code-block"><span class="code-label">terminal</span>python app.py</div>
+            <p>O Flask vai mostrar um endereço, geralmente <code>http://127.0.0.1:5000</code>. Abra esse endereço no navegador — está no ar! O <code>127.0.0.1</code> quer dizer "este próprio computador"; o site só existe na sua máquina por enquanto, o que é perfeito para desenvolver.</p>
+
+            <div class="box">
+                <h4>🔁 O que é o <code>debug=True</code>?</h4>
+                <p>Com o modo debug ligado, toda vez que você salvar o <code>app.py</code> o servidor se reinicia sozinho, e os erros aparecem detalhados na tela. É o modo ideal para aprender. Para parar o servidor, volte ao terminal e aperte <code>Ctrl + C</code>.</p>
+            </div>
+
+            <h2>📄 Servindo a sua página de verdade</h2>
+            <p>Devolver texto puro não é lá muito bonito. Vamos fazer o Python entregar um arquivo HTML completo. Coloque seu HTML em <code>templates/index.html</code> e troque a função para usar <code>render_template</code>:</p>
+            <div class="code-block"><span class="code-label py">app.py</span><span class="prop">@app.route</span>(<span class="str">"/"</span>)
+<span class="tag">def</span> <span class="attr">inicio</span>():
+    <span class="cm"># procura templates/index.html e devolve pronto</span>
+    <span class="tag">return</span> render_template(<span class="str">"index.html"</span>)</div>
+
+            <p>E o <code>templates/index.html</code> é um HTML normal, igual aos que você já sabe fazer. Só muda uma coisa: para linkar o CSS e as imagens da pasta <code>static/</code>, use <code>url_for</code> em vez do caminho direto:</p>
+            <div class="code-block"><span class="code-label">templates/index.html</span><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang=</span><span class="str">"pt-BR"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>Portfólio da(o) SeuNome<span class="tag">&lt;/title&gt;</span>
+  <span class="cm">&lt;!-- o Flask monta o caminho certo para static/style.css --&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"{{ url_for('static', filename='style.css') }}"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;h1&gt;</span>Oi, eu sou a(o) SeuNome<span class="tag">&lt;/h1&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"{{ url_for('static', filename='imagens/foto.jpg') }}"</span> <span class="attr">alt=</span><span class="str">"Minha foto"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+            <p>Aqueles <code>{{ ... }}</code> são do <strong>Jinja</strong>, a linguagem de template do Flask: pedaços que o Python preenche antes de mandar a página para o navegador. Guarde essa ideia — ela é a chave da próxima seção.</p>
+
+            <h2>✨ Conteúdo dinâmico — a lista de projetos</h2>
+            <p>Aqui o Python começa a brilhar. Em vez de escrever na mão o HTML de cada projeto do seu portfólio, você guarda os projetos numa <strong>lista em Python</strong> e deixa o Jinja repetir o card para cada um. Adicionar um projeto novo passa a ser só acrescentar uma linha na lista.</p>
+
+            <div class="code-block"><span class="code-label py">app.py</span><span class="cm"># uma lista de projetos — cada um é um "dicionário" (nome: valor)</span>
+projetos = [
+    {<span class="str">"nome"</span>: <span class="str">"Meu site SaaS"</span>, <span class="str">"desc"</span>: <span class="str">"Landing page feita na Atividade 1."</span>, <span class="str">"link"</span>: <span class="str">"#"</span>},
+    {<span class="str">"nome"</span>: <span class="str">"Jogo da forca"</span>, <span class="str">"desc"</span>: <span class="str">"Um joguinho em JavaScript."</span>, <span class="str">"link"</span>: <span class="str">"#"</span>},
+]
+
+<span class="prop">@app.route</span>(<span class="str">"/"</span>)
+<span class="tag">def</span> <span class="attr">inicio</span>():
+    <span class="cm"># manda a lista para o template com o nome "projetos"</span>
+    <span class="tag">return</span> render_template(<span class="str">"index.html"</span>, projetos=projetos)</div>
+
+            <p>E no template você usa um <strong>laço <code>for</code> do Jinja</strong> para gerar um card por projeto. Repare que o HTML do card é escrito <strong>uma vez só</strong>:</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · o Python repete pra cada projeto da lista</span>
+                <div class="code-block"><span class="code-label">templates/index.html</span><span class="tag">&lt;section</span> <span class="attr">class=</span><span class="str">"projetos"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Meus projetos<span class="tag">&lt;/h2&gt;</span>
+
+  {% for projeto in projetos %}
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>{{ projeto.nome }}<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p&gt;</span>{{ projeto.desc }}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"{{ projeto.link }}"</span><span class="tag">&gt;</span>Ver projeto<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  {% endfor %}
+<span class="tag">&lt;/section&gt;</span></div>
+                <p>O <code>{% for projeto in projetos %}</code> ... <code>{% endfor %}</code> repete tudo que está no meio para cada item da lista. Adicione, tire ou mude projetos <strong>só na lista do <code>app.py</code></strong> — o HTML não precisa ser tocado. Bote quantos projetos quiser, é o seu portfólio.</p>
+            </div>
+
+            <h2>📨 Formulário de contato que o Python recebe</h2>
+            <p>Na Atividade 1, o formulário só mostrava um alerta no navegador — não ia a lugar nenhum. Agora o Python vai <strong>receber</strong> os dados de verdade e <strong>salvar</strong> num arquivo. Primeiro, o formulário no HTML precisa dizer para onde enviar (<code>action</code>) e como (<code>method="post"</code>):</p>
+            <div class="code-block"><span class="code-label">templates/index.html</span><span class="tag">&lt;form</span> <span class="attr">action=</span><span class="str">"/contato"</span> <span class="attr">method=</span><span class="str">"post"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type=</span><span class="str">"text"</span>  <span class="attr">name=</span><span class="str">"nome"</span>     <span class="attr">placeholder=</span><span class="str">"Seu nome"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type=</span><span class="str">"email"</span> <span class="attr">name=</span><span class="str">"email"</span>    <span class="attr">placeholder=</span><span class="str">"Seu e-mail"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;textarea</span> <span class="attr">name=</span><span class="str">"mensagem"</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">type=</span><span class="str">"submit"</span><span class="tag">&gt;</span>Enviar<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></div>
+            <p>O <code>name</code> de cada campo é o nome pelo qual o Python vai buscar o valor. Agora, no <code>app.py</code>, uma nova rota recebe esse envio:</p>
+            <div class="code-block"><span class="code-label py">app.py</span><span class="cm"># importe também "request" e "redirect" lá em cima:</span>
+<span class="cm"># from flask import Flask, render_template, request, redirect</span>
+
+<span class="prop">@app.route</span>(<span class="str">"/contato"</span>, methods=[<span class="str">"POST"</span>])
+<span class="tag">def</span> <span class="attr">contato</span>():
+    <span class="cm"># pega o que o visitante digitou (pelo name de cada campo)</span>
+    nome = request.form[<span class="str">"nome"</span>]
+    email = request.form[<span class="str">"email"</span>]
+    mensagem = request.form[<span class="str">"mensagem"</span>]
+
+    <span class="cm"># salva no fim do arquivo mensagens.txt (o "a" = append/acrescentar)</span>
+    <span class="tag">with</span> open(<span class="str">"mensagens.txt"</span>, <span class="str">"a"</span>, encoding=<span class="str">"utf-8"</span>) <span class="tag">as</span> arquivo:
+        arquivo.write(<span class="str">f"{nome} ({email}): {mensagem}\n"</span>)
+
+    <span class="cm"># manda o visitante para a página de agradecimento</span>
+    <span class="tag">return</span> redirect(<span class="str">"/obrigado"</span>)
+
+
+<span class="prop">@app.route</span>(<span class="str">"/obrigado"</span>)
+<span class="tag">def</span> <span class="attr">obrigado</span>():
+    <span class="tag">return</span> render_template(<span class="str">"obrigado.html"</span>)</div>
+            <p>Pronto: quando alguém preenche e envia, o Python guarda a mensagem em <code>mensagens.txt</code> e leva a pessoa para a página <code>obrigado.html</code> (que pode ser bem simples: "Recebi sua mensagem, obrigado!"). Aquele <code>f"..."</code> é uma <strong>f-string</strong> — um jeito do Python montar texto colando o valor das variáveis dentro das chaves <code>{}</code>.</p>
+
+            <div class="warning">
+                <strong>Cuidado com dados de verdade:</strong> o <code>mensagens.txt</code> vai guardar o que as pessoas escreverem. Como é um exercício local, tudo bem — mas <strong>não suba esse arquivo para o GitHub</strong> (veja o <code>.gitignore</code> mais abaixo). Nunca coloque senhas ou dados sensíveis num arquivo assim.
+            </div>
+
+            <h2>🔢 Bônus — um contador de visitas</h2>
+            <p>Para praticar mais Python, que tal contar quantas vezes a página foi aberta? A ideia: guardar o número num arquivo, ler, somar 1, salvar de volta e mandar para o template.</p>
+            <div class="code-block"><span class="code-label py">app.py</span><span class="tag">def</span> <span class="attr">contar_visita</span>():
+    <span class="tag">try</span>:
+        <span class="tag">with</span> open(<span class="str">"visitas.txt"</span>) <span class="tag">as</span> f:
+            n = int(f.read())      <span class="cm"># lê o número que já estava salvo</span>
+    <span class="tag">except</span> FileNotFoundError:
+        n = <span class="val">0</span>                      <span class="cm"># primeira visita: ainda não existe o arquivo</span>
+
+    n = n + <span class="val">1</span>                      <span class="cm"># conta mais esta visita</span>
+    <span class="tag">with</span> open(<span class="str">"visitas.txt"</span>, <span class="str">"w"</span>) <span class="tag">as</span> f:
+        f.write(str(n))            <span class="cm"># salva o novo total</span>
+    <span class="tag">return</span> n
+
+<span class="prop">@app.route</span>(<span class="str">"/"</span>)
+<span class="tag">def</span> <span class="attr">inicio</span>():
+    total = contar_visita()
+    <span class="tag">return</span> render_template(<span class="str">"index.html"</span>, projetos=projetos, visitas=total)</div>
+            <p>E no template, mostre onde quiser: <code>&lt;p&gt;Esta página já foi vista {{ visitas }} vezes.&lt;/p&gt;</code>. Simples assim — leitura de arquivo, tratamento de erro com <code>try/except</code> e uma função, tudo em Python.</p>
+
+            <h2>🐍 Python básico que você vai usar</h2>
+            <p>Você não precisa dominar Python inteiro para esta atividade — mas vale reconhecer estas peças, que aparecem em todos os exemplos acima:</p>
+            <div class="code-block"><span class="code-label py">python — miniguia</span><span class="cm"># variável: uma "caixa" com um valor</span>
+nome = <span class="str">"Ana"</span>
+idade = <span class="val">17</span>
+
+<span class="cm"># f-string: monta texto colando variáveis dentro de { }</span>
+frase = <span class="str">f"{nome} tem {idade} anos"</span>
+
+<span class="cm"># lista: vários valores em ordem</span>
+linguagens = [<span class="str">"HTML"</span>, <span class="str">"CSS"</span>, <span class="str">"Python"</span>]
+
+<span class="cm"># dicionário: pares nome -> valor</span>
+projeto = {<span class="str">"nome"</span>: <span class="str">"Portfólio"</span>, <span class="str">"ano"</span>: <span class="val">2026</span>}
+
+<span class="cm"># laço for: repete algo para cada item</span>
+<span class="tag">for</span> lang <span class="tag">in</span> linguagens:
+    print(lang)
+
+<span class="cm"># condição: decide o que fazer</span>
+<span class="tag">if</span> idade &gt;= <span class="val">18</span>:
+    print(<span class="str">"maior de idade"</span>)
+<span class="tag">else</span>:
+    print(<span class="str">"menor de idade"</span>)
+
+<span class="cm"># função: um bloco de código com nome, que você chama quando quiser</span>
+<span class="tag">def</span> <span class="attr">saudacao</span>(pessoa):
+    <span class="tag">return</span> <span class="str">f"Olá, {pessoa}!"</span></div>
+            <p>Se bater curiosidade de ir além, os links da lateral apontam a documentação oficial do Python e do Flask, e o guia de Git da aba continua valendo para salvar o progresso.</p>
+
+            <h2>⚙️ Requisitos técnicos</h2>
+            <p>O visual e o conteúdo são livres, mas estes pontos valem para qualquer versão do seu portfólio:</p>
+            <ul>
+                <li><strong>Roda com Flask</strong> — o site é servido por <code>python app.py</code>, não é só um HTML aberto direto no navegador;</li>
+                <li><strong>Pelo menos uma parte dinâmica</strong> — a lista de projetos montada por Jinja (o <code>for</code>) é o mínimo; o contador de visitas conta como extra;</li>
+                <li><strong>Formulário de contato funcionando</strong> — o Python recebe o envio e salva/reage a ele;</li>
+                <li><strong>HTML semântico e CSS seu</strong> — as boas práticas da Atividade 1 continuam valendo;</li>
+                <li><strong>Responsivo</strong> — precisa ficar bom no celular e no computador (use <code>@media</code>);</li>
+                <li><strong>Organização Flask</strong> — HTML em <code>templates/</code>, CSS e imagens em <code>static/</code>.</li>
+            </ul>
+
+            <h2>📦 Entrega — como salvar seu progresso</h2>
+            <p>Como nas outras atividades, <strong>não há data de entrega</strong>: você desenvolve com calma e vai salvando no Git. Uma diferença importante de projetos Python: existem arquivos que <strong>não</strong> devem ir para o repositório (o cache do Python, o ambiente virtual e os dados gerados). Crie um arquivo <code>.gitignore</code> na raiz com:</p>
+            <div class="code-block"><span class="code-label">.gitignore</span><span class="cm"># cache que o Python gera sozinho</span>
+__pycache__/
+*.pyc
+
+<span class="cm"># ambiente virtual, se você criou um</span>
+venv/
+
+<span class="cm"># dados gerados pelo site (não são código)</span>
+mensagens.txt
+visitas.txt</div>
+
+            <p>É boa prática também anotar o que o projeto precisa para rodar, num <code>requirements.txt</code>:</p>
+            <div class="code-block"><span class="code-label">requirements.txt</span>flask</div>
+
+            <div class="success">
+                Sempre que terminar uma parte (subir o Flask, servir a página, fazer o <code>for</code> dos projetos, o formulário...), faça um commit descrevendo o que fez e dê <code>git push</code>. Precisa relembrar os comandos? Veja o guia <a href="site-git-repositorio.html" style="color:#0a5c2e;font-weight:700;">Git e GitHub — Criando seu Repositório</a>.
+            </div>
+
+            <h3>Sugestão de commits ao longo do projeto</h3>
+            <div class="code-block"><span class="code-label">terminal</span>git commit -m <span class="str">"Subir servidor Flask com um Olá inicial"</span>
+git commit -m <span class="str">"Servir index.html pelo Flask com CSS em static/"</span>
+git commit -m <span class="str">"Montar a lista de projetos com um for do Jinja"</span>
+git commit -m <span class="str">"Receber e salvar o formulário de contato no Python"</span>
+git commit -m <span class="str">"Adicionar contador de visitas"</span></div>
+
+            <h2>✅ Checklist antes de considerar concluído</h2>
+            <ul class="checklist">
+                <li>O site sobe com <code>python app.py</code> e abre em <code>http://127.0.0.1:5000</code>;</li>
+                <li>A página principal é servida pelo Flask com <code>render_template</code>, e o CSS vem de <code>static/</code> via <code>url_for</code>;</li>
+                <li>A seção de projetos é gerada por um <code>for</code> do Jinja a partir de uma lista no <code>app.py</code>;</li>
+                <li>O formulário de contato envia por <code>method="post"</code> e o Python recebe e salva a mensagem;</li>
+                <li>O site é responsivo (funciona no celular e no computador);</li>
+                <li>Existe um <code>.gitignore</code> ignorando <code>__pycache__/</code>, <code>venv/</code> e os arquivos de dados;</li>
+                <li>Existe um <code>requirements.txt</code> com <code>flask</code>;</li>
+                <li>O repositório tem vários commits ao longo do tempo, não um único commit final;</li>
+                <li>Os arquivos seguem a estrutura Flask: <code>app.py</code>, <code>templates/</code>, <code>static/</code>.</li>
+            </ul>
+        </main>
+
+        <aside class="col-lateral">
+            <div class="sidebar-bloco">
+                <h3>Nesta atividade</h3>
+                <ul>
+                    <li><strong>Nível:</strong> Intermediário</li>
+                    <li><strong>Pré-requisito:</strong> Atividade 1 + guia de Git</li>
+                    <li><strong>Novidade:</strong> Python + Flask (back-end)</li>
+                    <li><strong>Prazo:</strong> sem prazo fixo</li>
+                    <li><strong>Entrega:</strong> commits no seu repositório</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Front vs Back-end</h3>
+                <p style="font-size:0.9em;color:#555;"><strong>Front-end</strong> = o que roda no navegador (HTML, CSS, JS). <strong>Back-end</strong> = o programa que roda no servidor (aqui, Python/Flask). Esta atividade junta os dois.</p>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Ideias de portfólio</h3>
+                <div class="tema-tags">
+                    <span class="tema-tag">Sobre mim</span>
+                    <span class="tema-tag">Meus projetos</span>
+                    <span class="tema-tag">Currículo</span>
+                    <span class="tema-tag">Hobbies</span>
+                    <span class="tema-tag">Blog pessoal</span>
+                    <span class="tema-tag">Página de links</span>
+                    <span class="tema-tag">Galeria de fotos</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Para aprender mais</h3>
+                <ul>
+                    <li>python.org (baixar + docs)</li>
+                    <li>Flask — flask.palletsprojects.com</li>
+                    <li>Jinja (templates do Flask)</li>
+                    <li>Guia de Git da aba</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Lembrete</h3>
+                <p style="font-size:0.9em;color:#555;">Rode o servidor cedo e vá testando aos poucos. Cada vez que algo novo funcionar, é hora de um commit — não espere o portfólio inteiro ficar pronto.</p>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p><strong>Criando seu Site</strong> — Atividade 2 de 5</p>
+        <p>Microlins São José — HTML, CSS, JavaScript e Python aplicados a um site pessoal</p>
+    </footer>
+</div>
+</body>
+</html>

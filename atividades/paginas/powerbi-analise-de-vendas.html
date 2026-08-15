@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Vendas — Power BI</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #8a6a10 0%, #c9a227 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #8a6a10; margin: 34px 0 16px; border-bottom: 3px solid #c9a227; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #c9a227; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+        a { color: #8a6a10; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #c9a227;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #f7f5ea; border: 2px solid #c9a227; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #8a6a10; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #c9a227; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #c9a227; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📈 Análise de Vendas</h1>
+        <p>Power BI</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=power-bi">← Voltar para Power BI</a>
+
+    <div class="content">
+        <h2>0️⃣ Parte 0 — Baixe a planilha</h2>
+        <ol class="passos">
+            <li>Baixe a Planilha do Excel por meio do link abaixo:<br><a href="https://microapp.x10.mx/basedados.html" target="_blank" rel="noopener">https://microapp.x10.mx/basedados.html</a></li>
+            <li>Baixe o arquivo <strong>"Controle de Vendas"</strong></li>
+            <li>Salve na Pasta <strong>Documentos</strong></li>
+        </ol>
+
+        <h2>1️⃣ Parte 1 — Importação</h2>
+        <ol class="passos">
+            <li>Abra o Power BI</li>
+            <li>Clique em <strong>Obter Dados → Excel</strong></li>
+            <li>Importe a tabela de vendas</li>
+            <li>Clique em <strong>Carregar</strong></li>
+        </ol>
+
+        <h2>2️⃣ Parte 2 — Tratamento de dados</h2>
+        <p>No <strong>Power Query</strong>:</p>
+        <ul>
+            <li>Verifique se:
+                <ul>
+                    <li><strong>Data</strong> está como <em>Data</em></li>
+                    <li><strong>Preço_Unitário</strong> e <strong>Total</strong> estão como <em>Número decimal</em></li>
+                </ul>
+            </li>
+            <li>Clique em <strong>Fechar e Aplicar</strong></li>
+        </ul>
+
+        <h2>3️⃣ Parte 3 — Medidas (DAX)</h2>
+        <p>Crie essas medidas:</p>
+
+        <h3>1. Faturamento Total</h3>
+        <div class="code-block">Faturamento = SUM(Vendas[Total])</div>
+
+        <h3>2. Quantidade Vendida</h3>
+        <div class="code-block">Qtd Vendida = SUM(Vendas[Quantidade])</div>
+
+        <h3>3. Ticket Médio</h3>
+        <div class="code-block">Ticket Médio = DIVIDE([Faturamento], COUNTROWS(Vendas))</div>
+
+        <h2>4️⃣ Parte 4 — Visuais</h2>
+        <p>Crie os seguintes gráficos:</p>
+
+        <h3>1. Faturamento por Produto</h3>
+        <ul>
+            <li>Gráfico de colunas</li>
+            <li>Eixo: <strong>Produto</strong></li>
+            <li>Valores: <strong>Faturamento</strong></li>
+        </ul>
+
+        <h3>2. Faturamento por Vendedor</h3>
+        <ul>
+            <li>Gráfico de barras</li>
+            <li>Eixo: <strong>Vendedor</strong></li>
+            <li>Valores: <strong>Faturamento</strong></li>
+        </ul>
+
+        <h3>3. Forma de Pagamento</h3>
+        <ul>
+            <li>Gráfico de pizza</li>
+            <li>Legenda: <strong>Forma_Pagamento</strong></li>
+            <li>Valores: <strong>Contagem de vendas</strong></li>
+        </ul>
+
+        <h3>4. Vendas por Data</h3>
+        <ul>
+            <li>Gráfico de linha</li>
+            <li>Eixo: <strong>Data</strong></li>
+            <li>Valores: <strong>Faturamento</strong></li>
+        </ul>
+
+        <h2>5️⃣ Parte 5 — Upload</h2>
+        <h3>Salvar em uma pasta (no computador)</h3>
+        <ol class="passos">
+            <li>Clique em <strong>Arquivo</strong></li>
+            <li>Clique em <strong>Salvar como</strong></li>
+            <li>Escolha a pasta (ex: Documentos, Desktop ou outra)</li>
+            <li>Dê um nome (ex: <strong>Dashboard_Vendas.pbix</strong>)</li>
+            <li>Clique em <strong>Salvar</strong></li>
+        </ol>
+
+        <h3>Para upar no Portal do Aluno Microlins</h3>
+        <ol class="passos">
+            <li>Faça o login no site do aluno:<br><a href="https://portaldoaluno.microlins.com.br/home/" target="_blank" rel="noopener">https://portaldoaluno.microlins.com.br/home/</a></li>
+            <li>Na parte esquerda, ou seja, na lateral</li>
+            <li>Aperte em <strong>"Meus Documentos"</strong></li>
+            <li>Selecione o curso <strong>Power Bi</strong> ou Qualquer outro</li>
+            <li>Aperte em <strong>Enviar Arquivo</strong></li>
+            <li>Click em <strong>Clique Aqui</strong> e Selecione a pasta no qual você salvou esta atividade</li>
+            <li>E logo após, aperte em <strong>Enviar Arquivo</strong></li>
+        </ol>
+    </div>
+
+    <footer>Microlins São José — Atividade de Power BI</footer>
+</div>
+</body>
+</html>

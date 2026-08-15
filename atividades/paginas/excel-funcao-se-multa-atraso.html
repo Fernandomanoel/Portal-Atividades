@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Função SE — Multa por Atraso — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5b800; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        .formula-breakdown { background: #1e1e1e; border-radius: 8px; padding: 20px; margin: 14px 0; }
+        .formula-breakdown .f { font-family: 'Courier New', monospace; font-size: 1.2em; font-weight: 700; color: #fff; text-align: center; margin-bottom: 18px; }
+        .formula-breakdown .f .v1 { color: #ef4444; text-decoration: underline; }
+        .formula-breakdown .f .v2 { color: #22c55e; text-decoration: underline; }
+        .formula-breakdown .f .v3 { color: #f472b6; text-decoration: underline; }
+        .legend { list-style: none; margin: 0; }
+        .legend li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; color: #e5e5e5; font-size: 0.95em; }
+        .legend .dot { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; margin-top: 2px; }
+        .legend .dot.red { background: #ef4444; }
+        .legend .dot.green { background: #22c55e; }
+        .legend .dot.pink { background: #f472b6; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            .formula-breakdown .f { font-size: 0.85em; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>⏰ Função SE — Multa por Atraso</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Função SE com Cálculo Automático</h2>
+        <p>Utilizar a função SE no Excel para calcular automaticamente o <strong>valor final de um pagamento</strong>, aplicando <strong>multa de 2%</strong> quando houver atraso.</p>
+
+        <h3>Como entender?</h3>
+        <p>Uma empresa aplica uma <strong>multa de 2%</strong> sobre o valor da conta quando o pagamento é realizado <strong>após a data de vencimento</strong>. Caso o pagamento seja feito <strong>em dia</strong>, não há acréscimo.</p>
+        <p>Você deverá usar a função SE para calcular o <strong>valor final a pagar</strong>.</p>
+        <p>Preencha a planilha conforme a tabela:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+                <tr><td class="rownum">1</td><td colspan="4" class="merged">MULTA DE 2%</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">CLIENTE</td><td class="headcell">VALOR DA CONTA (R$)</td><td class="headcell">SITUAÇÃO DO PAGAMENTO</td><td class="headcell">VALOR FINAL (R$)</td></tr>
+                <tr><td class="rownum">3</td><td>Ana</td><td class="money">R$ 500,00</td><td>Em dia</td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>Bruno</td><td class="money">R$ 300,00</td><td>Atrasado</td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>Carla</td><td class="money">R$ 800,00</td><td>Em dia</td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>Diego</td><td class="money">R$ 1.000,00</td><td>Atrasado</td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>João</td><td class="money">R$ 400,00</td><td>Atrasado</td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Inserir a fórmula</h3>
+        <p>Clique na célula <strong>D2</strong> (na linha do primeiro cliente, "Ana" — que na planilha acima está na linha 3).</p>
+        <p>Digite a fórmula abaixo:</p>
+        <div class="code-block">SE(teste_lógico; valor_se_verdadeiro; valor_se_falso)</div>
+
+        <h3>Entendendo o início da fórmula</h3>
+        <ul>
+            <li>O sinal <strong>=</strong> indica ao Excel que será feita uma fórmula.</li>
+            <li>A palavra <strong>SE</strong> informa que o Excel irá realizar um teste lógico.</li>
+        </ul>
+
+        <h3>Verificando a condição</h3>
+        <div class="code-block">=SE(C2="Atrasado";</div>
+        <ul>
+            <li>O Excel verifica o conteúdo da célula <strong>C2</strong>.</li>
+            <li>Ele confere se o texto digitado é <strong>"Atrasado"</strong>.</li>
+            <li>Se for verdadeiro, a condição é atendida.</li>
+        </ul>
+
+        <h3>Valor se verdadeiro</h3>
+        <div class="code-block">B2*1,02</div>
+        <ul>
+            <li>Se o pagamento estiver <strong>atrasado</strong>, o Excel pega o valor da conta da célula <strong>B2</strong>.</li>
+            <li>Em seguida, aplica <strong>2% de multa</strong>, multiplicando o valor por <strong>1,02</strong>.</li>
+            <li>Exemplo:</li>
+        </ul>
+        <div class="code-block">R$ 300 × 1,02 = R$ 306</div>
+
+        <h3>Valor se falso</h3>
+        <div class="code-block">B2</div>
+        <ul>
+            <li>Se o pagamento <strong>não estiver atrasado</strong> (ou seja, estiver "Em dia"),</li>
+            <li>O Excel mantém o <strong>valor original</strong> da conta, sem acréscimo.</li>
+        </ul>
+
+        <h3>Funcionamento completo da fórmula</h3>
+        <p>O Excel executa a seguinte lógica:</p>
+        <ul>
+            <li><strong>Se</strong> C2 for igual a "Atrasado" → aplica multa de 2%</li>
+            <li><strong>Se não</strong> → mantém o valor original</li>
+        </ul>
+
+        <p>Usando a linha do Bruno (linha 4 na planilha, que está atrasado) como exemplo:</p>
+        <div class="formula-breakdown">
+            <div class="f">=SE(<span class="v1">C4="Atrasado"</span>;<span class="v2">B4*1,02</span>;<span class="v3">B4</span>)</div>
+            <ul class="legend">
+                <li><span class="dot red"></span> Teste lógico: verifica se a Situação do Pagamento (C4) é "Atrasado".</li>
+                <li><span class="dot green"></span> Valor se verdadeiro: multiplica o Valor da Conta (B4) por 1,02, aplicando os 2% de multa. Para o Bruno: R$ 300,00 × 1,02 = R$ 306,00.</li>
+                <li><span class="dot pink"></span> Valor se falso: mantém o valor da conta (B4) sem alteração.</li>
+            </ul>
+        </div>
+
+        <h3>Resultado Final</h3>
+        <ul>
+            <li>Pagamento <strong>Em dia</strong> → valor normal</li>
+            <li>Pagamento <strong>Atrasado</strong> → valor com multa</li>
+        </ul>
+
+        <div class="aviso">⚠️ <strong>Importante:</strong> depois de digitar a fórmula na primeira linha, copie (arraste) para as demais linhas — Carla, Diego e João — para calcular o valor final de todos os clientes automaticamente.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

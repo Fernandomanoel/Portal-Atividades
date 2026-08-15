@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Departamento de Vendas e Filtro de Dados — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+        table.sheet td.total { font-weight: 700; background: #eefaf2; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔍 Departamento de Vendas e Filtro de Dados</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Atividade Excel 2021</h2>
+        <p>Uma distribuidora de livros utiliza alguns recursos avançados em planilhas eletrônicas do Excel para organizar, resumir e otimizar o processo de análise das informações.</p>
+        <p>Diariamente, o Departamento de Vendas da distribuidora insere na planilha dados referentes aos pedidos realizados. Fazem parte da planilha de pedidos: o número e a data do pedido, o nome do vendedor e o valor total de cada pedido. Para facilitar a análise desses dados, são aplicados os recursos de: tabela dinâmica, gráfico dinâmico, validação de dados e funções para calcular a quantidade de pedidos e o valor total de vendas. Ao mesmo tempo, o Departamento de Vendas faz o controle das vendas realizadas e do estoque de livros, e utiliza, para análise de dados, recursos como: filtro avançado, formulários e macro.</p>
+        <p>Para o controle de pagamento dos vendedores, o Departamento Administrativo da distribuidora elaborou uma pequena planilha para: pesquisar o nome e o salário-base dos funcionários, calcular a comissão, INSS, salário-família, vale-transporte, vale-refeição, imposto de renda e salário líquido.</p>
+
+        <h3>Faça a tabela abaixo</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th></tr>
+                <tr><td class="rownum">1</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">PEDIDO</td><td class="headcell">DATA DE PEDIDO</td><td class="headcell">VENDEDOR</td><td class="headcell">VALOR TOTAL</td><td class="empty"></td><td class="headcell">DATA PEDIDO</td><td class="headcell">VENDEDOR</td><td class="headcell">QUANTIDADE DE PEDIDOS</td><td class="headcell">VALOR TOTAL DE VENDAS</td></tr>
+                <tr><td class="rownum">3</td><td class="money">1039</td><td>10/05/2025</td><td>Ana Maria</td><td class="money">1400</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="money">1045</td><td>11/05/2025</td><td>João Paulo</td><td class="money">1000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td class="money">1057</td><td>12/05/2025</td><td>Ana Maria</td><td class="money">1900</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td class="money">1059</td><td>13/05/2025</td><td>Ana Maria</td><td class="money">1623</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td class="money">1060</td><td>14/05/2025</td><td>Ana Maria</td><td class="money">8000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td class="money">1063</td><td>15/05/2025</td><td>João Paulo</td><td class="money">1000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td class="money">1046</td><td>16/05/2025</td><td>João Paulo</td><td class="money">3000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td class="money">1080</td><td>17/05/2025</td><td>Caetano</td><td class="money">900</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td class="money">1070</td><td>18/05/2025</td><td>Caetano</td><td class="money">1100</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td class="money">1016</td><td>19/05/2025</td><td>Caetano</td><td class="money">802</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td class="money">1071</td><td>20/05/2025</td><td>Antonio</td><td class="money">1770</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td class="money">1044</td><td>21/05/2025</td><td>Ana Maria</td><td class="money">1200</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td class="money">1023</td><td>22/05/2025</td><td>Ana Maria</td><td class="money">1200</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td class="money">1072</td><td>23/05/2025</td><td>Antonio</td><td class="money">575</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h2>1. Tabela Dinâmica</h2>
+        <p>Utilize os dados da planilha Pedidos e crie uma Tabela Dinâmica em uma nova planilha, conforme imagem abaixo:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">DATA DE PEDIDO</td><td>(Tudo)</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">Rótulos de Linha</td><td class="headcell">Soma de VALOR TOTAL</td></tr>
+                <tr><td class="rownum">4</td><td>Ana Maria</td><td class="money">15323</td></tr>
+                <tr><td class="rownum">5</td><td>Antonio</td><td class="money">2345</td></tr>
+                <tr><td class="rownum">6</td><td>Caetano</td><td class="money">2802</td></tr>
+                <tr><td class="rownum">7</td><td>João Paulo</td><td class="money">5000</td></tr>
+                <tr><td class="rownum">8</td><td class="total">Total Geral</td><td class="total money">25470</td></tr>
+            </table>
+        </div>
+
+        <h2>2. Gráfico Dinâmico</h2>
+        <p>Considere a imagem a seguir e, a partir dos dados da Tabela Dinâmica, crie um Gráfico Dinâmico que resuma os dados dos vendedores e os respectivos valores de venda (colunas: Ana Maria, Antonio, Caetano, João Paulo — no eixo com o total de vendas de cada um, conforme a Tabela Dinâmica acima).</p>
+
+        <h2>Planilha de Estoque</h2>
+        <p>Faça a planilha abaixo:</p>
+        <p><em>Ou baixe ela apertando no link fornecido pelo professor.</em></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Título</td><td class="headcell">Autor</td><td class="headcell">Categoria</td><td class="headcell">Quantidade</td><td class="headcell">Valor Unitário</td></tr>
+                <tr><td class="rownum">2</td><td>202 perguntas sobre biocombustíveis</td><td>Luiz Vicente Gentil</td><td>Meio Ambiente</td><td class="money">4</td><td class="money">R$ 53,00</td></tr>
+                <tr><td class="rownum">3</td><td>A arte de receber</td><td>Naison Ladurie</td><td>Gastronomia e Enologia</td><td class="money">5</td><td class="money">R$ 99,90</td></tr>
+                <tr><td class="rownum">4</td><td>A formação do professor e currículos escritos</td><td>José Maria Pires Azanha</td><td>Educação</td><td class="money">7</td><td class="money">R$ 49,00</td></tr>
+                <tr><td class="rownum">5</td><td>A história mundial da roupa</td><td>Patricia Mears</td><td>Moda</td><td class="money">9</td><td class="money">R$ 174,00</td></tr>
+                <tr><td class="rownum">6</td><td>A imagem digital e a fotografia</td><td>Ricardo Hori</td><td>Design e Arquitetura</td><td class="money">6</td><td class="money">R$ 29,90</td></tr>
+                <tr><td class="rownum">7</td><td>A televisão levada a sério</td><td>Arlindo Machado</td><td>Comunicação e Artes</td><td class="money">6</td><td class="money">R$ 55,50</td></tr>
+                <tr><td class="rownum">8</td><td>Access 2010</td><td>Marile Silve Mendonça de Barros</td><td>Informática</td><td class="money">4</td><td class="money">R$ 45,00</td></tr>
+                <tr><td class="rownum">9</td><td>Adobe Dreamweaver CS6</td><td>Ana Laura Gomes</td><td>Informática</td><td class="money">2</td><td class="money">R$ 55,00</td></tr>
+                <tr><td class="rownum">10</td><td>Adobe InDesign CS4</td><td>Marcos Serafim de Andrade</td><td>Informática</td><td class="money">1</td><td class="money">R$ 59,90</td></tr>
+                <tr><td class="rownum">11</td><td>Álbum de figurinhas</td><td>Fanny Abramovich e Marcelo Cipis</td><td>Ciências Humanas</td><td class="money">2</td><td class="money">R$ 27,00</td></tr>
+                <tr><td class="rownum">12</td><td>Arte de cozinhar</td><td>Domingos Rodrigues</td><td>Gastronomia e Enologia</td><td class="money">2</td><td class="money">R$ 92,00</td></tr>
+                <tr><td class="rownum">13</td><td>Beleza: segredos do jardim</td><td>Guilherme Maira Dourado</td><td>Desenvolvimento Social</td><td class="money">2</td><td class="money">R$ 24,50</td></tr>
+                <tr><td class="rownum">14</td><td>Benefícios da cirurgia cosmética a laser</td><td>Tina Alter, Lydia Preston e Otávio R. Macedo</td><td>Beleza e Estética</td><td class="money">10</td><td class="money">R$ 94,00</td></tr>
+                <tr><td class="rownum">15</td><td>Carnes e churrasco</td><td>Marcos Bassi</td><td>Gastronomia e Enologia</td><td class="money">15</td><td class="money">R$ 89,00</td></tr>
+                <tr><td class="rownum">16</td><td>Chaves das sensações</td><td>Paulo Rappini</td><td>Comunicação e Artes</td><td class="money">6</td><td class="money">R$ 59,90</td></tr>
+                <tr><td class="rownum">17</td><td>Comer é um sentimento</td><td>Francis Slom</td><td>Gastronomia e Enologia</td><td class="money">6</td><td class="money">R$ 63,30</td></tr>
+                <tr><td class="rownum">18</td><td>Comida como cultura</td><td>Massimo Montanari</td><td>Gastronomia e Enologia</td><td class="money">8</td><td class="money">R$ 53,90</td></tr>
+                <tr><td class="rownum">19</td><td>Como montar e administrar bares e restaurantes</td><td>percival Maricato</td><td>Turismo e Hotelaria</td><td class="money">9</td><td class="money">R$ 56,90</td></tr>
+                <tr><td class="rownum">20</td><td>Como ser um designer gráfico sem vender sua alma</td><td>Adrian Shaughnessy</td><td>Design e Arquitetura</td><td class="money">1</td><td class="money">R$ 54,90</td></tr>
+                <tr><td class="rownum">21</td><td>CorelDraw X5</td><td>Maria Ângela Serafim de Andrade</td><td>Informática</td><td class="money">10</td><td class="money">R$ 59,90</td></tr>
+            </table>
+        </div>
+
+        <h2>1. Filtro Avançado</h2>
+        <p>Realize os filtros a seguir, na planilha Filtro Avançado.</p>
+        <div class="box">
+            <ul>
+                <li>a) Título que inicie com a letra "M" <strong>e</strong> Valor Unitário "maior que 70".</li>
+                <li>b) Valor Unitário "igual a 25" ou "igual a 45".</li>
+                <li>c) Categoria "igual a Informática".</li>
+                <li>d) Autor que inicie com a letra "E" ou Quantidade "igual a 18" ou Valor Unitário "menor que 20".</li>
+                <li>e) Autor que inicie com o nome "Patricia" <strong>e</strong> Categoria "igual a Moda" <strong>e</strong> Quantidade "maior que 5".</li>
+            </ul>
+        </div>
+
+        <h2>2. Formulário</h2>
+        <p>Com base na imagem apresentada em aula, crie um formulário avançado com os itens da planilha de estoque (Título, Autor, Categoria, Quantidade e Valor Unitário) para facilitar a inclusão de novos registros.</p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

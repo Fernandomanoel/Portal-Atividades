@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela INSS — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #1d6f42; color: #fff; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧮 Atividade Excel Básico — Cálculo do INSS</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>🎯 O que você irá fazer</h2>
+        <ul>
+            <li>Criar uma tabela no Excel</li>
+            <li>Calcular o desconto do INSS</li>
+            <li>Usar fórmulas simples</li>
+            <li>Trabalhar com porcentagem</li>
+        </ul>
+
+        <p>Você fará a sua planilha desta forma, primeiro escreva! Depois deixe bonito.</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">1</td><td colspan="5" class="merged">INSS</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">FUNCIONÁRIOS</td><td class="headcell">SALÁRIO</td><td class="headcell">INSS (%)</td><td class="headcell">DESCONTO INSS</td><td class="headcell">SALÁRIO LÍQUIDO</td></tr>
+                <tr><td class="rownum">4</td><td>ANA CLAUDIA</td><td class="money">R$ 1.200,00</td><td class="money">7,50%</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>JOÃO EPAMINONDAS</td><td class="money">R$ 1.800,00</td><td class="money">9%</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>JOCICLEIDE JONATAS</td><td class="money">R$ 2.800,00</td><td class="money">12%</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>PEDRO CAMARA</td><td class="money">R$ 3.500,00</td><td class="money">14%</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>CHICO BILL</td><td class="money">R$ 1.518,00</td><td class="money">7,50%</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h2>1️⃣ Primeiro passo</h2>
+        <ul>
+            <li>Mescle a primeira linha do <strong>A1 até o E1</strong></li>
+            <li>Após mesclar as células, pinte as mesmas na cor azul no ícone de preenchimento</li>
+            <li>Na coluna onde está <strong>"SALÁRIO"</strong>, coloque os valores em R$, NÃO ESCREVA!</li>
+            <li>Selecione a coluna onde estão os números e aperte em <strong>Página Inicial</strong>, procure a aba <strong>Número</strong>;</li>
+            <li>Aperte na caixa onde está escrito <strong>"Geral"</strong>, aperte na setinha para baixo, e coloque em <strong>Moeda</strong> ou em <strong>Contábil</strong></li>
+        </ul>
+
+        <h2>2️⃣ Segundo passo (Fórmulas)</h2>
+        <ul>
+            <li>Na coluna <strong>Desconto INSS</strong>, você colocará a fórmula <strong>= B4 * C4</strong></li>
+            <li><strong>B4</strong> é o salário</li>
+            <li><strong>C4</strong> é a porcentagem do INSS</li>
+            <li>Já o <strong>*</strong> (Asterisco), é a multiplicação dos valores, ou seja, se o salário é de 1500 e a porcentagem do INSS é 7,5%, vai haver a multiplicação de:</li>
+            <li><em>1500 (Salário) * (Multiplicação) 7,5% (Porcentagem do INSS)</em>, sendo o resultado = <strong>112,50</strong></li>
+        </ul>
+
+        <div class="code-block">= B4 * C4</div>
+
+        <h2>💰 Desconto do salário</h2>
+        <ul>
+            <li>Na coluna <strong>Salário Líquido</strong>, você colocará a fórmula <strong>= B4 – D4</strong></li>
+            <li><strong>B4</strong> é o salário</li>
+            <li><strong>D4</strong> é o valor descontado da fórmula passada</li>
+            <li>O sinal <strong>-</strong> (menos) significa <strong>subtração</strong>, ou seja, você vai tirar o valor do desconto do salário.</li>
+        </ul>
+
+        <div class="code-block">= B4 – D4</div>
+
+        <div class="box">
+            <h4>Exemplo</h4>
+            <p>Se o salário é <strong>1500</strong> e o desconto do INSS é <strong>112,50</strong>, então:</p>
+            <p>1500 (Salário Bruto) – 112,50 (Desconto do INSS)</p>
+            <p><strong>Resultado = 1.387,50</strong></p>
+            <p>Esse será o <em>salário líquido</em> do funcionário.</p>
+        </div>
+
+        <p><strong>Fim.</strong></p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertendo em Dólar e usando o SE — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        .formula-breakdown { background: #1e1e1e; border-radius: 8px; padding: 20px; margin: 14px 0; }
+        .formula-breakdown .f { font-family: 'Courier New', monospace; font-size: 1.3em; font-weight: 700; color: #fff; text-align: center; margin-bottom: 18px; }
+        .formula-breakdown .f .v1 { color: #ef4444; text-decoration: underline; }
+        .formula-breakdown .f .v2 { color: #22c55e; text-decoration: underline; }
+        .legend { list-style: none; margin: 0; }
+        .legend li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; color: #e5e5e5; font-size: 0.95em; }
+        .legend .dot { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; margin-top: 2px; }
+        .legend .dot.red { background: #ef4444; }
+        .legend .dot.green { background: #22c55e; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            .formula-breakdown .f { font-size: 1em; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💵 Convertendo em Dólar e usando o SE</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>04) Papelaria Papel Branco — Conversão em Dólar</h2>
+        <p>Elaborar as planilhas abaixo, fazendo-se o que se pede:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Valor do Dólar</td><td class="money">R$ 2,94</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">2</td><td colspan="5" class="merged">Papelaria Papel Branco</td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">Produtos</td><td class="headcell">Qtde</td><td class="headcell">Preço Unit.</td><td class="headcell">Total R$</td><td class="headcell">Total US$</td></tr>
+                <tr><td class="rownum">4</td><td>Caneta Azul</td><td class="money">500</td><td class="money">R$ 0,15</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>Caneta Vermelha</td><td class="money">750</td><td class="money">R$ 0,15</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>Caderno</td><td class="money">250</td><td class="money">R$ 10,00</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>Régua</td><td class="money">310</td><td class="money">R$ 0,50</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>Lápis</td><td class="money">500</td><td class="money">R$ 0,10</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>Papel Sulfite</td><td class="money">1500</td><td class="money">R$ 2,50</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td>Tinta Nanquim</td><td class="money">190</td><td class="money">R$ 6,00</td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Fórmulas</h3>
+        <div class="box">
+            <ul>
+                <li><strong>Total R$:</strong> multiplicar Qtde por Preço Unitário</li>
+                <li><strong>Total US$:</strong> dividir Total R$ por Valor do Dólar — usar $ nas fórmulas</li>
+                <li>Alterar as colunas de acordo com a necessidade.</li>
+            </ul>
+        </div>
+
+        <p>Ou seja, para a linha da Caneta Azul (linha 4), as fórmulas ficam assim:</p>
+
+        <div class="formula-breakdown">
+            <div class="f">=B4<span class="v1">*</span>C4</div>
+            <ul class="legend">
+                <li><span class="dot red"></span> Total R$ (D4): multiplica a Qtde (B4) pelo Preço Unitário (C4).</li>
+            </ul>
+        </div>
+
+        <div class="formula-breakdown">
+            <div class="f">=D4<span class="v2">/</span>$B$1</div>
+            <ul class="legend">
+                <li><span class="dot green"></span> Total US$ (E4): divide o Total R$ (D4) pelo Valor do Dólar em B1, usando <strong>$B$1</strong> (referência absoluta) para poder arrastar a fórmula para as outras linhas sem perder a referência da célula do dólar.</li>
+            </ul>
+        </div>
+
+        <div class="aviso">⚠️ <strong>Importante:</strong> o $ antes da letra e do número (ex.: <strong>$B$1</strong>) "trava" a célula do Valor do Dólar, para que ao copiar a fórmula para as outras linhas ela continue apontando sempre para B1.</div>
+
+        <h2>05) Folha de Pagamento — Aumento com SE</h2>
+        <p>Elaborar a planilha abaixo, fazendo-se o que se pede:</p>
+        <p>Fazer uma folha de pagamento e calcular o novo salário, baseado no aumento. Se o salário for menor ou igual a R$ 1.000,00, aumento de 40%. Se for maior que R$ 1.000,00, aumento de 30%. Os valores R$ 360,00 e R$ 1.260,00 da primeira linha também deverão ser calculados....</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Nome</td><td class="headcell">Salário</td><td class="headcell">Aumento</td><td class="headcell">Novo Salário</td><td class="empty"></td><td class="headcell">Até 1000,00</td><td class="money">40%</td></tr>
+                <tr><td class="rownum">2</td><td>João dos Santos</td><td class="money">R$ 900,00</td><td class="money">R$ 360,00</td><td class="money">R$ 1.260,00</td><td class="empty"></td><td class="headcell">mais 1000,00</td><td class="money">30%</td></tr>
+                <tr><td class="rownum">3</td><td>Maria da Silva</td><td class="money">R$ 1.200,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>Manoel das Flores</td><td class="money">R$ 1.500,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>Lambarildo Peixe</td><td class="money">R$ 2.000,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>Sebastião Souza</td><td class="money">R$ 1.400,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>Ana Flávia Silveira</td><td class="money">R$ 990,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>Silvia Helena Santos</td><td class="money">R$ 854,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>Alberto Roberto</td><td class="money">R$ 1.100,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Estrutura da Fórmula SE</h3>
+        <div class="code-block">=SE(teste_lógico;valor_se_verdadeiro;valor_se_falso)</div>
+
+        <p>Aplicando a regra "até R$ 1.000,00 → 40% de aumento, acima de R$ 1.000,00 → 30% de aumento" na coluna Aumento (linha 2):</p>
+
+        <div class="code-block">=SE(B2&lt;=1000;B2*40%;B2*30%)</div>
+
+        <p>E o Novo Salário (coluna D) é o Salário mais o Aumento:</p>
+
+        <div class="code-block">=B2+C2</div>
+
+        <div class="box">
+            <h4>Conferindo a primeira linha</h4>
+            <p>João dos Santos ganha R$ 900,00 (menor que R$ 1.000,00), então o aumento é de 40%: 900 × 40% = <strong>R$ 360,00</strong>. Novo salário: 900 + 360 = <strong>R$ 1.260,00</strong> — exatamente os valores já preenchidos na tabela.</p>
+        </div>
+
+        <p>Depois é só arrastar as duas fórmulas (Aumento e Novo Salário) para as demais linhas, do funcionário Maria da Silva até Alberto Roberto.</p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

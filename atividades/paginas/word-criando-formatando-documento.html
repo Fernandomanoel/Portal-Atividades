@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criando e Formatando um Documento — Word</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; overflow-wrap: break-word; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .texto-exemplo {
+            background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 6px;
+            padding: 16px 20px; margin: 14px 0; font-style: italic; color: #333;
+        }
+        .texto-exemplo p { margin-bottom: 6px; }
+        .texto-exemplo p:last-child { margin-bottom: 0; }
+        .texto-exemplo .titulo-texto { font-style: normal; font-weight: 700; margin-bottom: 12px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.tabela-doc { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.95em; }
+        table.tabela-doc th, table.tabela-doc td { border: 1px solid #d0d0d0; padding: 10px 14px; text-align: left; }
+        table.tabela-doc th { background: #eef1f4; color: #1e3f73; font-weight: 700; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📄 Criando e Formatando um Documento no Word</h1>
+        <p>Word</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=word">← Voltar para Word</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Ensinar ao aluno como criar um documento simples no Word, utilizando ferramentas básicas de formatação e organização de texto.</p>
+
+        <h2>📋 Descrição da Atividade</h2>
+        <p>Crie um documento para simular um relatório de atividades escolares. A atividade envolverá o uso de títulos, parágrafos, listas, tabelas e imagens.</p>
+
+        <h2>1️⃣ Abra um Novo Documento no Word</h2>
+        <ol class="passos">
+            <li>Inicie o Word e crie um novo documento em branco.</li>
+        </ol>
+
+        <h2>2️⃣ Digite o Conteúdo Base</h2>
+        <p>Copie o seguinte texto no Word:</p>
+        <div class="texto-exemplo">
+            <p class="titulo-texto">Relatório de Atividades Escolares</p>
+            <p>Nome do Aluno: ____________________________</p>
+            <p>Data: __/__/____</p>
+            <p><strong>Introdução:</strong></p>
+            <p>Este relatório apresenta as atividades realizadas pelo aluno durante o período letivo, destacando as principais conquistas e áreas a melhorar.</p>
+            <p><strong>Atividades Realizadas:</strong></p>
+            <p>- Leitura de livros indicados.</p>
+            <p>- Participação em projetos escolares.</p>
+            <p>- Desenvolvimento de trabalhos em grupo.</p>
+            <p><strong>Observações:</strong></p>
+            <p>___________________________________________________________</p>
+            <p>___________________________________________________________</p>
+        </div>
+
+        <h2>🎨 Formate o Texto</h2>
+        <ul>
+            <li><strong>Título "Relatório de Atividades Escolares"</strong>: altere para a fonte <strong>Arial</strong>, tamanho <strong>16</strong>, estilo <strong>Negrito</strong> e alinhamento <strong>centralizado</strong>.</li>
+            <li><strong>Subtítulos</strong> ("Nome do Aluno", "Data", "Introdução", etc.): altere para a fonte <strong>Arial</strong>, tamanho <strong>12</strong>, estilo <strong>Negrito</strong>.</li>
+            <li><strong>Texto Normal</strong>: altere para a fonte <strong>Arial</strong>, tamanho <strong>11</strong>, alinhamento <strong>justificado</strong>.</li>
+        </ul>
+
+        <h2>📊 Insira uma Tabela</h2>
+        <ul>
+            <li>Abaixo de "Observações", insira uma tabela com o título <strong>"Desempenho"</strong>.</li>
+            <li><strong>3 Colunas:</strong> Atividade, Nota, Comentários.</li>
+            <li><strong>4 Linhas:</strong> Cabeçalho + 3 atividades.</li>
+            <li>Preencha as colunas com informações fictícias.</li>
+        </ul>
+
+        <div class="sheet-wrap">
+            <table class="tabela-doc">
+                <tr><th>Atividade</th><th>Nota</th><th>Comentários</th></tr>
+                <tr><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td></tr>
+                <tr><td></td><td></td><td></td></tr>
+            </table>
+        </div>
+
+        <h2>🖼️ Insira uma Imagem</h2>
+        <ul>
+            <li>No final do documento, insira uma imagem ilustrativa (ex.: logotipo da escola ou uma imagem genérica de educação).</li>
+            <li>Redimensione e alinhe a imagem ao centro.</li>
+        </ul>
+
+        <h2>🖊️ Aplique uma Bordas à Página</h2>
+        <ul>
+            <li>Acesse <strong>Design &gt; Bordas de Página</strong>.</li>
+            <li>Escolha um estilo de borda simples e aplique ao documento.</li>
+        </ul>
+
+        <h2>💾 Tarefa Final</h2>
+        <ol class="passos">
+            <li>Salve o documento com o nome <strong>"Relatório de Atividades"</strong>.</li>
+            <li>Envie o arquivo.</li>
+        </ol>
+    </div>
+
+    <footer>Microlins São José — Atividade de Word</footer>
+</div>
+</body>
+</html>

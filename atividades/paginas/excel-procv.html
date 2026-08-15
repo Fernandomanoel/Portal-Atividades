@@ -14,13 +14,14 @@
             line-height: 1.6;
         }
 
-        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
 
         header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
         header h1 { font-size: 2em; margin-bottom: 8px; }
         header p { font-size: 1.05em; opacity: 0.9; }
 
-        .content { padding: 40px 50px 60px; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
 
         h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
         h2:first-child { margin-top: 0; }

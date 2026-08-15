@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Atividades antes da Prova — Windows 11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📝 Lista de Atividades antes da Prova</h1>
+        <p>Windows 11</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=windows-11">← Voltar para Windows 11</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>"Exercícios práticos de Manipulação de Arquivos e Pastas através do Sistema Operacional Windows"</p>
+
+        <h2>1️⃣ Parte 1</h2>
+        <ol class="passos">
+            <li>Entrar no Editor de Textos Microsoft <strong>Word</strong> e <strong>digitar</strong> o seguinte texto:
+                <div class="box"><p>"Estou digitando este pequeno texto no Editor de Textos Word, para aprender a manipular arquivos e pastas no Sistema Operacional Windows. Fulano de Tal."</p></div>
+                (no lugar de Fulano de Tal, escreva o seu nome).
+            </li>
+            <li><strong>Salvar</strong> o texto na <strong>Área de Trabalho</strong> (Desktop) com o nome <code>teste_fulano.doc</code> (no lugar de fulano, escreva seu primeiro nome).</li>
+            <li><strong>Fechar</strong> "este documento" e <strong>começar um novo arquivo</strong> (texto), para isto basta clicar no menu <u>A</u>rquivo &gt;&gt; <u>N</u>ovo &gt;&gt; OK (ou ir direto no primeiro botão de Arquivo Novo da Barra de Ferramentas) que aparecerá uma nova folha em branco.</li>
+            <li>Agora <strong>digitar</strong> o seguinte texto:
+                <div class="box">
+                    <p>"Agora vou digitar outro texto no Word:</p>
+                    <p>O Microsoft Word é um dos Editores de Textos mais utilizados, mas ele <strong>não</strong> vem junto com o Windows, ou seja, temos que comprá-lo separadamente. O Processador de Textos que vem grátis no Windows é o WordPad, mas este não tem tudo que precisamos para fazer um texto. O Word faz parte do pacote Office da Microsoft, onde também vem a Planilha Eletrônica Excel e alguns outros programas aplicativos."</p>
+                </div>
+            </li>
+            <li><strong>Salvar</strong> o arquivo <u>dentro da pasta</u> <strong>Meus Documentos</strong>, com o nome <code>teste2_fulano.doc</code></li>
+            <li><strong>Fechar</strong> o Word</li>
+            <li><strong>Entrar</strong> no <strong>Windows Explorer</strong></li>
+            <li><strong>Trocar o nome</strong> do arquivo <code>teste_fulano.doc</code> (que está na Área de Trabalho) para <code>aula_fulano.doc</code></li>
+            <li><strong>Copiar</strong> o arquivo <code>teste2_fulano.doc</code> <strong>(que está dentro da pasta Meus Documentos)</strong> para a Área de Trabalho (fora da pasta)</li>
+            <li><strong>Trocar o nome</strong> do arquivo <code>teste2_fulano.doc</code>, da pasta <strong>Meus Documentos</strong> para <code>brasil_fulano.doc</code></li>
+            <li><strong>Copiar</strong> o arquivo <code>aula_fulano.doc</code> para <strong>dentro</strong> da pasta Meus Documentos</li>
+            <li><strong>Minimizar</strong> o Explorer (sinal de menos "–" no canto direito superior da janela)</li>
+            <li><strong>Entrar</strong> no Word novamente</li>
+            <li>Chamar para a tela, ou seja, <strong>Abrir</strong> o arquivo <code>brasil_fulano.doc</code>, que está na pasta <strong>Meus Documentos</strong></li>
+            <li><strong>Abrir</strong> o arquivo <code>aula_fulano.doc</code> que está na Área de Trabalho, e acrescentar a seguinte frase:
+                <div class="box"><p>"Estou terminando meu primeiro exercício no Editor de Textos Word!"</p></div>
+            </li>
+            <li><strong>Fechar</strong> o Word (salvar o arquivo modificado).</li>
+            <li>Voltar para o Explorer (que está minimizado).</li>
+            <li>Apagar todos esses arquivos que você criou agora, tanto da Área de Trabalho quanto da pasta Meus Documentos (Excluir todos).</li>
+        </ol>
+
+        <div class="aviso">⚠️ <strong>Observação:</strong> Não esqueça que os arquivos apagados vão para a <strong>Lixeira</strong>, portanto você deverá excluí-los da lixeira também!!!!! (Esvaziar a Lixeira).</div>
+
+        <h2>2️⃣ Parte 2</h2>
+        <ol class="passos">
+            <li><strong>Abrir</strong> o Windows Explorer e <strong>criar</strong> na Área de Trabalho <strong>uma pasta</strong> chamada <code>exercicio_informatica</code></li>
+            <li><strong>Minimizar</strong> o Windows Explorer (para usar depois de novo)</li>
+            <li><strong>Entrar</strong> no Word e digitar:
+                <div class="box"><p>"Este texto que estou digitando no Editor de Textos Word, que é um dos processadores de textos mais utilizados, é para treinar no computador o que aprendi até agora. O Word é da Microsoft, assim como o Windows, cujo dono é o Bill Gates."</p></div>
+            </li>
+            <li><strong>Salvar</strong> o texto na Área de Trabalho, <strong>dentro da pasta criada</strong> (exercicio_informatica), com o nome <code>treino.doc</code></li>
+            <li><strong>Fechar</strong> o Word</li>
+            <li><strong>Abrir</strong> o Windows Explorer (que está minimizado)</li>
+            <li>Encontrar o arquivo <code>treino.doc</code> (salvo dentro da pasta criada) e <strong>trocar o seu nome</strong> para <code>treinamento.doc</code></li>
+            <li>Entrar no Word novamente e <strong>Abrir o arquivo</strong> ("chamar para a tela") <code>treinamento.doc</code> que está dentro da sua pasta na Área de Trabalho.</li>
+            <li>Colocar o cursor no final do texto e <strong>acrescentar</strong>:
+                <div class="box"><p>"Aqui vou inserir uma figura feita por mim no Paint, um Editor Gráfico bem simples que vem no Windows. Fulano de Tal".</p></div>
+                Salvar o arquivo novamente.
+            </li>
+            <li>Abrir o programa <strong>Paint</strong> e <strong>desenhar</strong> alguma coisa (qualquer coisa)</li>
+            <li><strong>Salvar</strong> o arquivo do desenho dentro da sua pasta, com o nome <code>obra_de_arte.jpg</code></li>
+            <li><strong>Fechar</strong> o Paint</li>
+            <li>Voltar para seu texto no Word e <strong>inserir o seu desenho no texto</strong>: Inserir &gt;&gt; Figura &gt;&gt; do Arquivo</li>
+            <li><strong>Fechar</strong> o Word (salvar o arquivo)</li>
+            <li>Voltar para o <strong>Explorer</strong> que está minimizado na Barra de Tarefas</li>
+            <li><strong>Renomear</strong> o arquivo <code>treinamento.doc</code> para <code>exercicio_fulano.doc</code></li>
+        </ol>
+    </div>
+
+    <footer>Microlins São José — Atividade de Windows 11</footer>
+</div>
+</body>
+</html>

@@ -683,6 +683,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/site-atividade1-saas.html",
       },
+      {
+        titulo: "Atividade 2 — Site Pessoal com Python",
+        descricao:
+          "Monte o seu portfólio (um site sobre você) com um back-end em Python usando Flask: servir páginas, gerar a lista de projetos com Jinja, receber o formulário de contato e contar visitas. Introdução ao Python aplicada a um site real.",
+        tipo: "link",
+        url: "atividades/paginas/site-atividade2-portfolio-python.html",
+      },
     ],
   },
 

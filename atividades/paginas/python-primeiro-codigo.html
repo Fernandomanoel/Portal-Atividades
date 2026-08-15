@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazendo o Primeiro Código — Python</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #cc7a2e 0%, #ff9f43 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #cc7a2e; margin: 34px 0 16px; border-bottom: 3px solid #ff9f43; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #ff9f43; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #fff1e0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #cc7a2e; }
+        .box { background: #fff8f0; border: 2px solid #ff9f43; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #cc7a2e; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #ff9f43; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #c586c0; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #ff9f43; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .exercicio { border: 2px dashed #ff9f43; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+        .exercicio-tag { display: inline-block; background: #fff1e0; color: #cc7a2e; font-size: 0.78em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #ff9f43; font-size: 1.2em; }
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { counter-increment: passo; padding-left: 34px; position: relative; }
+        .passos li::before { content: counter(passo); position: absolute; left: 0; top: 0; background: #ff9f43; color: #fff; width: 22px; height: 22px; border-radius: 50%; font-size: 0.8em; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .tipos-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 16px 0; }
+        .tipo-card { flex: 1 1 220px; background: #fff8f0; border: 2px solid #ffd9ad; border-radius: 10px; padding: 16px 18px; }
+        .tipo-card h4 { color: #cc7a2e; margin-bottom: 6px; font-family: 'Courier New', monospace; font-size: 1.05em; }
+        .tipo-card p { font-size: 0.9em; margin-bottom: 4px; }
+        .explicacao-linhas { background: #fafafa; border: 1px solid #e6e6e6; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .explicacao-linhas ul { margin-bottom: 0; margin-left: 20px; }
+        .explicacao-linhas li { font-size: 0.95em; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #ff9f43; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.8em; padding: 14px; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐍 Fazendo o Primeiro Código</h1>
+        <p>Python — Primeiro Contato</p>
+    </header>
+    <a class="voltar" href="../../atividade.html?curso=python">← Voltar para Python</a>
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Dar os primeiros passos em Python: entender o que essa linguagem é, preparar o Visual Studio Code para escrever e rodar código, aprender o comando <code>print()</code>, os comentários, e conhecer os <strong>tipos de dados básicos</strong> — a base de tudo que vem depois.</p>
+
+        <h2>🐍 O que é Python e por que aprender?</h2>
+        <p>Python é uma linguagem de programação criada para ser <strong>fácil de ler e de escrever</strong> — o código se parece bastante com frases em inglês simples, o que faz dela uma ótima porta de entrada para quem está começando a programar.</p>
+        <p>Apesar de simples, Python é usada em áreas bem sérias do mercado: criação de sites (com frameworks como o Flask, que você vai ver mais pra frente), análise de dados, inteligência artificial, automação de tarefas repetitivas, jogos e muito mais. Aprender Python agora é abrir a porta para todas essas áreas.</p>
+        <div class="box">
+            <h4>💡 Por que Python é uma boa primeira linguagem?</h4>
+            <ul>
+                <li>Não exige <code>;</code> no fim das linhas nem chaves <code>{ }</code> para marcar blocos de código — usa apenas a <strong>indentação</strong> (os espaços no início da linha);</li>
+                <li>Os comandos têm nomes que fazem sentido: <code>print</code> (imprimir), <code>input</code> (entrada);</li>
+                <li>É a linguagem mais usada no mundo para iniciantes, segundo praticamente todo ranking de popularidade dos últimos anos.</li>
+            </ul>
+        </div>
+
+        <h2>🔧 Preparando o Visual Studio Code</h2>
+        <p>Todo o curso vai usar o <strong>VS Code</strong> (Visual Studio Code) como editor. Ele é gratuito e é onde você vai escrever e rodar seus programas Python.</p>
+        <ol class="passos">
+            <li>Abra o Visual Studio Code no computador do laboratório;</li>
+            <li>Confirme que o Python está instalado: abra o terminal (menu <strong>Terminal &gt; Novo Terminal</strong>) e digite <code>python --version</code>. Se aparecer algo como <code>Python 3.12.0</code>, está tudo certo;</li>
+            <li>Clique em <strong>Arquivo &gt; Novo Arquivo</strong> e salve como <code>primeiro_programa.py</code>. A extensão <code>.py</code> é o que diz ao computador "isto é um programa Python" — sem ela, o VS Code não sabe como rodar o arquivo.</li>
+        </ol>
+
+        <h2>🖨️ O comando print()</h2>
+        <p>Todo programa Python pode começar com algo simples: mostrar uma mensagem na tela. Isso é feito com o comando <code>print()</code> — o texto que você quer mostrar fica dentro dos parênteses, entre aspas.</p>
+        <div class="code-block"><span class="code-label">primeiro_programa.py</span><span class="tag">print</span>(<span class="str">"Olá, mundo!"</span>)</div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li><code>print</code> → o comando que manda o Python mostrar algo na tela;</li>
+                <li>os parênteses <code>( )</code> → é onde você coloca o que quer mostrar;</li>
+                <li>as aspas <code>" "</code> → indicam que o conteúdo dentro delas é <strong>texto</strong> (chamado de <em>string</em>).</li>
+            </ul>
+        </div>
+        <p>Para executar: clique com o botão direito no arquivo dentro do VS Code e escolha <strong>Run Python File in Terminal</strong>. O texto vai aparecer no painel de terminal, na parte de baixo da tela.</p>
+
+        <div class="highlight">
+            <strong>Aspas simples ou duplas?</strong> Em Python tanto faz usar <code>"texto"</code> quanto <code>'texto'</code> — os dois funcionam igual. Neste curso vamos manter sempre aspas duplas para deixar tudo padronizado, mas se você ver código com aspas simples por aí, é a mesma coisa.
+        </div>
+
+        <h2>💬 Comentários no código</h2>
+        <p>Comentários são anotações que o Python <strong>ignora</strong> ao rodar o programa — eles existem só para explicar o código para quem está lendo (inclusive você mesmo, no futuro). Em Python, um comentário começa com o símbolo <code>#</code>.</p>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="cm"># Este é um comentário — o Python não executa esta linha</span>
+<span class="tag">print</span>(<span class="str">"Aprendendo Python"</span>)  <span class="cm"># também pode vir depois de um código</span></div>
+        <p>Use comentários para explicar <em>por que</em> uma parte do código existe, não para repetir o óbvio. É um hábito que todo programador profissional mantém.</p>
+
+        <h2>🧱 Tipos de dados básicos</h2>
+        <p>Nem toda informação em um programa é do mesmo "tipo". Um nome é diferente de uma idade, que é diferente de um preço com centavos. Python organiza isso em <strong>tipos de dados</strong> — os três primeiros que você precisa conhecer são:</p>
+        <div class="tipos-grid">
+            <div class="tipo-card">
+                <h4>str (string)</h4>
+                <p>Texto, sempre entre aspas.</p>
+                <p><code>nome = "Ana"</code></p>
+            </div>
+            <div class="tipo-card">
+                <h4>int (inteiro)</h4>
+                <p>Número inteiro, sem casas decimais.</p>
+                <p><code>idade = 17</code></p>
+            </div>
+            <div class="tipo-card">
+                <h4>float (decimal)</h4>
+                <p>Número com casas decimais, usando ponto.</p>
+                <p><code>altura = 1.68</code></p>
+            </div>
+        </div>
+        <p>Repare que <code>str</code> sempre fica entre aspas, enquanto <code>int</code> e <code>float</code> nunca ficam — se você colocar um número entre aspas, ele deixa de ser número e vira texto para o Python.</p>
+        <div class="code-block"><span class="code-label">tipos.py</span><span class="var">nome</span> = <span class="str">"Ana"</span>          <span class="cm"># str — texto</span>
+<span class="var">idade</span> = <span class="val">17</span>              <span class="cm"># int — número inteiro</span>
+<span class="var">altura</span> = <span class="val">1.68</span>          <span class="cm"># float — número com casas decimais</span>
+
+<span class="tag">print</span>(nome, idade, altura)</div>
+        <div class="box">
+            <h4>🔍 Como descobrir o tipo de um valor</h4>
+            <p>Se você não tiver certeza do tipo de algo, pode perguntar ao próprio Python com a função <code>type()</code>:</p>
+            <div class="code-block"><span class="tag">print</span>(<span class="tag">type</span>(<span class="str">"Ana"</span>))    <span class="cm"># mostra: &lt;class 'str'&gt;</span>
+<span class="tag">print</span>(<span class="tag">type</span>(<span class="val">17</span>))       <span class="cm"># mostra: &lt;class 'int'&gt;</span>
+<span class="tag">print</span>(<span class="tag">type</span>(<span class="val">1.68</span>))     <span class="cm"># mostra: &lt;class 'float'&gt;</span></div>
+        </div>
+
+        <h2>🖨️ Misturando texto e números no print()</h2>
+        <p>O <code>print()</code> pode mostrar vários valores de uma vez, separando cada um por vírgula. Ele mesmo coloca um espaço entre eles automaticamente:</p>
+        <div class="code-block"><span class="code-label">exemplo</span><span class="var">nome</span> = <span class="str">"Ana"</span>
+<span class="var">idade</span> = <span class="val">17</span>
+<span class="tag">print</span>(<span class="str">"Nome:"</span>, nome, <span class="str">"| Idade:"</span>, idade)</div>
+        <div class="explicacao-linhas">
+            <ul>
+                <li>o <code>print()</code> recebeu 4 "pedaços" separados por vírgula;</li>
+                <li>cada pedaço pode ser texto entre aspas ou uma variável (você vai estudar variáveis com mais calma na próxima atividade);</li>
+                <li>o Python junta tudo numa linha só, com um espaço entre cada pedaço.</li>
+            </ul>
+        </div>
+
+        <h2>✅ Exercícios práticos</h2>
+        <p>Faça os exercícios em ordem — cada um usa um pouco do que veio antes. Crie um arquivo <code>.py</code> novo para cada um.</p>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 1 · Mostrar mensagens na tela</span>
+            <p>Crie um arquivo chamado <code>mensagens.py</code> e escreva um programa que mostre, em linhas separadas:</p>
+            <ul>
+                <li>Bem-vindo ao curso de Python</li>
+                <li>Estou aprendendo programação</li>
+                <li>Python é legal</li>
+            </ul>
+            <p>Exemplo de solução:</p>
+            <div class="code-block"><span class="tag">print</span>(<span class="str">"Bem-vindo ao curso de Python"</span>)
+<span class="tag">print</span>(<span class="str">"Estou aprendendo programação"</span>)
+<span class="tag">print</span>(<span class="str">"Python é legal"</span>)</div>
+            <p>Cada <code>print()</code> gera uma linha nova automaticamente — você não precisa fazer nada especial para "pular linha" entre um e outro.</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 2 · Seus dados pessoais</span>
+            <p>Crie um arquivo <code>dados_pessoais.py</code> e mostre seu nome, idade e cidade — um em cada linha, usando um <code>print()</code> só que mistura texto fixo com o valor.</p>
+            <div class="code-block"><span class="tag">print</span>(<span class="str">"Nome:"</span>, <span class="str">"João"</span>)
+<span class="tag">print</span>(<span class="str">"Idade:"</span>, <span class="val">15</span>, <span class="str">"anos"</span>)
+<span class="tag">print</span>(<span class="str">"Cidade:"</span>, <span class="str">"Manaus"</span>)</div>
+            <p>Troque <code>"João"</code>, <code>15</code> e <code>"Manaus"</code> pelos seus dados de verdade. Repare que <code>15</code> não tem aspas — é um número (<code>int</code>), enquanto <code>"João"</code> e <code>"Manaus"</code> têm aspas — são texto (<code>str</code>).</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 3 · Mistura de tipos</span>
+            <p>Crie um arquivo <code>meus_dados_tipos.py</code> que declare três valores — um <code>str</code>, um <code>int</code> e um <code>float</code> — e depois use um único <code>print()</code> para mostrar os três juntos numa frase.</p>
+            <div class="code-block"><span class="var">nome</span> = <span class="str">"Marcos"</span>            <span class="cm"># str</span>
+<span class="var">idade</span> = <span class="val">16</span>                  <span class="cm"># int</span>
+<span class="var">altura</span> = <span class="val">1.72</span>              <span class="cm"># float</span>
+
+<span class="tag">print</span>(<span class="str">"Eu me chamo"</span>, nome, <span class="str">", tenho"</span>, idade, <span class="str">"anos e"</span>, altura, <span class="str">"de altura."</span>)</div>
+            <p>Perceba como <code>print()</code> não se importa em misturar texto, número inteiro e número decimal na mesma chamada — ele converte tudo para texto na hora de mostrar.</p>
+        </div>
+
+        <div class="exercicio">
+            <span class="exercicio-tag">Exercício 4 · Cartão de apresentação</span>
+            <p>Crie um arquivo <code>cartao_apresentacao.py</code> que imprima um "cartão de visitas" seu, linha por linha, usando pelo menos um valor de cada tipo (<code>str</code>, <code>int</code>, <code>float</code>) e alguns comentários explicando cada bloco.</p>
+            <div class="code-block"><span class="cm"># --- Meus dados ---</span>
+<span class="var">nome</span> = <span class="str">"Beatriz Souza"</span>
+<span class="var">idade</span> = <span class="val">17</span>
+<span class="var">altura</span> = <span class="val">1.65</span>
+<span class="var">curso</span> = <span class="str">"Desenvolvimento de Sistemas"</span>
+
+<span class="cm"># --- Cartão impresso linha por linha ---</span>
+<span class="tag">print</span>(<span class="str">"========================"</span>)
+<span class="tag">print</span>(<span class="str">"     CARTÃO DE VISITAS"</span>)
+<span class="tag">print</span>(<span class="str">"========================"</span>)
+<span class="tag">print</span>(<span class="str">"Nome:"</span>, nome)
+<span class="tag">print</span>(<span class="str">"Idade:"</span>, idade, <span class="str">"anos"</span>)
+<span class="tag">print</span>(<span class="str">"Altura:"</span>, altura, <span class="str">"m"</span>)
+<span class="tag">print</span>(<span class="str">"Curso:"</span>, curso)
+<span class="tag">print</span>(<span class="str">"========================"</span>)</div>
+            <p>Repare que as linhas com só <code>"========================"</code> e <code>"CARTÃO DE VISITAS"</code> servem apenas para desenhar uma "moldura" em torno das informações — um truque simples para deixar a saída mais organizada, mesmo sem nenhum recurso visual além do texto.</p>
+        </div>
+
+        <h2>✅ Checklist antes de seguir para a próxima atividade</h2>
+        <ul class="checklist">
+            <li>Sei abrir o VS Code, criar um arquivo <code>.py</code> e rodá-lo com "Run Python File in Terminal";</li>
+            <li>Entendo que <code>print()</code> mostra texto na tela e que o texto fica entre aspas;</li>
+            <li>Sei escrever comentários com <code>#</code> e sei por que eles são úteis;</li>
+            <li>Sei diferenciar <code>str</code>, <code>int</code> e <code>float</code> só de olhar o valor;</li>
+            <li>Fiz os 4 exercícios acima e rodei cada um pelo menos uma vez.</li>
+        </ul>
+    </div>
+    <footer>Microlins São José — Atividade de Python</footer>
+</div>
+</body>
+</html>

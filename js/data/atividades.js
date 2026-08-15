@@ -662,7 +662,7 @@ const ATIVIDADES = [
     slug: "criar-seu-site",
     titulo: "Criando seu Site",
     descricao: "Projetos reais de HTML, CSS e JavaScript, do primeiro repositório no Git a sites completos.",
-    grupo: "nav",
+    grupo: "cursos",
     sigla: "GIT",
     cor: "#f05033",
     imagem: "img/criar-seu-site.jpg",
@@ -768,11 +768,11 @@ const ATIVIDADES = [
     cor: "#ff4da6",
     materiais: [
       {
-        titulo: "Estrutura Básica de uma Página",
+        titulo: "Estilizando uma Página do Zero",
         descricao:
-          "Atividade para praticar a estrutura básica do HTML e a aplicação de estilos com CSS.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Html e CSS/HTML E CSS - ESTRUTURA BASICA.pdf",
+          "Atividade prática de CSS: você recebe uma página HTML pronta e sem nenhum estilo, e vai transformá-la visualmente em 7 passos (header, box model, cards em grade, hover, responsivo), sem tocar no HTML.",
+        tipo: "link",
+        url: "atividades/paginas/html-css-estilizando-uma-pagina.html",
       },
       {
         titulo: "Usando o CSS e colocando imagens em HTML",

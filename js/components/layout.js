@@ -24,10 +24,7 @@ function textoSeguro(valor) {
 // Cursos com `grupo: "nav"` em data/atividades.js — saem das grades da
 // home e ganham link próprio aqui no menu (não ficam marcados como se
 // fossem só mais um curso dentro de "Início").
-const CURSOS_NAV = [
-  { slug: "ingles", titulo: "Inglês" },
-  { slug: "criar-seu-site", titulo: "Criando seu Site" },
-];
+const CURSOS_NAV = [{ slug: "ingles", titulo: "Inglês" }];
 
 // ---- <app-navbar> ----------------------------------------------------
 // Menu do topo. Marca sozinho o link da página atual (via Rotas.atual())

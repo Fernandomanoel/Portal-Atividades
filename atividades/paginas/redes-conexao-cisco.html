@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazendo uma conexão usando comandos no Cisco — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔌 Fazendo uma conexão usando comandos no Cisco</h1>
+        <p>Redes de Computadores — Wireless &amp; Cabos e Infraestrutura</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">Livro: Aula 01 – 03 · Atividade: 02 · "A felicidade da sua vida depende da qualidade dos seus pensamentos." — Marco Aurélio</p>
+
+        <h2>1) Primeiros passos com roteadores Cisco</h2>
+
+        <h3>Topologia</h3>
+        <div class="topologia">
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC-A</span><small>192.168.1.10<br>255.255.255.0</small></div>
+            </div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>R1</span><small>G0/0: 192.168.1.1<br>G0/1: 192.168.2.1</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC-B</span><small>192.168.2.10<br>255.255.255.0</small></div>
+            </div>
+        </div>
+
+        <h3>Endereçamento</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Dispositivo</th><th>Interface</th><th>Endereço IP</th><th>Máscara IP</th></tr>
+                <tr><td>R1</td><td>G0/0</td><td>192.168.1.1</td><td>255.255.255.0</td></tr>
+                <tr><td>R2</td><td>G0/1</td><td>192.168.2.1</td><td>255.255.255.0</td></tr>
+                <tr><td>PC-A</td><td>NIC</td><td>192.168.1.10</td><td>255.255.255.0</td></tr>
+                <tr><td>PC-B</td><td>NIC</td><td>192.168.2.10</td><td>255.255.255.0</td></tr>
+            </table>
+        </div>
+        <div class="aviso">⚠️ A tabela do material original identifica a segunda interface como pertencendo a "R2", mas em toda a atividade só existe um roteador (R1), configurado com as interfaces G0/0 e G0/1. Mantivemos a tabela exatamente como está no PDF original.</div>
+
+        <h2>🛠️ Montando a rede</h2>
+        <p>Abra o Cisco Packet Tracer.</p>
+
+        <h3>Equipamentos</h3>
+        <p>Adicione:</p>
+        <ul>
+            <li>1 Router 1941</li>
+            <li>2 PCs</li>
+        </ul>
+
+        <h3>Conecte</h3>
+        <div class="box">
+            <ul>
+                <li>PC-A → R1 G0/0</li>
+                <li>PC-B → R1 G0/1</li>
+            </ul>
+        </div>
+
+        <h2>🖥️ Configurar os computadores</h2>
+
+        <h3>PC-A</h3>
+        <p><strong>Desktop → IP Configuration</strong></p>
+        <p>No Cisco, você tem que fixar o IP dos computadores.</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Campo</th><th>Valor</th></tr>
+                <tr><td>IP Address</td><td>192.168.1.10</td></tr>
+                <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                <tr><td>Gateway</td><td>192.168.1.1</td></tr>
+            </table>
+        </div>
+
+        <h3>PC-B</h3>
+        <p><strong>Desktop → IP Configuration</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Campo</th><th>Valor</th></tr>
+                <tr><td>IP Address</td><td>192.168.2.10</td></tr>
+                <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                <tr><td>Gateway</td><td>192.168.2.1</td></tr>
+            </table>
+        </div>
+
+        <h2>⚙️ Configurar o roteador</h2>
+        <p><strong>R1 → CLI</strong></p>
+        <p>Digite dentro do terminal do Roteador:</p>
+        <div class="code-block">enable</div>
+        <p>Depois digite:</p>
+        <div class="code-block">Configure terminal</div>
+
+        <h3>Configurar o G0/0</h3>
+        <p>Digite o comando abaixo:</p>
+        <div class="code-block">interface g0/0
+ip address 192.168.1.1 255.255.255.0
+no shutdown
+exit</div>
+
+        <h3>Configurar o G0/1</h3>
+        <p>Digite:</p>
+        <div class="code-block">interface g0/1
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+exit</div>
+
+        <h3>Verificar</h3>
+        <p>Digite:</p>
+        <div class="code-block">show ip interface brief</div>
+        <p>As interfaces devem aparecer como abaixo:</p>
+        <div class="code-block">GigabitEthernet0/0 up up
+GigabitEthernet0/1 up up</div>
+
+        <h2>✅ Testar</h2>
+        <p>No PC-A você abre o <strong>DESKTOP</strong> e logo após <strong>Command Prompt</strong>, digite os comandos abaixo:</p>
+        <p>Teste:</p>
+        <div class="code-block">Ping 192.168.1.1</div>
+        <p>E depois:</p>
+        <div class="code-block">Ping 192.168.2.10</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

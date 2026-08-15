@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coisas da Vida — Word</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .texto-exemplo {
+            background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 6px;
+            padding: 16px 20px; margin: 14px 0; font-style: italic; color: #333;
+        }
+        .texto-exemplo p { margin-bottom: 6px; }
+        .texto-exemplo p:last-child { margin-bottom: 0; }
+        .texto-exemplo .titulo-texto { text-align: center; text-decoration: underline; font-weight: 700; font-style: normal; margin-bottom: 14px; }
+        .texto-exemplo .autor { text-align: right; font-style: italic; margin-top: 12px; margin-bottom: 0; }
+        .texto-exemplo .nota { font-size: 0.82em; font-style: normal; color: #666; border-top: 1px solid #b9cbe8; margin-top: 16px; padding-top: 10px; }
+        .texto-exemplo ul { margin-bottom: 6px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>✍️ Exercício 2 — Coisas da Vida</h1>
+        <p>Word</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=word">← Voltar para Word</a>
+
+    <div class="content">
+        <h2>📋 Instruções</h2>
+        <ol class="passos">
+            <li>Cria um documento no Word com o nome <strong>Texto1</strong> e guarda-o na pasta <strong>Exercicios_Word</strong>.</li>
+            <li>Para o título utiliza o tipo de letra <strong>Times New Roman</strong>, tamanho <strong>14</strong>.</li>
+            <li>O corpo do texto na mesma fonte, tamanho <strong>12</strong> e <strong>justificado</strong>.</li>
+        </ol>
+
+        <div class="aviso">📄 <strong>Texto 1</strong> — copie o texto abaixo exatamente como está, incluindo a lista e a nota de rodapé.</div>
+
+        <h2>📖 Texto para digitar</h2>
+        <div class="texto-exemplo">
+            <p class="titulo-texto">Coisas da Vida <sup>1</sup></p>
+            <p>A sabedoria não se encontra no topo de nenhuma montanha nem no último ano de um curso superior. É num pequeno monte de areia do recreio do jardim de infância que se pode aprender tudo o que é necessário na vida:</p>
+            <ul>
+                <li>partilhar</li>
+                <li>respeitar as regras do jogo</li>
+                <li>não bater em ninguém</li>
+                <li>guardar as coisas nos sítios onde estavam</li>
+                <li>manter tudo sempre limpo</li>
+                <li>não mexer nas coisas dos outros</li>
+                <li>pedir desculpa quando se magoa alguém</li>
+                <li>viver uma vida equilibrada: estudar, pensar, desenhar, pintar, cantar, dançar, brincar, trabalhar, fazer de tudo um pouco, todos os dias.</li>
+            </ul>
+            <p class="autor">Robert Fulghum</p>
+            <p class="nota"><sup>1</sup> Excerto retirado do Livro "Tudo o que eu devia saber na vida aprendi no Jardim de Infância".</p>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Word</footer>
+</div>
+</body>
+</html>

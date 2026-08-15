@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Atividades — Word</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .texto-exemplo {
+            background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 6px;
+            padding: 16px 20px; margin: 14px 0; font-style: italic; color: #333;
+        }
+        .texto-exemplo p { margin-bottom: 6px; }
+        .texto-exemplo p:last-child { margin-bottom: 0; }
+        .texto-exemplo .titulo-texto { font-style: normal; font-weight: 700; margin-bottom: 12px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>✅ Atividade Word 2021 — Lista de Atividades</h1>
+        <p>Word</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=word">← Voltar para Word</a>
+
+    <div class="content">
+        <h2>1️⃣ Exercício 1</h2>
+        <ol class="passos">
+            <li>Clique no menu iniciar.</li>
+            <li>Digite "Word".</li>
+            <li>Clique no Word 2021 e aguarde alguns minutos.</li>
+            <li>Clique em "Abrir".</li>
+            <li>Digite o Texto abaixo:</li>
+        </ol>
+
+        <div class="texto-exemplo">
+            <p>Estudar é uma das principais formas de desenvolver conhecimento e conquistar oportunidades na vida. Por meio dos estudos, adquirimos habilidades que nos ajudam tanto na vida pessoal quanto profissional.</p>
+            <p>Ao estudar, aprendemos a pensar melhor, resolver problemas e tomar decisões com mais segurança. Além disso, o hábito de estudar contribui para a disciplina, organização e responsabilidade, características importantes para o crescimento de qualquer pessoa.</p>
+            <p>Mesmo que às vezes seja difícil ou cansativo, é importante manter a dedicação. Criar uma rotina de estudos, escolher um ambiente tranquilo e evitar distrações são atitudes que fazem toda a diferença no aprendizado.</p>
+            <p>Por fim, estudar não é apenas uma obrigação, mas um investimento no futuro. Quanto mais conhecimento adquirimos, maiores são as chances de alcançar nossos objetivos e construir uma vida melhor.</p>
+        </div>
+
+        <ol class="passos" style="counter-reset: passo 5;">
+            <li>Clicando e arrastando, selecione todo o texto contido no documento.</li>
+            <li>Clique no drop down de definição de fonte (o campo que mostra "Calibri (Corpo)" e o tamanho "12", no grupo Fonte da guia Página Inicial).</li>
+            <li>Na lista, selecione a fonte <strong>"Tahoma"</strong>.</li>
+            <li>Logo ao lado, em "Tamanho", defina o tamanho da fonte para <strong>"14"</strong>.</li>
+            <li>Com o texto selecionado, clique em <strong>"Centralizar"</strong> (no grupo Parágrafo).</li>
+            <li>Clicando e arrastando, selecione as palavras <strong>Estudar</strong> e <strong>Conhecimento</strong>.</li>
+            <li>Clique em <strong>"Negrito"</strong>.</li>
+            <li>Com o título ainda selecionado, clique em <strong>"Cor"</strong> (o ícone "A" com sublinhado vermelho, no grupo Fonte).</li>
+            <li>Selecione uma cor de sua preferência.</li>
+            <li>Clique em <strong>"Arquivo"</strong>.</li>
+            <li>Clique em <strong>"Salvar Como"</strong>.</li>
+            <li>Salve como <strong>"Atividade Word – Seu Nome"</strong> na sua pasta. Peça ajuda ao seu instrutor neste passo, caso precise.</li>
+            <li>Feche o Word 2021.</li>
+        </ol>
+
+        <h2>2️⃣ Exercício 2</h2>
+        <ol class="passos">
+            <li>Clique no menu Iniciar.</li>
+            <li>Com os procedimentos ensinados em aulas anteriores, abra o Word 2013 e aguarde alguns segundos.</li>
+            <li>Em "Novo", clique em "Documento em branco".</li>
+            <li>Clique em "Arquivo".</li>
+            <li>Selecione a opção "Abrir".</li>
+            <li>Logo abaixo do título "RELATÓRIO TÉCNICO SOBRE O CONSERTO DE COMPUTADOR", aperte "Enter" cerca de 3 ou 4 vezes.</li>
+            <li>Clique no drop down de definição da fonte.</li>
+            <li>Selecione a fonte <strong>"Verdana"</strong>.</li>
+            <li>Altere o tamanho da fonte para <strong>"12"</strong>.</li>
+            <li>Selecione as opções de cores da fonte.</li>
+            <li>Selecione a cor <strong>"Automático"</strong>.</li>
+            <li>Desmarque a opção de negrito.</li>
+            <li>Digite o texto abaixo:</li>
+        </ol>
+
+        <div class="texto-exemplo">
+            <p class="titulo-texto">RELATÓRIO TÉCNICO SOBRE O CONSERTO DE COMPUTADOR</p>
+            <p>O computador enviado pelo cliente no dia 10/01/2022 está apresentando defeito pois a placa mãe está em processo de oxidação, o que prejudica o funcionamento da mesma</p>
+            <p>A placa mãe apresenta 5 difusores oxidados e enferrujados, precisando ser substituida</p>
+            <p>Segue abaixo as peças que precisarão serem trocadas junto com a placa mãe:</p>
+            <p>Memória RAM</p>
+            <p>Processador e Cooler</p>
+            <p>Fonte,</p>
+            <p>Placa de Vídeo Off-Board</p>
+            <p>Fico a disposição para qualquer esclarecimento</p>
+            <p>Atenciosamente,<br>Técnico Especializado</p>
+        </div>
+
+        <div class="aviso">⚠️ No PDF original, a numeração dos passos pula do item 13 direto para o 15 (não existe um item "14" listado) — mantivemos a sequência conforme o documento original.</div>
+
+        <ol class="passos" style="counter-reset: passo 14;">
+            <li>Selecione todo o texto (exceto o título).</li>
+            <li>Clique em "Revisão".</li>
+            <li>Selecione a opção "Ortografia e Gramática".</li>
+            <li>Na lateral direita do Word 2021, clique constantemente em "Alterar" para fazer as devidas correções.</li>
+            <li>Depois de feitas todas as alterações, aparecerá uma mensagem confirmando todas as correções. Clique em "OK".</li>
+            <li>Com o texto ainda selecionado, clique em "Traduzir".</li>
+            <li>Selecione a opção "Traduzir Texto Selecionado".</li>
+            <li>Na lateral direita do Word 2021, encontramos as opções do idioma original e da tradução. Clique no drop down de "Para", e selecione o idioma "Português (Brasil)".</li>
+            <li>Utilizando a barra de rolagem, encontre a opção "Inserir". Clique nela e aguarde alguns segundos.</li>
+            <li>Clique em "Arquivo".</li>
+            <li>Selecione a opção "Salvar Como".</li>
+            <li>Salve como <strong>"Atividade Word – Seu Nome"</strong> na sua pasta. Peça ajuda ao seu instrutor neste passo, caso precise.</li>
+            <li>Feche o Word 2021.</li>
+        </ol>
+    </div>
+
+    <footer>Microlins São José — Atividade de Word</footer>
+</div>
+</body>
+</html>

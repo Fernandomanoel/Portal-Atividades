@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Normas ABNT — Word</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .texto-exemplo {
+            background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 6px;
+            padding: 16px 20px; margin: 14px 0; font-style: italic; color: #333;
+        }
+        .texto-exemplo p { margin-bottom: 6px; }
+        .texto-exemplo p:last-child { margin-bottom: 0; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.tabela-abnt { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.9em; }
+        table.tabela-abnt th, table.tabela-abnt td { border: 1px solid #d0d0d0; padding: 10px 12px; text-align: left; vertical-align: top; }
+        table.tabela-abnt th { background: #eef1f4; color: #1e3f73; font-weight: 700; }
+
+        .doc-academico { background: #fafbfd; border: 1px solid #d8e2f0; border-radius: 8px; padding: 24px 28px; margin: 16px 0; }
+        .doc-academico h4 { color: #1e3f73; text-align: center; margin-bottom: 6px; font-size: 1.05em; }
+        .doc-academico .subtitulo { text-align: center; font-size: 0.9em; color: #555; margin-bottom: 18px; }
+        .doc-academico .meta { text-align: center; font-size: 0.9em; color: #555; margin-bottom: 4px; }
+        .doc-academico h5 { color: #2b579a; margin-top: 22px; margin-bottom: 8px; font-size: 1em; letter-spacing: 0.5px; }
+        .doc-academico p { text-align: justify; }
+        .doc-academico blockquote { font-style: italic; margin: 12px 0 12px 30px; padding-left: 14px; border-left: 3px solid #2b579a; color: #444; }
+        .doc-academico .referencias p { text-align: left; margin-bottom: 14px; }
+
+        .campo { background: #fff3d6; color: #7a5200; padding: 1px 4px; border-radius: 3px; font-weight: 700; font-style: normal; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            .doc-academico { padding: 18px 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📚 Criando e Formatando um Documento Acadêmico no Word com Normas ABNT</h1>
+        <p>Word</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=word">← Voltar para Word</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Ensinar o aluno a criar e formatar um documento acadêmico no Word, utilizando as normas da ABNT (Associação Brasileira de Normas Técnicas) para elementos textuais e pré-textuais, como capa, folha de rosto, sumário, introdução, desenvolvimento, conclusão e referências bibliográficas.</p>
+
+        <h2>📋 Descrição da Atividade</h2>
+        <p>Você receberá um texto base sobre "Análise do Comportamento Humano e Persuasão: Uma Perspectiva Baseada no Manual do FBI". Sua tarefa é formatar este texto de acordo com as normas da ABNT, incluindo todos os elementos solicitados no passo-a-passo. O objetivo é simular a criação de um trabalho acadêmico completo.</p>
+        <div class="box">
+            <p>Este guia ajudará você a configurar seu documento do zero, garantindo que ele esteja impecável e dentro das normas.</p>
+        </div>
+
+        <h2>1️⃣ Preparando o Terreno</h2>
+        <ul>
+            <li>Abra o Microsoft Word.</li>
+            <li>Clique em Documento em Branco.</li>
+            <li><strong>Dica de ouro:</strong> Salve o arquivo imediatamente (<strong>Ctrl + B</strong>) com o nome <strong>"Atividade_SeuNome"</strong> para não perder nada.</li>
+        </ul>
+
+        <h2>2️⃣ Configurando as Margens (O "espaço de respiro")</h2>
+        <ol class="passos">
+            <li>Clique na guia <strong>Layout</strong> no menu superior.</li>
+            <li>Clique no botão <strong>Margens</strong> e escolha <strong>Margens Personalizadas</strong> (no final da lista).</li>
+            <li>Na aba "Margens", preencha exatamente assim:</li>
+        </ol>
+        <div class="box">
+            <ul>
+                <li><strong>Superior:</strong> 3 cm &nbsp;|&nbsp; <strong>Esquerda:</strong> 3 cm</li>
+                <li><strong>Inferior:</strong> 2 cm &nbsp;|&nbsp; <strong>Direita:</strong> 2 cm</li>
+            </ul>
+        </div>
+        <ol class="passos" style="counter-reset: passo 3;">
+            <li>Verifique se a orientação está em <strong>Retrato</strong> e clique em <strong>OK</strong>.</li>
+        </ol>
+
+        <h2>3️⃣ Fonte e Texto Principal</h2>
+        <ol class="passos">
+            <li>Pressione <strong>Ctrl + T</strong> para selecionar todo o documento (mesmo que ainda esteja vazio).</li>
+            <li>Vá na guia <strong>Página Inicial</strong>.</li>
+            <li>No campo de Fonte, digite ou procure por <strong>Arial</strong> ou <strong>Times New Roman</strong>.</li>
+            <li>No tamanho, selecione <strong>12</strong>.</li>
+        </ol>
+
+        <h2>4️⃣ Parágrafo e Espaçamento (Sem "efeito sanfona")</h2>
+        <ol class="passos">
+            <li>Com o texto selecionado (ou antes de começar), clique na setinha no canto inferior direito do grupo Parágrafo (na guia Página Inicial).</li>
+            <li>Na janela que abrir, configure:</li>
+        </ol>
+        <div class="box">
+            <ul>
+                <li><strong>Alinhamento:</strong> Justificada.</li>
+                <li><strong>Recuo Especial:</strong> Na primeira linha em 1,25 cm (padrão para parágrafos).</li>
+                <li><strong>Espaçamento entre linhas:</strong> 1,5 linhas.</li>
+                <li><strong>Espaçamento Antes e Depois:</strong> Deixe ambos em 0 pt.</li>
+            </ul>
+        </div>
+        <ol class="passos" style="counter-reset: passo 2;">
+            <li>Clique em <strong>OK</strong>.</li>
+        </ol>
+
+        <h2>5️⃣ Estruturando a Capa (A vitrine do trabalho)</h2>
+        <ol class="passos">
+            <li>Clique no botão <strong>Centralizar</strong> (Ctrl + E).</li>
+            <li><strong>Instituição:</strong> Digite o nome em <strong>MAIÚSCULAS</strong> e <strong>Negrito</strong>. Pressione Enter 2 vezes.</li>
+            <li><strong>Curso:</strong> Digite o nome do curso em <strong>MAIÚSCULAS</strong>. Pressione Enter até chegar no meio da página (aproximadamente 10-12 vezes).</li>
+            <li><strong>Nome do Aluno:</strong> Digite seu nome completo em <strong>MAIÚSCULAS</strong>. Pressione Enter mais umas 10 vezes.</li>
+            <li><strong>Título:</strong> Digite o título em <strong>MAIÚSCULAS</strong> e <strong>Negrito</strong>.</li>
+            <li><strong>Subtítulo:</strong> Se houver, digite abaixo em <strong>MAIÚSCULAS</strong> (sem negrito).</li>
+            <li>Pressione Enter até chegar ao final da página.</li>
+            <li><strong>Cidade e Ano:</strong> Digite a <strong>CIDADE - ESTADO</strong> (em cima) e o <strong>ANO</strong> (embaixo).</li>
+        </ol>
+
+        <h2>6️⃣ Folha de Rosto (Contracapa)</h2>
+        <ol class="passos">
+            <li>Vá para a página 2 (use <strong>Ctrl + Enter</strong> para criar uma nova página rapidamente).</li>
+            <li>Repita o Nome do Aluno (topo, centralizado, maiúsculas).</li>
+            <li>Pressione Enter (umas 10 vezes) e repita o Título (centralizado, negrito).</li>
+            <li><strong>Natureza do Trabalho:</strong></li>
+        </ol>
+        <div class="box">
+            <ul>
+                <li>Clique em <strong>Alinhar à Esquerda</strong>.</li>
+                <li>Na régua superior, arraste o marcador de recuo até o número 8.</li>
+                <li>Mude a fonte para tamanho <strong>10</strong>, espaçamento simples e digite:</li>
+            </ul>
+            <div class="texto-exemplo" style="margin-top: 10px;">
+                <p>"Trabalho acadêmico apresentado como requisito parcial para a disciplina de Comportamento Humano, sob orientação do <strong>Prof. Dr. Manoel</strong>."</p>
+            </div>
+        </div>
+        <ol class="passos" style="counter-reset: passo 4;">
+            <li>No final da página, coloque novamente Cidade e Ano (centralizado, tamanho 12).</li>
+        </ol>
+
+        <h2>7️⃣ Sumário (O mapa)</h2>
+        <ol class="passos">
+            <li>Crie uma nova página (Ctrl + Enter).</li>
+            <li>Escreva <strong>SUMÁRIO</strong> (Maiúsculas, Negrito, Centralizado).</li>
+            <li>Pule duas linhas. Se não for usar o automático, liste seus títulos à esquerda e os números das páginas à direita.</li>
+        </ol>
+        <div class="aviso">💡 <strong>Dica:</strong> Para o automático, use os Estilos (Título 1, Título 2) na guia Página Inicial e depois vá em Referências &gt; Sumário.</div>
+
+        <h2>8️⃣ Formatação do Conteúdo (Desenvolvimento)</h2>
+        <ul>
+            <li><strong>Títulos de Seção</strong> (Ex: 1. INTRODUÇÃO): Negrito, Maiúsculas, Alinhado à esquerda.</li>
+            <li><strong>Subtítulos</strong> (Ex: 1.1 Histórico): Negrito, apenas a primeira letra maiúscula.</li>
+            <li><strong>Citações Longas</strong> (+ de 3 linhas):
+                <ul>
+                    <li>Selecione o bloco da citação.</li>
+                    <li>Mude o tamanho para <strong>10</strong>.</li>
+                    <li>Mude o espaçamento para simples.</li>
+                    <li>Aumente o recuo esquerdo para <strong>4 cm</strong> (use a régua ou as configurações de parágrafo).</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>9️⃣ Referências Bibliográficas</h2>
+        <ol class="passos">
+            <li>Última página, título <strong>REFERÊNCIAS</strong> (Centralizado e Negrito).</li>
+            <li>Alinhamento à Esquerda.</li>
+            <li>Espaçamento Simples.</li>
+            <li>Pule uma linha entre cada referência. Lembre-se: <strong>Ordem alfabética pelo sobrenome do autor</strong>.</li>
+        </ol>
+
+        <h2>🔟 Inserindo Números de Página (O toque final)</h2>
+        <ol class="passos">
+            <li>Vá na guia <strong>Inserir &gt; Número de Página</strong>.</li>
+            <li>Escolha <strong>Início da Página</strong> e depois <strong>Número sem Formatação 3</strong> (canto superior direito).</li>
+            <li>Dê um duplo clique no número para abrir a edição e verifique se a fonte está Arial/Times tamanho 10.</li>
+            <li><strong>Atenção:</strong> A contagem começa na capa, mas o número só deve aparecer visualmente a partir da Introdução.</li>
+            <li><em>Como fazer:</em> Clique na página anterior à introdução, vá em Layout &gt; Quebras &gt; Próxima Página. Depois, no cabeçalho da introdução, desmarque "Vincular ao Anterior" e apague os números das páginas iniciais.</li>
+        </ol>
+
+        <h2>📄 Conteúdo Base para Formatação</h2>
+        <p>Este é o texto que você deve formatar seguindo todas as regras acima. Copie-o para o Word e aplique passo a passo a formatação ABNT descrita.</p>
+
+        <div class="doc-academico">
+            <h4>ANÁLISE DO COMPORTAMENTO HUMANO E PERSUASÃO: UMA PERSPECTIVA BASEADA NO MANUAL DO FBI</h4>
+            <p class="subtitulo">Trabalho acadêmico apresentado como requisito parcial para a disciplina de Comportamento Humano, sob orientação do <strong>Prof. Dr. Manoel</strong>.</p>
+            <p class="meta">CIDADE - ESTADO</p>
+            <p class="meta">2026</p>
+
+            <h5>SUMÁRIO</h5>
+
+            <h5>INTRODUÇÃO</h5>
+            <p>O estudo do comportamento humano tem sido uma peça fundamental nas operações de inteligência e investigação criminal. O presente trabalho analisa as técnicas de persuasão e análise comportamental desenvolvidas por especialistas do Federal Bureau of Investigation (FBI), especificamente as metodologias descritas por Jack Schafer em sua obra "Manual de Persuasão do FBI". O objetivo é compreender como sinais sutis e estratégias psicológicas podem ser utilizados para construir relacionamentos, ganhar confiança e influenciar positivamente as interações sociais.</p>
+            <p>A compreensão desses mecanismos não se limita ao campo da espionagem ou investigação, mas estende-se a todas as áreas da vida humana onde a comunicação e a empatia são necessárias. Através da análise de elementos como a proximidade, a frequência e a intensidade das interações, é possível decifrar os códigos invisíveis que regem a atração e a cooperação entre indivíduos.</p>
+
+            <h5>A FÓRMULA DA AMIZADE</h5>
+            <p>Um dos pilares centrais da metodologia do FBI para o recrutamento de fontes e construção de alianças é a chamada "Fórmula da Amizade". Segundo Schafer, a amizade e a confiança não são frutos do acaso, mas sim o resultado de uma equação matemática composta por quatro variáveis fundamentais: Proximidade, Frequência, Duração e Intensidade.</p>
+
+            <div class="sheet-wrap">
+                <table class="tabela-abnt">
+                    <tr><th>Variável</th><th>Descrição</th><th>Impacto na Relação</th></tr>
+                    <tr><td>Proximidade</td><td>Estar no mesmo espaço físico que o alvo.</td><td>Cria familiaridade sem a necessidade de interação direta inicial.</td></tr>
+                    <tr><td>Frequência</td><td>O número de contatos realizados ao longo do tempo.</td><td>Reforça a presença e reduz a percepção de ameaça</td></tr>
+                    <tr><td>Duração</td><td>O tempo gasto em cada interação individual.</td><td>Permite o aprofundamento da conexão e do compartilhamento de informações.</td></tr>
+                    <tr><td>Intensidade</td><td>A profundidade psicológica da interação.</td><td>Define a força do vínculo emocional estabelecido.</td></tr>
+                </table>
+            </div>
+
+            <p>A aplicação estratégica dessas variáveis permite que um agente se torne uma figura familiar e confiável na vida de outra pessoa, muitas vezes sem que esta perceba o esforço consciente por trás da aproximação.</p>
+
+            <h5>SINAIS NÃO-VERBAIS E COMUNICAÇÃO</h5>
+            <p>A comunicação humana é composta majoritariamente por elementos não-verbais. O cérebro humano está constantemente escaneando o ambiente em busca de sinais de segurança ou perigo. O "Manual do FBI" destaca três sinais cruciais que indicam que uma pessoa é amigável e não representa uma ameaça:</p>
+
+            <blockquote>"O flash de sobrancelhas, a inclinação da cabeça e o sorriso verdadeiro são os três grandes sinais de amizade que o cérebro reconhece instantaneamente." (SCHAFER, 2015)</blockquote>
+
+            <p>O flash de sobrancelhas é um movimento rápido de subida e descida das sobrancelhas que dura cerca de um sexto de segundo, sinalizando reconhecimento e abertura. A inclinação da cabeça para um dos lados expõe a artéria carótida, um sinal biológico de vulnerabilidade que demonstra confiança no interlocutor. Por fim, o sorriso de Duchenne, que envolve a musculatura ao redor dos olhos, é a marca da sinceridade, diferenciando-se de sorrisos sociais forçados.</p>
+
+            <h5>A REGRA DE OURO DA INTERAÇÃO HUMANA</h5>
+            <p>A base de toda persuasão ética e eficaz reside no que Schafer denomina a "Regra de Ouro da Amizade". Esta regra estabelece que, para fazer com que as pessoas gostem de você, você deve fazê-las se sentirem bem consigo mesmas.</p>
+            <p>Diferente da manipulação comum, que foca no ego do persuasor, a técnica do FBI foca na validação do outro. Isso é alcançado através de:</p>
+            <ol>
+                <li><strong>Escuta Ativa:</strong> Demonstrar interesse genuíno pelo que o outro diz.</li>
+                <li><strong>Declarações Empáticas:</strong> Refletir os sentimentos do interlocutor para criar conexão.</li>
+                <li><strong>Elogios Indiretos:</strong> Permitir que a pessoa se auto-elogie através de perguntas bem formuladas.</li>
+            </ol>
+            <p>Ao colocar o foco na satisfação das necessidades psicológicas do outro, o praticante desta técnica cria um ambiente de conforto e segurança que naturalmente leva à cooperação.</p>
+
+            <h5>CONCLUSÃO</h5>
+            <p>A análise do comportamento humano sob a ótica do FBI revela que a influência é uma habilidade que pode ser desenvolvida através da observação e da prática deliberada. A "Fórmula da Amizade" e o domínio da linguagem não-verbal oferecem ferramentas poderosas para a construção de pontes entre indivíduos, independentemente do contexto.</p>
+            <p>Conclui-se que a eficácia dessas técnicas reside na sua fundamentação biológica e psicológica. Ao respeitar os sinais naturais de segurança do cérebro humano e priorizar o bem-estar do interlocutor, é possível estabelecer vínculos profundos e duradouros, transformando estranhos em aliados e conflitos em cooperação.</p>
+
+            <h5>REFERÊNCIAS</h5>
+            <div class="referencias">
+                <p>DREEKE, Robin. <em>Como ler as pessoas: O guia de um agente do FBI para prever o comportamento humano.</em> Rio de Janeiro: Sextante, 2019.</p>
+                <p>SCHAFER, Jack; KARLINS, Marvin. <em>Manual de Persuasão do FBI: Um ex-agente ensina como influenciar, atrair e conquistar pessoas.</em> São Paulo: Universo dos Livros, 2015.</p>
+                <p>FBI. <em>Behavioral Analysis Unit.</em> Disponível em: https://www.fbi.gov/how-we-investigate/behavioral-analysis. Acesso em: 27 abr. 2026.</p>
+            </div>
+        </div>
+
+        <div class="aviso">⚠️ No documento original, a lista de Referências aparece na ordem DREEKE, SCHAFER e FBI — não em ordem alfabética estrita (que seria DREEKE, FBI, SCHAFER) — mantivemos a ordem exata do PDF, mesmo contrariando a própria regra 9.4 acima ("ordem alfabética pelo sobrenome do autor").</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Word</footer>
+</div>
+</body>
+</html>

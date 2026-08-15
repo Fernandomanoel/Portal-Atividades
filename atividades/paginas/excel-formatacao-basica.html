@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formatação Básica — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #1d6f42; color: #fff; }
+        table.sheet td.merged.yellow { background: #fff59d; color: #333; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎨 Atividades Básico — Formatação</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>1️⃣ Orçamento Doméstico</h2>
+        <p><strong>Faça a tabela abaixo:</strong></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th><th>N</th></tr>
+                <tr><td class="rownum">1</td><td colspan="14" class="merged">ORÇAMENTO DOMÉSTICO</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">CONTAS</td><td class="headcell">JANEIRO</td><td class="headcell">FEVEREIRO</td><td class="headcell">MARÇO</td><td class="headcell">ABRIL</td><td class="headcell">MAIO</td><td class="headcell">JUNHO</td><td class="headcell">JULHO</td><td class="headcell">AGOSTO</td><td class="headcell">SETEMBRO</td><td class="headcell">OUTUBRO</td><td class="headcell">NOVEMBRO</td><td class="headcell">DEZEMBRO</td><td class="headcell">TOTAL</td></tr>
+                <tr><td class="rownum">3</td><td>AGUA</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>LUZ</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>TELEFONE</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>CELULAR</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>CARTÃO DE CRÉDITO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>EDUCAÇÃO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>CAFÉ</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td>ALIMENTAÇÃO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td>LANCHE</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td>JORNAL</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td>MORADIA</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td class="headcell">TOTAL</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td class="headcell">RECEITA</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td class="headcell">SALÁRIO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">17</td><td class="headcell">SALDO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>A. Formate a planilha da seguinte forma:</h3>
+        <ul>
+            <li>Intervalo de <strong>A1:N1</strong> = negrito, mesclar e centralizar, tamanho 16;</li>
+            <li>Intervalo <strong>A2:N2</strong> = negrito, centralizar.</li>
+            <li>Intervalo de <strong>A1:N14</strong> = todas as bordas.</li>
+            <li>Intervalo de <strong>B3:N14</strong> = estilo de moeda.</li>
+        </ul>
+
+        <h3>B. Preencher com valores da sua escolha</h3>
+        <p>Preencher com valores da sua escolha os valores de TODAS as células que representam os valores das contas de acordo com o respectivo mês:</p>
+        <ul>
+            <li>Intervalo de <strong>B3:M13</strong></li>
+        </ul>
+
+        <h3>C. Renomeie a Plan1</h3>
+        <p>Renomeie a <strong>Plan1</strong> para <strong>"Controle Financeiro"</strong>.</p>
+
+        <h2>2️⃣ Boletim Escolar</h2>
+        <p><strong>Elabore a planilha abaixo:</strong></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr>
+                <tr><td class="rownum">1</td><td colspan="8" class="merged">BOLETIM ESCOLAR</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">DISCIPLINAS</td><td class="headcell">1º BIMESTRE</td><td class="headcell">2º BIMESTRE</td><td class="headcell">3º BIMESTRE</td><td class="headcell">4º BIMESTRE</td><td class="headcell">SOMA</td><td class="headcell">MÉDIA</td><td class="headcell">SITUAÇÃO</td></tr>
+                <tr><td class="rownum">3</td><td>PORTUGUÊS</td><td class="money">8</td><td class="money">7</td><td class="money">8,5</td><td class="money">9</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>MATEMÁTICA</td><td class="money">4</td><td class="money">7</td><td class="money">6</td><td class="money">7</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>HISTÓRIA</td><td class="money">7</td><td class="money">7,5</td><td class="money">7</td><td class="money">8</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>GEOGRAFIA</td><td class="money">5</td><td class="money">6</td><td class="money">5</td><td class="money">5</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>QUIMICA</td><td class="money">8</td><td class="money">8,5</td><td class="money">9,5</td><td class="money">7</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>FILOSOFIA</td><td class="money">3</td><td class="money">4</td><td class="money">4</td><td class="money">4</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>FISICA</td><td class="money">8</td><td class="money">9</td><td class="money">8</td><td class="money">9</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>A. Formate a planilha da seguinte forma:</h3>
+        <ul>
+            <li>Intervalo de <strong>A1:H1</strong> = negrito, mesclar e centralizar, tamanho 16;</li>
+            <li>Intervalo <strong>A2:H2</strong> = negrito, centralizar.</li>
+            <li>Intervalo de <strong>A1:H9</strong> = todas as bordas.</li>
+            <li>Intervalo de <strong>B3:E9</strong> = Separador de milhares</li>
+            <li>Intervalo de <strong>B3:E9</strong> = use a formatação condicional, quando as notas estiverem abaixo de 5, deverá ficar vermelha automaticamente;</li>
+        </ul>
+
+        <h3>B. Campos em branco</h3>
+        <p>Os campos <strong>SOMA</strong>, <strong>MÉDIA</strong> e <strong>SITUAÇÃO</strong> devem permanecer em branco.</p>
+
+        <h3>C. Renomeie o Plan2</h3>
+        <p>Renomeie o <strong>Plan2</strong> para <strong>"Boletim Escolar"</strong></p>
+
+        <h2>3️⃣ Faturamento</h2>
+        <p><strong>Elaborar planilha abaixo:</strong></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">1</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">2</td><td colspan="5" class="merged yellow">TABELA DE FATURAMENTO</td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>IMPOSTO</td><td class="money">20%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>COMISSÕES</td><td class="money">7%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td class="headcell">PRODUTO</td><td class="headcell">FATURAMENTO</td><td class="headcell">IMPOSTO</td><td class="headcell">COMISSÕES</td><td class="headcell">VALOR LIQUIDO</td></tr>
+                <tr><td class="rownum">8</td><td>A</td><td class="money">80000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>B</td><td class="money">60000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td>C</td><td class="money">75000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td>D</td><td class="money">100000</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td>TOTAL DE FATURAMENTO</td><td class="empty"></td><td class="empty"></td><td>TOTAL LIQUIDO</td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td>MÉDIA DE FATURAMENTO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td>MAIOR FATURAMENTO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td>MENOR FATURAMENTO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>A. Formate a planilha da seguinte forma:</h3>
+        <ul>
+            <li>Intervalo de <strong>A2:E2</strong> = negrito, borda externa azul, mesclar e centralizar, tamanho 16, preenchimento amarelo;</li>
+            <li>Intervalo <strong>A7:E7</strong> = negrito, centralizar.</li>
+            <li>Intervalo de <strong>A7:E12; A4:B5 e A14:B16</strong> = todas as bordas.</li>
+            <li>Intervalo de <strong>A8:A11</strong> = centralizar</li>
+            <li>Intervalo de <strong>B8:E12 e B14:B16</strong> = estilo de moeda.</li>
+        </ul>
+
+        <h3>B. Renomeie o Plan3</h3>
+        <p>Renomeie o <strong>Plan3</strong> para <strong>"Faturamento"</strong></p>
+
+        <h2>4️⃣ Cadastro de Funcionários e Folha de Pagamento</h2>
+        <p><strong>Elabore a planilha abaixo:</strong></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr>
+                <tr><td class="rownum">1</td><td colspan="8" class="merged">CADASTRO DE FUNCIONÁRIOS</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">MATRÍCULA</td><td class="headcell">NOME</td><td class="headcell">CARGO</td><td class="headcell">CIDADE</td><td class="headcell">TELEFONE</td><td class="headcell">CELULAR</td><td class="headcell">VALOR DA HORA TRABALHADA</td><td class="headcell">Nº DE HORAS TRABALHADA</td></tr>
+                <tr><td class="rownum">3</td><td>001</td><td>PAULA DELGADO</td><td>AUXILIAR ADM</td><td>VILA VELHA</td><td>(27)3340-1890</td><td>(27)9914-4534</td><td class="money">4,00</td><td class="money">220</td></tr>
+                <tr><td class="rownum">4</td><td>002</td><td>MARIA JANUÁRIA DE MACEDO</td><td>VENDEDORA</td><td>VITÓRIA</td><td>(27)3245-6745</td><td>(27)9932-4567</td><td class="money">7,00</td><td class="money">200</td></tr>
+                <tr><td class="rownum">5</td><td>003</td><td>JOÃO CARLOS DE ASSIS</td><td>GERENTE</td><td>SERRA</td><td>(27)3320-5647</td><td>(27)8812-3456</td><td class="money">40,00</td><td class="money">100</td></tr>
+                <tr><td class="rownum">6</td><td>004</td><td>BELINHA DE ASSIS</td><td>AUXILIAR ADM</td><td>CARIACICA</td><td>(27)2233-6474</td><td>(27)7265-7890</td><td class="money">4,00</td><td class="money">220</td></tr>
+                <tr><td class="rownum">7</td><td>005</td><td>CARLA MARIA DE ANDRADA</td><td>AUXILIAR DE SERVIÇO GERAIS</td><td>SERRA</td><td>(27)2132-3434</td><td>(27)8843-2526</td><td class="money">3,00</td><td class="money">220</td></tr>
+                <tr><td class="rownum">8</td><td>006</td><td>BEATRIZ SILVA</td><td>GERENTE FINANCEIRO</td><td>VILA VELHA</td><td>(27)3434-7665</td><td>(27)9934-5667</td><td class="money">35,00</td><td class="money">100</td></tr>
+                <tr><td class="rownum">9</td><td>007</td><td>PATRICIA ALMEIDA NEVES</td><td>TELEFONISTA</td><td>VILA VELHA</td><td>(27)2334-7854</td><td>(27)9923-5252</td><td class="money">3,50</td><td class="money">220</td></tr>
+                <tr><td class="rownum">10</td><td>008</td><td>ALESSANDRA NUNES FILHO</td><td>VENDEDORA</td><td>VITÓRIA</td><td>(27)3234-3454</td><td>(27)8213-2425</td><td class="money">7,00</td><td class="money">200</td></tr>
+                <tr><td class="rownum">11</td><td>009</td><td>LEANDRO BATISTA AGUIAR</td><td>AUXILIAR DE SERVIÇO GERAIS</td><td>VITÓRIA</td><td>(27)3423-5634</td><td>(27)8123-4567</td><td class="money">3,00</td><td class="money">200</td></tr>
+                <tr><td class="rownum">12</td><td>010</td><td>MARIA ANDRADE SILVA</td><td>VENDEDORA</td><td>VITÓRIA</td><td>(27)3245-6565</td><td>(27)9934-1234</td><td class="money">7,00</td><td class="money">200</td></tr>
+            </table>
+        </div>
+
+        <h3>A. Formate a planilha da seguinte forma:</h3>
+        <ul>
+            <li>Intervalo de <strong>A1:H1</strong> = negrito, mesclar e centralizar, tamanho 16;</li>
+            <li>Intervalo <strong>A2:H2</strong> = negrito, centralizar.</li>
+            <li>Intervalo de <strong>A1:H12</strong> = todas as bordas.</li>
+            <li>Intervalo de <strong>G3:G12</strong> = formate com separador de milhares</li>
+            <li>Habilitar Filtragem por Cargo e Cidade</li>
+            <li>Classificar por ordem alfabética de Nome</li>
+        </ul>
+
+        <h3>B. Renomeie o Plan4</h3>
+        <p>Renomeie o <strong>Plan4</strong> para <strong>"Cadastro Func"</strong></p>
+
+        <h3>C. Crie o Plan5</h3>
+        <p>Crie o <strong>Plan5</strong> e em seguida renomeie para <strong>"Folha de Pagamento"</strong></p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th><th>J</th><th>K</th></tr>
+                <tr><td class="rownum">1</td><td colspan="11" class="merged">FOLHA DE PAGAMENTO</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">MATRICULA</td><td class="headcell">NOME</td><td class="headcell">Nº DE HORAS TRABALHADA</td><td class="headcell">VALOR DA HORA TRABALHADA</td><td class="headcell">SALÁRIO BRUTO</td><td class="headcell">INSS</td><td class="headcell">IMPOSTO SINDICAL</td><td class="headcell">VALE TRANSPORTE</td><td class="headcell">IRRF</td><td class="headcell">TOTAL DOS DESCONTOS</td><td class="headcell">SALÁRIO LIQUIDO</td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>D. Formate a planilha da seguinte forma:</h3>
+        <ul>
+            <li>Intervalo de <strong>A1:K1</strong> = negrito, mesclar e centralizar, tamanho 16;</li>
+            <li>Intervalo <strong>A2:K2</strong> = negrito, centralizar, Quebrar Texto Automaticamente.</li>
+            <li>Intervalo de <strong>A1:K5</strong> = todas as bordas.</li>
+            <li>Intervalo de <strong>D3:K5</strong> = formate com estilo moeda</li>
+        </ul>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

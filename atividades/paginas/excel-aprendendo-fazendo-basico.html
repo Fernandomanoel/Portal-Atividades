@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aprendendo e Fazendo na Prática — Básico — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        /* simple bar chart mock */
+        .chart-wrap { overflow-x: auto; margin: 18px 0; }
+        .chart { display: flex; align-items: flex-end; gap: 18px; height: 220px; min-width: 480px; padding: 10px 10px 0; border-left: 2px solid #ccc; border-bottom: 2px solid #ccc; }
+        .chart .day { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        .chart .bars { display: flex; align-items: flex-end; gap: 3px; height: 180px; }
+        .chart .bar { width: 10px; border-radius: 2px 2px 0 0; }
+        .chart .bar.max { background: #2563eb; }
+        .chart .bar.min { background: #ea580c; }
+        .chart .bar.close { background: #9ca3af; }
+        .chart .bar.open { background: #facc15; }
+        .chart .label { font-size: 0.75em; color: #555; }
+        .chart-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; font-size: 0.85em; color: #555; }
+        .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+        .chart-legend i { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📊 Aprendendo e Fazendo na Prática — Básico</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Atividade Extra de Excel 2021</h2>
+        <p><strong>Atividades Aprendendo e Fazendo Prática</strong></p>
+
+        <h3>01) Bolsa de Valores</h3>
+        <p>Elaborar a planilha abaixo, e depois, elaborar um gráfico de colunas, como mostrado abaixo:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">1</td><td colspan="5" class="merged">BOLSA DE VALORES</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td colspan="5" class="merged">RELAÇÃO DE MOVIMENTO FINANCEIRA DA SEMANA</td></tr>
+                <tr><td class="rownum">4</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td colspan="5" class="merged">DIAS DA SEMANA</td></tr>
+                <tr><td class="rownum">7</td><td class="empty"></td><td class="headcell">VALOR MÁXIMO</td><td class="headcell">VALOR MÍNIMO</td><td class="headcell">FECHAMENTO</td><td class="headcell">ABERTURA DO PREGÃO</td></tr>
+                <tr><td class="rownum">8</td><td>Segunda-feira</td><td class="money">24000,00</td><td class="money">22980</td><td class="money">23900,8</td><td class="money">23000</td></tr>
+                <tr><td class="rownum">9</td><td>Terça-Feira</td><td class="money">24120,00</td><td class="money">23014</td><td class="money">24019</td><td class="money">23115</td></tr>
+                <tr><td class="rownum">10</td><td>Quarta-feira</td><td class="money">24240,00</td><td class="money">23129,57</td><td class="money">24139,6</td><td class="money">23230,58</td></tr>
+                <tr><td class="rownum">11</td><td>Quinta-feira</td><td class="money">24361,00</td><td class="money">23254</td><td class="money">24260</td><td class="money">23346,73</td></tr>
+                <tr><td class="rownum">12</td><td>Sexta-feira</td><td class="money">24483,61</td><td class="money">23361,45</td><td class="money">24381,6</td><td class="money">23463,46</td></tr>
+            </table>
+        </div>
+
+        <p><strong>Obs:</strong> Adicione o Gráfico de Barras, como o exemplo abaixo, comparando os quatro valores (Valor Máximo, Valor Mínimo, Fechamento, Abertura do Pregão) de cada dia da semana:</p>
+
+        <div class="chart-wrap">
+            <div class="chart">
+                <div class="day">
+                    <div class="bars">
+                        <div class="bar max" style="height:161px" title="24000,00"></div>
+                        <div class="bar min" style="height:127px" title="22980"></div>
+                        <div class="bar close" style="height:159px" title="23900,8"></div>
+                        <div class="bar open" style="height:128px" title="23000"></div>
+                    </div>
+                    <div class="label">Segunda-feira</div>
+                </div>
+                <div class="day">
+                    <div class="bars">
+                        <div class="bar max" style="height:163px" title="24120,00"></div>
+                        <div class="bar min" style="height:128px" title="23014"></div>
+                        <div class="bar close" style="height:161px" title="24019"></div>
+                        <div class="bar open" style="height:129px" title="23115"></div>
+                    </div>
+                    <div class="label">Terça-Feira</div>
+                </div>
+                <div class="day">
+                    <div class="bars">
+                        <div class="bar max" style="height:166px" title="24240,00"></div>
+                        <div class="bar min" style="height:130px" title="23129,57"></div>
+                        <div class="bar close" style="height:162px" title="24139,6"></div>
+                        <div class="bar open" style="height:131px" title="23230,58"></div>
+                    </div>
+                    <div class="label">Quarta-feira</div>
+                </div>
+                <div class="day">
+                    <div class="bars">
+                        <div class="bar max" style="height:169px" title="24361,00"></div>
+                        <div class="bar min" style="height:132px" title="23254"></div>
+                        <div class="bar close" style="height:164px" title="24260"></div>
+                        <div class="bar open" style="height:132px" title="23346,73"></div>
+                    </div>
+                    <div class="label">Quinta-feira</div>
+                </div>
+                <div class="day">
+                    <div class="bars">
+                        <div class="bar max" style="height:174px" title="24483,61"></div>
+                        <div class="bar min" style="height:133px" title="23361,45"></div>
+                        <div class="bar close" style="height:166px" title="24381,6"></div>
+                        <div class="bar open" style="height:133px" title="23463,46"></div>
+                    </div>
+                    <div class="label">Sexta-feira</div>
+                </div>
+            </div>
+            <div class="chart-legend">
+                <span><i style="background:#2563eb"></i> Valor Máximo</span>
+                <span><i style="background:#ea580c"></i> Valor Mínimo</span>
+                <span><i style="background:#9ca3af"></i> Fechamento</span>
+                <span><i style="background:#facc15"></i> Abertura do Pregão</span>
+            </div>
+        </div>
+
+        <h3>02) Lista de Preço de Automóveis — usando =CONT.SE</h3>
+        <p>Elaborar a tabela abaixo escrevendo os dados abaixo, usando a fórmula <strong>=CONT.SE</strong>.</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+                <tr><td class="rownum">1</td><td colspan="4" class="merged">LISTA DE PREÇO DE AUTOMÓVEIS</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">CLASSE</td><td class="headcell">TIPO</td><td class="headcell">MARCA</td><td class="headcell">VALOR TABELA</td></tr>
+                <tr><td class="rownum">4</td><td>1</td><td>Monza</td><td>GM</td><td class="money">R$ 23.000,00</td></tr>
+                <tr><td class="rownum">5</td><td>2</td><td>Gol</td><td>WV</td><td class="money">R$ 15.000,00</td></tr>
+                <tr><td class="rownum">6</td><td>1</td><td>Corsa</td><td>GM</td><td class="money">R$ 13.000,00</td></tr>
+                <tr><td class="rownum">7</td><td>3</td><td>Fiesta</td><td>FORD</td><td class="money">R$ 14.000,00</td></tr>
+                <tr><td class="rownum">8</td><td>2</td><td>Palio</td><td>FIAT</td><td class="money">R$ 23.000,00</td></tr>
+                <tr><td class="rownum">9</td><td>1</td><td>Parati</td><td>WV</td><td class="money">R$ 23.000,00</td></tr>
+                <tr><td class="rownum">10</td><td>4</td><td>Ka</td><td>FORD</td><td class="money">R$ 25.000,00</td></tr>
+                <tr><td class="rownum">11</td><td>5</td><td>Escort</td><td>FORD</td><td class="money">R$ 20.000,00</td></tr>
+                <tr><td class="rownum">12</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td colspan="3">QUANTIDADE VEÍCULOS GM</td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td colspan="3">QUANTIDADE VEÍCULOS WV</td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td colspan="3">QUANTIDADE VEÍCULOS FORD</td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td colspan="3">QUANTIDADE VEÍCULOS FIAT</td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Estrutura da Fórmula</h3>
+        <div class="code-block">=CONT.SE(intervalo;critério)</div>
+        <p>Para contar quantos carros são da marca GM, o intervalo é a coluna Marca (C4:C11) e o critério é "GM":</p>
+        <div class="code-block">=CONT.SE(C4:C11;"GM")</div>
+        <p>Repita a mesma lógica trocando o critério para "WV", "FORD" e "FIAT" nas linhas seguintes.</p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Atividades Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        table.errors { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 0.95em; }
+        table.errors th, table.errors td { border: 1px solid #d0d0d0; padding: 10px 14px; text-align: left; vertical-align: top; }
+        table.errors th { background: #14502f; color: #fff; }
+        table.errors td.err-code { font-family: 'Courier New', monospace; font-weight: 700; white-space: nowrap; background: #f5f5f5; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+            table.errors { font-size: 0.85em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>✅ Lista de Atividades Excel</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Algumas Mensagens de Erro Comuns</h2>
+        <div class="sheet-wrap">
+            <table class="errors">
+                <tr><th>Erro</th><th>O que significa</th></tr>
+                <tr><td class="err-code">#DIV/0!</td><td>Você está tentando dividir por zero e isto não é possível!!</td></tr>
+                <tr><td class="err-code">#NOME?</td><td>Não, o Excel não quer saber qual é o seu nome. O valor de erro #NOME? ocorre quando o Microsoft Excel não reconhece o texto em uma fórmula, ou seja, esta mensagem está dizendo que você cometeu um erro de grafia no nome da função ou digitou uma fórmula que contém um nome (endereço) de célula que o Excel não reconhece.</td></tr>
+                <tr><td class="err-code">#NOME?</td><td>Ocorre quando existe um problema com um número em uma fórmula ou função.</td></tr>
+                <tr><td class="err-code">#####</td><td>Ocorre quando o tipo de operando ou argumento errado é usado, como por exemplo, inserir texto quando a fórmula requer número.</td></tr>
+                <tr><td class="err-code">#VALOR!</td><td>Ocorre quando o tipo de operando ou argumento errado é usado, como por exemplo, inserir texto quando a fórmula requer número.</td></tr>
+                <tr><td class="err-code">#VALOR!</td><td>Ocorre quando um valor não se encontra disponível para uma função ou fórmula.</td></tr>
+                <tr><td class="err-code">#REF! e #NULO!</td><td>Ocorre quando uma referência (endereço) de uma célula ou de um intervalo de células não é válida.</td></tr>
+            </table>
+        </div>
+
+        <h2>Relação de Algumas Funções</h2>
+        <div class="sheet-wrap">
+            <table class="errors">
+                <tr><th>Função</th><th>O que faz</th><th>Exemplo</th></tr>
+                <tr><td class="err-code">=SOMA( )</td><td>Soma um intervalo de células</td><td class="err-code">=SOMA(A1:B5)</td></tr>
+                <tr><td class="err-code">=MÉDIA( )</td><td>Calcula a média aritmética de um intervalo de células</td><td class="err-code">=MÉDIA(A1:B5)</td></tr>
+                <tr><td class="err-code">=MÁXIMO( )</td><td>Retorna o valor máximo do intervalo</td><td class="err-code">=MÁXIMO(A1:B5)</td></tr>
+                <tr><td class="err-code">=MÍNIMO( )</td><td>Retorna o valor mínimo do intervalo</td><td class="err-code">=MÍNIMO(A1:B5)</td></tr>
+                <tr><td class="err-code">=SE(teste;"valor_se_V";"valor_se_F")</td><td>Retorna um valor se o teste for falso e outro valor se o teste for verdadeiro</td><td class="err-code">=SE(A1&gt;=6,0;"Parabéns!!!";"Está em Recuperação")</td></tr>
+            </table>
+        </div>
+
+        <h2>01) Empresa Nacional S/A</h2>
+        <p>Elaborar a planilha abaixo, fazendo-se o que se pede:</p>
+
+        <p><strong>1ª Tabela — 1º Trimestre</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Código</td><td class="headcell">Produto</td><td class="headcell">Jan</td><td class="headcell">Fev</td><td class="headcell">Mar</td><td class="headcell">Total 1º Trim.</td><td class="headcell">Máximo</td><td class="headcell">Mínimo</td><td class="headcell">Média</td></tr>
+                <tr><td class="rownum">2</td><td>1</td><td>Porca</td><td class="money">4.500,00</td><td class="money">5.040,00</td><td class="money">5.696,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td>2</td><td>Parafuso</td><td class="money">6.250,00</td><td class="money">7.000,00</td><td class="money">7.910,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>3</td><td>Arruela</td><td class="money">3.300,00</td><td class="money">3.696,00</td><td class="money">4.176,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>4</td><td>Prego</td><td class="money">8.000,00</td><td class="money">8.690,00</td><td class="money">10.125,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>5</td><td>Alicate</td><td class="money">4.557,00</td><td class="money">5.104,00</td><td class="money">5.676,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>6</td><td>Martelo</td><td class="money">3.260,00</td><td class="money">3.640,00</td><td class="money">4.113,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td colspan="2" class="headcell">Totais</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <p><strong>2ª Tabela — 2º Trimestre</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th></tr>
+                <tr><td class="rownum">10</td><td class="headcell">Código</td><td class="headcell">Produto</td><td class="headcell">Abr</td><td class="headcell">Mai</td><td class="headcell">Jun</td><td class="headcell">Total 2º Trim.</td><td class="headcell">Máximo</td><td class="headcell">Mínimo</td><td class="headcell">Média</td></tr>
+                <tr><td class="rownum">11</td><td>1</td><td>Porca</td><td class="money">6.265,00</td><td class="money">6.954,00</td><td class="money">7.858,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td>2</td><td>Parafuso</td><td class="money">8.701,00</td><td class="money">9.658,00</td><td class="money">10.197,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td>3</td><td>Arruela</td><td class="money">4.569,00</td><td class="money">5.099,00</td><td class="money">5.769,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td>4</td><td>Prego</td><td class="money">12.341,00</td><td class="money">12.365,00</td><td class="money">13.969,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td>5</td><td>Alicate</td><td class="money">6.344,00</td><td class="money">7.042,00</td><td class="money">7.957,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td>6</td><td>Martelo</td><td class="money">4.525,00</td><td class="money">5.022,00</td><td class="money">5.671,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">17</td><td colspan="2" class="headcell">Totais</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">19</td><td colspan="2" class="headcell">Total do Semestre</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Fórmulas</h3>
+        <div class="box">
+            <h4>1ª Tabela</h4>
+            <ul>
+                <li><strong>Total 1º Trimestre:</strong> soma das vendas dos meses de Jan / Fev / Mar.</li>
+                <li><strong>Máximo:</strong> calcular o maior valor entre os meses de Jan / Fev / Mar.</li>
+                <li><strong>Mínimo:</strong> calcular o menor valor entre os meses de Jan / Fev / Mar.</li>
+                <li><strong>Média:</strong> calcular a média dos valores entre os meses de Jan / Fev / Mar.</li>
+            </ul>
+        </div>
+        <div class="box">
+            <h4>2ª Tabela</h4>
+            <ul>
+                <li><strong>Total 2º Trimestre:</strong> soma das vendas dos meses de Abr / Mai / Jun.</li>
+                <li><strong>Máximo:</strong> calcular o maior valor entre os meses de Abr / Mai / Jun.</li>
+                <li><strong>Mínimo:</strong> calcular o menor valor entre os meses de Abr / Mai / Jun.</li>
+                <li><strong>Média:</strong> calcular a média dos valores entre os meses de Abr / Mai / Jun.</li>
+            </ul>
+            <p><strong>Totais:</strong> soma das colunas de cada mês (1ª e 2ª tabela).</p>
+        </div>
+
+        <h2>02) Filmes — Total e Média por mês</h2>
+        <p>Elaborar a planilha abaixo, fazendo-se o que se pede:</p>
+
+        <h3>Fórmulas</h3>
+        <p>Você vai trabalhar com os meses:</p>
+        <ul>
+            <li><strong>Jan</strong> (Janeiro)</li>
+            <li><strong>Fev</strong> (Fevereiro)</li>
+            <li><strong>Mar</strong> (Março)</li>
+        </ul>
+        <p>E fazer 4 cálculos:</p>
+        <ul>
+            <li><strong>Total</strong></li>
+            <li><strong>Média</strong></li>
+        </ul>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">FILMES</td><td class="headcell">Comédia</td><td class="headcell">Suspense</td><td class="headcell">Terror</td><td class="headcell">Romance</td><td class="headcell">Totais</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">Jan</td><td class="money">10</td><td class="money">29</td><td class="money">33</td><td class="money">25</td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">Fev</td><td class="money">14</td><td class="money">30</td><td class="money">12</td><td class="money">29</td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="headcell">Mar</td><td class="money">23</td><td class="money">11</td><td class="money">17</td><td class="money">12</td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td class="headcell">Abr</td><td class="money">31</td><td class="money">42</td><td class="money">21</td><td class="money">36</td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td class="headcell">Mai</td><td class="money">21</td><td class="money">33</td><td class="money">28</td><td class="money">43</td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td class="headcell">Jun</td><td class="money">32</td><td class="money">23</td><td class="money">20</td><td class="money">23</td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td class="headcell">Jul</td><td class="money">24</td><td class="money">41</td><td class="money">22</td><td class="money">11</td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td class="headcell">Ago</td><td class="money">41</td><td class="money">32</td><td class="money">5</td><td class="money">19</td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td class="headcell">Set</td><td class="money">15</td><td class="money">21</td><td class="money">13</td><td class="money">10</td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td class="headcell">Out</td><td class="money">44</td><td class="money">14</td><td class="money">36</td><td class="money">9</td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td class="headcell">Nov</td><td class="money">34</td><td class="money">12</td><td class="money">31</td><td class="money">21</td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td class="headcell">Dez</td><td class="money">22</td><td class="money">43</td><td class="money">34</td><td class="money">25</td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td class="headcell">Totais</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <p>Esses cálculos podem ser feitos <strong>por tipo de filme (Comédia, Suspense, etc.)</strong> ou com os valores que o professor pedir.</p>
+        <div class="aviso">📊 Coloque o gráfico ao finalizar.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mala Direta — Word</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .texto-exemplo {
+            background: #eef3fb; border: 1px solid #b9cbe8; border-radius: 6px;
+            padding: 16px 20px; margin: 14px 0; font-style: italic; color: #333;
+        }
+        .texto-exemplo p { margin-bottom: 6px; }
+        .texto-exemplo p:last-child { margin-bottom: 0; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.tabela-dados { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 0.88em; }
+        table.tabela-dados th, table.tabela-dados td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; white-space: nowrap; }
+        table.tabela-dados th { background: #eef1f4; color: #1e3f73; font-weight: 700; }
+        table.tabela-dados tr:nth-child(even) td { background: #f9fbfe; }
+
+        .campo { background: #fff3d6; color: #7a5200; padding: 1px 4px; border-radius: 3px; font-weight: 700; font-style: normal; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📧 Criando um Documento com Mala Direta no Word</h1>
+        <p>Word</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=word">← Voltar para Word</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Ensinar ao aluno como utilizar a funcionalidade de mala direta no Word para personalizar cartas ou etiquetas com nomes e outras informações.</p>
+
+        <h2>📋 Descrição da Atividade</h2>
+        <p>Crie uma mala direta para enviar uma carta personalizada a 15 pessoas. Cada carta terá o nome e o endereço específicos para cada destinatário.</p>
+
+        <h2>1️⃣ Criando a Fonte de Dados</h2>
+        <ol class="passos">
+            <li>Abra o Excel.</li>
+        </ol>
+        <p>Crie uma planilha com as seguintes colunas:</p>
+
+        <div class="sheet-wrap">
+            <table class="tabela-dados">
+                <tr><th>Nome</th><th>Endereço</th><th>Cidade</th><th>Estado</th><th>CEP</th></tr>
+                <tr><td>João Silva</td><td>Rua das Flores, 123</td><td>São Paulo</td><td>SP</td><td>01234-567</td></tr>
+                <tr><td>Maria Lima</td><td>Av. Central, 456</td><td>Rio de Janeiro</td><td>RJ</td><td>22345-678</td></tr>
+                <tr><td>Carlos Pereira</td><td>Rua da Esperança, 789</td><td>Belo Horizonte</td><td>MG</td><td>34567-890</td></tr>
+                <tr><td>Ana Souza</td><td>Av. Paulista, 1010</td><td>São Paulo</td><td>SP</td><td>01111-222</td></tr>
+                <tr><td>Pedro Oliveira</td><td>Rua das Palmeiras, 50</td><td>Salvador</td><td>BA</td><td>44567-123</td></tr>
+                <tr><td>Beatriz Almeida</td><td>Av. Atlântica, 3000</td><td>Florianópolis</td><td>SC</td><td>55678-234</td></tr>
+                <tr><td>Lucas Fernandes</td><td>Rua da Praia, 800</td><td>Recife</td><td>PE</td><td>66789-345</td></tr>
+                <tr><td>Mariana Santos</td><td>Av. das Nações, 200</td><td>Brasília</td><td>DF</td><td>77890-456</td></tr>
+                <tr><td>Rafael Costa</td><td>Rua do Sol, 150</td><td>Fortaleza</td><td>CE</td><td>88901-567</td></tr>
+                <tr><td>Gabriela Castro</td><td>Av. dos Lagos, 500</td><td>Curitiba</td><td>PR</td><td>99012-678</td></tr>
+                <tr><td>Tiago Ribeiro</td><td>Rua Verde, 70</td><td>Manaus</td><td>AM</td><td>11123-789</td></tr>
+                <tr><td>Camila Freitas</td><td>Av. Azul, 600</td><td>Porto Alegre</td><td>RS</td><td>22234-890</td></tr>
+                <tr><td>Felipe Cardoso</td><td>Rua Branca, 300</td><td>Vitória</td><td>ES</td><td>33345-901</td></tr>
+                <tr><td>Isabela Mendes</td><td>Av. do Comércio, 120</td><td>Campo Grande</td><td>MS</td><td>44456-012</td></tr>
+            </table>
+        </div>
+
+        <ol class="passos" style="counter-reset: passo 1;">
+            <li>Salve o arquivo como <strong>"Destinatários.xlsx"</strong>.</li>
+        </ol>
+
+        <h2>2️⃣ Criando o Documento Base no Word</h2>
+        <ol class="passos">
+            <li>Abra o Word.</li>
+            <li>Crie um novo documento e insira o seguinte texto:</li>
+        </ol>
+
+        <div class="texto-exemplo">
+            <p>Prezado(a) <span class="campo">[Nome]</span>,</p>
+            <p>Estamos felizes em entrar em contato com você. Informamos que a entrega do material ocorrerá no endereço abaixo:</p>
+            <p>Endereço: <span class="campo">[Endereço]</span></p>
+            <p>Cidade: <span class="campo">[Cidade]</span>, <span class="campo">[Estado]</span> - CEP: <span class="campo">[CEP]</span></p>
+            <p>Agradecemos sua atenção e estamos à disposição para quaisquer dúvidas.</p>
+            <p>Atenciosamente,<br><span class="campo">[Seu Nome]</span><br><span class="campo">[Sua Empresa]</span></p>
+        </div>
+
+        <h2>3️⃣ Configurando a Mala Direta</h2>
+        <ol class="passos">
+            <li>Acesse a Guia <strong>Correspondências</strong>.</li>
+        </ol>
+        <p>Clique em <strong>Iniciar Mala Direta &gt; Cartas</strong>.</p>
+
+        <h3>Conecte à Fonte de Dados</h3>
+        <ul>
+            <li>Clique em <strong>Selecionar Destinatários &gt; Usar uma Lista Existente</strong>.</li>
+            <li>Selecione o arquivo <strong>"Destinatários.xlsx"</strong>.</li>
+        </ul>
+
+        <h3>Insira os Campos da Mala Direta</h3>
+        <ul>
+            <li>Substitua os textos entre colchetes (<span class="campo" style="font-style:italic;">[Nome]</span>, <span class="campo" style="font-style:italic;">[Endereço]</span>, etc.) pelos respectivos campos:
+                <ul>
+                    <li>Clique em <strong>Inserir Campo de Mesclagem</strong> e selecione o campo apropriado.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>4️⃣ Finalizando a Mala Direta</h2>
+        <ol class="passos">
+            <li>Clique em <strong>Visualizar Resultados</strong> para verificar as cartas personalizadas.</li>
+            <li>Se estiver tudo correto, clique em <strong>Concluir e Mesclar &gt; Imprimir Documentos</strong> ou <strong>Concluir e Mesclar &gt; Editar Documentos Individuais</strong> para revisar.</li>
+        </ol>
+
+        <h2>💾 Tarefa Final</h2>
+        <ol class="passos">
+            <li>Envie o arquivo final (15 cartas geradas) para avaliação.</li>
+            <li>Opcional: Adicione um logotipo ou cabeçalho personalizado na carta.</li>
+        </ol>
+
+        <div class="aviso">⚠️ O enunciado pede uma mala direta para <strong>15 pessoas</strong>, mas a tabela de dados do documento original lista apenas <strong>14 destinatários</strong> — transcrita aqui exatamente como no PDF.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Word</footer>
+</div>
+</body>
+</html>

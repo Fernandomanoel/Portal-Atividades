@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciador de Tarefas — Windows 11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2b579a;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>⚙️ Gerenciador de Tarefas</h1>
+        <p>Windows 11 — Revisão — Dia 02</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=windows-11">← Voltar para Windows 11</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo Geral</h2>
+        <p><strong>Dia 02 — Explorando Ferramentas e Recursos Avançados do Windows 11</strong></p>
+        <p>Aprimorar o uso do sistema operacional com foco em produtividade, segurança e organização de tarefas.</p>
+
+        <h2>1️⃣ Atividade 1: Gerenciador de Tarefas</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Pressione <code>Ctrl + Shift + Esc</code> para abrir o <strong>Gerenciador de Tarefas</strong>.</li>
+            <li>Identifique os aplicativos em execução e veja o consumo de <strong>CPU e Memória</strong>.</li>
+            <li>Finalize um processo que não esteja sendo utilizado (com cuidado).</li>
+            <li>Vá até a aba <strong>Inicializar</strong> e desative um programa que não precisa iniciar com o Windows.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Compreender como monitorar e otimizar o desempenho do sistema.</p></div>
+
+        <h2>2️⃣ Atividade 2: Captura de Tela e Ferramenta de Recorte</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Pressione <code>Windows + Shift + S</code> para abrir a <strong>Ferramenta de Recorte</strong>.</li>
+            <li>Faça uma captura de uma área da tela.</li>
+            <li>Salve a imagem em uma pasta chamada <strong>"Capturas"</strong> dentro de <strong>Imagens</strong>.</li>
+            <li>Abra a imagem com o aplicativo <strong>Fotos</strong> e explore as opções de edição.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Aprender a capturar e editar imagens da tela.</p></div>
+
+        <h2>3️⃣ Atividade 3: Explorando o OneDrive</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Acesse o <strong>OneDrive</strong> pelo Explorador de Arquivos.</li>
+            <li>Mova um arquivo da pasta Documentos para o OneDrive.</li>
+            <li>Verifique se o arquivo foi sincronizado (ícone de nuvem).</li>
+            <li>Acesse o site do OneDrive pelo navegador e confirme se o arquivo está lá.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Entender o funcionamento da nuvem e sincronização de arquivos.</p></div>
+
+        <h2>4️⃣ Atividade 4: Criando e Gerenciando Atalhos</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Crie um <strong>atalho</strong> na área de trabalho para um site (ex: www.microsoft.com).</li>
+            <li>Crie um atalho para abrir o <strong>Bloco de Notas</strong>.</li>
+            <li>Renomeie os atalhos com nomes personalizados.</li>
+            <li>Organize os atalhos em uma nova pasta chamada <strong>"Meus Atalhos"</strong>.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Aprender a criar acessos rápidos e organizar a área de trabalho.</p></div>
+
+        <h2>5️⃣ Atividade 5: Segurança e Atualizações</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Acesse <strong>Configurações &gt; Windows Update</strong>.</li>
+            <li>Verifique se há atualizações pendentes e instale-as.</li>
+            <li>Vá até <strong>Privacidade e segurança &gt; Segurança do Windows</strong>.</li>
+            <li>Explore as opções de proteção contra vírus e ameaças.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Reforçar a importância da segurança e da atualização do sistema.</p></div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Windows 11</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes Wireless — Prova — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        .questao { background: #f9fafb; border: 1px solid #d0d0d0; border-radius: 8px; padding: 16px 20px; margin: 14px 0; }
+        .questao p:first-child { font-weight: 700; color: #0b544e; margin-bottom: 10px; }
+        .linha-resposta { border-bottom: 1px solid #ccc; height: 22px; margin-bottom: 4px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📶 Redes Wireless — Prova</h1>
+        <p>Redes de Computadores</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">Professor: Juan Pablo · Prova: Redes - Wireless · Sala: Dinâmica 1</p>
+
+        <h2>1) Montar e configurar uma rede cabeada e sem fio utilizando (5,0 pts)</h2>
+        <ul>
+            <li>Endereçamento IP</li>
+            <li>Gateway Padrão</li>
+            <li>Servidor Web (HTTP)</li>
+            <li>Servidor DNS</li>
+            <li>Redes Wireless</li>
+            <li>Wireless LAN Controller (WLC)</li>
+            <li>Access Point Lightweight</li>
+            <li>Testes de conectividade</li>
+        </ul>
+
+        <h3>Topologia</h3>
+        <p>Adicionar os seguintes dispositivos:</p>
+
+        <h4 style="color:#0f766e; margin-bottom:8px;">Equipamentos</h4>
+        <ul>
+            <li>01 Router 1841</li>
+            <li>01 Switch 2960</li>
+            <li>01 Servidor Web</li>
+            <li>01 Servidor DNS</li>
+            <li>01 PC</li>
+            <li>01 Wireless LAN Controller (WLC-2504)</li>
+            <li>01 Access Point Lightweight 3702i</li>
+            <li>01 Notebook</li>
+        </ul>
+
+        <h3>Tabela de endereçamento</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Dispositivo</th><th>Endereço IP</th><th>Máscara</th><th>Gateway</th></tr>
+                <tr><td>Router0</td><td>192.168.1.1</td><td>255.255.255.0</td><td>-</td></tr>
+                <tr><td>WebServer</td><td>192.168.1.20</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>DNSServer</td><td>192.168.1.30</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>Pc0</td><td>192.168.1.100</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>WLC</td><td>192.168.1.10</td><td>255.255.255.0</td><td>192.168.1.1</td></tr>
+                <tr><td>Laptop0</td><td>DHCP</td><td>DHCP</td><td>DHCP</td></tr>
+            </table>
+        </div>
+
+        <h3>Montagem da rede</h3>
+        <p>Monte a topologia conforme especificado.</p>
+        <p>Conecte:</p>
+        <ul>
+            <li>Router0 ao Switch0</li>
+            <li>WebServer ao Switch0</li>
+            <li>DNSServer ao Switch0</li>
+            <li>PC0 ao Switch0</li>
+            <li>WLC ao Switch0</li>
+            <li>Access Point ao Switch0</li>
+        </ul>
+        <p>O Notebook deverá conectar-se sem fio ao Access Point.</p>
+
+        <h3>Configuração IP</h3>
+        <p>Configure todos os dispositivos de acordo com a tabela de endereçamento.</p>
+
+        <h3>Configuração do servidor Web</h3>
+        <p>No WebServer:</p>
+        <p>Ative o serviço HTTP.</p>
+        <p>Crie a seguinte página:</p>
+        <div class="code-block">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;Empresa Tecnologia&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Servidor Web Funcionando&lt;/h1&gt;
+&lt;h2&gt;Prova de Redes&lt;/h2&gt;
+&lt;p&gt;Nome do aluno: SEU NOME&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+
+        <h3>Configuração DNS</h3>
+        <p>No servidor DNS:</p>
+        <p><strong>Ative o serviço DNS.</strong></p>
+        <p>Adicione o registro abaixo:</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Nome</th><th>Endereço</th></tr>
+                <tr><td>www.empresa.local</td><td>192.168.1.20</td></tr>
+            </table>
+        </div>
+
+        <h3>Configuração Wireless</h3>
+        <p>Configure a WLAN no WLC.</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Campo</th><th>Valor</th></tr>
+                <tr><td>SSID</td><td>Empresa</td></tr>
+                <tr><td>Segurança</td><td>WPA2-PSK</td></tr>
+                <tr><td>Senha</td><td>Redes2026@</td></tr>
+            </table>
+        </div>
+        <p>Após configurar:</p>
+        <ul>
+            <li>Registrar o <strong>Access Point</strong> no <strong>WLC</strong>.</li>
+            <li>Verificar se o AP ficou associado ao controlador.</li>
+            <li>Conectar o notebook à rede <strong>EMPRESA</strong>.</li>
+        </ul>
+
+        <h3>Testes</h3>
+        <ul>
+            <li>Mostre ao professor todos os testes, e se a rede está funcionando.</li>
+        </ul>
+
+        <h2>Questões teóricas (5,0 pts)</h2>
+
+        <div class="questao">
+            <p>1) Qual a função do DNS em uma rede?</p>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+        </div>
+
+        <div class="questao">
+            <p>2) Qual a diferença entre acessar um servidor por IP e por nome DNS?</p>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+        </div>
+
+        <div class="questao">
+            <p>3) Qual protocolo de segurança foi utilizado na rede sem fio?</p>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+            <div class="linha-resposta"></div>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

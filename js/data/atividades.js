@@ -53,56 +53,56 @@ const ATIVIDADES = [
         titulo: "Organização de Pastas e Arquivos",
         descricao:
           "Atividade prática para aprender a criar e organizar pastas, editar arquivos e salvar imagens (print) no formato .bmp no Windows.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Organização de Pastas e Arquivos.pdf",
+        tipo: "link",
+        url: "atividades/paginas/windows11-organizacao-pastas-arquivos.html",
       },
       {
         titulo: "Personalizando a Área de Trabalho",
         descricao:
-          "Exercício para desenvolver habilidades básicas no Windows 11, explorando a personalização da área de trabalho, temas, plano de fundo e ícones do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Personalizando a Área de Trabalho.pdf",
+          "Revisão (Dia 1) com 5 atividades: personalizar a área de trabalho, organizar arquivos no Explorador, usar a barra de tarefas e o menu Iniciar, ajustar configurações do sistema e gerenciar aplicativos instalados.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-personalizando-area-trabalho.html",
       },
       {
         titulo: "Gerenciador de Tarefas",
         descricao:
-          "Atividade de revisão voltada ao uso do Gerenciador de Tarefas, ajudando o aluno a compreender recursos do Windows 11.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Gerenciador de Tarefas.pdf",
+          "Revisão (Dia 2) com 5 atividades: Gerenciador de Tarefas, captura de tela com a Ferramenta de Recorte, OneDrive, criação de atalhos e segurança/atualizações do Windows.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-gerenciador-tarefas.html",
       },
       {
         titulo: "Produtividade e Acessibilidade",
         descricao:
-          "Atividade voltada ao uso de ferramentas de produtividade e recursos de acessibilidade do Windows 11, ajudando na organização pessoal e no melhor aproveitamento do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 -  Produtividade e Acessibilidade no Windows .pdf",
+          "Revisão (Dia 3) com 5 atividades: Bloco de Notas e WordPad, Calendário, Microsoft To Do, recursos de Acessibilidade e organização de janelas com Snap Layouts.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-produtividade-acessibilidade.html",
       },
       {
         titulo: "Copiar, Recortar e Colar Arquivos",
         descricao:
           "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Copiando e Colando.pdf",
+        tipo: "link",
+        url: "atividades/paginas/windows11-copiar-recortar-colar.html",
       },
       {
         titulo: "Desinstalar o Avast no Windows 11",
         descricao:
           "Atividade prática para aprender a desinstalar o Avast Antivirus no Windows 11 usando as Configurações do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Desistalando Programas no Windows.pdf",
+        tipo: "link",
+        url: "atividades/paginas/windows11-desinstalar-avast.html",
       },
       {
         titulo: "Uso da Tecla SHIFT no Bloco de Notas",
         descricao:
           "Atividade prática para treinar o uso da tecla SHIFT no Windows, utilizando o Bloco de Notas para digitação de textos com letras maiúsculas e símbolos do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Escrevendo e usando o Shift.pdf",
+        tipo: "link",
+        url: "atividades/paginas/windows11-tecla-shift-bloco-notas.html",
       },
       {
         titulo: "Lista de Atividades antes da Prova",
         descricao: "Revisão geral do curso, para praticar antes da avaliação.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Lista de Atividades antes da Prova.pdf",
+        tipo: "link",
+        url: "atividades/paginas/windows11-lista-atividades-prova.html",
       },
     ],
   },
@@ -137,34 +137,34 @@ const ATIVIDADES = [
         titulo: "Tabela INSS",
         descricao:
           "Atividade prática para aprender a criar tabelas no Excel e calcular o desconto do INSS utilizando fórmulas simples e porcentagem.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/ATIVIDADE_TABELA_INSS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-inss.html",
       },
       {
         titulo: "Cálculo de Empréstimo",
         descricao: "Exercício voltado ao cálculo de juros simples usando Excel.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADE DE CALCULO DO EMPRESTIMO.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-calculo-emprestimo.html",
       },
       {
         titulo: "Formatação Básica",
         descricao:
           "Primeiros passos no Excel: formatar células, ajustar colunas e deixar a planilha organizada.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADES BÁSICO FORMATAÇÃO.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-formatacao-basica.html",
       },
       {
         titulo: "Tabela de Receitas de Bolo",
         descricao:
           "Atividade prática montando uma tabela de receitas, trabalhando organização de dados e cálculo de quantidades.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - Tabela de Receitas de Bolo.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-receitas-bolo.html",
       },
       {
         titulo: "Tabela de Impostos",
         descricao: "Atividade para criar uma tabela de impostos utilizando fórmulas básicas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADE TABELA IMPOSTOS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-impostos.html",
       },
       {
         titulo: "Planilha Empresarial (EOBRA S/A)",
@@ -177,61 +177,61 @@ const ATIVIDADES = [
         titulo: "Fórmulas e Funções",
         descricao:
           "Atividade introdutória para compreender o uso de fórmulas e funções no Excel aplicadas em situações do dia a dia.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - TRABALHANDO COM FÓRMULAS E FUNÇÕES.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-formulas-e-funcoes.html",
       },
       {
         titulo: "Contas a Pagar usando o Excel",
         descricao:
           "Atividade prática para criar uma planilha de contas a pagar utilizando Excel no dia a dia.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Contas a Pagar fazendo no Excel.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-contas-a-pagar.html",
       },
       {
         titulo: "Convertendo em Dólar e usando o SE",
         descricao: "Exercício para aprender a função SE no Excel convertendo valores em dólar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Convertendo em Dolar e usando o SE.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-conversao-dolar-se.html",
       },
       {
         titulo: "Planilha com Máximo, Mínimo e Soma",
         descricao:
           "Exercício para aprender a fazer uma planilha com as funções Máximo, Mínimo e Soma.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Fazendo uma planilha Com Maximo - Minimo e Soma.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-maximo-minimo-soma.html",
       },
       {
         titulo: "Departamento de Vendas e Filtro de Dados",
         descricao:
           "Atividade prática de organização de dados, filtro de dados e gráfico dinâmico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Distribuição e Organização de Bases.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-filtro-de-dados.html",
       },
       {
         titulo: "Aprendendo e Fazendo na Prática — Básico",
         descricao: "Atividade prática de organização de dados, filtro de dados e gráfico dinâmico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Aprendendo e Fazendo Básico.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-aprendendo-fazendo-basico.html",
       },
       {
         titulo: "Lista de Atividades Excel",
         descricao: "Uma lista de atividades práticas para o Excel.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Lista de Atividades.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-lista-de-atividades.html",
       },
       {
         titulo: "Função SE — Bônus por Faltas",
         descricao:
           "Exercício para aprender a função SE no Excel calculando bônus de funcionários conforme faltas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - USANDO O SE PARA DEFINIR BÔNUS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-funcao-se-bonus-faltas.html",
       },
       {
         titulo: "Função SE — Multa por Atraso",
         descricao:
           "Atividade para aplicar a função SE no cálculo automático de multa de 2% em pagamentos atrasados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - Função SE – Multa por Atraso.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-funcao-se-multa-atraso.html",
       },
       {
         titulo: "Planilha da Atividade de Estoque",
@@ -292,26 +292,26 @@ const ATIVIDADES = [
       {
         titulo: "Criando o seu primeiro Dashboard",
         descricao: "Conectar o Excel ao Power BI e tratar os dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Atividade 1.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-primeiro-dashboard.html",
       },
       {
         titulo: "Fazendo Análise de Funcionários de RH",
         descricao: "Criar gráficos a partir de uma base de RH.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Atividade 2.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-analise-rh.html",
       },
       {
         titulo: "Análise de Vendas",
         descricao: "Criar o primeiro dashboard de vendas com os recursos básicos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Analise de Vendas com o Básico .pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-analise-de-vendas.html",
       },
       {
         titulo: "Dashboard de Vendas do Atacadão",
         descricao: "Criar um dashboard de vendas completo.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Dashboard de Vendas do Atacadão.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-dashboard-atacadao.html",
       },
     ],
   },
@@ -328,42 +328,42 @@ const ATIVIDADES = [
         titulo: "A Importância do Celular na Vida Escolar",
         descricao:
           "Atividade prática para aprender a criar e formatar um documento no Word, utilizando título, fonte adequada e texto reflexivo sobre o uso do celular nos estudos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/Word 2021 - Atividade de Escrita Básica.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-importancia-celular-vida-escolar.html",
       },
       {
         titulo: "Coisas da Vida",
         descricao:
           "Atividade introdutória para praticar digitação, organização de texto e uso básico do Word 2021.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Coisas da Vida.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-coisas-da-vida.html",
       },
       {
         titulo: "Criando e Formatando um Documento",
         descricao:
           "Atividade prática para aprender a criar, formatar e organizar documentos no Word 2021, utilizando fontes, alinhamento e estilos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Criando e Formatando um Documento no Word.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-criando-formatando-documento.html",
       },
       {
         titulo: "Lista de Atividades",
         descricao: "Lista de atividades para o Word 2021.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/Word 2021 - Lista Atividades.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-lista-de-atividades.html",
       },
       {
         titulo: "Mala Direta",
         descricao:
           "Atividade voltada à criação de documentos com Mala Direta no Word 2021, automatizando o preenchimento de informações a partir de uma lista de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Criando um Documento com Mala Direta no Word.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-mala-direta.html",
       },
       {
         titulo: "Normas ABNT",
         descricao:
           "Atividade prática de formatação de trabalho acadêmico no Word seguindo as normas ABNT.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Normas ABNT.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-normas-abnt.html",
       },
       {
         titulo: "Atividade interativa (Genially)",
@@ -385,8 +385,8 @@ const ATIVIDADES = [
       {
         titulo: "Lista de Atividades",
         descricao: "Criação de slides básicos com título, texto e organização.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/PowerPoint/PowerPoint - Lista de Atividades 01.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-lista-atividades-basico.html",
       },
       {
         titulo: "Avaliação Prática: Criação e Design de Apresentação",
@@ -424,50 +424,50 @@ const ATIVIDADES = [
         titulo: "Digitação com Personagens de Desenhos",
         descricao:
           "Atividade divertida para crianças aprenderem digitação no Word usando textos com personagens de desenhos animados, treinando atenção, parágrafos e uso correto do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Missão dos Desenhos Animados no Word.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-desenhos-animados.html",
       },
       {
         titulo: "Treinando Digitação de Textos Longos",
         descricao:
           "Atividade prática para desenvolver a digitação no Word, com textos mais longos e simples.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitando textos grandes.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-textos-longos.html",
       },
       {
         titulo: "Digitação com a Turma da Mônica",
         descricao:
           "Atividade prática para crianças aprenderem digitação no Word com textos da Turma da Mônica, trabalhando parágrafos, inserção de imagens e uso de lista com marcadores.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com Turma da Mônica.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-turma-da-monica.html",
       },
       {
         titulo: "Digitação com O Incrível Mundo de Gumball",
         descricao:
           "Atividade educativa para crianças treinarem digitação no Word com textos inspirados em O Incrível Mundo de Gumball, incluindo inserção de imagens e criação de lista não ordenada.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com O Incrível Mundo de Gumball.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-gumball.html",
       },
       {
         titulo: "Digitando com a Patrulha Canina",
         descricao:
           "Atividade básica e interativa para crianças aprenderem digitação no Word, inserir imagens e criar listas não ordenadas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com a Patrulha Canina.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-patrulha-canina.html",
       },
       {
         titulo: "Digitando com o Bluey",
         descricao:
           "Atividade educativa para crianças treinarem digitação no Word com textos grandes, listas com bolinhas e inserção de imagens, usando a personagem Bluey.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com o Bluey.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-bluey.html",
       },
       {
         titulo: "Digitação com PJ Masks",
         descricao:
           "Material prático para crianças aprenderem digitação no Word, organizar textos, criar listas não ordenadas e inserir imagens com os personagens PJ Masks.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
+        tipo: "link",
+        url: "atividades/paginas/kids-digitacao-pj-masks.html",
       },
       {
         titulo: "Missão: Computador Arrumado",
@@ -558,49 +558,47 @@ const ATIVIDADES = [
         titulo: "Fazendo uma conexão usando comandos no Cisco",
         descricao:
           "Primeiros comandos no Cisco Packet Tracer para colocar dois equipamentos para se comunicar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/Redes - Fazendo uma conexão usando comandos no Cisco.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-conexao-cisco.html",
       },
       {
         titulo: "Implementação de uma Topologia de Redes",
         descricao:
           "Montagem de uma topologia completa no Cisco Packet Tracer, ligando switches, roteadores e computadores.",
-        tipo: "pdf",
-        arquivo:
-          "atividades/pdfs/Redes/Redes - Implementação de uma Topologia de Redes com o Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-topologia-de-redes.html",
       },
       {
         titulo: "Configuração de Serviço DHCP",
         descricao: "Atividade prática para configurar a distribuição automática de endereços IP.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - Configuração de Serviço DHCP.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-configuracao-dhcp.html",
       },
       {
         titulo: "Criando um Servidor Web com Cisco Packet Tracer",
         descricao: "Subir um servidor web dentro da rede simulada e acessá-lo pelos clientes.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/Redes - Criando um Servidor Web com Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-servidor-web-cisco.html",
       },
       {
         titulo: "Laboratório de VLANs",
         descricao:
           "Separação da rede em VLANs no Cisco Packet Tracer, trabalhando segmentação e organização do tráfego.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - Laboratório de VLANs no Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-laboratorio-vlans.html",
       },
       {
         titulo: "Configuração de Rede com DHCP, DNS, Web Server e Wi-Fi",
         descricao:
           "Atividade completa juntando todos os serviços da rede: endereçamento, nomes, servidor web e rede sem fio.",
-        tipo: "pdf",
-        arquivo:
-          "atividades/pdfs/Redes/REDES - CONFIGURAÇÃO DE REDE COM DHCP, DNS, WEB SERVER E WI-FI.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-dhcp-dns-web-wifi.html",
       },
       {
         titulo: "Redes Wireless — Prova",
         descricao: "Avaliação teórica da parte de redes sem fio.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - WIRELESS - PROVA.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-wireless-prova.html",
       },
       {
         titulo: "Redes Wireless — Prova Prática",

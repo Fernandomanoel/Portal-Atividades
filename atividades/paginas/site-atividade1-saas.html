@@ -30,7 +30,7 @@
 
     /* Layout principal em flex: colunas lado a lado, cada uma ocupando
        espaço proporcional — nada de coluna única estreitinha no meio da tela. */
-    .layout { display: flex; flex-wrap: wrap; gap: 0; flex: 1; width: 100%; }
+    .layout { display: flex; flex-wrap: wrap; gap: 0; flex: 1; width: 100%; min-width: 0; }
     .col-principal { flex: 3 1 560px; padding: 40px 50px; min-width: 0; }
     .col-lateral { flex: 1 1 300px; padding: 40px 40px; background: #faf5ff; border-left: 2px solid #ede9fe; }
 
@@ -45,17 +45,39 @@
     .box { background: #faf5ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
     .box h4 { color: #4c1d95; margin-bottom: 10px; }
 
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #7c3aed;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-label {
+        background: #7c3aed; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    /* Caixa de "modelo": mostra UM exemplo e deixa claro que é ponto de
+       partida para o aluno duplicar/adaptar à vontade, não um número
+       fixo de itens obrigatórios. */
+    .modelo { border: 2px dashed #7c3aed; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+    .modelo-tag {
+        display: inline-block; background: #ede9fe; color: #4c1d95; font-size: 0.78em; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+    }
+    .modelo p:last-child { margin-bottom: 0; }
+
+    .arvore-pastas { font-family: 'Courier New', monospace; }
+
     .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
     .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
     .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #721c24; }
-
-    .requisitos-grid { display: flex; flex-wrap: wrap; gap: 16px; margin: 18px 0; }
-    .requisito-card {
-        flex: 1 1 240px; background: #fff; border: 2px solid #ede9fe; border-radius: 10px;
-        padding: 18px 20px;
-    }
-    .requisito-card h4 { color: #4c1d95; margin-bottom: 8px; font-size: 1em; }
-    .requisito-card p { font-size: 0.92em; margin-bottom: 0; color: #555; }
 
     .checklist { list-style: none; margin-left: 0; }
     .checklist li { padding-left: 30px; position: relative; }
@@ -75,6 +97,7 @@
 
     @media (max-width: 900px) {
         .layout { flex-direction: column; }
+        .col-principal, .col-lateral { width: 100%; max-width: 100%; }
         .col-lateral { border-left: none; border-top: 2px solid #ede9fe; }
     }
     @media (max-width: 600px) {
@@ -106,38 +129,109 @@
                 <p>Escolha a ideia do produto, o nome da empresa, as cores e o estilo visual. As imagens você mesmo vai buscar (bancos de imagem gratuitos, como Unsplash ou Pexels, ou ícones de sites como Flaticon) — este é um exercício de montar um site real, então a pesquisa de material faz parte do processo.</p>
             </div>
 
-            <h2>🧩 Seções obrigatórias</h2>
-            <p>Seu site precisa ter, no mínimo, estas seções — a ordem e o visual de cada uma são decisão sua:</p>
+            <h2>📂 Planejamento de pastas</h2>
+            <p>Antes de codar, organize os arquivos. Para este projeto, mantenha simples — <strong>no máximo 3 páginas HTML</strong>:</p>
 
-            <div class="requisitos-grid">
-                <div class="requisito-card">
-                    <h4>1. Cabeçalho (header)</h4>
-                    <p>Logo/nome da empresa e um menu de navegação linkando para as seções da própria página.</p>
-                </div>
-                <div class="requisito-card">
-                    <h4>2. Hero (destaque inicial)</h4>
-                    <p>Título chamativo explicando o que o produto faz, um texto de apoio, e um botão de call-to-action (ex: "Começar grátis").</p>
-                </div>
-                <div class="requisito-card">
-                    <h4>3. Recursos (features)</h4>
-                    <p>Pelo menos 3 cartões mostrando funcionalidades do produto, cada um com ícone/imagem, título e descrição curta.</p>
-                </div>
-                <div class="requisito-card">
-                    <h4>4. Planos e preços</h4>
-                    <p>Pelo menos 2 planos diferentes (ex: Básico e Premium), com preço, lista do que está incluso e um botão de assinar.</p>
-                </div>
-                <div class="requisito-card">
-                    <h4>5. Contato / rodapé</h4>
-                    <p>Um formulário simples (nome, e-mail, mensagem) ou informações de contato, mais links úteis e redes sociais.</p>
-                </div>
+            <div class="code-block arvore-pastas"><span class="code-label">estrutura simples (recomendada)</span>
+meu-site-saas/
+├── index.html      <span class="cm"># sua página principal — obrigatória</span>
+├── style.css        <span class="cm"># todo o CSS num arquivo só</span>
+├── script.js         <span class="cm"># todo o JavaScript num arquivo só</span>
+└── imagens/
+    ├── logo.png
+    ├── icone-1.svg
+    └── foto-hero.jpg</div>
+
+            <p>Tudo cabe numa <code>index.html</code> só, com seções (<code>hero</code>, <code>recursos</code>, <code>preços</code>...) uma embaixo da outra — é o jeito mais simples de começar, e totalmente válido para esta atividade.</p>
+
+            <p>Se preferir separar em mais de uma página, pode — só não passe de 3 páginas HTML no total:</p>
+
+            <div class="code-block arvore-pastas"><span class="code-label">variação com 3 páginas</span>
+meu-site-saas/
+├── index.html      <span class="cm"># página inicial (hero + recursos)</span>
+├── precos.html      <span class="cm"># página de planos</span>
+├── contato.html      <span class="cm"># página de contato</span>
+├── style.css         <span class="cm"># o mesmo CSS vale para as 3 páginas</span>
+├── script.js
+└── imagens/</div>
+
+            <div class="highlight">
+                <strong>Por que um <code>style.css</code> e um <code>script.js</code> só, mesmo com várias páginas?</strong> Cada página HTML linka os dois mesmos arquivos (<code>&lt;link rel="stylesheet" href="style.css"&gt;</code> e <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code>) — assim você escreve um estilo uma vez só e ele vale pro site inteiro, sem repetir código.
             </div>
 
+            <h2>🧩 Seções do site</h2>
+            <p>Um site SaaS costuma ter: cabeçalho, um destaque inicial (hero), recursos do produto, planos e preços, e contato/rodapé. A ordem, as cores, os espaçamentos e quantos itens cada seção tem são <strong>decisão sua</strong> — abaixo tem um exemplo de código pra cada parte, pra você usar como ponto de partida e modificar à vontade.</p>
+
+            <h3>Estrutura base da página</h3>
+            <div class="code-block"><span class="code-label">index.html</span><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang=</span><span class="str">"pt-BR"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name=</span><span class="str">"viewport"</span> <span class="attr">content=</span><span class="str">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>NomeDoSeuProduto<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"inicio"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"recursos"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"precos"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;footer</span> <span class="attr">id=</span><span class="str">"contato"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/footer&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+            <p>O <code>&lt;nav&gt;</code>, o conteúdo do hero, etc. entram dentro de cada tag — o esqueleto acima é só o ponto de partida.</p>
+
+            <h3>Modelo — um card de recurso</h3>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · duplique quantas vezes quiser</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card-recurso"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"imagens/icone-1.svg"</span> <span class="attr">alt=</span><span class="str">""</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h3&gt;</span>Nome do recurso<span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;p&gt;</span>Uma frase curta explicando o que esse recurso faz.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+                <div class="code-block"><span class="code-label">css</span><span class="prop">.card-recurso</span> {
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">padding</span>: <span class="val">24px</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 4px 12px rgba(0,0,0,0.08)</span>;
+}
+<span class="prop">.card-recurso img</span> { <span class="prop">width</span>: <span class="val">40px</span>; <span class="prop">margin-bottom</span>: <span class="val">12px</span>; }</div>
+                <p>Copie esse <code>&lt;div class="card-recurso"&gt;</code> quantas vezes quiser dentro da sua seção de recursos — 2, 5, 8, o número é seu. Cor de fundo, arredondamento, sombra, espaçamento: tudo isso é só um ponto de partida, mude para combinar com o seu produto.</p>
+            </div>
+
+            <h3>Modelo — um plano de preço</h3>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · duplique quantas vezes quiser</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"plano"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h3&gt;</span>Nome do plano<span class="tag">&lt;/h3&gt;</span>
+  <span class="tag">&lt;p</span> <span class="attr">class=</span><span class="str">"preco"</span><span class="tag">&gt;</span>R$ 29<span class="tag">&lt;span&gt;</span>/mês<span class="tag">&lt;/span&gt;&lt;/p&gt;</span>
+  <span class="tag">&lt;ul&gt;</span>
+    <span class="tag">&lt;li&gt;</span>O que está incluso<span class="tag">&lt;/li&gt;</span>
+  <span class="tag">&lt;/ul&gt;</span>
+  <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#"</span> <span class="attr">class=</span><span class="str">"botao-assinar"</span><span class="tag">&gt;</span>Assinar<span class="tag">&lt;/a&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+                <p>Duplique esse bloco <code>.plano</code> pra cada plano que fizer sentido pro seu produto — pode ser 1, pode ser 4. Sem número mínimo fixo.</p>
+            </div>
+
+            <h3>Um pouco de interatividade em JavaScript</h3>
+            <p>A atividade pede pelo menos <strong>uma</strong> interação real. Um exemplo clássico é o menu que abre/fecha no celular:</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;button</span> <span class="attr">class=</span><span class="str">"botao-menu"</span><span class="tag">&gt;</span>☰<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;nav</span> <span class="attr">class=</span><span class="str">"menu"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/nav&gt;</span></div>
+            <div class="code-block"><span class="code-label">script.js</span><span class="prop">const</span> botaoMenu = document.querySelector(<span class="str">'.botao-menu'</span>);
+<span class="prop">const</span> menu = document.querySelector(<span class="str">'.menu'</span>);
+
+botaoMenu.addEventListener(<span class="str">'click'</span>, () => {
+  menu.classList.toggle(<span class="str">'aberto'</span>);
+});</div>
+            <p>Mas não precisa ser esse — pode ser um plano que fica destacado ao passar o mouse, uma validação no formulário de contato, um contador, o que fizer sentido pro seu site. O importante é que seja <strong>uma interação real</strong>, não só decoração.</p>
+
             <h2>⚙️ Requisitos técnicos</h2>
+            <p>Fora isso, a criatividade é livre — mas estes pontos valem para qualquer versão do seu site:</p>
             <ul>
                 <li><strong>HTML semântico</strong> — use as tags certas para cada parte (<code>&lt;header&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;nav&gt;</code>), não tudo em <code>&lt;div&gt;</code>;</li>
                 <li><strong>CSS todo seu</strong> — sem frameworks prontos tipo Bootstrap; o objetivo é praticar CSS de verdade;</li>
                 <li><strong>Responsivo</strong> — o site precisa funcionar bem tanto no computador quanto no celular (use <code>@media</code>);</li>
-                <li><strong>Um pouco de JavaScript</strong> — pelo menos uma interação real, por exemplo: menu que abre/fecha no celular, um botão que muda de plano em destaque, ou uma validação simples no formulário de contato;</li>
                 <li><strong>Imagens leves</strong> — comprima as imagens antes de usar, para o site carregar rápido.</li>
             </ul>
 
@@ -152,12 +246,12 @@
 
             <h2>✅ Checklist antes de considerar concluído</h2>
             <ul class="checklist">
-                <li>Todas as 5 seções obrigatórias estão presentes e com conteúdo coerente com o produto escolhido;</li>
+                <li>Cabeçalho, hero, recursos, preços e contato estão presentes, com o conteúdo que fizer sentido pro seu produto (não precisa seguir número fixo de cards ou planos);</li>
                 <li>O site fica legível e utilizável tanto no celular quanto no computador;</li>
                 <li>Existe pelo menos uma interação em JavaScript funcionando;</li>
                 <li>As imagens usadas têm crédito/fonte anotado (mesmo que num comentário no HTML);</li>
                 <li>O repositório no GitHub tem vários commits, não só um único commit final;</li>
-                <li>O código está organizado em arquivos separados: <code>index.html</code>, <code>style.css</code> e <code>script.js</code>.</li>
+                <li>Os arquivos estão organizados como no planejamento de pastas: <code>index.html</code>, <code>style.css</code>, <code>script.js</code> (e no máximo mais 2 páginas HTML, se você optou por dividir).</li>
             </ul>
         </main>
 

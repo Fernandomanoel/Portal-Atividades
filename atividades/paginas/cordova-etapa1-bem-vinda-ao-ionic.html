@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 1 — Bem-vinda ao Ionic e Cordova</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; }
+
+    header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: #fff; padding: 40px; text-align: center; }
+    header h1 { font-size: 2.1em; margin-bottom: 8px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .etapa-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+    h2 { color: #1f4fb0; margin: 34px 0 16px; border-bottom: 3px solid #3880ff; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #3880ff; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+    .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #3880ff;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-label {
+        background: #3880ff; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+    .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+    .passos li::before {
+        counter-increment: passo; content: counter(passo);
+        position: absolute; left: 0; top: 0;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: #3880ff; color: #fff; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+    }
+
+    .analogia { background: #fff9e8; border: 2px dashed #f0b429; border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+    .analogia h4 { color: #a06b00; margin-bottom: 8px; }
+
+    .detetive { background: #2b1b3d; color: #e8d9ff; border-radius: 10px; padding: 20px 22px; margin: 18px 0; border-left: 4px solid #a855f7; }
+    .detetive h4 { color: #d8b4fe; margin-bottom: 8px; }
+
+    .pausa { background: #e8fff3; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before {
+        content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em;
+    }
+
+    .mapa-etapas { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .mapa-etapas span { flex: 1 1 140px; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 0.85em; font-weight: 700; background: #eef4ff; color: #1f4fb0; border: 2px solid #dce8ff; }
+    .mapa-etapas span.atual { background: #3880ff; color: #fff; border-color: #3880ff; }
+
+    .voltar { display: inline-block; margin: 30px 50px 0; color: #3880ff; text-decoration: none; font-weight: 600; }
+    .voltar:hover { text-decoration: underline; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 700px) {
+        header { padding: 28px 22px; }
+        .content { padding: 26px 22px 40px; }
+        .voltar { margin: 30px 22px 0; }
+        .code-block { font-size: 0.8em; padding: 14px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📱 Bem-vinda ao mundo dos apps!</h1>
+        <p>Etapa 1 — Conhecendo o Ionic e o Cordova, e criando seu primeiro projeto</p>
+        <span class="etapa-badge">Aula 1 · Sem pressa — o importante é entender cada passo</span>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=cordova">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+    <div class="content">
+        <div class="mapa-etapas">
+            <span class="atual">1. Bem-vinda</span>
+            <span>2. Componentes</span>
+            <span>3. Eventos e listas</span>
+            <span>4. Memória e emulador</span>
+            <span>5. Projeto final</span>
+        </div>
+
+        <h2>🎯 O que você já sabe (e o que muda agora)</h2>
+        <p>Você já construiu páginas com <strong>HTML</strong>, deixou elas bonitas com <strong>CSS</strong> e já brincou um pouco com <strong>JavaScript</strong>. Ótimo — porque tudo isso continua valendo. A diferença é que, a partir de hoje, o que você constrói não vai ficar só dentro de um navegador de computador: vai virar um <strong>aplicativo de verdade</strong>, do tipo que você instala e abre no celular, com um ícone na tela e tudo.</p>
+        <p>Pra isso, vamos usar duas ferramentas novas:</p>
+
+        <div class="analogia">
+            <h4>🏠 Pensa numa casa pronta para mudar de cidade</h4>
+            <p><strong>Ionic</strong> é como os móveis já prontos no tamanho certo — botões, menus, cartões e telas que já nascem com a cara de aplicativo de celular, prontos pra você usar, sem ter que desenhar cada um do zero.</p>
+            <p><strong>Cordova</strong> é o caminhão de mudança: ele pega toda a "casa" que você construiu com HTML/CSS/JS e leva ela pra dentro do celular, traduzindo tudo pra linguagem que o processador do aparelho entende.</p>
+        </div>
+
+        <p>Ou seja: você continua escrevendo HTML, CSS e JavaScript — só que agora com peças prontas de aplicativo (Ionic) e um jeito de colocar tudo isso rodando de verdade num celular (Cordova).</p>
+
+        <h2>🗺️ O que vamos construir nessas 5 etapas</h2>
+        <p>Ao longo das próximas aulas você vai construir, peça por peça, um aplicativo chamado <strong>Minhas Missões</strong> — uma lista de tarefas (ou o que você quiser: filmes pra assistir, livros pra ler, ideias de desenho) que vive dentro do celular e lembra do que você digitou mesmo depois de fechar o app. No final, ele vai rodar de verdade num celular simulado no computador.</p>
+        <ul>
+            <li><strong>Etapa 1 (agora):</strong> criar o projeto e entender as peças do Ionic;</li>
+            <li><strong>Etapa 2:</strong> montar a tela toda com componentes visuais do Ionic;</li>
+            <li><strong>Etapa 3:</strong> dar vida à tela com JavaScript — cliques, listas que aparecem na hora;</li>
+            <li><strong>Etapa 4:</strong> fazer o app "lembrar" das coisas e testar num celular virtual;</li>
+            <li><strong>Etapa 5:</strong> projeto final, com a sua cara.</li>
+        </ul>
+
+        <h2>💻 Criando seu primeiro projeto</h2>
+        <p>O computador já tem tudo instalado (o Node.js, o Cordova e o Ionic) — você não precisa instalar nada, só usar. Abra o terminal na pasta onde quer guardar seus projetos e digite, um comando de cada vez:</p>
+
+        <ol class="passos">
+            <li><strong>Criar o projeto.</strong> Isso cria uma pasta nova chamada <code>meu-app</code> com tudo que um app precisa pra existir.
+                <div class="code-block"><span class="code-label">terminal</span>cordova create meu-app com.escola.meuapp "Minhas Missões"</div>
+                <p>Esse comando tem 3 partes: o nome da pasta (<code>meu-app</code>), um "identificador único" do app (<code>com.escola.meuapp</code> — todo app precisa de um, como um CPF) e o nome que vai aparecer embaixo do ícone no celular (<code>"Minhas Missões"</code>).</p>
+            </li>
+            <li><strong>Entrar na pasta do projeto.</strong>
+                <div class="code-block"><span class="code-label">terminal</span>cd meu-app</div>
+            </li>
+            <li><strong>Preparar a pré-visualização no navegador.</strong> Antes de testar num celular de verdade, é mais rápido ver o app rodando direto no navegador do computador.
+                <div class="code-block"><span class="code-label">terminal</span>cordova platform add browser</div>
+            </li>
+            <li><strong>Rodar o app!</strong>
+                <div class="code-block"><span class="code-label">terminal</span>cordova run browser</div>
+                <p>Uma aba do navegador vai abrir sozinha mostrando uma tela simples de boas-vindas do Cordova. Parabéns — você acabou de criar e rodar seu primeiro projeto de aplicativo!</p>
+            </li>
+        </ol>
+
+        <div class="pausa">
+            💾 <strong>Ciclo curto:</strong> a partir de agora, sempre que você mudar um arquivo, salve com <code>Ctrl + S</code> e rode <code>cordova run browser</code> de novo (ou só recarregue a aba) pra ver a mudança. Não escreva 50 linhas antes de testar — teste a cada pedacinho.
+        </div>
+
+        <h2>📂 Conhecendo a pasta do seu app</h2>
+        <p>Abra a pasta <code>meu-app</code> no seu editor de código. Repare que dentro dela existe uma pasta chamada <code>www</code> — é ali, e só ali, que mora o app de verdade. O resto da pasta é configuração que o Cordova usa por trás dos panos; você não precisa mexer nela.</p>
+
+        <div class="code-block arvore-pastas"><span class="code-label">o que importa, dentro de www/</span>
+meu-app/
+└── www/
+    ├── index.html      <span class="cm"># a tela do seu app — o que aparece na tela</span>
+    ├── css/
+    │   └── index.css    <span class="cm"># o estilo visual do app</span>
+    └── js/
+        └── index.js      <span class="cm"># a lógica — o que acontece quando você toca em algo</span></div>
+
+        <p>Abra o <code>www/index.html</code>. Repare que seu mentor já deixou, dentro do <code>&lt;head&gt;</code>, duas linhas que carregam a biblioteca do Ionic — é isso que faz as tags especiais como <code>&lt;ion-button&gt;</code> funcionarem daqui pra frente. Você não precisa mexer nelas, só saber que estão ali.</p>
+
+        <h2>🧩 Seu primeiro componente Ionic</h2>
+        <p>Agora vamos trocar o conteúdo de dentro do <code>&lt;body&gt;</code> do <code>index.html</code> pelas primeiras peças do Ionic: um cabeçalho e um cartão de boas-vindas.</p>
+
+        <div class="box">
+            <h4>Copie isto dentro do &lt;body&gt;</h4>
+            <div class="code-block"><span class="code-label">www/index.html</span><span class="tag">&lt;ion-app&gt;</span>
+
+  <span class="cm">&lt;!-- Cabeçalho do app: aparece fixo no topo, igual em apps de verdade --&gt;</span>
+  <span class="tag">&lt;ion-header&gt;</span>
+    <span class="tag">&lt;ion-toolbar</span> <span class="attr">color=</span><span class="str">"primary"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;ion-title&gt;</span>Minhas Missões<span class="tag">&lt;/ion-title&gt;</span>
+    <span class="tag">&lt;/ion-toolbar&gt;</span>
+  <span class="tag">&lt;/ion-header&gt;</span>
+
+  <span class="cm">&lt;!-- Conteúdo principal da tela --&gt;</span>
+  <span class="tag">&lt;ion-content</span> <span class="attr">class=</span><span class="str">"ion-padding"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;ion-card&gt;</span>
+      <span class="tag">&lt;ion-card-header&gt;</span>
+        <span class="tag">&lt;ion-card-title&gt;</span>Bem-vinda!<span class="tag">&lt;/ion-card-title&gt;</span>
+      <span class="tag">&lt;/ion-card-header&gt;</span>
+      <span class="tag">&lt;ion-card-content&gt;</span>
+        Este é o meu primeiro aplicativo de celular, criado por mim!
+      <span class="tag">&lt;/ion-card-content&gt;</span>
+    <span class="tag">&lt;/ion-card&gt;</span>
+
+  <span class="tag">&lt;/ion-content&gt;</span>
+
+<span class="tag">&lt;/ion-app&gt;</span></div>
+        </div>
+
+        <p>Salve o arquivo, rode <code>cordova run browser</code> de novo (ou recarregue a aba) e veja: apareceu uma barra azul no topo com o título, e um cartão branco com cantos arredondados logo abaixo. Sem escrever uma linha de CSS, já parece um app de verdade — esse é o trabalho que o Ionic faz por você.</p>
+
+        <h3>O que cada tag nova faz</h3>
+        <ul>
+            <li><code>&lt;ion-app&gt;</code> — envolve o app inteiro, é tipo o <code>&lt;body&gt;</code> de um app Ionic;</li>
+            <li><code>&lt;ion-header&gt;</code> / <code>&lt;ion-toolbar&gt;</code> — a barra fixa do topo; o atributo <code>color="primary"</code> usa a cor principal do tema;</li>
+            <li><code>&lt;ion-title&gt;</code> — o texto que aparece na barra;</li>
+            <li><code>&lt;ion-content class="ion-padding"&gt;</code> — a área rolável onde fica o conteúdo; <code>ion-padding</code> dá um respiro nas bordas, pra nada colar na tela;</li>
+            <li><code>&lt;ion-card&gt;</code> / <code>&lt;ion-card-header&gt;</code> / <code>&lt;ion-card-title&gt;</code> / <code>&lt;ion-card-content&gt;</code> — um "cartão" com título e texto dentro, o jeito Ionic de destacar um bloco de conteúdo.</li>
+        </ul>
+
+        <h2>🕵️ Modo detetive: o Console do navegador</h2>
+        <p>Vez ou outra o app vai "quebrar" — a tela fica em branco, ou algo não aparece do jeito esperado. Isso é <strong>normal</strong>, acontece com programadores profissionais o tempo todo. O segredo é saber onde procurar a pista.</p>
+
+        <div class="detetive">
+            <h4>🔍 Como investigar um erro</h4>
+            <ol>
+                <li>Aperte <code>F12</code> no navegador (ou clique com o botão direito na página → <em>Inspecionar</em>);</li>
+                <li>Clique na aba <strong>Console</strong>;</li>
+                <li>Se algo deu errado, vai aparecer uma linha em <strong>vermelho</strong> explicando o que houve — geralmente com o nome do arquivo e o número da linha do problema;</li>
+                <li>Leia a mensagem como uma pista de investigação: ela quase sempre diz exatamente o que está errado (uma tag não fechada, um nome escrito diferente em dois lugares, etc.).</li>
+            </ol>
+            <p>Você vai usar o Console em toda etapa daqui pra frente — vale deixar o F12 aberto sempre que estiver codando.</p>
+        </div>
+
+        <div class="pausa">
+            ⏱️ <strong>Hora da pausa:</strong> a cada bloco de uns 50 minutos codando, vale 10 minutos longe da tela — esticar as pernas, beber água. Até programador profissional trabalha assim.
+        </div>
+
+        <h2>🎨 Brinque um pouco antes de continuar</h2>
+        <p>Antes de ir pra próxima etapa, tente sozinha:</p>
+        <ul>
+            <li>Trocar o texto do <code>&lt;ion-title&gt;</code> por outro nome de app;</li>
+            <li>Trocar <code>color="primary"</code> por <code>color="danger"</code>, <code>color="success"</code> ou <code>color="warning"</code> na <code>&lt;ion-toolbar&gt;</code> e ver a barra mudar de cor — o Ionic já vem com essas cores prontas;</li>
+            <li>Duplicar o <code>&lt;ion-card&gt;</code> inteiro e escrever um segundo cartão com outro texto.</li>
+        </ul>
+
+        <h2>✅ Checklist da Etapa 1</h2>
+        <ul class="checklist">
+            <li>Criei o projeto com <code>cordova create</code> e consegui rodar com <code>cordova run browser</code>;</li>
+            <li>Sei onde fica a pasta <code>www/</code> e entendo que é lá que meu app mora;</li>
+            <li>Meu app mostra um cabeçalho (<code>ion-header</code>) com título e um cartão (<code>ion-card</code>) de boas-vindas;</li>
+            <li>Já abri o Console (F12) pelo menos uma vez, só pra conhecer;</li>
+            <li>Testei trocar a cor da barra e o texto do título por conta própria.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Pronta para a próxima etapa?</strong> Na Etapa 2 vamos encher a tela de componentes de verdade: campo de texto, botões com ícone, listas — tudo o que o app "Minhas Missões" vai precisar antes de ganhar vida com JavaScript na Etapa 3.
+        </div>
+    </div>
+
+    <footer>Microlins São José — Apps Mobile com Ionic e Cordova · Etapa 1 de 5</footer>
+</div>
+</body>
+</html>

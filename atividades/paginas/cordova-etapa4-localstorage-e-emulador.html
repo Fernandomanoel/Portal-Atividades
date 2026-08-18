@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 4 — LocalStorage e Emulador Android</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container { width: 100%; min-height: 100vh; background: #fff; }
+
+    header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: #fff; padding: 40px; text-align: center; }
+    header h1 { font-size: 2.1em; margin-bottom: 8px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .etapa-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+    h2 { color: #1f4fb0; margin: 34px 0 16px; border-bottom: 3px solid #3880ff; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #3880ff; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+    .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #3880ff;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .kw { color: #c586c0; }
+    .code-block .fn { color: #dcdcaa; }
+    .code-block .var { color: #9cdcfe; }
+    .code-block .val { color: #b5cea8; }
+    .code-label {
+        background: #3880ff; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+    .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+    .passos li::before {
+        counter-increment: passo; content: counter(passo);
+        position: absolute; left: 0; top: 0;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: #3880ff; color: #fff; font-weight: 700;
+        display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+    }
+
+    .analogia { background: #fff9e8; border: 2px dashed #f0b429; border-radius: 10px; padding: 18px 22px; margin: 18px 0; }
+    .analogia h4 { color: #a06b00; margin-bottom: 8px; }
+
+    .aviso { background: #fdecea; border-left: 4px solid #eb445a; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #7a1f2b; }
+    .pausa { background: #e8fff3; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+
+    .mapa-etapas { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .mapa-etapas span { flex: 1 1 140px; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 0.85em; font-weight: 700; background: #eef4ff; color: #1f4fb0; border: 2px solid #dce8ff; }
+    .mapa-etapas span.atual { background: #3880ff; color: #fff; border-color: #3880ff; }
+
+    .voltar { display: inline-block; margin: 30px 50px 0; color: #3880ff; text-decoration: none; font-weight: 600; }
+    .voltar:hover { text-decoration: underline; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 700px) {
+        header { padding: 28px 22px; }
+        .content { padding: 26px 22px 40px; }
+        .voltar { margin: 30px 22px 0; }
+        .code-block { font-size: 0.8em; padding: 14px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧠 A memória do app e o celular virtual</h1>
+        <p>Etapa 4 — localStorage e testando num Android de verdade (simulado)</p>
+        <span class="etapa-badge">Aula 2 (continuação) · Hoje o app aprende a não esquecer</span>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=cordova">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+    <div class="content">
+        <div class="mapa-etapas">
+            <span>1. Bem-vinda</span>
+            <span>2. Componentes</span>
+            <span>3. Eventos e listas</span>
+            <span class="atual">4. Memória e emulador</span>
+            <span>5. Projeto final</span>
+        </div>
+
+        <h2>🎯 O plano desta etapa</h2>
+        <p>Duas coisas hoje: primeiro, resolver aquele problema do fim da Etapa 3 — o app esquecendo tudo quando fecha. Depois, a parte mais empolgante até agora: ver seu app rodando dentro de um <strong>celular Android simulado</strong>, direto no computador.</p>
+
+        <h2>💾 Por que o array esquece tudo</h2>
+        <div class="analogia">
+            <h4>🧊 Memória RAM x Geladeira</h4>
+            <p>O array <code>missoes</code> que você criou na Etapa 3 vive na <strong>memória RAM</strong> do navegador — é como escrever numa lousa: rápido de usar, mas quando você desliga (fecha a aba), tudo apaga. O <code>localStorage</code> é diferente: é como guardar na geladeira — some da lousa, mas continua lá quando você volta, mesmo depois de fechar tudo e religar o computador.</p>
+        </div>
+        <p>O <code>localStorage</code> é uma "gaveta" de memória permanente que cada navegador (e cada app baseado em Cordova) reserva pra guardar dados pequenos, sem precisar de internet nem de um banco de dados de verdade.</p>
+
+        <h2>🧩 Passo a passo: salvando e recuperando</h2>
+
+        <div class="aviso">
+            ⚠️ O <code>localStorage</code> só guarda <strong>texto</strong> (strings) — nunca um array ou objeto direto. Por isso vamos usar duas funções amigas: <code>JSON.stringify()</code> (transforma o array numa string pra guardar) e <code>JSON.parse()</code> (transforma a string de volta num array pra usar). Sempre que salvar, é <code>stringify</code>; sempre que ler, é <code>parse</code>.
+        </div>
+
+        <ol class="passos">
+            <li><strong>Carregar as missões salvas assim que o app abre.</strong> Troque a linha <code>let missoes = [];</code> por esta, lá no topo do <code>www/js/index.js</code>:
+                <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">let</span> <span class="var">missoes</span> = JSON.parse(localStorage.getItem(<span class="str">'minhas_missoes'</span>)) || [];</div>
+                <p><code>localStorage.getItem('minhas_missoes')</code> busca o que estiver guardado com esse nome. Na primeira vez que o app roda, não existe nada salvo ainda — <code>getItem</code> devolve <code>null</code>, e o <code>|| []</code> (leia "ou") diz: "se vier vazio/nulo, comece com uma lista vazia em vez de quebrar".</p>
+            </li>
+
+            <li><strong>Salvar toda vez que a lista mudar.</strong> Dentro da função <code>desenharLista()</code> que você já tem, adicione uma linha no começo:
+                <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">desenharLista</span>() {
+  localStorage.setItem(<span class="str">'minhas_missoes'</span>, JSON.stringify(missoes)); <span class="cm">// salva sempre</span>
+
+  listaNaTela.innerHTML = <span class="str">""</span>;
+  missoes.forEach((<span class="var">missao</span>, <span class="var">indice</span>) => {
+    listaNaTela.innerHTML += <span class="str">`
+      &lt;ion-item&gt;
+        &lt;ion-label&gt;${missao}&lt;/ion-label&gt;
+        &lt;ion-button slot="end" color="danger" fill="clear" onclick="excluirMissao(${indice})"&gt;
+          &lt;ion-icon name="trash" slot="icon-only"&gt;&lt;/ion-icon&gt;
+        &lt;/ion-button&gt;
+      &lt;/ion-item&gt;
+    `</span>;
+  });
+}</div>
+                <p>Como <code>desenharLista()</code> já é chamada depois de adicionar <em>e</em> depois de excluir uma missão (você programou isso na Etapa 3), colocando o <code>setItem</code> logo no início dela, o app salva sozinho em <strong>toda</strong> mudança — sem precisar lembrar de salvar em cada lugar separado.</p>
+            </li>
+        </ol>
+
+        <div class="pausa">
+            💾 <strong>Teste de verdade:</strong> adicione 2-3 missões, feche a aba do navegador completamente, abra de novo e rode <code>cordova run browser</code>. As missões devem continuar lá. Se sumiram, confira se o nome <code>'minhas_missoes'</code> está escrito <em>exatamente igual</em> nos dois lugares (no <code>getItem</code> e no <code>setItem</code>) — é o erro mais comum aqui.
+        </div>
+
+        <h2>📱 Preparando o celular virtual (emulador Android)</h2>
+        <p>Chegou a hora de ver o app rodando dentro de um Android simulado. Vamos usar o <strong>Android Studio</strong>, que já está instalado no computador.</p>
+
+        <ol class="passos">
+            <li>Abra o <strong>Android Studio</strong>.</li>
+            <li>No menu, procure <strong>More Actions</strong> (ou o ícone de três pontinhos na tela inicial) e clique em <strong>Virtual Device Manager</strong>.</li>
+            <li>Clique em <strong>Create Device</strong>.</li>
+            <li>Escolha um modelo de celular da lista — o <strong>Pixel 2</strong> é uma boa escolha, tamanho de tela comum. Clique em <strong>Next</strong>.</li>
+            <li>Escolha uma <strong>imagem do sistema Android</strong> pra instalar no celular virtual (por exemplo, a versão <strong>Q (Android 10)</strong>). Se pedir pra baixar, clique em <strong>Download</strong> e espere terminar.</li>
+            <li>Antes de finalizar, abra <strong>Show Advanced Settings</strong> e mude a quantidade de <strong>RAM</strong> do celular virtual para algo entre <strong>1500 MB e 2000 MB</strong> — isso evita que o computador trave, já que o celular virtual "empresta" memória do PC de verdade.</li>
+            <li>Clique em <strong>Finish</strong>. O celular virtual vai aparecer na lista do Virtual Device Manager.</li>
+            <li>Clique no botão de <strong>Play (▶)</strong> ao lado dele para ligar o celular virtual. Isso pode demorar um pouco na primeira vez — é normal, é como ligar um celular de verdade pela primeira vez.</li>
+        </ol>
+
+        <h2>🚀 Rodando o app dentro do celular virtual</h2>
+        <p>Com o celular virtual ligado e a tela inicial do Android visível, volte pro terminal, dentro da pasta <code>meu-app</code>, e rode:</p>
+        <div class="code-block"><span class="code-label">terminal</span>cordova platform add android
+cordova run android</div>
+        <p>O primeiro comando (só precisa rodar uma vez) ensina o Cordova a construir versões para Android. O segundo instala e abre o app dentro do celular virtual que está ligado — como se você tivesse instalado ele num celular de verdade. Se tudo deu certo, o ícone "Minhas Missões" aparece na tela do Android simulado, e ao abrir, seu app roda igualzinho ao que você viu no navegador — só que agora dentro de um celular.</p>
+
+        <div class="box">
+            <h4>🐢 Por que pode demorar?</h4>
+            <p>A primeira vez que você roda <code>cordova run android</code> costuma ser mais lenta — o Cordova precisa "montar" o app inteiro do zero. Da segunda vez em diante fica bem mais rápido. Aproveite essa primeira espera pra uma pausa de 10 minutos.</p>
+        </div>
+
+        <h2>🕵️ Modo detetive no emulador</h2>
+        <p>Se o app não abrir ou aparecer uma tela em branco dentro do celular virtual, o Console de sempre (F12) não vai ajudar — ele só funciona pra páginas abertas no navegador do computador. No emulador, o jeito de investigar é diferente e mais avançado; por hoje, se algo der errado, os erros mais comuns são:</p>
+        <ul>
+            <li>Esqueceu de rodar <code>cordova platform add android</code> antes do <code>run</code>;</li>
+            <li>O celular virtual não estava ligado quando você rodou <code>cordova run android</code>;</li>
+            <li>Algum erro de JavaScript que também apareceria no navegador — por isso, sempre teste primeiro com <code>cordova run browser</code> e só depois confirme no emulador.</li>
+        </ul>
+
+        <h2>✅ Checklist da Etapa 4</h2>
+        <ul class="checklist">
+            <li>As missões continuam na lista depois de fechar e abrir o navegador de novo;</li>
+            <li>Entendo a diferença entre a memória temporária (array) e o <code>localStorage</code>;</li>
+            <li>Criei um celular virtual no Android Studio, com RAM ajustada;</li>
+            <li>Rodei <code>cordova platform add android</code> e <code>cordova run android</code> com sucesso;</li>
+            <li>Vi o app "Minhas Missões" abrindo de verdade dentro do celular simulado.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Última etapa!</strong> Na Etapa 5 você vai revisar tudo, deixar o app com a sua cara (cores, nome, tema) e cumprir um checklist final — o projeto completo, do jeito que só você fez.
+        </div>
+    </div>
+
+    <footer>Microlins São José — Apps Mobile com Ionic e Cordova · Etapa 4 de 5</footer>
+</div>
+</body>
+</html>

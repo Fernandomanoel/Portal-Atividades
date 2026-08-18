@@ -1019,6 +1019,52 @@ const ATIVIDADES = [
       },
     ],
   },
+
+  {
+    slug: "cordova",
+    titulo: "Apps Mobile com Ionic e Cordova",
+    descricao: "Construa um aplicativo de celular de verdade, do primeiro componente ao emulador Android.",
+    grupo: "extras",
+    sigla: "ION",
+    cor: "#3880ff",
+    materiais: [
+      {
+        titulo: "Etapa 1 — Bem-vinda ao Ionic e Cordova",
+        descricao:
+          "O que são Ionic e Cordova, criando o projeto pelo terminal, explorando a pasta www/ e montando o primeiro componente (header + card).",
+        tipo: "link",
+        url: "atividades/paginas/cordova-etapa1-bem-vinda-ao-ionic.html",
+      },
+      {
+        titulo: "Etapa 2 — Componentes Visuais do Ionic",
+        descricao:
+          "Montando a tela inteira do app com ion-input, ion-button, ion-icon, ion-list, ion-grid e ion-footer, cores prontas do Ionic.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-etapa2-componentes-visuais.html",
+      },
+      {
+        titulo: "Etapa 3 — Eventos e Listas Dinâmicas",
+        descricao:
+          "Dando vida ao app com addEventListener, array, template literals e uma lista que aparece e some na tela em tempo real, com botão de excluir.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-etapa3-eventos-e-listas.html",
+      },
+      {
+        titulo: "Etapa 4 — LocalStorage e Emulador Android",
+        descricao:
+          "Fazendo o app lembrar dos dados com localStorage e testando de verdade num celular virtual criado no Android Studio.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-etapa4-localstorage-e-emulador.html",
+      },
+      {
+        titulo: "Etapa 5 — Projeto Final",
+        descricao:
+          "Revisão completa, personalização de cores e tema, 3 desafios extras (contador, confirmação de exclusão, marcar como concluída) e checklist final.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-etapa5-projeto-final.html",
+      },
+    ],
+  },
 ];
 
 // Busca um curso pelo slug da URL. Devolve undefined se não existir.

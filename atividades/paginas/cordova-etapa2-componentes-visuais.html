@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etapa 2 — Componentes Visuais do Ionic</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .container { width: 100%; min-height: 100vh; background: #fff; }
+
+    header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: #fff; padding: 40px; text-align: center; }
+    header h1 { font-size: 2.1em; margin-bottom: 8px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .etapa-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+    h2 { color: #1f4fb0; margin: 34px 0 16px; border-bottom: 3px solid #3880ff; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #3880ff; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+    .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #3880ff;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-label {
+        background: #3880ff; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    .peca { border: 2px dashed #3880ff; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+    .peca-tag {
+        display: inline-block; background: #eef4ff; color: #1f4fb0; font-size: 0.78em; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+    }
+
+    .cores-ionic { display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+    .cores-ionic span { padding: 8px 16px; border-radius: 6px; color: #fff; font-weight: 700; font-size: 0.85em; }
+
+    .pausa { background: #e8fff3; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+
+    .mapa-etapas { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }
+    .mapa-etapas span { flex: 1 1 140px; text-align: center; padding: 10px 8px; border-radius: 8px; font-size: 0.85em; font-weight: 700; background: #eef4ff; color: #1f4fb0; border: 2px solid #dce8ff; }
+    .mapa-etapas span.atual { background: #3880ff; color: #fff; border-color: #3880ff; }
+
+    .voltar { display: inline-block; margin: 30px 50px 0; color: #3880ff; text-decoration: none; font-weight: 600; }
+    .voltar:hover { text-decoration: underline; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 700px) {
+        header { padding: 28px 22px; }
+        .content { padding: 26px 22px 40px; }
+        .voltar { margin: 30px 22px 0; }
+        .code-block { font-size: 0.8em; padding: 14px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧱 Montando a tela do app</h1>
+        <p>Etapa 2 — Explorando os componentes visuais do Ionic</p>
+        <span class="etapa-badge">Aula 1 (continuação) · Vamos construir a tela do "Minhas Missões"</span>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=cordova">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+    <div class="content">
+        <div class="mapa-etapas">
+            <span>1. Bem-vinda</span>
+            <span class="atual">2. Componentes</span>
+            <span>3. Eventos e listas</span>
+            <span>4. Memória e emulador</span>
+            <span>5. Projeto final</span>
+        </div>
+
+        <h2>🎯 O plano desta etapa</h2>
+        <p>Na Etapa 1 você criou o projeto e colocou um cabeçalho e um cartão na tela. Agora vamos montar a tela <strong>inteira</strong> do "Minhas Missões": um campo pra digitar uma missão, um botão pra adicionar, um espaço pra lista aparecer, e um rodapé. Ainda não vamos programar nada em JavaScript — hoje é só montar as peças visuais, uma por uma, entendendo o que cada uma faz. Na Etapa 3 elas ganham vida.</p>
+
+        <div class="box">
+            <h4>🎨 As cores prontas do Ionic</h4>
+            <p>Você já viu <code>color="primary"</code> na Etapa 1. O Ionic vem com um conjunto de cores prontas que você pode usar em quase qualquer componente:</p>
+            <div class="cores-ionic">
+                <span style="background:#3880ff">primary</span>
+                <span style="background:#3dc2ff">secondary</span>
+                <span style="background:#5260ff">tertiary</span>
+                <span style="background:#2dd36f">success</span>
+                <span style="background:#ffc409;color:#000">warning</span>
+                <span style="background:#eb445a">danger</span>
+                <span style="background:#92949c">medium</span>
+                <span style="background:#222428">dark</span>
+            </div>
+            <p>Vamos usar várias delas ao longo desta etapa.</p>
+        </div>
+
+        <h2>🧩 Peça por peça</h2>
+        <p>Para cada peça abaixo: leia a explicação, copie o código pro lugar certo dentro do <code>&lt;ion-content&gt;</code> do seu <code>www/index.html</code> (embaixo do cartão de boas-vindas que já está lá), salve e rode de novo pra ver o resultado antes de ir pra próxima.</p>
+
+        <h3>1. Campo de texto — ion-input</h3>
+        <div class="peca">
+            <span class="peca-tag">Peça 1</span>
+            <p>É onde a usuária vai digitar o nome de uma missão nova.</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;ion-item&gt;</span>
+  <span class="tag">&lt;ion-label</span> <span class="attr">position=</span><span class="str">"floating"</span><span class="tag">&gt;</span>Nova missão<span class="tag">&lt;/ion-label&gt;</span>
+  <span class="tag">&lt;ion-input</span> <span class="attr">id=</span><span class="str">"campo-missao"</span> <span class="attr">placeholder=</span><span class="str">"Ex: Arrumar o quarto"</span><span class="tag">&gt;&lt;/ion-input&gt;</span>
+<span class="tag">&lt;/ion-item&gt;</span></div>
+            <p><code>&lt;ion-item&gt;</code> é uma "linha" — o Ionic usa ela como container padrão dentro de listas e formulários. <code>&lt;ion-label position="floating"&gt;</code> é aquele rótulo que começa dentro do campo e "flutua" pra cima quando você clica — repare o efeito quando testar. O <code>id="campo-missao"</code> é importante: é assim que o JavaScript vai encontrar esse campo na Etapa 3, então não troque esse nome.</p>
+        </div>
+
+        <h3>2. Botão com ícone — ion-button + ion-icon</h3>
+        <div class="peca">
+            <span class="peca-tag">Peça 2</span>
+            <p>O botão que vai adicionar a missão na lista.</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;ion-button</span> <span class="attr">id=</span><span class="str">"btn-adicionar"</span> <span class="attr">expand=</span><span class="str">"block"</span> <span class="attr">color=</span><span class="str">"success"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;ion-icon</span> <span class="attr">slot=</span><span class="str">"start"</span> <span class="attr">name=</span><span class="str">"add-circle"</span><span class="tag">&gt;&lt;/ion-icon&gt;</span>
+  Adicionar Missão
+<span class="tag">&lt;/ion-button&gt;</span></div>
+            <p><code>expand="block"</code> faz o botão esticar e ocupar toda a largura disponível — muito comum em apps mobile. <code>&lt;ion-icon name="add-circle"&gt;</code> insere um ícone pronto da biblioteca <strong>Ionicons</strong>; o atributo <code>slot="start"</code> diz "coloque esse ícone antes do texto". Existem centenas de ícones prontos — o site <code>ionic.io/ionicons</code> tem a lista completa com o nome exato de cada um.</p>
+        </div>
+
+        <h3>3. Espaço para a lista — ion-list</h3>
+        <div class="peca">
+            <span class="peca-tag">Peça 3</span>
+            <p>Por enquanto vazio — na Etapa 3 o JavaScript vai preencher ele com as missões digitadas.</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;ion-list</span> <span class="attr">id=</span><span class="str">"lista-missoes"</span><span class="tag">&gt;&lt;/ion-list&gt;</span></div>
+            <p>Uma <code>&lt;ion-list&gt;</code> vazia não aparece com nada visível ainda — isso é esperado. É só uma "caixa" esperando ser preenchida por código.</p>
+        </div>
+
+        <h3>4. Organizando em colunas — ion-grid</h3>
+        <div class="peca">
+            <span class="peca-tag">Peça 4 (opcional, mas útil)</span>
+            <p>Se você já usou <code>display: flex</code> em CSS, isso vai parecer familiar: o Ionic tem seu próprio sistema de colunas, pronto pra telas de celular.</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;ion-grid&gt;</span>
+  <span class="tag">&lt;ion-row&gt;</span>
+    <span class="tag">&lt;ion-col</span> <span class="attr">size=</span><span class="str">"6"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;ion-button</span> <span class="attr">expand=</span><span class="str">"block"</span> <span class="attr">color=</span><span class="str">"tertiary"</span><span class="tag">&gt;</span>Fáceis<span class="tag">&lt;/ion-button&gt;</span>
+    <span class="tag">&lt;/ion-col&gt;</span>
+    <span class="tag">&lt;ion-col</span> <span class="attr">size=</span><span class="str">"6"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;ion-button</span> <span class="attr">expand=</span><span class="str">"block"</span> <span class="attr">color=</span><span class="str">"danger"</span><span class="tag">&gt;</span>Difíceis<span class="tag">&lt;/ion-button&gt;</span>
+    <span class="tag">&lt;/ion-col&gt;</span>
+  <span class="tag">&lt;/ion-row&gt;</span>
+<span class="tag">&lt;/ion-grid&gt;</span></div>
+            <p><code>&lt;ion-grid&gt;</code> é a grade inteira, <code>&lt;ion-row&gt;</code> é uma fileira, e cada <code>&lt;ion-col size="6"&gt;</code> ocupa metade da largura (a grade do Ionic vai de 1 a 12 — <code>size="6"</code> é metade, <code>size="4"</code> seria um terço, e assim por diante). Esses dois botões não precisam funcionar de verdade agora — é só pra você ver como se organiza layout em colunas no Ionic.</p>
+        </div>
+
+        <h3>5. Um rodapé fixo — ion-footer</h3>
+        <div class="peca">
+            <span class="peca-tag">Peça 5</span>
+            <p>Diferente do <code>&lt;ion-header&gt;</code>, o rodapé fica <strong>fora</strong> do <code>&lt;ion-content&gt;</code> — ele é irmão dele, não filho. Repare na indentação no código completo abaixo.</p>
+            <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;ion-footer&gt;</span>
+  <span class="tag">&lt;ion-toolbar&gt;</span>
+    <span class="tag">&lt;ion-title</span> <span class="attr">size=</span><span class="str">"small"</span><span class="tag">&gt;</span>Feito por [seu nome aqui]<span class="tag">&lt;/ion-title&gt;</span>
+  <span class="tag">&lt;/ion-toolbar&gt;</span>
+<span class="tag">&lt;/ion-footer&gt;</span></div>
+        </div>
+
+        <h2>📄 Como fica o index.html completo até agora</h2>
+        <p>Juntando tudo (cabeçalho da Etapa 1 + as peças novas), seu <code>www/index.html</code> deve ficar parecido com isto:</p>
+        <div class="code-block"><span class="code-label">www/index.html</span><span class="tag">&lt;ion-app&gt;</span>
+
+  <span class="tag">&lt;ion-header&gt;</span>
+    <span class="tag">&lt;ion-toolbar</span> <span class="attr">color=</span><span class="str">"primary"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;ion-title&gt;</span>Minhas Missões<span class="tag">&lt;/ion-title&gt;</span>
+    <span class="tag">&lt;/ion-toolbar&gt;</span>
+  <span class="tag">&lt;/ion-header&gt;</span>
+
+  <span class="tag">&lt;ion-content</span> <span class="attr">class=</span><span class="str">"ion-padding"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;ion-card&gt;</span>
+      <span class="tag">&lt;ion-card-header&gt;</span>
+        <span class="tag">&lt;ion-card-title&gt;</span>Bem-vinda!<span class="tag">&lt;/ion-card-title&gt;</span>
+      <span class="tag">&lt;/ion-card-header&gt;</span>
+      <span class="tag">&lt;ion-card-content&gt;</span>
+        Digite suas missões abaixo e não esqueça de completá-las!
+      <span class="tag">&lt;/ion-card-content&gt;</span>
+    <span class="tag">&lt;/ion-card&gt;</span>
+
+    <span class="tag">&lt;ion-item&gt;</span>
+      <span class="tag">&lt;ion-label</span> <span class="attr">position=</span><span class="str">"floating"</span><span class="tag">&gt;</span>Nova missão<span class="tag">&lt;/ion-label&gt;</span>
+      <span class="tag">&lt;ion-input</span> <span class="attr">id=</span><span class="str">"campo-missao"</span> <span class="attr">placeholder=</span><span class="str">"Ex: Arrumar o quarto"</span><span class="tag">&gt;&lt;/ion-input&gt;</span>
+    <span class="tag">&lt;/ion-item&gt;</span>
+
+    <span class="tag">&lt;ion-button</span> <span class="attr">id=</span><span class="str">"btn-adicionar"</span> <span class="attr">expand=</span><span class="str">"block"</span> <span class="attr">color=</span><span class="str">"success"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;ion-icon</span> <span class="attr">slot=</span><span class="str">"start"</span> <span class="attr">name=</span><span class="str">"add-circle"</span><span class="tag">&gt;&lt;/ion-icon&gt;</span>
+      Adicionar Missão
+    <span class="tag">&lt;/ion-button&gt;</span>
+
+    <span class="tag">&lt;ion-list</span> <span class="attr">id=</span><span class="str">"lista-missoes"</span><span class="tag">&gt;&lt;/ion-list&gt;</span>
+
+  <span class="tag">&lt;/ion-content&gt;</span>
+
+  <span class="tag">&lt;ion-footer&gt;</span>
+    <span class="tag">&lt;ion-toolbar&gt;</span>
+      <span class="tag">&lt;ion-title</span> <span class="attr">size=</span><span class="str">"small"</span><span class="tag">&gt;</span>Feito por [seu nome aqui]<span class="tag">&lt;/ion-title&gt;</span>
+    <span class="tag">&lt;/ion-toolbar&gt;</span>
+  <span class="tag">&lt;/ion-footer&gt;</span>
+
+<span class="tag">&lt;/ion-app&gt;</span></div>
+
+        <p>Salve, rode <code>cordova run browser</code> e confira: você já tem uma tela completa de app, com cabeçalho, cartão, campo de texto, botão colorido com ícone, uma lista (ainda vazia) e um rodapé. Falta só uma coisa: fazer o botão <strong>fazer alguma coisa</strong> quando clicado — é exatamente isso que vem na Etapa 3.</p>
+
+        <div class="pausa">
+            💾 Lembrete: salve e teste a cada peça nova, não espere terminar tudo pra rodar pela primeira vez. Se algo sumir ou ficar estranho, é mais fácil descobrir qual foi a última coisa que você mudou.
+        </div>
+
+        <h2>🎨 Deixe com a sua cara</h2>
+        <p>No arquivo <code>www/css/index.css</code>, você pode estilizar por cima do visual do Ionic, exatamente como faria num site comum:</p>
+        <div class="code-block"><span class="code-label">www/css/index.css</span><span class="prop">ion-card</span> {
+  <span class="prop">border-radius</span>: <span class="val">16px</span>;
+}
+
+<span class="prop">ion-title</span> {
+  <span class="prop">font-family</span>: <span class="val">'Comic Sans MS', sans-serif</span>; <span class="cm">/* só um exemplo divertido */</span>
+}</div>
+        <p>Experimente mudar o <code>border-radius</code> do cartão, ou trocar a fonte do título. O CSS que você já conhece funciona perfeitamente em cima dos componentes do Ionic.</p>
+
+        <h2>✅ Checklist da Etapa 2</h2>
+        <ul class="checklist">
+            <li>Meu app tem um campo de texto (<code>ion-input</code>) com <code>id="campo-missao"</code>;</li>
+            <li>Tenho um botão (<code>ion-button</code>) com ícone e <code>id="btn-adicionar"</code>;</li>
+            <li>Tenho uma <code>ion-list</code> vazia com <code>id="lista-missoes"</code> esperando ser preenchida;</li>
+            <li>Tenho um rodapé (<code>ion-footer</code>) com meu nome;</li>
+            <li>Testei trocar pelo menos uma cor do Ionic (<code>color="..."</code>) em algum componente;</li>
+            <li>Mexi um pouco no <code>index.css</code> pra deixar algo com a minha cara.</li>
+        </ul>
+
+        <div class="highlight">
+            <strong>Próxima etapa:</strong> na Etapa 3 o botão "Adicionar Missão" vai ganhar vida — quando você clicar nele, o que estiver escrito no campo vai aparecer, de verdade, dentro da lista. É aí que o JavaScript entra em cena.
+        </div>
+    </div>
+
+    <footer>Microlins São José — Apps Mobile com Ionic e Cordova · Etapa 2 de 5</footer>
+</div>
+</body>
+</html>

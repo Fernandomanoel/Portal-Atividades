@@ -1029,40 +1029,15 @@ const ATIVIDADES = [
     cor: "#3880ff",
     materiais: [
       {
-        titulo: "Etapa 1 — Bem-vinda ao Ionic e Cordova",
+        titulo: "Ionic e Cordova — Primeiros Passos",
         descricao:
-          "O que são Ionic e Cordova, criando o projeto pelo terminal, explorando a pasta www/ e montando o primeiro componente (header + card).",
+          "Guia completo com índice navegável (16 capítulos): o que são Ionic e Cordova, criando o projeto pelo terminal, primeiro componente, cores, e o Console como ferramenta de investigação de erros.",
         tipo: "link",
-        url: "atividades/paginas/cordova-etapa1-bem-vinda-ao-ionic.html",
+        url: "atividades/paginas/cordova-primeiros-passos.html",
       },
-      {
-        titulo: "Etapa 2 — Componentes Visuais do Ionic",
-        descricao:
-          "Montando a tela inteira do app com ion-input, ion-button, ion-icon, ion-list, ion-grid e ion-footer, cores prontas do Ionic.",
-        tipo: "link",
-        url: "atividades/paginas/cordova-etapa2-componentes-visuais.html",
-      },
-      {
-        titulo: "Etapa 3 — Eventos e Listas Dinâmicas",
-        descricao:
-          "Dando vida ao app com addEventListener, array, template literals e uma lista que aparece e some na tela em tempo real, com botão de excluir.",
-        tipo: "link",
-        url: "atividades/paginas/cordova-etapa3-eventos-e-listas.html",
-      },
-      {
-        titulo: "Etapa 4 — LocalStorage e Emulador Android",
-        descricao:
-          "Fazendo o app lembrar dos dados com localStorage e testando de verdade num celular virtual criado no Android Studio.",
-        tipo: "link",
-        url: "atividades/paginas/cordova-etapa4-localstorage-e-emulador.html",
-      },
-      {
-        titulo: "Etapa 5 — Projeto Final",
-        descricao:
-          "Revisão completa, personalização de cores e tema, 3 desafios extras (contador, confirmação de exclusão, marcar como concluída) e checklist final.",
-        tipo: "link",
-        url: "atividades/paginas/cordova-etapa5-projeto-final.html",
-      },
+      // As próximas atividades (componentes visuais completos, JavaScript e
+      // listas dinâmicas, localStorage + emulador, projeto final) entram
+      // aqui, cada uma como um guia independente no mesmo formato.
     ],
   },
 ];

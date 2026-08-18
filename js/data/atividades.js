@@ -1063,6 +1063,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/cordova-projeto-final.html",
       },
+      {
+        titulo: "Ionic — Projeto Livre: Rede Social",
+        descricao:
+          "20 capítulos: em vez de código pronto, uma especificação completa. Construa do zero uma rede social (perfil, feed, curtir, comentar, excluir só os seus posts, buscar, seguir colegas) com desafios guiados por dica e um gabarito comentado no final.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-livre-rede-social.html",
+      },
     ],
   },
 ];

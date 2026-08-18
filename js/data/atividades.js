@@ -1035,9 +1035,34 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/cordova-primeiros-passos.html",
       },
-      // As próximas atividades (componentes visuais completos, JavaScript e
-      // listas dinâmicas, localStorage + emulador, projeto final) entram
-      // aqui, cada uma como um guia independente no mesmo formato.
+      {
+        titulo: "Ionic — Prática de Componentes",
+        descricao:
+          "Mão na massa com 15 capítulos: input, button, list, badge, chip, toggle, searchbar, fab, avatar, grid e mais — cada peça com código pronto para testar e um desafio para fazer sozinho.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-componentes-visuais.html",
+      },
+      {
+        titulo: "Ionic — Prática de JavaScript",
+        descricao:
+          "15 capítulos só de código: array de missões, adicionar, excluir, marcar como concluída, busca em tempo real, ordenar a lista, modo escuro — e uma caçada a três bugs de propósito.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-javascript-e-listas.html",
+      },
+      {
+        titulo: "Ionic — LocalStorage e Emulador",
+        descricao:
+          "14 capítulos: salvando as missões no localStorage, testando a persistência, e o passo a passo completo para criar o celular virtual no Android Studio e rodar o app nele.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-localstorage-e-emulador.html",
+      },
+      {
+        titulo: "Ionic — Projeto Final",
+        descricao:
+          "13 capítulos de desafios (tema de cores, editar missão, ordenar por status, animação, limpar concluídas) fechando com o código de referência completo do app inteiro.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-final.html",
+      },
     ],
   },
 ];

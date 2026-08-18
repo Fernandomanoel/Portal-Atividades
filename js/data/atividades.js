@@ -817,15 +817,17 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Fazendo o Primeiro Código",
-        descricao: "Aprendendo o início da programação por meio do Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Primeiro programa em Python.pdf",
+        descricao:
+          "Primeiro contato com Python: print(), comentários e tipos de dados básicos (texto, inteiro, decimal), com exercícios progressivos.",
+        tipo: "link",
+        url: "atividades/paginas/python-primeiro-codigo.html",
       },
       {
         titulo: "Lógica de Programação em Python",
-        descricao: "Prática de lógica de programação utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Lógica de Programação em Python.pdf",
+        descricao:
+          "Variáveis, input() e conversão de tipos (int/float), f-strings, e um mini formulário com várias perguntas.",
+        tipo: "link",
+        url: "atividades/paginas/python-logica-e-variaveis.html",
       },
       {
         titulo: "Entrada de Dados em Python",
@@ -836,9 +838,10 @@ const ATIVIDADES = [
       },
       {
         titulo: "Usando e aprendendo Operadores Matemáticos",
-        descricao: "Prática dos operadores matemáticos básicos utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Usando e aprendendo Operadores Matemáticos.pdf",
+        descricao:
+          "Os 5 operadores aritméticos, a diferença entre / e //, operadores de comparação (==, >, <...) e uma calculadora completa.",
+        tipo: "link",
+        url: "atividades/paginas/python-operadores-matematicos.html",
       },
       {
         titulo: "Lista de Atividades",
@@ -859,16 +862,17 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Desvendando a Lógica de Programação!",
-        descricao: "Atividade introdutória para compreender a ordem correta das instruções.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - De inicio na Lógica de Programação.pdf",
+        descricao:
+          "O que é um algoritmo, variáveis e tipos, estrutura SE/SENÃO, com exercícios em Portugol (Olá Mundo, soma, maioridade, par/ímpar, média de notas).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-fundamentos.html",
       },
       {
         titulo: "Além do Básico — Lógica Avançada",
         descricao:
-          "Continuação da atividade introdutória, com problemas que exigem mais raciocínio lógico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - Além do Básico Lógica avançada.pdf",
+          "Vetores e matrizes, funções com retorno, laço enquanto x para, com 5 desafios em Portugol (média, busca, matriz 3x3, função e validação).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-avancada.html",
       },
     ],
   },
@@ -938,9 +942,15 @@ const ATIVIDADES = [
     grupo: "extras",
     sigla: "IA",
     cor: "#ff4d4d",
-    // Os PDFs de IA ainda não foram enviados — assim que estiverem em
-    // atividades/pdfs/IA/, é só acrescentar os materiais aqui.
-    materiais: [],
+    materiais: [
+      {
+        titulo: "Introdução à IA e Engenharia de Prompt",
+        descricao:
+          "O que é IA/IA generativa/LLM na prática, como escrever bons prompts (com exemplos ruim x bom), atividade guiada numa IA de conversação gratuita, e uso responsável.",
+        tipo: "link",
+        url: "atividades/paginas/ia-introducao-e-prompts.html",
+      },
+    ],
   },
 
   {
@@ -954,15 +964,16 @@ const ATIVIDADES = [
       {
         titulo: "Conhecendo o Godot",
         descricao:
-          "Primeiro contato com a Godot: interface, cena, nós e como o projeto é organizado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3d - Conhecendo o Godot.pdf",
+          "Primeiro contato com a Godot: interface, árvore de nós, Sprite2D, Inspector (Position/Scale/Rotation) e como o projeto é organizado.",
+        tipo: "link",
+        url: "atividades/paginas/godot-conhecendo-o-editor.html",
       },
       {
         titulo: "Criando o Primeiro Jogo 3D",
-        descricao: "Atividade prática montando um jogo 3D simples do começo ao fim na Godot.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3D - Criando o Primeiro Jogo.pdf",
+        descricao:
+          "Monte o jogo \"Pegue a Moeda\" do zero: jogador, colisão, script de movimento em GDScript explicado linha por linha, e detecção de vitória.",
+        tipo: "link",
+        url: "atividades/paginas/godot-primeiro-jogo.html",
       },
     ],
   },
@@ -989,9 +1000,10 @@ const ATIVIDADES = [
       },
       {
         titulo: "Cadastrando Dados no SQL",
-        descricao: "Prática de pegar uma planilha e cadastrar usando um banco de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/ATIVIDADE PRÁTICA - CADASTRANDO DADOS NO SQL.pdf",
+        descricao:
+          "Crie a tabela de produtos de uma loja, cadastre os dados e pratique SELECT, WHERE, ORDER BY, UPDATE e DELETE.",
+        tipo: "link",
+        url: "atividades/paginas/sql-cadastro-de-produtos.html",
       },
       {
         titulo: "Baixar MySQL Workbench",

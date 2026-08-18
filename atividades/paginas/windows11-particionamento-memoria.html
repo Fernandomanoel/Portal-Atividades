@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Particionamento de Disco e Memória — Windows 11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+        .aviso strong { color: #7a5200; }
+
+        .perigo { background: #fdecea; border-left: 4px solid #dc2626; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7f1d1d; }
+        .perigo strong { color: #7f1d1d; }
+
+        .desafio { background: #f5f0ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+        .desafio h4 { color: #5b21b6; margin-bottom: 8px; }
+        .desafio p:last-child { margin-bottom: 0; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💾 Particionamento de Disco e Memória</h1>
+        <p>Windows 11 — Gerenciamento de Disco (até 1 GB)</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=windows-11">← Voltar para Windows 11</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo Geral</h2>
+        <p>Criar e apagar uma partição de disco pequena e segura, e entender a diferença entre memória RAM e memória virtual. Esta é a atividade mais "por baixo do capô" do curso — mexe com ferramentas do sistema, não só com aplicativos.</p>
+
+        <div class="perigo">
+            ⚠️ <strong>Regras de segurança desta atividade — leia antes de começar:</strong>
+            <ul style="margin-top:8px;">
+                <li>A partição criada aqui deve ter <strong>no máximo 1 GB (1024 MB)</strong>. Nunca reduza mais que isso.</li>
+                <li>No final da atividade, é <strong>obrigatório apagar a partição</strong> e devolver o espaço — principalmente em computadores do laboratório/escola.</li>
+                <li>Se aparecer qualquer mensagem que você não entende, <strong>pare e chame o professor</strong> antes de clicar em "OK" ou "Confirmar".</li>
+            </ul>
+        </div>
+
+        <h2>1️⃣ Atividade 1: Abrindo o Gerenciamento de Disco</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Pressione <code>Windows + X</code> e escolha <strong>"Gerenciamento de Disco"</strong> (ou pesquise pelo nome no menu Iniciar).</li>
+            <li>Identifique o disco principal (geralmente "Disco 0") e as partições existentes, como a "Partição de Sistema EFI" e a unidade <strong>C:</strong>.</li>
+            <li>Anote em um arquivo de texto o espaço total da unidade C: (veja em Propriedades pelo Explorador, se preferir).</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Reconhecer a ferramenta e o vocabulário — disco, partição, unidade — antes de mexer em qualquer coisa.</p></div>
+
+        <h2>2️⃣ Atividade 2: Criando uma Partição de Até 1 GB</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Clique com o botão direito na partição <strong>C:</strong> e escolha <strong>"Reduzir Volume"</strong>.</li>
+            <li>No campo <strong>"Inserir a quantidade de espaço a reduzir (em MB)"</strong>, digite <code>1024</code> (1 GB) — nunca mais que isso.</li>
+            <li>Clique em <strong>"Reduzir"</strong> e aguarde a barra de progresso terminar.</li>
+            <li>Um bloco preto com o rótulo <strong>"Não alocado"</strong> deve aparecer ao lado da partição C:.</li>
+        </ol>
+        <div class="aviso"><strong>⚠️ Atenção:</strong> se o Windows sugerir um valor máximo menor que 1024 MB, use o valor sugerido — nunca digite um número maior do que ele permite.</div>
+
+        <h2>3️⃣ Atividade 3: Formatando a Nova Partição</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Clique com o botão direito no espaço <strong>"Não alocado"</strong> e escolha <strong>"Novo Volume Simples"</strong>.</li>
+            <li>Siga o assistente aceitando o tamanho máximo sugerido (ele já respeita o limite de 1 GB).</li>
+            <li>Escolha uma letra de unidade, por exemplo <code>Z:</code>.</li>
+            <li>Formate como <strong>NTFS</strong> e dê um rótulo, como <code>"TESTE"</code>. Finalize o assistente.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Entender que uma partição "crua" (não alocada) precisa ser formatada antes de guardar qualquer arquivo.</p></div>
+
+        <h2>4️⃣ Atividade 4: Usando a Nova Unidade</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Abra o Explorador de Arquivos e confirme que <strong>"TESTE (Z:)"</strong> aparece em "Este Computador".</li>
+            <li>Crie uma pasta e um arquivo de texto dentro dela.</li>
+            <li>Clique com o botão direito na unidade → Propriedades, e observe o espaço total (deve ser igual ou menor que 1 GB) e o espaço já usado.</li>
+        </ol>
+        <div class="desafio">
+            <h4>🏆 Desafio Extra</h4>
+            <p>Copie um arquivo de mais de 1 GB para dentro da unidade Z: e veja o que o Windows faz. (Dica: ele vai recusar — não cabe. É a prova de que o limite é real.)</p>
+        </div>
+
+        <h2>5️⃣ Atividade 5: Desfazendo a Partição (Etapa Obrigatória)</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Volte ao <strong>Gerenciamento de Disco</strong>.</li>
+            <li>Clique com o botão direito na partição "TESTE (Z:)" → <strong>"Excluir Volume"</strong>. Confirme o aviso de que os dados serão perdidos.</li>
+            <li>O espaço volta a ficar "Não alocado".</li>
+            <li>Clique com o botão direito na partição C: → <strong>"Estender Volume"</strong>, siga o assistente aceitando o tamanho máximo sugerido — isso devolve o espaço para C:.</li>
+            <li>Confirme que só resta a partição C:, do mesmo jeito que no início da atividade.</li>
+        </ol>
+        <div class="perigo">⚠️ <strong>Esta etapa não é opcional.</strong> Deixar uma partição extra para trás em um computador compartilhado atrapalha a próxima pessoa que for usá-lo.</div>
+
+        <h2>6️⃣ Atividade 6: Gerenciamento de Memória (RAM e Memória Virtual)</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Abra o <strong>Gerenciador de Tarefas</strong> (<code>Ctrl + Shift + Esc</code>) → aba <strong>"Desempenho"</strong> → <strong>"Memória"</strong>. Anote quanta RAM está instalada e quanto está em uso agora.</li>
+            <li>Pesquise <strong>"Configurações avançadas do sistema"</strong> no menu Iniciar → aba "Avançado" → em "Desempenho" clique em <strong>"Configurações"</strong> → aba "Avançado" → em "Memória virtual" clique em <strong>"Alterar"</strong>.</li>
+            <li>Observe o <strong>"Tamanho alocado atualmente"</strong> do arquivo de paginação — é o espaço em disco que o Windows usa como "RAM extra" quando a memória física enche.</li>
+            <li>Clique em <strong>"Cancelar"</strong> para sair sem alterar nada.</li>
+        </ol>
+        <div class="aviso"><strong>⚠️ Não desmarque</strong> a opção "Gerenciar automaticamente o tamanho do arquivo de paginação para todas as unidades". Esta etapa é só de observação.</div>
+        <div class="box"><p><strong>Objetivo:</strong> Entender a diferença entre memória RAM (rápida, temporária, cara) e memória virtual (mais lenta, em disco, usada como extensão quando a RAM não é suficiente).</p></div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Windows 11</footer>
+</div>
+</body>
+</html>

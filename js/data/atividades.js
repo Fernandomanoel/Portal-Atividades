@@ -64,20 +64,6 @@ const ATIVIDADES = [
         url: "atividades/paginas/windows11-personalizando-area-trabalho.html",
       },
       {
-        titulo: "Gerenciador de Tarefas",
-        descricao:
-          "Revisão (Dia 2) com 5 atividades: Gerenciador de Tarefas, captura de tela com a Ferramenta de Recorte, OneDrive, criação de atalhos e segurança/atualizações do Windows.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-gerenciador-tarefas.html",
-      },
-      {
-        titulo: "Produtividade e Acessibilidade",
-        descricao:
-          "Revisão (Dia 3) com 5 atividades: Bloco de Notas e WordPad, Calendário, Microsoft To Do, recursos de Acessibilidade e organização de janelas com Snap Layouts.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-produtividade-acessibilidade.html",
-      },
-      {
         titulo: "Copiar, Recortar e Colar Arquivos",
         descricao:
           "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
@@ -85,24 +71,32 @@ const ATIVIDADES = [
         url: "atividades/paginas/windows11-copiar-recortar-colar.html",
       },
       {
-        titulo: "Desinstalar o Avast no Windows 11",
+        titulo: "Personalização Avançada",
         descricao:
-          "Atividade prática para aprender a desinstalar o Avast Antivirus no Windows 11 usando as Configurações do sistema.",
+          "6 atividades além do papel de parede: cursor do mouse, cores de destaque, plano de fundo em apresentação de slides, tema salvo, sons do sistema e comportamento da barra de tarefas.",
         tipo: "link",
-        url: "atividades/paginas/windows11-desinstalar-avast.html",
+        url: "atividades/paginas/windows11-personalizacao-avancada.html",
       },
       {
-        titulo: "Uso da Tecla SHIFT no Bloco de Notas",
+        titulo: "Arquivos, Compactação e Segurança de Pastas",
         descricao:
-          "Atividade prática para treinar o uso da tecla SHIFT no Windows, utilizando o Bloco de Notas para digitação de textos com letras maiúsculas e símbolos do teclado.",
+          "6 atividades: estrutura de pastas de projeto, renomeação em lote, compactação em ZIP, compactação NTFS, ocultar pastas e verificar permissões de segurança.",
         tipo: "link",
-        url: "atividades/paginas/windows11-tecla-shift-bloco-notas.html",
+        url: "atividades/paginas/windows11-arquivos-compactacao-seguranca.html",
       },
       {
-        titulo: "Lista de Atividades antes da Prova",
-        descricao: "Revisão geral do curso, para praticar antes da avaliação.",
+        titulo: "Particionamento de Disco e Memória",
+        descricao:
+          "6 atividades com o Gerenciamento de Disco: criar e formatar uma partição de até 1 GB, usá-la, desfazê-la com segurança, e entender RAM vs. memória virtual.",
         tipo: "link",
-        url: "atividades/paginas/windows11-lista-atividades-prova.html",
+        url: "atividades/paginas/windows11-particionamento-memoria.html",
+      },
+      {
+        titulo: "Atalhos de Teclado e Acessibilidade",
+        descricao:
+          "6 atividades: atalhos essenciais, organizar janelas sem mouse, um desafio 'sem mouse', teclas de aderência/filtragem, Acesso por Voz, Narrador, alto contraste e Lupa.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-atalhos-acessibilidade.html",
       },
     ],
   },

@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Aplicado em Rotinas Administrativas Avançadas</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #0f766e;
+            --brand-light: #ccfbf1;
+            --accent-color: #0d9488;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+            --warning-bg: #fffbeb;
+            --warning-border: #fef3c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #99f6e4;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Seção de Introdução */
+        .intro-card {
+            background-color: var(--bg-card);
+            border-left: 5px solid var(--accent-color);
+            padding: 22px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .intro-card h3 {
+            color: var(--brand-color);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .scenario-description strong {
+            color: var(--brand-color);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code { overflow-wrap: break-word; word-break: break-word; }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Form Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tag-info {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        /* ---- Navegação e motor de correção (adicionados) ---- */
+        .voltar-admin { display: block; max-width: 1000px; margin: 0 auto 14px; color: var(--accent-color); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .voltar-admin:hover { text-decoration: underline; }
+
+        .correcao-painel {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 16px 22px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-corrigir {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-corrigir:hover { filter: brightness(1.1); }
+        .correcao-resumo { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
+
+        .campo-ok { border-color: #16a34a !important; box-shadow: 0 0 0 2px rgba(22,163,74,0.15) !important; }
+        .campo-invalido { border-color: #dc2626 !important; box-shadow: 0 0 0 2px rgba(220,38,38,0.15) !important; }
+        .msg-correcao { font-size: 12px; font-weight: 600; margin-top: 4px; display: block; }
+        .msg-correcao.ok { color: #15803d; }
+        .msg-correcao.invalido { color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a class="voltar-admin" href="../../atividade.html?curso=administracao">← Voltar para Administração</a>
+
+    <!-- CABEÇALHO PRINCIPAL DA ATIVIDADE PRÁTICA -->
+    <header class="main-header">
+        <span class="badge-tag">Caderno de Exercícios e Prática Aplicada - Volume 2</span>
+        <h1>Simulação de Operações Administrativas e Suporte de Gestão</h1>
+        <p>Atividades focadas em redação de ata de reunião, controle de ponto e escala, patrimônio e ativos imobilizados, análise de minutas contratuais, apuração de KPIs e plano de ação 5W2H.</p>
+    </header>
+
+    <!-- GUIA DE USO -->
+    <div class="intro-card">
+        <h3>📌 Proposta Didática e Desenvolvimento</h3>
+        <p>Este caderno de simulação foi estruturado para desenvolver competências analíticas e operacionais necessárias no ambiente corporativo contemporâneo. Os módulos abordam cenários práticos de rotinas internas para exercitar o pensamento crítico, a organização e a precisão técnica. Responda diretamente nos campos ou utilize como material de apoio.</p>
+    </div>
+
+    <!-- PAINEL DE CORREÇÃO -->
+    <div class="correcao-painel">
+        <button type="button" class="btn-corrigir" onclick="corrigirAtividade()">✅ Corrigir Atividade</button>
+        <span class="correcao-resumo" id="resumoCorrecao">Preencha os campos e clique em "Corrigir Atividade" para conferir suas respostas.</span>
+    </div>
+
+    <!-- MÓDULO 1: REDAÇÃO DE ATA DE REUNIÃO FORMAL E MATRIZ DE DELEGAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Redação de Ata Formal de Reunião Executiva</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Você foi encarregado de secretariar a reunião quinzenal do comitê operacional da empresa. Durante a reunião de 1 hora, foram discutidos diversos assuntos de forma rápida. Você tomou as notas brutas abaixo e agora precisa transformar essas anotações desestruturadas em uma <strong>Ata Oficial de Reunião</strong> com síntese das decisões e tabela de encaminhamentos.
+        </div>
+
+        <div class="tag-info">
+            <strong>Anotações Brutas da Reunião (Rascunho):</strong><br>
+            <i>"Início 09:05. Estavam lá: Carlos (Diretor), Juliana (Gerente de TI), Roberto (RH) e você. Discutiram sobre a mudança do sistema ERP. A Juliana falou que a implantação vai atrasar 2 semanas porque o servidor novo não chegou. O Carlos ficou irritado e pediu para cotar outro fornecedor de servidores urgente até sexta-feira (Roberto vai ver isso). Depois o Roberto comentou que 3 funcionários do administrativo precisam de treinamento de Excel avançado até o fim do mês (ficou sob responsabilidade da equipe do RH). No fim, aprovaram o orçamento da reforma do refeitório de R$ 15.000,00. Encerrou 10:10."</i>
+        </div>
+
+        <div class="task-instruction">
+            📝 Tarefa 1.1: Elaboração do Texto da Ata
+        </div>
+        <textarea class="input-box" data-minpalavras="30" style="min-height: 160px;" placeholder="ATA DE REUNIÃO ORDINÁRIA DO COMITÊ OPERACIONAL&#10;&#10;Data e Horário: ...&#10;Presentes: ...&#10;Pauta: ...&#10;&#10;Resumo das Deliberações: ..."></textarea>
+
+        <div class="task-instruction">
+            📌 Tarefa 1.2: Matriz de Responsabilidade e Encaminhamentos (Quem / O quê / Prazo)
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Ação / Tarefa Aprovada</th>
+                        <th style="width: 25%;">Responsável</th>
+                        <th style="width: 25%;">Prazo Limite</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="input-box" placeholder="Ação 1..."></td>
+                        <td><input type="text" class="input-box" placeholder="Nome / Setor..."></td>
+                        <td><input type="text" class="input-box" placeholder="DD/MM/AAAA..."></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="input-box" placeholder="Ação 2..."></td>
+                        <td><input type="text" class="input-box" placeholder="Nome / Setor..."></td>
+                        <td><input type="text" class="input-box" placeholder="DD/MM/AAAA..."></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="input-box" placeholder="Ação 3..."></td>
+                        <td><input type="text" class="input-box" placeholder="Nome / Setor..."></td>
+                        <td><input type="text" class="input-box" placeholder="DD/MM/AAAA..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 2: GESTÃO DE PESSOAS OPERACIONAL - CONFERÊNCIA DE PONTO E JORNADA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Suporte ao RH: Auditoria de Ponto e Escala de Trabalho</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Como apoio ao departamento de Pessoal, você deve auditar o espelho de ponto semanal de um colaborador com jornada contratual de <strong>8 horas diárias (08:00 às 17:00 com 1h de almoço das 12:00 às 13:00)</strong>. Identifique inconsistências, horas extras e faltas/atrasos.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dia</th>
+                        <th>Entrada</th>
+                        <th>Saída Almoço</th>
+                        <th>Retorno Almoço</th>
+                        <th>Saída</th>
+                        <th>Análise / Inconsistência Encontrada</th>
+                        <th>Classificação (HE / Atraso / Conforme)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Seg</td>
+                        <td>08:00</td>
+                        <td>12:00</td>
+                        <td>13:00</td>
+                        <td>17:00</td>
+                        <td><input type="text" class="input-box" placeholder="Observação..."></td>
+                        <td>
+                            <select class="input-box" id="ponto-seg">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Jornada Conforme</option>
+                                <option value="he">Hora Extra</option>
+                                <option value="atraso">Atraso / Falta de Horas</option>
+                                <option value="incompleto">Marcação Incompleta</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ter</td>
+                        <td>08:00</td>
+                        <td>12:00</td>
+                        <td>12:30</td>
+                        <td>17:00</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Intervalo reduzido em 30 min..."></td>
+                        <td>
+                            <select class="input-box" id="ponto-ter">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Jornada Conforme</option>
+                                <option value="he">Hora Extra</option>
+                                <option value="atraso">Atraso / Falta de Horas</option>
+                                <option value="incompleto">Marcação Incompleta</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Qua</td>
+                        <td>08:35</td>
+                        <td>12:00</td>
+                        <td>13:00</td>
+                        <td>17:00</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td>
+                            <select class="input-box" id="ponto-qua">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Jornada Conforme</option>
+                                <option value="he">Hora Extra</option>
+                                <option value="atraso">Atraso / Falta de Horas</option>
+                                <option value="incompleto">Marcação Incompleta</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Qui</td>
+                        <td>08:00</td>
+                        <td>12:00</td>
+                        <td>---</td>
+                        <td>17:00</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td>
+                            <select class="input-box" id="ponto-qui">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Jornada Conforme</option>
+                                <option value="he">Hora Extra</option>
+                                <option value="atraso">Atraso / Falta de Horas</option>
+                                <option value="incompleto">Marcação Incompleta</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Sex</td>
+                        <td>08:00</td>
+                        <td>12:00</td>
+                        <td>13:00</td>
+                        <td>19:00</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td>
+                            <select class="input-box" id="ponto-sex">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Jornada Conforme</option>
+                                <option value="he">Hora Extra</option>
+                                <option value="atraso">Atraso / Falta de Horas</option>
+                                <option value="incompleto">Marcação Incompleta</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            📋 Tarefa 2.1: Orientação Administrativa para o Colaborador
+        </div>
+        <textarea class="input-box" data-minpalavras="12" placeholder="Descreva quais providências o assistente deve tomar em relação às marcações irregulares (ex: solicitação de justificativa de esquecimento de ponto, atestado ou banco de horas)..."></textarea>
+    </article>
+
+    <!-- MÓDULO 3: CONTROLE PATRIMONIAL E GESTÃO DE ATIVOS (TOMBAMENTO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Controle Patrimonial e Inventário de Bens Móveis</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A empresa adquiriu novos equipamentos para o setor administrativo e transferiu alguns itens antigos entre filiais. Você deve realizar o cadastramento de <strong>tombamento patrimonial</strong> e emitir o Termo de Responsabilidade.
+        </div>
+
+        <div class="task-instruction">
+            🏷️ Tarefa 3.1: Cadastramento na Planilha de Controle Patrimonial
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Código Placa</th>
+                        <th style="width: 30%;">Descrição do Item</th>
+                        <th style="width: 20%;">Localização / Setor</th>
+                        <th style="width: 20%;">Estado de Conservação</th>
+                        <th style="width: 15%;">Responsável</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PAT-2026-001</td>
+                        <td>Notebook Dell Vostro 15 (S/N: 884729)</td>
+                        <td>
+                            <input type="text" class="input-box" placeholder="Ex: Financeiro">
+                        </td>
+                        <td>
+                            <select class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="novo">Novo / Sem uso</option>
+                                <option value="bom">Bom estado</option>
+                                <option value="manutencao">Necessita Manutenção</option>
+                                <option value="obsoleto">Obsoleto / Sucateado</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="Nome..."></td>
+                    </tr>
+                    <tr>
+                        <td>PAT-2026-002</td>
+                        <td>Cadeira Ergonômica Presidente Mesh Preta</td>
+                        <td>
+                            <input type="text" class="input-box" placeholder="...">
+                        </td>
+                        <td>
+                            <select class="input-box">
+                                <option value="novo">Novo / Sem uso</option>
+                                <option value="bom" selected>Bom estado</option>
+                                <option value="manutencao">Necessita Manutenção</option>
+                                <option value="obsoleto">Obsoleto / Sucateado</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="Nome..."></td>
+                    </tr>
+                    <tr>
+                        <td>PAT-2026-003</td>
+                        <td>Projetor Epson PowerLite (Lâmpada fraca)</td>
+                        <td>
+                            <input type="text" class="input-box" placeholder="...">
+                        </td>
+                        <td>
+                            <select class="input-box">
+                                <option value="novo">Novo / Sem uso</option>
+                                <option value="bom">Bom estado</option>
+                                <option value="manutencao" selected>Necessita Manutenção</option>
+                                <option value="obsoleto">Obsoleto / Sucateado</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="Nome..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            📜 Tarefa 3.2: Redação de Termo de Responsabilidade e Guarda
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Redija a cláusula principal de um Termo de Entrega de Equipamento de trabalho para um novo colaborador, destacando deveres de conservação e regras em caso de dano culposo ou perda.
+        </p>
+        <textarea class="input-box" data-minpalavras="15" placeholder="Declaramos para os devidos fins que o colaborador abaixo assinado recebe nesta data..."></textarea>
+    </article>
+
+    <!-- MÓDULO 4: ANÁLISE DE CONTRATOS E GESTÃO DE VENCIMENTOS DE LICENÇAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Análise de Minutas Contratuais e Controle de Licenças</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> O assistente administrativo é a primeira linha de defesa no controle de prazos legais e reajustes. Você recebeu a minuta do contrato de prestação de serviços de limpeza terceirizada e um relatório de alvarás do escritório.
+        </div>
+
+        <div class="task-instruction">
+            🔍 Tarefa 4.1: Análise de Cláusulas Contratuais Críticas
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+            Analise o trecho da cláusula abaixo e identifique <strong>dois pontos de risco</strong> para a sua empresa:
+        </p>
+        <div class="scenario-description" style="background-color: #fef2f2; border-color: #fecaca; color: #991b1b;">
+            <i>"Cláusula 8ª: O presente contrato terá vigência de 12 meses, renovando-se automaticamente por igual período caso não haja manifestação expressa em contrário com antecedência de 90 dias. Em caso de rescisão antecipada por iniciativa do CONTRATANTE, este pagará multa equivalente a 100% dos meses restantes do contrato."</i>
+        </div>
+        <textarea class="input-box" data-minpalavras="12" placeholder="Aponta os riscos identificados na renovação automática e no percentual da multa de rescisão..."></textarea>
+
+        <div class="task-instruction">
+            📅 Tarefa 4.2: Mapa de Controle de Vencimentos e Documentações
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Documento / Licença</th>
+                        <th>Órgão Emissor</th>
+                        <th>Data de Vencimento</th>
+                        <th>Dias Restantes</th>
+                        <th>Ação Requerida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Alvará de Funcionamento</td>
+                        <td>Prefeitura Municipal</td>
+                        <td>15/09/2026</td>
+                        <td><input type="text" class="input-box" id="venc-row1" placeholder="Ex: 28 dias"></td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Dar entrada na taxa de renovação"></td>
+                    </tr>
+                    <tr>
+                        <td>AVCB (Corpo de Bombeiros)</td>
+                        <td>Corpo de Bombeiros</td>
+                        <td>30/08/2026</td>
+                        <td><input type="text" class="input-box" id="venc-row2" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>Certidão Negativa de Débitos (CND)</td>
+                        <td>Receita Federal</td>
+                        <td>10/12/2026</td>
+                        <td><input type="text" class="input-box" id="venc-row3" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: INDICADORES DE DESEMPENHO (KPIs) E PLANO DE AÇÃO 5W2H -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Métricas Administrativas (KPIs) e Plano de Ação 5W2H</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> No último trimestre, a diretoria observou um aumento desproporcional de <strong>35% nos custos com impressão e cópias</strong> no setor administrativo. Você realizou um levantamento de dados e agora deve propor um plano de ação estruturado no formato <strong>5W2H</strong>.
+        </div>
+
+        <div class="task-instruction">
+            📊 Tarefa 5.1: Diagnóstico dos Dados de Consumo
+        </div>
+        <div class="grid-3">
+            <div class="field-group">
+                <label>Setor com Maior Volume:</label>
+                <input type="text" class="input-box" value="Comercial / Vendas (48%)" readonly style="background-color: #f1f5f9;">
+            </div>
+            <div class="field-group">
+                <label>Principal Causa Apontada:</label>
+                <input type="text" class="input-box" value="Impressão de propostas rascunho em alta resolução" readonly style="background-color: #f1f5f9;">
+            </div>
+            <div class="field-group">
+                <label>Meta de Redução:</label>
+                <input type="text" class="input-box" value="Reduzir 20% em 60 dias" readonly style="background-color: #f1f5f9;">
+            </div>
+        </div>
+
+        <div class="task-instruction" style="margin-top: 20px;">
+            🛠️ Tarefa 5.2: Matriz do Plano de Ação 5W2H
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>O que fazer? (What)</th>
+                        <th>Por que fazer? (Why)</th>
+                        <th>Onde? (Where)</th>
+                        <th>Quem? (Who)</th>
+                        <th>Quando? (When)</th>
+                        <th>Como? (How)</th>
+                        <th>Custo? (How Much)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Ação 1:</strong> Bloqueio de impressão colorida não autorizada</td>
+                        <td>Reduzir gasto com tinta colorida</td>
+                        <td>Servidor de Impressão</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Equipe TI"></td>
+                        <td><input type="text" class="input-box" placeholder="Até 05 dias"></td>
+                        <td>Configuração de cotas no software</td>
+                        <td>R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ação 2:</strong> Campanha de conscientização digital</td>
+                        <td>Estimular uso de PDFs em reuniões</td>
+                        <td>Toda a empresa</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td>E-mail marketing e avisos na impressora</td>
+                        <td>R$ 0,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ação 3:</strong> Assinatura digital de contratos</td>
+                        <td>Eliminar necessidade de papel impresso</td>
+                        <td>Setor Jurídico / Vendas</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td>Adopção de plataforma Docusign / Gov.br</td>
+                        <td><input type="text" class="input-box" placeholder="R$ ..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 6: ATENDIMENTO AO CLIENTE E MANUTENÇÃO DE PROTOCOLOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>Atendimento Telefônico, Protocolo de Ouvidoria e Recepção</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A recepção é o cartão de visitas da empresa. Você está atendendo o telefone fixo do setor administrativo quando recebe três chamadas simultâneas/consecutivas com perfis e urgências totalmente distintos.
+        </div>
+
+        <div class="task-instruction">
+            📞 Tarefa 6.1: Script de Atendimento e Triagem de Ligações
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 30%;">Perfil da Chamada</th>
+                        <th style="width: 35%;">Procedimento Imediato e Fraseologia Adequada</th>
+                        <th style="width: 35%;">Encaminhamento / Registro de Protocolo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Chamada 1:</strong> Fiscal da Receita Estadual exigindo falar com o contador.</td>
+                        <td><textarea class="input-box" data-minpalavras="6" style="min-height: 70px;" placeholder="Fraseologia de atendimento profissional e cortês..."></textarea></td>
+                        <td><input type="text" class="input-box" placeholder="Ação imediata..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chamada 2:</strong> Vendedor de telefonia insistente querendo oferecer plano de celular.</td>
+                        <td><textarea class="input-box" data-minpalavras="6" style="min-height: 70px;" placeholder="Como declinar com firmeza e educação..."></textarea></td>
+                        <td><input type="text" class="input-box" placeholder="Ação imediata..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Chamada 3:</strong> Fornecedor informando alteração de Chave PIX para pagamento de hoje.</td>
+                        <td><textarea class="input-box" data-minpalavras="6" style="min-height: 70px;" placeholder="Protocolo de segurança contra fraudes..."></textarea></td>
+                        <td><input type="text" class="input-box" placeholder="Ação imediata..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            🔒 Tarefa 6.2: Protocolo Anti-Fraude e Confidencialidade (LGPD)
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+            No caso da Chamada 3 (troca de chave PIX de fornecedor em cima da hora), explique qual procedimento de verificação o assistente administrativo <strong>deve impreterivelmente seguir</strong> antes de alterar qualquer dado no sistema financeiro.
+        </p>
+        <textarea class="input-box" data-minpalavras="12" placeholder="Descreva os passos de confirmação de segurança (ex: dupla checagem por canal oficial, confirmação com o gestor de compras, solicitação de carta formal assinalada)..."></textarea>
+    </article>
+
+</div>
+
+<script>
+/* ==========================================================================
+   MOTOR DE CORREÇÃO — genérico para as atividades de Administração.
+   1) Todo campo preenchido é testado contra digitação aleatória (gibberish).
+   2) Campos com gabarito objetivo (ids abaixo) são conferidos de verdade.
+   3) Campo vazio nunca é marcado — a correção só aparece se houver resposta.
+   ========================================================================== */
+(function () {
+    function contarPalavras(texto) {
+        return texto.trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function pareceGibberish(texto) {
+        var t = texto.trim();
+        if (!t) return false;
+
+        if ((t.match(/[´`^~]/g) || []).length >= 2) return true;
+        if (t.length >= 12 && !/\s/.test(t)) return true;
+        if (/(.)\1{5,}/.test(t)) return true;
+        if (/asdfgh|qwerty|zxcvbn|qazwsx|1234567890/i.test(t.replace(/\s/g, ''))) return true;
+
+        var palavras = t.split(/\s+/).filter(Boolean);
+        var suspeitas = 0, avaliadas = 0;
+        palavras.forEach(function (p) {
+            var letras = p.replace(/[^a-zà-úA-ZÀ-Ú]/g, '');
+            if (letras.length < 3) return;
+            avaliadas++;
+            var vogais = (letras.match(/[aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ]/g) || []).length;
+            var razao = vogais / letras.length;
+            if (razao < 0.15 || razao > 0.85) { suspeitas++; return; }
+            if (/[^aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ\d]{5,}/.test(letras)) suspeitas++;
+        });
+        if (avaliadas > 0 && (suspeitas / avaliadas) > 0.4) return true;
+
+        return false;
+    }
+
+    function parseNumero(texto) {
+        var limpo = texto.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+        var n = parseFloat(limpo);
+        return isNaN(n) ? null : n;
+    }
+
+    function limparCampo(campo) {
+        campo.classList.remove('campo-ok', 'campo-invalido');
+        var antigo = campo.parentElement.querySelector('.msg-correcao');
+        if (antigo) antigo.remove();
+    }
+
+    function marcarCampo(campo, valido, mensagem) {
+        limparCampo(campo);
+        campo.classList.add(valido ? 'campo-ok' : 'campo-invalido');
+        if (mensagem) {
+            var span = document.createElement('span');
+            span.className = 'msg-correcao ' + (valido ? 'ok' : 'invalido');
+            span.textContent = mensagem;
+            campo.insertAdjacentElement('afterend', span);
+        }
+    }
+
+    window.corrigirAtividade = function () {
+        var cont = { ok: 0, invalidos: 0, vazios: 0 };
+        var gabarito = window.__gabaritoCorrecao || [];
+        var formulas = window.__formulasCorrecao || [];
+
+        var idsComGabarito = {};
+        gabarito.forEach(function (r) { idsComGabarito[r.seletor] = true; });
+        var idsComFormula = {};
+        (window.__camposFormula || []).forEach(function (sel) { idsComFormula[sel] = true; });
+
+        document.querySelectorAll('.input-box:not([readonly])').forEach(function (campo) {
+            limparCampo(campo);
+            var seletorProprio = campo.id ? ('#' + campo.id) : null;
+            if (seletorProprio && (idsComGabarito[seletorProprio] || idsComFormula[seletorProprio])) return;
+
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            if (campo.tagName === 'SELECT') {
+                marcarCampo(campo, true, null);
+                cont.ok++;
+                return;
+            }
+
+            var minPalavras = parseInt(campo.getAttribute('data-minpalavras') || '0', 10);
+            if (pareceGibberish(valor)) {
+                marcarCampo(campo, false, '⚠️ Isso não parece uma resposta válida — parece digitação aleatória.');
+                cont.invalidos++;
+                return;
+            }
+            if (minPalavras > 0 && contarPalavras(valor) < minPalavras) {
+                marcarCampo(campo, false, '⚠️ Resposta muito curta — desenvolva mais (mínimo ' + minPalavras + ' palavras).');
+                cont.invalidos++;
+                return;
+            }
+            marcarCampo(campo, true, null);
+            cont.ok++;
+        });
+
+        gabarito.forEach(function (regra) {
+            var campo = document.querySelector(regra.seletor);
+            if (!campo) return;
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            var correto = false;
+            if (regra.tipo === 'select') {
+                correto = valor === regra.esperado;
+            } else if (regra.tipo === 'numero-proximo') {
+                var n = parseNumero(valor);
+                if (n === null) { cont.vazios++; return; }
+                var alvo = typeof regra.esperado === 'function' ? regra.esperado() : regra.esperado;
+                correto = Math.abs(n - alvo) <= (regra.tolerancia || 0);
+            } else if (regra.tipo === 'regex') {
+                correto = regra.esperado.test(valor);
+            }
+            marcarCampo(campo, correto, correto ? (regra.msgOk || '✅ Correto.') : (regra.msgErro || '❌ Reveja essa resposta.'));
+            if (correto) cont.ok++; else cont.invalidos++;
+        });
+
+        formulas.forEach(function (fn) { fn({ marcarCampo: marcarCampo, parseNumero: parseNumero, cont: cont }); });
+
+        var resumo = document.getElementById('resumoCorrecao');
+        if (resumo) {
+            resumo.textContent = cont.ok + ' resposta(s) válida(s) · ' + cont.invalidos + ' para revisar · ' + cont.vazios + ' em branco.';
+        }
+    };
+})();
+</script>
+
+<script>
+/* ---- Gabarito específico desta atividade ---- */
+window.__gabaritoCorrecao = [
+    { seletor: '#ponto-seg', tipo: 'select', esperado: 'ok',
+      msgOk: '✅ Correto: 8h00–12h00 e 13h00–17h00 é jornada completa e conforme o contrato.',
+      msgErro: '❌ Confira os horários — 08:00 às 17:00 com 1h de almoço bate exatamente com o contrato de 8h.' },
+    { seletor: '#ponto-qua', tipo: 'select', esperado: 'atraso',
+      msgOk: '✅ Correto: entrada às 08:35 é um atraso de 35 minutos.',
+      msgErro: '❌ A entrada foi às 08:35 — 35 minutos depois do horário contratual (08:00). Isso é atraso.' },
+    { seletor: '#ponto-qui', tipo: 'select', esperado: 'incompleto',
+      msgOk: '✅ Correto: falta a marcação de "Retorno Almoço" — o registro está incompleto.',
+      msgErro: '❌ Repare que falta o horário de "Retorno Almoço" (aparece "---") — isso é marcação incompleta, não dá pra calcular a jornada.' },
+    { seletor: '#ponto-sex', tipo: 'select', esperado: 'he',
+      msgOk: '✅ Correto: saída às 19:00 em vez de 17:00 é 2 horas extras.',
+      msgErro: '❌ A saída foi às 19:00, 2 horas depois do horário contratual (17:00) — isso é hora extra.' },
+];
+
+window.__camposFormula = ['#venc-row1', '#venc-row2', '#venc-row3'];
+
+function checarDiasRestantes(idCampo, dataVencimentoBr) {
+    return function (ctx) {
+        var campo = document.getElementById(idCampo);
+        if (!campo) return;
+        var valor = (campo.value || '').trim();
+        if (!valor) { ctx.cont.vazios++; return; }
+
+        var n = ctx.parseNumero(valor);
+        if (n === null) {
+            ctx.marcarCampo(campo, false, '⚠️ Digite um número de dias (ex: 28).');
+            ctx.cont.invalidos++;
+            return;
+        }
+
+        var partes = dataVencimentoBr.split('/');
+        var vencimento = new Date(parseInt(partes[2], 10), parseInt(partes[1], 10) - 1, parseInt(partes[0], 10));
+        var hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
+        var diasReais = Math.round((vencimento - hoje) / 86400000);
+
+        var TOL = 2;
+        var correto = Math.abs(n - diasReais) <= TOL;
+        ctx.marcarCampo(campo, correto,
+            correto ? '✅ Confere com a data de hoje (faltam aproximadamente ' + diasReais + ' dias).'
+                    : '❌ Considerando a data de hoje, faltam aproximadamente ' + diasReais + ' dias até ' + dataVencimentoBr + ' — recalcule.');
+        if (correto) ctx.cont.ok++; else ctx.cont.invalidos++;
+    };
+}
+
+window.__formulasCorrecao = [
+    checarDiasRestantes('venc-row1', '15/09/2026'),
+    checarDiasRestantes('venc-row2', '30/08/2026'),
+    checarDiasRestantes('venc-row3', '10/12/2026'),
+];
+</script>
+
+</body>
+</html>

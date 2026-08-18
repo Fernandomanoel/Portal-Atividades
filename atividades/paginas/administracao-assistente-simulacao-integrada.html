@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação Prática Integrada - Rotinas de Assistente Administrativo</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-dark: #1e293b;
+            --accent-color: #2563eb;
+            --accent-light: #dbeafe;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #93c5fd;
+            max-width: 800px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Seção de Introdução */
+        .intro-card {
+            background-color: var(--bg-card);
+            border-left: 5px solid var(--accent-color);
+            padding: 22px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .intro-card h3 {
+            color: var(--primary-color);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--accent-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--primary-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .scenario-description strong {
+            color: var(--primary-color);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code { overflow-wrap: break-word; word-break: break-word; }
+
+        /* Form / Inputs */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        textarea.input-box {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        /* Tabelas Customizadas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Form Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            .module-card {
+                box-shadow: none;
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            .main-header {
+                box-shadow: none;
+            }
+        }
+
+        /* ---- Navegação e motor de correção (adicionados) ---- */
+        .voltar-admin { display: block; max-width: 1000px; margin: 0 auto 14px; color: var(--accent-color); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .voltar-admin:hover { text-decoration: underline; }
+
+        .correcao-painel {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 16px 22px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-corrigir {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-corrigir:hover { filter: brightness(1.1); }
+        .correcao-resumo { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
+
+        .campo-ok { border-color: #16a34a !important; box-shadow: 0 0 0 2px rgba(22,163,74,0.15) !important; }
+        .campo-invalido { border-color: #dc2626 !important; box-shadow: 0 0 0 2px rgba(220,38,38,0.15) !important; }
+        .msg-correcao { font-size: 12px; font-weight: 600; margin-top: 4px; display: block; }
+        .msg-correcao.ok { color: #15803d; }
+        .msg-correcao.invalido { color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a class="voltar-admin" href="../../atividade.html?curso=administracao">← Voltar para Administração</a>
+
+    <!-- CABEÇALHO PRINCIPAL DA ATIVIDADE PRÁTICA -->
+    <header class="main-header">
+        <span class="badge-tag">Caderno de Exercícios e Treinamento Imersivo</span>
+        <h1>Simulação Prática de Rotinas Administrativas</h1>
+        <p>Um guia de treino aplicado cobrindo gestão documental, comunicação corporativa, finanças operacionais, logística de suprimentos, organização de eventos e padronização de processos.</p>
+    </header>
+
+    <!-- GUIA DE USO -->
+    <div class="intro-card">
+        <h3>📌 Orientações de Aplicação e Estudo</h3>
+        <p>Esta atividade simula situações cotidianas vivenciadas no suporte administrativo de empresas privadas e órgãos corporativos. O objetivo é exercitar a capacidade crítica, a organização lógica, a clareza textual e o raciocínio operacional. Preencha os campos diretamente na página e use o botão "Corrigir Atividade" para conferir: campos com resposta objetiva são conferidos de verdade, e os demais são checados quanto ao preenchimento real (digitação aleatória é identificada e invalidada).</p>
+    </div>
+
+    <!-- PAINEL DE CORREÇÃO -->
+    <div class="correcao-painel">
+        <button type="button" class="btn-corrigir" onclick="corrigirAtividade()">✅ Corrigir Atividade</button>
+        <span class="correcao-resumo" id="resumoCorrecao">Preencha os campos e clique em "Corrigir Atividade" para conferir suas respostas.</span>
+    </div>
+
+    <!-- MÓDULO 1: GESTÃO DOCUMENTAL E ORGANIZAÇÃO DE ARQUIVOS (GED) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Gestão Documental e Estruturação de Arquivo Digital (GED)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A empresa passou por um crescimento acelerado e os arquivos digitais na rede compartilhada estão desorganizados, com arquivos nomeados de forma inconsistente (ex: <i>"doc123.pdf"</i>, <i>"relatorio_final_final_v2.xlsx"</i>, <i>"nota_fiscal.pdf"</i>). Você recebeu a missão de criar uma estrutura lógica de diretórios e definir um padrão rigoroso de nomenclatura de arquivos.
+        </div>
+
+        <div class="task-instruction">
+            📂 Tarefa 1.1: Mapeamento de Estrutura de Pastas
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Desenhe o fluxo ou hierarquia de pastas para organizar o setor administrativo, prevendo divisões para Compras, RH, Financeiro e Contratos.
+        </p>
+        <textarea class="input-box" data-minpalavras="10" placeholder="Exemplo de estrutura de diretórios:&#10;1.0_ADMINISTRATIVO/&#10;├── 1.1_FINANCEIRO/&#10;│   ├── 1.1.1_CONTAS_A_PAGAR/&#10;│   └── 1.1.2_CONTAS_A_RECEBER/&#10;..."></textarea>
+
+        <div class="task-instruction">
+            🏷️ Tarefa 1.2: Padronização de Nomenclatura de Arquivos
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Com base na sua regra proposta, renomeie os arquivos caóticos abaixo seguindo a lógica: <code>[ANO-MÊS-DIA]_[CATEGORIA]_[NOME_DO_DOCUMENTO]_[VERSÃO/FORNECEDOR]</code>.
+        </p>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 40%;">Nome Original (Caótico)</th>
+                        <th style="width: 60%;">Novo Nome Padronizado Proposto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>contrato_aluguel_novo_final.pdf</code></td>
+                        <td><input type="text" class="input-box" id="nomenc-row1" placeholder="Digite o novo nome padronizado..."></td>
+                    </tr>
+                    <tr>
+                        <td><code>nf_5492_papelaria_hoje.pdf</code></td>
+                        <td><input type="text" class="input-box" id="nomenc-row2" placeholder="Digite o novo nome padronizado..."></td>
+                    </tr>
+                    <tr>
+                        <td><code>folha_pagamento_marco_corrigida.xlsx</code></td>
+                        <td><input type="text" class="input-box" id="nomenc-row3" placeholder="Digite o novo nome padronizado..."></td>
+                    </tr>
+                    <tr>
+                        <td><code>orcamento_limpeza_sp.docx</code></td>
+                        <td><input type="text" class="input-box" id="nomenc-row4" placeholder="Digite o novo nome padronizado..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 2: COMUNICAÇÃO CORPORATIVA E REDAÇÃO DE COMUNICADOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Comunicação Corporativa Interna e Externa</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A diretoria decidiu implantar uma nova política de uso consciente dos recursos do escritório (impressões, ar-condicionado e copa) e uma nova regra para solicitação de reembolso de despesas (prazo limite de até 5 dias úteis após o gasto).
+        </div>
+
+        <div class="task-instruction">
+            ✉️ Tarefa 2.1: Redação de Comunicado Interno (Circular / E-mail Geral)
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Escreva um comunicado institucional em linguagem clara, profissional, objetiva e empática direcionado a todos os colaboradores.
+        </p>
+        <textarea class="input-box" data-minpalavras="30" style="min-height: 180px;" placeholder="Assunto: Comunicado Geral - Novas Diretrizes de Uso Sustentável e Reembolso&#10;&#10;Prezada equipe,&#10;&#10;..."></textarea>
+
+        <div class="task-instruction">
+            📱 Tarefa 2.2: Atendimento e Resposta a Cliente (WhatsApp / E-mail Corporativo)
+        </div>
+        <div class="scenario-description" style="margin-top: 10px; background-color: #f0f9ff; border-color: #bae6fd;">
+            <strong>Situação:</strong> Um cliente importante enviou uma mensagem ríspida reclamando que tentou contato telefônico duas vezes para pedir a segunda via de uma Nota Fiscal e não foi atendido. Ele precisa do documento em menos de 1 hora para fechar o balanço financeiro dele.
+        </div>
+        <textarea class="input-box" data-minpalavras="20" placeholder="Escreva a resposta imediata contornando a insatisfação, mantendo a postura profissional e fornecendo a solução..."></textarea>
+    </article>
+
+    <!-- MÓDULO 3: GESTÃO FINANCEIRA OPERACIONAL E CONCILIAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Rotinas Financeiras: Reembolso de Viagens e Prestação de Contas</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Um gerente regional retornou de uma viagem de negócios de 3 dias e entregou um envelope repleto de comprovantes e notas fiscais amassadas para conferência e acerto de contas. Ele recebeu um adiantamento corporativo inicial de <strong>R$ 1.200,00</strong>.
+        </div>
+
+        <div class="task-instruction">
+            📊 Tarefa 3.1: Preenchimento do Relatório de Despesas de Viagem (RDV)
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 12%;">Data</th>
+                        <th style="width: 38%;">Descrição do Comprovante</th>
+                        <th style="width: 20%;">Centro de Custo</th>
+                        <th style="width: 15%;">Valor (R$)</th>
+                        <th style="width: 15%;">Aprovado?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10/08</td>
+                        <td>Uber - Deslocamento Aeroporto / Hotel</td>
+                        <td>Comercial / Viagens</td>
+                        <td>R$ 85,00</td>
+                        <td>
+                            <select class="input-box" id="rdv-row1">
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim (Conforme)</option>
+                                <option value="nao">Não (Inconforme)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10/08</td>
+                        <td>Almoço de Negócios (Nota sem descritivo de itens)</td>
+                        <td>Comercial / Representação</td>
+                        <td>R$ 210,00</td>
+                        <td>
+                            <select class="input-box" id="rdv-row2">
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim (Conforme)</option>
+                                <option value="nao">Não (Inconforme)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11/08</td>
+                        <td>Diária do Hotel (Com Nota Fiscal nominal à empresa)</td>
+                        <td>Hospedagem</td>
+                        <td>R$ 580,00</td>
+                        <td>
+                            <select class="input-box" id="rdv-row3">
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim (Conforme)</option>
+                                <option value="nao">Não (Inconforme)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>11/08</td>
+                        <td>Compra de item pessoal de higiene na farmácia</td>
+                        <td>Não Reembolsável</td>
+                        <td>R$ 45,00</td>
+                        <td>
+                            <select class="input-box" id="rdv-row4">
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim (Conforme)</option>
+                                <option value="nao">Não (Inconforme)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>12/08</td>
+                        <td>Taxi - Retorno do Hotel ao Aeroporto</td>
+                        <td>Comercial / Viagens</td>
+                        <td>R$ 90,00</td>
+                        <td>
+                            <select class="input-box" id="rdv-row5">
+                                <option value="">Selecione...</option>
+                                <option value="sim">Sim (Conforme)</option>
+                                <option value="nao">Não (Inconforme)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-3">
+            <div class="field-group">
+                <label>Total de Despesas Válidas:</label>
+                <input type="text" class="input-box" id="rdv-total-validas" placeholder="R$ 0,00">
+            </div>
+            <div class="field-group">
+                <label>Adiantamento Recebido:</label>
+                <input type="text" class="input-box" value="R$ 1.200,00" readonly style="background-color: #f1f5f9;">
+            </div>
+            <div class="field-group">
+                <label>Resultado (A Devolver / A Reembolsar):</label>
+                <input type="text" class="input-box" id="rdv-resultado" placeholder="R$ 0,00">
+            </div>
+        </div>
+
+        <div class="task-instruction">
+            📝 Parecer do Assistente sobre Itens Irregulares
+        </div>
+        <textarea class="input-box" data-minpalavras="12" style="min-height: 100px;" placeholder="Explique a conduta adotada em relação aos comprovantes sem Nota Fiscal adequada ou despesas pessoais..."></textarea>
+    </article>
+
+    <!-- MÓDULO 4: LOGÍSTICA DE SUPRIMENTOS E COTAÇÃO DE COMPRAS (PROCUREMENT) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Logística de Suprimentos e Cotação de Compras</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> O estoque de materiais de escritório está no nível crítico. Você coletou orçamentos de 3 fornecedores para a compra de pacotes de papel A4, toners de impressão e canetas.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Critério</th>
+                        <th>Fornecedor Alpha</th>
+                        <th>Fornecedor Beta</th>
+                        <th>Fornecedor Gama</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Valor Total dos Itens</strong></td>
+                        <td>R$ 1.450,00</td>
+                        <td>R$ 1.320,00</td>
+                        <td>R$ 1.380,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Frete / Entrega</strong></td>
+                        <td>Grátis</td>
+                        <td>R$ 120,00</td>
+                        <td>R$ 40,00</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prazo de Entrega</strong></td>
+                        <td>2 dias úteis</td>
+                        <td>7 dias úteis</td>
+                        <td>3 dias úteis</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Condição de Pagamento</strong></td>
+                        <td>Faturado 30 dias</td>
+                        <td>À vista (PIX)</td>
+                        <td>Faturado 15/30 dias</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            💡 Tarefa 4.1: Análise Comparativa e Decisão de Compra
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">
+            Qual fornecedor apresenta o melhor custo-benefício considerando o valor total com frete, urgência de estoque e fluxo de caixa da empresa? Justifique em detalhes.
+        </p>
+        <textarea class="input-box" data-minpalavras="25" placeholder="Apresente sua decisão detalhada analisando cada um dos critérios..."></textarea>
+    </article>
+
+    <!-- MÓDULO 5: ORGANIZAÇÃO DE EVENTOS E LOGÍSTICA DE REUNIÕES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Organização de Eventos Corporativos e Logística</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Sua empresa receberá 12 diretores regionais para uma reunião de alinhamento estratégico durante um dia inteiro. Você é o responsável por toda a infraestrutura e logística.
+        </div>
+
+        <div class="task-instruction">
+            📋 Tarefa 5.1: Checklist de Preparação de Evento
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Infraestrutura e Tecnologia da Sala:</label>
+                <textarea class="input-box" data-minpalavras="6" style="min-height: 120px;" placeholder="Liste equipamentos, testes de multimídia, conectividade..."></textarea>
+            </div>
+            <div class="field-group">
+                <label>Alimentação (Coffee Break / Almoço):</label>
+                <textarea class="input-box" data-minpalavras="6" style="min-height: 120px;" placeholder="Defina horários, restrições alimentares, logística dos serviços..."></textarea>
+            </div>
+        </div>
+
+        <div class="task-instruction">
+            ⏰ Tarefa 5.2: Elaboração da Cronologia do Evento (Minuta de Cronograma)
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Horário</th>
+                        <th style="width: 50%;">Atividade / Etapa</th>
+                        <th style="width: 30%;">Responsável / Ação do Assistente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>08:00 - 08:30</td>
+                        <td>Recepção dos participantes e Welcome Coffee</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>08:30 - 12:00</td>
+                        <td>Abertura e Apresentação de Resultados</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>12:00 - 13:30</td>
+                        <td>Intervalo para Almoço Corporativo</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>13:30 - 17:00</td>
+                        <td>Sessão de Planejamento e Encerramento</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 6: MAPEAMENTO E PADRONIZAÇÃO DE PROCESSOS (POP) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>Mapeamento de Processos e Procedimento Operacional Padrão (POP)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Para evitar erros quando você estiver ausente ou de férias, a gerência solicitou a criação de um <strong>POP (Procedimento Operacional Padrão)</strong> para a tarefa de <i>"Recebimento e Protocolo de Encomendas e Correspondências"</i> na recepção.
+        </div>
+
+        <div class="task-instruction">
+            📄 Tarefa 6.1: Elaboração do Documento de POP
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>1. Nome do Processo:</label>
+                <input type="text" class="input-box" value="Recebimento e Triagem de Encomendas e Correspondências" readonly>
+            </div>
+            <div class="field-group">
+                <label>2. Objetivo do Procedimento:</label>
+                <input type="text" class="input-box" placeholder="Defina o objetivo principal deste processo...">
+            </div>
+        </div>
+
+        <div style="margin-top: 15px;">
+            <label style="font-size: 12.5px; font-weight: 600; color: var(--text-muted);">3. Passo a Passo Detalhado da Operação (Do recebimento à entrega final):</label>
+            <textarea class="input-box" data-minpalavras="20" style="min-height: 150px; margin-top: 5px;" placeholder="Passo 1: Conferir a identificação do entregador e destinatário...&#10;Passo 2: Assinar o comprovante de entrega...&#10;Passo 3: Registrar na planilha de controle de correspondências...&#10;Passo 4: Notificar o destinatário via e-mail ou mensagem..."></textarea>
+        </div>
+    </article>
+
+</div>
+
+<script>
+/* ==========================================================================
+   MOTOR DE CORREÇÃO — genérico para as atividades de Administração.
+   1) Todo campo preenchido é testado contra digitação aleatória (gibberish).
+   2) Campos com gabarito objetivo (ids abaixo) são conferidos de verdade.
+   3) Campo vazio nunca é marcado — a correção só aparece se houver resposta.
+   ========================================================================== */
+(function () {
+    function contarPalavras(texto) {
+        return texto.trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function pareceGibberish(texto) {
+        var t = texto.trim();
+        if (!t) return false;
+
+        if ((t.match(/[´`^~]/g) || []).length >= 2) return true;
+        if (t.length >= 12 && !/\s/.test(t)) return true;
+        if (/(.)\1{5,}/.test(t)) return true;
+        if (/asdfgh|qwerty|zxcvbn|qazwsx|1234567890/i.test(t.replace(/\s/g, ''))) return true;
+
+        var palavras = t.split(/\s+/).filter(Boolean);
+        var suspeitas = 0, avaliadas = 0;
+        palavras.forEach(function (p) {
+            var letras = p.replace(/[^a-zà-úA-ZÀ-Ú]/g, '');
+            if (letras.length < 3) return;
+            avaliadas++;
+            var vogais = (letras.match(/[aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ]/g) || []).length;
+            var razao = vogais / letras.length;
+            if (razao < 0.15 || razao > 0.85) { suspeitas++; return; }
+            if (/[^aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ\d]{5,}/.test(letras)) suspeitas++;
+        });
+        if (avaliadas > 0 && (suspeitas / avaliadas) > 0.4) return true;
+
+        return false;
+    }
+
+    function parseNumero(texto) {
+        var limpo = texto.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+        var n = parseFloat(limpo);
+        return isNaN(n) ? null : n;
+    }
+
+    function limparCampo(campo) {
+        campo.classList.remove('campo-ok', 'campo-invalido');
+        var antigo = campo.parentElement.querySelector('.msg-correcao');
+        if (antigo) antigo.remove();
+    }
+
+    function marcarCampo(campo, valido, mensagem) {
+        limparCampo(campo);
+        campo.classList.add(valido ? 'campo-ok' : 'campo-invalido');
+        if (mensagem) {
+            var span = document.createElement('span');
+            span.className = 'msg-correcao ' + (valido ? 'ok' : 'invalido');
+            span.textContent = mensagem;
+            campo.insertAdjacentElement('afterend', span);
+        }
+    }
+
+    window.corrigirAtividade = function () {
+        var cont = { ok: 0, invalidos: 0, vazios: 0 };
+        var gabarito = window.__gabaritoCorrecao || [];
+        var formulas = window.__formulasCorrecao || [];
+
+        var idsComGabarito = {};
+        gabarito.forEach(function (r) { idsComGabarito[r.seletor] = true; });
+        var idsComFormula = {};
+        (window.__camposFormula || []).forEach(function (sel) { idsComFormula[sel] = true; });
+
+        document.querySelectorAll('.input-box:not([readonly])').forEach(function (campo) {
+            limparCampo(campo);
+            var seletorProprio = campo.id ? ('#' + campo.id) : null;
+            if (seletorProprio && (idsComGabarito[seletorProprio] || idsComFormula[seletorProprio])) return;
+
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            if (campo.tagName === 'SELECT') {
+                marcarCampo(campo, true, null);
+                cont.ok++;
+                return;
+            }
+
+            var minPalavras = parseInt(campo.getAttribute('data-minpalavras') || '0', 10);
+            if (pareceGibberish(valor)) {
+                marcarCampo(campo, false, '⚠️ Isso não parece uma resposta válida — parece digitação aleatória.');
+                cont.invalidos++;
+                return;
+            }
+            if (minPalavras > 0 && contarPalavras(valor) < minPalavras) {
+                marcarCampo(campo, false, '⚠️ Resposta muito curta — desenvolva mais (mínimo ' + minPalavras + ' palavras).');
+                cont.invalidos++;
+                return;
+            }
+            marcarCampo(campo, true, null);
+            cont.ok++;
+        });
+
+        gabarito.forEach(function (regra) {
+            var campo = document.querySelector(regra.seletor);
+            if (!campo) return;
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            var correto = false;
+            if (regra.tipo === 'select') {
+                correto = valor === regra.esperado;
+            } else if (regra.tipo === 'numero-proximo') {
+                var n = parseNumero(valor);
+                if (n === null) { cont.vazios++; return; }
+                var alvo = typeof regra.esperado === 'function' ? regra.esperado() : regra.esperado;
+                correto = Math.abs(n - alvo) <= (regra.tolerancia || 0);
+            } else if (regra.tipo === 'regex') {
+                correto = regra.esperado.test(valor);
+            }
+            marcarCampo(campo, correto, correto ? (regra.msgOk || '✅ Correto.') : (regra.msgErro || '❌ Reveja essa resposta.'));
+            if (correto) cont.ok++; else cont.invalidos++;
+        });
+
+        formulas.forEach(function (fn) { fn({ marcarCampo: marcarCampo, parseNumero: parseNumero, cont: cont }); });
+
+        var resumo = document.getElementById('resumoCorrecao');
+        if (resumo) {
+            resumo.textContent = cont.ok + ' resposta(s) válida(s) · ' + cont.invalidos + ' para revisar · ' + cont.vazios + ' em branco.';
+        }
+    };
+})();
+</script>
+
+<script>
+/* ---- Gabarito específico desta atividade ---- */
+window.__gabaritoCorrecao = [
+    { seletor: '#nomenc-row1', tipo: 'regex', esperado: /\d{4}[-_].*\d{1,2}[-_].*\d{1,2}.*_.*_/,
+      msgOk: '✅ Segue o padrão pedido: ano, categoria e nome separados.',
+      msgErro: '❌ Use o padrão completo: [ANO-MÊS-DIA]_[CATEGORIA]_[NOME_DO_DOCUMENTO]_[VERSÃO/FORNECEDOR] — precisa ter o ano por extenso e pelo menos 3 partes separadas por "_".' },
+    { seletor: '#nomenc-row2', tipo: 'regex', esperado: /\d{4}[-_].*\d{1,2}[-_].*\d{1,2}.*_.*_/,
+      msgOk: '✅ Segue o padrão pedido: ano, categoria e nome separados.',
+      msgErro: '❌ Use o padrão completo: [ANO-MÊS-DIA]_[CATEGORIA]_[NOME_DO_DOCUMENTO]_[VERSÃO/FORNECEDOR] — precisa ter o ano por extenso e pelo menos 3 partes separadas por "_".' },
+    { seletor: '#nomenc-row3', tipo: 'regex', esperado: /\d{4}[-_].*\d{1,2}[-_].*\d{1,2}.*_.*_/,
+      msgOk: '✅ Segue o padrão pedido: ano, categoria e nome separados.',
+      msgErro: '❌ Use o padrão completo: [ANO-MÊS-DIA]_[CATEGORIA]_[NOME_DO_DOCUMENTO]_[VERSÃO/FORNECEDOR] — precisa ter o ano por extenso e pelo menos 3 partes separadas por "_".' },
+    { seletor: '#nomenc-row4', tipo: 'regex', esperado: /\d{4}[-_].*\d{1,2}[-_].*\d{1,2}.*_.*_/,
+      msgOk: '✅ Segue o padrão pedido: ano, categoria e nome separados.',
+      msgErro: '❌ Use o padrão completo: [ANO-MÊS-DIA]_[CATEGORIA]_[NOME_DO_DOCUMENTO]_[VERSÃO/FORNECEDOR] — precisa ter o ano por extenso e pelo menos 3 partes separadas por "_".' },
+
+    { seletor: '#rdv-row1', tipo: 'select', esperado: 'sim',
+      msgOk: '✅ Correto: deslocamento de trabalho com valor razoável é despesa conforme.',
+      msgErro: '❌ Um Uber de deslocamento a trabalho é uma despesa normalmente conforme.' },
+    { seletor: '#rdv-row3', tipo: 'select', esperado: 'sim',
+      msgOk: '✅ Correto: hotel com Nota Fiscal nominal à empresa está documentado corretamente.',
+      msgErro: '❌ A diária do hotel tem Nota Fiscal nominal à empresa — está documentada corretamente, é conforme.' },
+    { seletor: '#rdv-row4', tipo: 'select', esperado: 'nao',
+      msgOk: '✅ Correto: a própria tabela já classifica esse item como "Não Reembolsável".',
+      msgErro: '❌ Repare no Centro de Custo dessa linha: "Não Reembolsável" — é despesa pessoal, não deveria ser aprovada.' },
+    { seletor: '#rdv-row5', tipo: 'select', esperado: 'sim',
+      msgOk: '✅ Correto: táxi de retorno ao aeroporto é despesa de viagem normal.',
+      msgErro: '❌ O táxi de retorno ao aeroporto é uma despesa de viagem normal, conforme.' },
+];
+
+window.__camposFormula = ['#rdv-total-validas', '#rdv-resultado'];
+
+window.__formulasCorrecao = [
+    function (ctx) {
+        var campoTotal = document.getElementById('rdv-total-validas');
+        var campoResultado = document.getElementById('rdv-resultado');
+        if (!campoTotal || !campoResultado) return;
+
+        var ADIANTAMENTO = 1200, TOL = 5;
+        var vTotal = (campoTotal.value || '').trim();
+        var vResultado = (campoResultado.value || '').trim();
+
+        if (vTotal) {
+            var nTotal = ctx.parseNumero(vTotal);
+            if (nTotal === null) {
+                ctx.marcarCampo(campoTotal, false, '⚠️ Digite um valor numérico (ex: 755,00).');
+                ctx.cont.invalidos++;
+            } else {
+                ctx.marcarCampo(campoTotal, true, null);
+                ctx.cont.ok++;
+            }
+        } else { ctx.cont.vazios++; }
+
+        if (vResultado) {
+            var nResultado = ctx.parseNumero(vResultado);
+            var nTotal2 = ctx.parseNumero(vTotal);
+            if (nResultado === null) {
+                ctx.marcarCampo(campoResultado, false, '⚠️ Digite um valor numérico (ex: 445,00).');
+                ctx.cont.invalidos++;
+            } else if (nTotal2 !== null) {
+                var esperado = Math.abs(nTotal2 - ADIANTAMENTO);
+                var correto = Math.abs(Math.abs(nResultado) - esperado) <= TOL;
+                ctx.marcarCampo(campoResultado, correto,
+                    correto ? '✅ Bate com o adiantamento de R$ 1.200,00 menos o total de despesas válidas.'
+                            : '❌ O resultado deveria ser a diferença entre o adiantamento (R$ 1.200,00) e o total de despesas válidas que você calculou.');
+                if (correto) ctx.cont.ok++; else ctx.cont.invalidos++;
+            } else {
+                ctx.cont.vazios++;
+            }
+        } else { ctx.cont.vazios++; }
+    },
+];
+</script>
+
+</body>
+</html>

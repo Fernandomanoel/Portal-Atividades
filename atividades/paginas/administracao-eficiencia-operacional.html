@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Prático de Gestão e Operações de Escritório</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #c2410c;
+            --brand-light: #ffedd5;
+            --accent-color: #ea580c;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #c2410c 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #fed7aa;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Seção de Introdução */
+        .intro-card {
+            background-color: var(--bg-card);
+            border-left: 5px solid var(--accent-color);
+            padding: 22px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .intro-card h3 {
+            color: var(--brand-color);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .scenario-description strong {
+            color: var(--brand-color);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code { overflow-wrap: break-word; word-break: break-word; }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Form Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tag-info {
+            background-color: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #9a3412;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        /* ---- Navegação e motor de correção (adicionados) ---- */
+        .voltar-admin { display: block; max-width: 1000px; margin: 0 auto 14px; color: var(--accent-color); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .voltar-admin:hover { text-decoration: underline; }
+
+        .correcao-painel {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 16px 22px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-corrigir {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-corrigir:hover { filter: brightness(1.1); }
+        .correcao-resumo { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
+
+        .campo-ok { border-color: #16a34a !important; box-shadow: 0 0 0 2px rgba(22,163,74,0.15) !important; }
+        .campo-invalido { border-color: #dc2626 !important; box-shadow: 0 0 0 2px rgba(220,38,38,0.15) !important; }
+        .msg-correcao { font-size: 12px; font-weight: 600; margin-top: 4px; display: block; }
+        .msg-correcao.ok { color: #15803d; }
+        .msg-correcao.invalido { color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a class="voltar-admin" href="../../atividade.html?curso=administracao">← Voltar para Administração</a>
+
+    <!-- CABEÇALHO PRINCIPAL DA ATIVIDADE PRÁTICA -->
+    <header class="main-header">
+        <span class="badge-tag">Caderno de Exercícios e Prática Aplicada - Volume 4</span>
+        <h1>Simulação de Eficiência Operacional e Gestão de Rotinas</h1>
+        <p>Capacitação prática cobrindo avaliação de fornecedores (SLA), logística de integração de novos colaboradores, gestão de fluxo Kanban, auditoria de caixa pequeno, normas de segurança no trabalho e política de etiqueta digital.</p>
+    </header>
+
+    <!-- GUIA DE USO -->
+    <div class="intro-card">
+        <h3>📌 Estrutura de Capacitação Continuada</h3>
+        <p>Este caderno propõe situações do cotidiano empresarial para aprimorar a capacidade de organização, controle de processos, visão analítica e padronização corporativa. Os exercícios abordam diferentes áreas do ambiente de trabalho. Responda diretamente nos campos interativos.</p>
+    </div>
+
+    <!-- PAINEL DE CORREÇÃO -->
+    <div class="correcao-painel">
+        <button type="button" class="btn-corrigir" onclick="corrigirAtividade()">✅ Corrigir Atividade</button>
+        <span class="correcao-resumo" id="resumoCorrecao">Preencha os campos e clique em "Corrigir Atividade" para conferir suas respostas.</span>
+    </div>
+
+    <!-- MÓDULO 1: AVALIAÇÃO DE DESEMPENHO DE FORNECEDORES E GESTÃO DE SLA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Gestão de Contratos de Fornecedores e Avaliação de SLA</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A empresa mantém contratos fixos com prestadores de serviços. No final do mês, você precisa avaliar o cumprimento do **SLA (Acordo de Nível de Serviço)** de três fornecedores essenciais para decidir pela renovação ou aplicação de notificação formal.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">Fornecedor / Serviço</th>
+                        <th style="width: 30%;">Indicador do SLA Contratado</th>
+                        <th style="width: 25%;">Resultado Apurado no Mês</th>
+                        <th style="width: 20%;">Parecer Operacional</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Empresa A:</strong> Suporte de TI / Redes</td>
+                        <td>Atendimento inicial em até 30 min em chamados críticos</td>
+                        <td>Tempo médio real: 1h 45min (3 atrasos graves)</td>
+                        <td>
+                            <select class="input-box" id="sla-empresa-a">
+                                <option value="">Selecione...</option>
+                                <option value="conforme">Conforme (Manter)</option>
+                                <option value="alerta">Em Alerta (Notificar)</option>
+                                <option value="critico">Inconforme (Notificar / Multa)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Empresa B:</strong> Manutenção de Ar-Condicionado</td>
+                        <td>Visita preventiva mensal + atendimento emergencial em 24h</td>
+                        <td>100% das visitas realizadas conforme agenda</td>
+                        <td>
+                            <select class="input-box" id="sla-empresa-b">
+                                <option value="">Selecione...</option>
+                                <option value="conforme">Conforme (Manter)</option>
+                                <option value="alerta">Em Alerta (Notificar)</option>
+                                <option value="critico">Inconforme (Notificar / Multa)</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Empresa C:</strong> Coleta e Destinação de Resíduos</td>
+                        <td>Coleta quinzenal com emissão de certificado ambiental em 48h</td>
+                        <td>Coleta feita, mas certificado atrasou 15 dias</td>
+                        <td>
+                            <select class="input-box" id="sla-empresa-c">
+                                <option value="">Selecione...</option>
+                                <option value="conforme">Conforme (Manter)</option>
+                                <option value="alerta">Em Alerta (Notificar)</option>
+                                <option value="critico">Inconforme (Notificar / Multa)</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            ✉️ Tarefa 1.1: Minuta de Notificação Formal de Descumprimento
+        </div>
+        <textarea class="input-box" data-minpalavras="20" placeholder="Elabore o texto do e-mail de notificação para a Empresa A solicitando justificativa formal e plano de ação imediato sob pena de rescisão contratual..."></textarea>
+    </article>
+
+    <!-- MÓDULO 2: LOGÍSTICA DE ONBOARDING E INTEGRAÇÃO DE NOVOS COLABORADORES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Planejamento Logístico para Onboarding de Novo Integrante</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Um novo profissional iniciará suas atividades na próxima segunda-feira. Cabe a você coordenar toda a preparação prévia da estrutura de trabalho com os demais setores para garantir uma recepção eficiente.
+        </div>
+
+        <div class="task-instruction">
+            📋 Tarefa 2.1: Matriz de Preparação Prévia do Posto de Trabalho
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Recursos de Tecnologia e TI (Hardware/Acessos):</label>
+                <textarea class="input-box" data-minpalavras="4" style="min-height: 110px;" placeholder="Criação de e-mail corporativo, notebook configurado, crachá, acessos aos sistemas..."></textarea>
+            </div>
+            <div class="field-group">
+                <label>Infraestrutura e Materiais de Apoio:</label>
+                <textarea class="input-box" data-minpalavras="4" style="min-height: 110px;" placeholder="Mesa organizada, bloco de anotações, canetas, kit de boas-vindas, chave de armário..."></textarea>
+            </div>
+        </div>
+
+        <div class="task-instruction" style="margin-top: 15px;">
+            🗓️ Tarefa 2.2: Roteiro do Primeiro Dia (Agenda de Boas-Vindas)
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Horário</th>
+                        <th style="width: 50%;">Atividade</th>
+                        <th style="width: 30%;">Responsável pela Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>09:00 - 09:30</td>
+                        <td>Recepção, entrega do crachá e apresentação da estrutura física</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Equipe Operacional"></td>
+                    </tr>
+                    <tr>
+                        <td>09:30 - 11:00</td>
+                        <td>Configuração inicial de senhas e treinamento nos sistemas corporativos</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>11:00 - 12:00</td>
+                        <td>Apresentação à equipe de trabalho e gestor imediato</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: GESTÃO DE FLUXO DE TRABALHO E QUADRO KANBAN -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Organização de Demandas de Escritório no Modelo Kanban</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Para manter o controle das tarefas do setor, você deve classificar as seis demandas abaixo nas etapas do fluxo **Kanban** (*A Fazer*, *Em Andamento*, *Aguardando Terceiros* e *Concluído*), identificando potenciais gargalos.
+        </div>
+
+        <div class="tag-info">
+            <strong>Demandas do Dia:</strong><br>
+            1. Envio das notas fiscais para a contabilidade externa (Esperando motoboy retirar).<br>
+            2. Cotação de passagens aéreas para a equipe de vendas.<br>
+            3. Digitalização dos contratos do mês de julho (Finalizado ontem à tarde).<br>
+            4. Atendimento a chamado de troca de toner da impressora do setor financeiro.<br>
+            5. Organização do arquivo de prontuários dos colaboradores.<br>
+            6. Confirmação do pagamento de boleto com o banco (Aguardando resposta por e-mail).
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 25%;">A Fazer (Pendente)</th>
+                        <th style="width: 25%;">Em Andamento (Em Execução)</th>
+                        <th style="width: 25%;">Aguardando Terceiros</th>
+                        <th style="width: 25%;">Concluído</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><textarea class="input-box" style="min-height: 90px;" placeholder="Liste os itens..."></textarea></td>
+                        <td><textarea class="input-box" style="min-height: 90px;" placeholder="Liste os itens..."></textarea></td>
+                        <td><textarea class="input-box" style="min-height: 90px;" placeholder="Liste os itens..."></textarea></td>
+                        <td><textarea class="input-box" style="min-height: 90px;" placeholder="Liste os itens..."></textarea></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            🔍 Tarefa 3.1: Análise de Gargalos e Solução Operacional
+        </div>
+        <textarea class="input-box" data-minpalavras="12" placeholder="Identifique qual das tarefas na coluna 'Aguardando Terceiros' apresenta maior risco de atraso e como você acompanhará esse retorno..."></textarea>
+    </article>
+
+    <!-- MÓDULO 4: AUDITORIA DE CAIXA PEQUENO E RECOMPOSIÇÃO DE SALDO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Auditoria de Caixa Fixo (Petty Cash) e Lançamento de Reembolso</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Você deve realizar o fechamento quinzenal do caixa pequeno do escritório. O valor fixo do fundo estabelecido pela empresa é de **R$ 600,00**. Faça a conferência dos comprovantes físicos e determine o valor exato a ser reembolsado.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nº Comprovante</th>
+                        <th>Descrição da Despesa</th>
+                        <th>Valor (R$)</th>
+                        <th>Conferência do Documento Fiscal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>NFC-1029</td>
+                        <td>Chaves extras para gaveteiro de arquivo</td>
+                        <td>R$ 45,00</td>
+                        <td>Cupom Fiscal OK</td>
+                    </tr>
+                    <tr>
+                        <td>REC-0042</td>
+                        <td>Envio de sedex urgente na agência de correios</td>
+                        <td>R$ 38,50</td>
+                        <td>Comprovante de Postagem OK</td>
+                    </tr>
+                    <tr>
+                        <td>NFC-1055</td>
+                        <td>Adoçante e café extra para a copa</td>
+                        <td>R$ 27,90</td>
+                        <td>Cupom Fiscal OK</td>
+                    </tr>
+                    <tr>
+                        <td>REC-0088</td>
+                        <td>Estacionamento para reunião externa de consultoria</td>
+                        <td>R$ 25,00</td>
+                        <td>Recibo simples sem CNPJ impresso</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-3">
+            <div class="field-group">
+                <label>Soma dos Comprovantes Válidos:</label>
+                <input type="text" class="input-box" id="caixa-soma-validos" placeholder="R$ 0,00">
+            </div>
+            <div class="field-group">
+                <label>Dinheiro Físico Restante na Caixa:</label>
+                <input type="text" class="input-box" id="caixa-dinheiro-restante" placeholder="R$ 0,00">
+            </div>
+            <div class="field-group">
+                <label>Valor Solicitado para Recomposição:</label>
+                <input type="text" class="input-box" id="caixa-recomposicao" placeholder="R$ 0,00">
+            </div>
+        </div>
+
+        <div class="task-instruction">
+            📝 Observação do Auditor de Caixa
+        </div>
+        <textarea class="input-box" data-minpalavras="10" style="min-height: 90px;" placeholder="Informe a tratativa sobre o recibo sem CNPJ ou eventuais divergências encontradas entre o saldo físico e os papéis..."></textarea>
+    </article>
+
+    <!-- MÓDULO 5: SEGURANÇA NO AMBIENTE DE TRABALHO E ERGONOMIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Avaliação de Boas Práticas Ergonomia e Segurança no Escritório</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A empresa está atualizando seu programa interno de prevenção de acidentes e organização das estações de trabalho. Você deve inspecionar as condições físicas do ambiente e apontar correções preventivas.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;">Situação Inspecionada</th>
+                        <th style="width: 30%;">Risco Identificado</th>
+                        <th style="width: 35%;">Ação Corretiva Imediata</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fios de computadores soltos no chão em local de passagem.</td>
+                        <td>Risco de tropeços, quedas e desligamento de equipamentos.</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Organizar com calhas/organizadores de cabos"></td>
+                    </tr>
+                    <tr>
+                        <td>Caixas de papelão empilhadas obstruindo extintor de incêndio.</td>
+                        <td>Bloqueio de acesso ao equipamento em emergências.</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>Monitores de computador abaixo da linha dos olhos dos usuários.</td>
+                        <td>Fadiga muscular, dores na coluna e no pescoço.</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </article>
+
+    <!-- MÓDULO 6: MANUAL DE ETIQUETA DIGITAL E COMUNICAÇÃO CORPORATIVA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>Redação de Diretrizes de Comunicação e Etiqueta Digital</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Para evitar ruídos nas ferramentas de mensagem instantânea (como WhatsApp e Teams) e e-mails corporativos, a gestão pediu que você redija três regras fundamentais de **Etiqueta Digital e Boas Práticas de Comunicação** para fazerem parte do guia interno.
+        </div>
+
+        <div class="task-instruction">
+            📝 Tarefa 6.1: Elaboração das Normas de Comunicação Interna
+        </div>
+
+        <div class="grid-3">
+            <div class="field-group">
+                <label>Regra 1: Horários e Mensagens Urgentes</label>
+                <textarea class="input-box" data-minpalavras="8" style="min-height: 120px;" placeholder="Defina limites sobre envios fora do expediente e canais adequados para emergências..."></textarea>
+            </div>
+            <div class="field-group">
+                <label>Regra 2: Clareza e Objetividade nos E-mails</label>
+                <textarea class="input-box" data-minpalavras="8" style="min-height: 120px;" placeholder="Regras para campo 'Assunto', uso de caixa alta (CAIXA ALTA) e confirmação de leitura..."></textarea>
+            </div>
+            <div class="field-group">
+                <label>Regra 3: Confidencialidade e Dados Sensíveis</label>
+                <textarea class="input-box" data-minpalavras="8" style="min-height: 120px;" placeholder="Normas para não compartilhamento de senhas e proteção de informações internas..."></textarea>
+            </div>
+        </div>
+    </article>
+
+</div>
+
+<script>
+/* ==========================================================================
+   MOTOR DE CORREÇÃO — genérico para as atividades de Administração.
+   1) Todo campo preenchido é testado contra digitação aleatória (gibberish).
+   2) Campos com gabarito objetivo (ids abaixo) são conferidos de verdade.
+   3) Campo vazio nunca é marcado — a correção só aparece se houver resposta.
+   ========================================================================== */
+(function () {
+    function contarPalavras(texto) {
+        return texto.trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function pareceGibberish(texto) {
+        var t = texto.trim();
+        if (!t) return false;
+
+        if ((t.match(/[´`^~]/g) || []).length >= 2) return true;
+        if (t.length >= 12 && !/\s/.test(t)) return true;
+        if (/(.)\1{5,}/.test(t)) return true;
+        if (/asdfgh|qwerty|zxcvbn|qazwsx|1234567890/i.test(t.replace(/\s/g, ''))) return true;
+
+        var palavras = t.split(/\s+/).filter(Boolean);
+        var suspeitas = 0, avaliadas = 0;
+        palavras.forEach(function (p) {
+            var letras = p.replace(/[^a-zà-úA-ZÀ-Ú]/g, '');
+            if (letras.length < 3) return;
+            avaliadas++;
+            var vogais = (letras.match(/[aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ]/g) || []).length;
+            var razao = vogais / letras.length;
+            if (razao < 0.15 || razao > 0.85) { suspeitas++; return; }
+            if (/[^aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ\d]{5,}/.test(letras)) suspeitas++;
+        });
+        if (avaliadas > 0 && (suspeitas / avaliadas) > 0.4) return true;
+
+        return false;
+    }
+
+    function parseNumero(texto) {
+        var limpo = texto.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+        var n = parseFloat(limpo);
+        return isNaN(n) ? null : n;
+    }
+
+    function limparCampo(campo) {
+        campo.classList.remove('campo-ok', 'campo-invalido');
+        var antigo = campo.parentElement.querySelector('.msg-correcao');
+        if (antigo) antigo.remove();
+    }
+
+    function marcarCampo(campo, valido, mensagem) {
+        limparCampo(campo);
+        campo.classList.add(valido ? 'campo-ok' : 'campo-invalido');
+        if (mensagem) {
+            var span = document.createElement('span');
+            span.className = 'msg-correcao ' + (valido ? 'ok' : 'invalido');
+            span.textContent = mensagem;
+            campo.insertAdjacentElement('afterend', span);
+        }
+    }
+
+    window.corrigirAtividade = function () {
+        var cont = { ok: 0, invalidos: 0, vazios: 0 };
+        var gabarito = window.__gabaritoCorrecao || [];
+        var formulas = window.__formulasCorrecao || [];
+
+        var idsComGabarito = {};
+        gabarito.forEach(function (r) { idsComGabarito[r.seletor] = true; });
+        var idsComFormula = {};
+        (window.__camposFormula || []).forEach(function (sel) { idsComFormula[sel] = true; });
+
+        document.querySelectorAll('.input-box:not([readonly])').forEach(function (campo) {
+            limparCampo(campo);
+            var seletorProprio = campo.id ? ('#' + campo.id) : null;
+            if (seletorProprio && (idsComGabarito[seletorProprio] || idsComFormula[seletorProprio])) return;
+
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            if (campo.tagName === 'SELECT') {
+                marcarCampo(campo, true, null);
+                cont.ok++;
+                return;
+            }
+
+            var minPalavras = parseInt(campo.getAttribute('data-minpalavras') || '0', 10);
+            if (pareceGibberish(valor)) {
+                marcarCampo(campo, false, '⚠️ Isso não parece uma resposta válida — parece digitação aleatória.');
+                cont.invalidos++;
+                return;
+            }
+            if (minPalavras > 0 && contarPalavras(valor) < minPalavras) {
+                marcarCampo(campo, false, '⚠️ Resposta muito curta — desenvolva mais (mínimo ' + minPalavras + ' palavras).');
+                cont.invalidos++;
+                return;
+            }
+            marcarCampo(campo, true, null);
+            cont.ok++;
+        });
+
+        gabarito.forEach(function (regra) {
+            var campo = document.querySelector(regra.seletor);
+            if (!campo) return;
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            var correto = false;
+            if (regra.tipo === 'select') {
+                correto = valor === regra.esperado;
+            } else if (regra.tipo === 'numero-proximo') {
+                var n = parseNumero(valor);
+                if (n === null) { cont.vazios++; return; }
+                var alvo = typeof regra.esperado === 'function' ? regra.esperado() : regra.esperado;
+                correto = Math.abs(n - alvo) <= (regra.tolerancia || 0);
+            } else if (regra.tipo === 'regex') {
+                correto = regra.esperado.test(valor);
+            }
+            marcarCampo(campo, correto, correto ? (regra.msgOk || '✅ Correto.') : (regra.msgErro || '❌ Reveja essa resposta.'));
+            if (correto) cont.ok++; else cont.invalidos++;
+        });
+
+        formulas.forEach(function (fn) { fn({ marcarCampo: marcarCampo, parseNumero: parseNumero, cont: cont }); });
+
+        var resumo = document.getElementById('resumoCorrecao');
+        if (resumo) {
+            resumo.textContent = cont.ok + ' resposta(s) válida(s) · ' + cont.invalidos + ' para revisar · ' + cont.vazios + ' em branco.';
+        }
+    };
+})();
+</script>
+
+<script>
+/* ---- Gabarito específico desta atividade ---- */
+window.__gabaritoCorrecao = [
+    { seletor: '#sla-empresa-a', tipo: 'select', esperado: 'critico',
+      msgOk: '✅ Correto: 3 atrasos graves muito acima do SLA contratado é caso de notificação/multa.',
+      msgErro: '❌ Releia o resultado apurado: 1h45min contra um SLA de 30min, com 3 atrasos graves, é inconformidade.' },
+    { seletor: '#sla-empresa-b', tipo: 'select', esperado: 'conforme',
+      msgOk: '✅ Correto: 100% das visitas realizadas conforme o combinado.',
+      msgErro: '❌ O resultado apurado (100% das visitas em dia) não indica problema — reveja.' },
+];
+
+window.__camposFormula = ['#caixa-soma-validos', '#caixa-dinheiro-restante', '#caixa-recomposicao'];
+
+window.__formulasCorrecao = [
+    function (ctx) {
+        var FUNDO_FIXO = 600, TOL = 5;
+        var campoSoma = document.getElementById('caixa-soma-validos');
+        var campoRestante = document.getElementById('caixa-dinheiro-restante');
+        var campoRecomp = document.getElementById('caixa-recomposicao');
+        if (!campoSoma || !campoRestante || !campoRecomp) return;
+
+        [campoSoma, campoRestante, campoRecomp].forEach(function (campo) {
+            var valor = (campo.value || '').trim();
+            if (!valor) { ctx.cont.vazios++; return; }
+            if (ctx.parseNumero(valor) === null) {
+                ctx.marcarCampo(campo, false, '⚠️ Digite um valor numérico (ex: 111,40).');
+                ctx.cont.invalidos++;
+            }
+        });
+
+        var nSoma = ctx.parseNumero((campoSoma.value || '').trim());
+        var nRestante = ctx.parseNumero((campoRestante.value || '').trim());
+        var nRecomp = ctx.parseNumero((campoRecomp.value || '').trim());
+
+        if (nSoma !== null && nRestante !== null) {
+            var fecha = Math.abs((nSoma + nRestante) - FUNDO_FIXO) <= TOL;
+            ctx.marcarCampo(campoSoma, fecha,
+                fecha ? '✅ Soma + dinheiro restante fecha com o fundo fixo de R$ 600,00.'
+                      : '❌ Soma dos comprovantes + dinheiro restante deveria fechar em R$ 600,00 (fundo fixo).');
+            ctx.marcarCampo(campoRestante, fecha,
+                fecha ? '✅ Confere com o fundo fixo.' : '❌ Não fecha com o fundo fixo de R$ 600,00 — reconfira a soma.');
+            if (fecha) { ctx.cont.ok += 2; } else { ctx.cont.invalidos += 2; }
+        }
+        if (nRecomp !== null && nSoma !== null) {
+            var bate = Math.abs(nRecomp - nSoma) <= TOL;
+            ctx.marcarCampo(campoRecomp, bate,
+                bate ? '✅ Valor de recomposição bate com o total gasto.'
+                     : '❌ O valor a recompor deveria ser igual à soma dos comprovantes válidos.');
+            if (bate) ctx.cont.ok++; else ctx.cont.invalidos++;
+        }
+    },
+];
+</script>
+
+</body>
+</html>

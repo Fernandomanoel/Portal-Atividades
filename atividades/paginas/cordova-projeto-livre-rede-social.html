@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic — Projeto Livre: Rede Social (Guia Completo)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+        .sidebar h3 {
+            color: #1f4fb0; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #3880ff; padding-bottom: 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #3880ff; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; min-width: 0; }
+        .content > .chapter, .content > .nav-buttons, .content > .progress-bar { max-width: 900px; margin-left: auto; margin-right: auto; }
+
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1f4fb0; margin-bottom: 25px; border-bottom: 3px solid #3880ff; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #3880ff; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #3880ff;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6; white-space: pre;
+        }
+        .code-label {
+            background: #3880ff; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .code-block .tag { color: #569cd6; }
+        .code-block .attr { color: #9cdcfe; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .var { color: #9cdcfe; }
+        .code-block .val { color: #b5cea8; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+
+        .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+        .peca { border: 2px dashed #3880ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; background: #fff; }
+        .peca-tag {
+            display: inline-block; background: #eef4ff; color: #1f4fb0; font-size: 0.78em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+        }
+        .faca-voce { background: #fff9e8; border: 2px solid #f0b429; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .faca-voce strong { color: #a06b00; }
+
+        .desafio { background: #fdf2f8; border: 2px solid #ec4899; border-radius: 10px; padding: 20px 22px; margin: 20px 0; }
+        .desafio-tag {
+            display: inline-block; background: #ec4899; color: #fff; font-size: 0.78em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+        }
+        .desafio h4 { color: #be185d; margin-bottom: 10px; }
+        .desafio ul { margin-top: 8px; }
+
+        .dica { background: #f0f9ff; border-left: 4px solid #0ea5e9; padding: 12px 16px; border-radius: 6px; margin: 14px 0; font-size: 0.95em; }
+        .dica strong { color: #0369a1; }
+
+        .requisitos { background: #eef4ff; border: 2px solid #3880ff; border-radius: 10px; padding: 20px 26px; margin: 20px 0; }
+        .requisitos h4 { color: #1f4fb0; margin-bottom: 12px; }
+        .requisitos li { margin-bottom: 10px; }
+
+        .detetive { background: #2b1b3d; color: #e8d9ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; border-left: 4px solid #a855f7; }
+        .detetive h4 { color: #d8b4fe; margin-bottom: 8px; }
+        .detetive .erro { background: #1a0f28; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 0.88em; color: #ff9494; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+        .checklist.grande li { font-size: 1.05em; padding-left: 34px; margin-bottom: 14px; }
+
+        .terminal-fake {
+            background: #0c0c0c; color: #4ade80; padding: 16px 20px; border-radius: 8px;
+            font-family: 'Courier New', monospace; font-size: 0.92em; margin: 16px 0; overflow-x: auto; white-space: pre;
+        }
+        .terminal-fake .prompt { color: #7dd3fc; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #3880ff; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1f4fb0; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(56,128,255,0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #3880ff; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 Ionic — Projeto Livre: Construa uma Rede Social</h1>
+            <p>Você já sabe as peças. Agora monta o sistema inteiro sozinho(a), a partir de uma especificação.</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 3 horas</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Pré-requisito:</strong> as 4 atividades anteriores do curso<br>
+                        <strong>Tempo:</strong> ~3h<br>
+                        <strong>Formato:</strong> projeto por especificação — você escreve a lógica
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Projeto Livre</h2>
+                    <p>Nas últimas atividades, cada capítulo te deu o código pronto pra digitar. Esta é diferente: aqui você recebe a <strong>especificação</strong> — o que o sistema precisa fazer — e escreve a função sozinho(a). É assim que um programador de verdade trabalha: ninguém entrega o código pronto, entrega o que o sistema <em>precisa fazer</em>.</p>
+                    <div class="box">
+                        <h4>Como ler este guia</h4>
+                        <ul>
+                            <li><span class="peca-tag" style="margin-right:6px;">Peça pronta</span> — código de fundação, já dado. Copie e siga.</li>
+                            <li><span class="desafio-tag" style="margin-right:6px;">Desafio</span> — só a especificação. Você escreve a função.</li>
+                            <li>Cada Desafio tem uma <strong>Dica</strong> se você travar, mas tente sozinho(a) primeiro — pelo menos 10 minutos antes de olhar.</li>
+                            <li>O último capítulo é o <strong>Gabarito Comentado</strong>: o sistema inteiro, resolvido. É pra <em>comparar depois</em>, não pra copiar antes.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight">Errar faz parte. Se uma função não funcionar de primeira, abra o Console (F12), leia a mensagem de erro, e tente nadar de novo. É assim que se aprende a programar.</div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. O Sistema que Você Vai Construir</h2>
+                    <p>Você vai construir o <strong>ConectaTurma</strong>: uma rede social simples, só sua, rodando no seu app. Aqui está tudo que ele precisa fazer até o fim deste guia:</p>
+                    <div class="requisitos">
+                        <h4>Requisitos obrigatórios</h4>
+                        <ul>
+                            <li>Um <strong>perfil</strong>: nome, avatar (emoji) e uma bio curta;</li>
+                            <li>Um <strong>feed</strong> mostrando posts com autor, avatar, texto, curtidas e comentários;</li>
+                            <li><strong>Publicar</strong> um post novo, que aparece no feed;</li>
+                            <li><strong>Curtir</strong> e descurtir qualquer post;</li>
+                            <li><strong>Comentar</strong> em qualquer post;</li>
+                            <li><strong>Excluir</strong> — mas só os posts que você mesmo(a) publicou;</li>
+                            <li><strong>Buscar</strong> posts por texto ou por autor;</li>
+                            <li><strong>Seguir</strong> colegas fictícios e filtrar o feed por "Todos" ou "Seguindo";</li>
+                            <li><strong>Modo escuro</strong> que continua ligado mesmo depois de fechar o app;</li>
+                            <li>Tudo isso <strong>salvo</strong> — fechar e abrir o app de novo não pode apagar nada.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Bônus (opcional, não é cobrado no checklist):</strong> editar um post já publicado, contar quantos posts cada pessoa tem no perfil, animação ao curtir.</div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Planejando os Dados</h2>
+                    <p>Antes de escrever qualquer tela, vale desenhar no papel (ou na cabeça) que formato cada informação vai ter. É isso que evita ficar remendando depois. O ConectaTurma guarda três coisas separadas no <code>localStorage</code>:</p>
+                    <div class="code-block"><span class="code-label">o perfil — chave "ct_perfil"</span>{ <span class="var">nome</span>: <span class="str">"Ana"</span>, <span class="var">avatar</span>: <span class="str">"🐱"</span>, <span class="var">bio</span>: <span class="str">"Aprendendo Ionic!"</span> }</div>
+                    <div class="code-block"><span class="code-label">um post — dentro do array na chave "ct_posts"</span>{
+  <span class="var">id</span>: <span class="val">1723766400000</span>,
+  <span class="var">autor</span>: <span class="str">"Ana"</span>,
+  <span class="var">avatar</span>: <span class="str">"🐱"</span>,
+  <span class="var">texto</span>: <span class="str">"Meu primeiro post!"</span>,
+  <span class="var">curtidas</span>: <span class="val">0</span>,
+  <span class="var">curtiu</span>: <span class="kw">false</span>,
+  <span class="var">comentarios</span>: []
+}</div>
+                    <div class="code-block"><span class="code-label">quem eu sigo — array na chave "ct_seguindo"</span>[<span class="str">"Bruno"</span>, <span class="str">"Carla"</span>]</div>
+                    <p>Guarde esses três nomes de chave — <code>ct_perfil</code>, <code>ct_posts</code>, <code>ct_seguindo</code> — você vai usar exatamente eles em vários capítulos daqui pra frente.</p>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Tabs de Navegação</h2>
+                    <p>Um sistema com feed, publicar, buscar e perfil precisa de 4 telas. Em vez do sistema de rotas do Ionic (que pede Angular), vamos usar uma barra de abas simples — <code>ion-tab-bar</code> sozinha, controlada por JavaScript puro. Mais fácil de entender nessa fase, e funciona igual de bem.</p>
+                    <div class="peca">
+                        <span class="peca-tag">Código — www/index.html, dentro do ion-content</span>
+                        <div class="code-block"><span class="code-label">www/index.html</span>&lt;div id="tela-feed" class="tela"&gt;&lt;!-- feed entra aqui --&gt;&lt;/div&gt;
+&lt;div id="tela-publicar" class="tela" style="display:none"&gt;&lt;!-- publicar entra aqui --&gt;&lt;/div&gt;
+&lt;div id="tela-buscar" class="tela" style="display:none"&gt;&lt;!-- buscar entra aqui --&gt;&lt;/div&gt;
+&lt;div id="tela-perfil" class="tela" style="display:none"&gt;&lt;!-- perfil entra aqui --&gt;&lt;/div&gt;
+
+&lt;ion-tab-bar&gt;
+  &lt;ion-tab-button onclick="mostrarTela('feed')"&gt;
+    &lt;ion-icon name="newspaper"&gt;&lt;/ion-icon&gt;
+    &lt;ion-label&gt;Feed&lt;/ion-label&gt;
+  &lt;/ion-tab-button&gt;
+  &lt;ion-tab-button onclick="mostrarTela('publicar')"&gt;
+    &lt;ion-icon name="add-circle"&gt;&lt;/ion-icon&gt;
+    &lt;ion-label&gt;Publicar&lt;/ion-label&gt;
+  &lt;/ion-tab-button&gt;
+  &lt;ion-tab-button onclick="mostrarTela('buscar')"&gt;
+    &lt;ion-icon name="search"&gt;&lt;/ion-icon&gt;
+    &lt;ion-label&gt;Buscar&lt;/ion-label&gt;
+  &lt;/ion-tab-button&gt;
+  &lt;ion-tab-button onclick="mostrarTela('perfil')"&gt;
+    &lt;ion-icon name="person-circle"&gt;&lt;/ion-icon&gt;
+    &lt;ion-label&gt;Perfil&lt;/ion-label&gt;
+  &lt;/ion-tab-button&gt;
+&lt;/ion-tab-bar&gt;</div>
+                    </div>
+                    <div class="peca">
+                        <span class="peca-tag">Código — www/js/index.js</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">mostrarTela</span>(<span class="var">nome</span>) {
+  document.querySelectorAll(<span class="str">'.tela'</span>).forEach(<span class="var">t</span> =&gt; t.style.display = <span class="str">'none'</span>);
+  document.getElementById(<span class="str">`tela-${nome}`</span>).style.display = <span class="str">'block'</span>;
+}</div>
+                    </div>
+                    <div class="faca-voce"><strong>Faça você:</strong> rode o app e clique nas 4 abas. Cada uma deve trocar a tela — mesmo vazia por enquanto.</div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Tela de Perfil (HTML)</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — dentro de #tela-perfil</span>
+                        <div class="code-block"><span class="code-label">www/index.html</span>&lt;ion-card&gt;
+  &lt;ion-card-content&gt;
+    &lt;ion-item&gt;
+      &lt;ion-label position="floating"&gt;Seu nome&lt;/ion-label&gt;
+      &lt;ion-input id="perfil-nome"&gt;&lt;/ion-input&gt;
+    &lt;/ion-item&gt;
+    &lt;ion-item&gt;
+      &lt;ion-label position="floating"&gt;Bio&lt;/ion-label&gt;
+      &lt;ion-textarea id="perfil-bio"&gt;&lt;/ion-textarea&gt;
+    &lt;/ion-item&gt;
+
+    &lt;p style="margin: 16px 0 8px;"&gt;Escolha um avatar:&lt;/p&gt;
+    &lt;div id="grade-avatares"&gt;
+      &lt;!-- os botões de emoji entram aqui, gerados por JS --&gt;
+    &lt;/div&gt;
+
+    &lt;ion-button expand="block" onclick="salvarPerfil()"&gt;Salvar Perfil&lt;/ion-button&gt;
+  &lt;/ion-card-content&gt;
+&lt;/ion-card&gt;</div>
+                    </div>
+                    <div class="peca">
+                        <span class="peca-tag">Código — desenha os 8 emojis clicáveis</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">const</span> <span class="var">avatares</span> = [<span class="str">"🦊"</span>, <span class="str">"🐱"</span>, <span class="str">"🐶"</span>, <span class="str">"🐼"</span>, <span class="str">"🦁"</span>, <span class="str">"🐸"</span>, <span class="str">"🦄"</span>, <span class="str">"🐧"</span>];
+<span class="kw">let</span> <span class="var">avatarEscolhido</span> = avatares[<span class="val">0</span>];
+
+<span class="kw">function</span> <span class="fn">desenharAvatares</span>() {
+  <span class="kw">const</span> <span class="var">grade</span> = document.getElementById(<span class="str">'grade-avatares'</span>);
+  grade.innerHTML = <span class="str">""</span>;
+  avatares.forEach(<span class="var">emoji</span> =&gt; {
+    <span class="kw">const</span> <span class="var">selecionado</span> = emoji === avatarEscolhido ? <span class="str">"3px solid #3880ff"</span> : <span class="str">"3px solid transparent"</span>;
+    grade.innerHTML += <span class="str">`&lt;button style="font-size:1.6em; border:${selecionado}; border-radius:10px; background:#f5f5f5; margin:4px; padding:6px 10px;" onclick="escolherAvatar('${emoji}')"&gt;${emoji}&lt;/button&gt;`</span>;
+  });
+}
+
+<span class="kw">function</span> <span class="fn">escolherAvatar</span>(<span class="var">emoji</span>) {
+  avatarEscolhido = emoji;
+  desenharAvatares();
+}
+
+desenharAvatares();</div>
+                    </div>
+                    <p>Cada botão de avatar chama <code>escolherAvatar()</code>, que redesenha a grade — o emoji clicado ganha uma borda azul. Guarde bem o nome da variável <code>avatarEscolhido</code>: o próximo capítulo depende dela.</p>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Desafio: Salvar o Perfil</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função salvarPerfil()</h4>
+                        <p>Ela precisa:</p>
+                        <ul>
+                            <li>Ler o valor de <code>perfil-nome</code> e de <code>perfil-bio</code> (ambos têm <code>.value</code>);</li>
+                            <li>Montar um objeto com <code>nome</code>, <code>avatar</code> (use a variável <code>avatarEscolhido</code> do capítulo anterior) e <code>bio</code>;</li>
+                            <li>Guardar esse objeto no <code>localStorage</code>, na chave <code>ct_perfil</code> — lembrando que <code>localStorage</code> só guarda texto, então precisa de <code>JSON.stringify()</code>;</li>
+                            <li>Mostrar um <code>alert()</code> confirmando que salvou.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> a assinatura da função é <code>function salvarPerfil() { ... }</code> — ela não recebe parâmetros, porque lê tudo direto dos campos da tela.</div>
+                    <div class="faca-voce"><strong>Faça você:</strong> preencha nome e bio, escolha um avatar, clique em salvar. Depois abra o Console e digite <code>localStorage.getItem('ct_perfil')</code> — deve aparecer o texto JSON do seu perfil.</div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Desafio: Carregar o Perfil ao Abrir o App</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função carregarPerfil()</h4>
+                        <p>Ela precisa:</p>
+                        <ul>
+                            <li>Buscar <code>ct_perfil</code> no <code>localStorage</code> e desfazer o <code>JSON.stringify</code> com <code>JSON.parse</code>;</li>
+                            <li>Se não existir nada ainda (primeira vez abrindo o app), usar um perfil padrão: <code>{ nome: "Visitante", avatar: "🦊", bio: "" }</code> — lembre do truque <code>valor || padrao</code>;</li>
+                            <li>Guardar o resultado numa variável global <code>perfilAtual</code> (crie ela fora de qualquer função, como <code>let perfilAtual;</code>);</li>
+                            <li>Preencher os campos <code>perfil-nome</code>, <code>perfil-bio</code> e a variável <code>avatarEscolhido</code> com esses dados, e chamar <code>desenharAvatares()</code> de novo pra mostrar a borda no avatar certo.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> essa função precisa rodar sozinha assim que o app abre — não espera clique de ninguém. Chame <code>carregarPerfil();</code> na última linha do arquivo, fora de qualquer função.</div>
+                    <div class="highlight">A partir de agora, sempre que precisar do nome ou avatar de quem está usando o app, use <code>perfilAtual.nome</code> e <code>perfilAtual.avatar</code> — não leia os campos da tela de novo, porque a pessoa pode estar em outra aba.</div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. A Base de Posts</h2>
+                    <p>Uma rede social vazia é chata de testar. Este capítulo semeia 3 posts fictícios de colegas — só na primeira vez que o app abre, sem apagar posts que você já criou depois.</p>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">let</span> <span class="var">posts</span> = [];
+
+<span class="kw">function</span> <span class="fn">carregarOuSemearPosts</span>() {
+  <span class="kw">const</span> <span class="var">salvos</span> = JSON.parse(localStorage.getItem(<span class="str">'ct_posts'</span>));
+  <span class="kw">if</span> (salvos) {
+    posts = salvos;
+    <span class="kw">return</span>;
+  }
+  posts = [
+    { <span class="var">id</span>: <span class="val">1</span>, <span class="var">autor</span>: <span class="str">"Ana"</span>, <span class="var">avatar</span>: <span class="str">"🐱"</span>,
+      <span class="var">texto</span>: <span class="str">"Gente, terminei o app de missões ontem! Alguém mais travou no localStorage? 😅"</span>,
+      <span class="var">curtidas</span>: <span class="val">3</span>, <span class="var">curtiu</span>: <span class="kw">false</span>,
+      <span class="var">comentarios</span>: [{ <span class="var">autor</span>: <span class="str">"Bruno"</span>, <span class="var">texto</span>: <span class="str">"Eu travei kkkk"</span> }] },
+    { <span class="var">id</span>: <span class="val">2</span>, <span class="var">autor</span>: <span class="str">"Bruno"</span>, <span class="var">avatar</span>: <span class="str">"🐶"</span>,
+      <span class="var">texto</span>: <span class="str">"Rodando meu primeiro app no emulador agora. Muito irado ver funcionando de verdade!"</span>,
+      <span class="var">curtidas</span>: <span class="val">5</span>, <span class="var">curtiu</span>: <span class="kw">false</span>, <span class="var">comentarios</span>: [] },
+    { <span class="var">id</span>: <span class="val">3</span>, <span class="var">autor</span>: <span class="str">"Carla"</span>, <span class="var">avatar</span>: <span class="str">"🐼"</span>,
+      <span class="var">texto</span>: <span class="str">"Dica: se o botão não faz nada, confere se o id no HTML bate com o getElementById 👀"</span>,
+      <span class="var">curtidas</span>: <span class="val">7</span>, <span class="var">curtiu</span>: <span class="kw">false</span>,
+      <span class="var">comentarios</span>: [{ <span class="var">autor</span>: <span class="str">"Ana"</span>, <span class="var">texto</span>: <span class="str">"Foi exatamente meu erro ontem!"</span> }] },
+  ];
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+}</div>
+                    </div>
+                    <p>O truque está no <code>if (salvos) return;</code>: se já existe algo salvo, a função para ali e usa o que tem. Só cai nos 3 posts de exemplo quando <code>ct_posts</code> ainda não existe.</p>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Tela de Publicar (HTML)</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — dentro de #tela-publicar</span>
+                        <div class="code-block"><span class="code-label">www/index.html</span>&lt;ion-card&gt;
+  &lt;ion-card-content&gt;
+    &lt;ion-item&gt;
+      &lt;ion-label position="floating"&gt;O que você quer contar pra turma?&lt;/ion-label&gt;
+      &lt;ion-textarea id="post-texto" rows="4"&gt;&lt;/ion-textarea&gt;
+    &lt;/ion-item&gt;
+    &lt;ion-button expand="block" id="btn-publicar"&gt;Publicar&lt;/ion-button&gt;
+  &lt;/ion-card-content&gt;
+&lt;/ion-card&gt;</div>
+                    </div>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Desafio: Função publicarPost()</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Ligue o clique do botão #btn-publicar</h4>
+                        <p>A função precisa:</p>
+                        <ul>
+                            <li>Ler o texto de <code>post-texto</code> e usar <code>.trim()</code> — se ficar vazio, não publicar nada (pode usar um <code>if</code> que só continua se o texto não for vazio);</li>
+                            <li>Criar um objeto de post novo, no mesmo formato do capítulo 3 — use <code>Date.now()</code> como <code>id</code> (ele gera um número diferente a cada milissegundo, então nunca repete);</li>
+                            <li><code>autor</code> e <code>avatar</code> vêm de <code>perfilAtual</code> — não da tela de perfil, da variável já carregada;</li>
+                            <li><code>curtidas: 0</code>, <code>curtiu: false</code>, <code>comentarios: []</code>;</li>
+                            <li>Adicionar esse post no <strong>início</strong> do array <code>posts</code> (não no fim — post novo aparece no topo do feed). Existe um método pra isso além do <code>.push()</code>: <code>.unshift()</code>;</li>
+                            <li>Salvar <code>posts</code> no <code>localStorage</code> (chave <code>ct_posts</code>, com <code>JSON.stringify</code>);</li>
+                            <li>Limpar o campo de texto, redesenhar o feed (função do próximo capítulo — pode deixar chamada mesmo antes dela existir) e voltar pra aba do feed com <code>mostrarTela('feed')</code>.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> como isso é um clique de botão comum (não Ionic), o evento é <code>'click'</code> mesmo — <code>document.getElementById('btn-publicar').addEventListener('click', () =&gt; { ... });</code></div>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Desenhando o Feed</h2>
+                    <p>Esta parte é repetição de um padrão que você já domina — gerar HTML com template literal a partir de um array. Por isso vem pronta.</p>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">desenharFeed</span>(<span class="var">lista</span> = posts) {
+  <span class="kw">const</span> <span class="var">container</span> = document.getElementById(<span class="str">'feed-container'</span>);
+  container.innerHTML = <span class="str">""</span>;
+
+  lista.forEach(<span class="var">post</span> =&gt; {
+    <span class="kw">const</span> <span class="var">souEu</span> = post.autor === perfilAtual.nome;
+    <span class="kw">const</span> <span class="var">botaoExcluir</span> = souEu
+      ? <span class="str">`&lt;ion-button fill="clear" color="danger" onclick="excluirPost(${post.id})"&gt;&lt;ion-icon name="trash" slot="icon-only"&gt;&lt;/ion-icon&gt;&lt;/ion-button&gt;`</span>
+      : <span class="str">""</span>;
+    <span class="kw">const</span> <span class="var">comentariosHtml</span> = post.comentarios
+      .map(<span class="var">c</span> =&gt; <span class="str">`&lt;p style="font-size:0.85em; color:#666;"&gt;&lt;strong&gt;${c.autor}:&lt;/strong&gt; ${c.texto}&lt;/p&gt;`</span>)
+      .join(<span class="str">""</span>);
+
+    container.innerHTML += <span class="str">`
+      &lt;ion-card&gt;
+        &lt;ion-card-header&gt;
+          &lt;ion-card-title&gt;${post.avatar} ${post.autor}&lt;/ion-card-title&gt;
+        &lt;/ion-card-header&gt;
+        &lt;ion-card-content&gt;
+          &lt;p&gt;${post.texto}&lt;/p&gt;
+          &lt;ion-button fill="${post.curtiu ? 'solid' : 'outline'}" onclick="alternarCurtida(${post.id})"&gt;
+            ❤️ ${post.curtidas}
+          &lt;/ion-button&gt;
+          &lt;ion-button fill="clear" onclick="comentarPost(${post.id})"&gt;
+            💬 ${post.comentarios.length}
+          &lt;/ion-button&gt;
+          ${botaoExcluir}
+          ${comentariosHtml}
+        &lt;/ion-card-content&gt;
+      &lt;/ion-card&gt;
+    `</span>;
+  });
+}</div>
+                    </div>
+                    <p>Repare no parâmetro <code>lista = posts</code>: se você chamar <code>desenharFeed()</code> sem nada, ele desenha todo mundo; se chamar <code>desenharFeed(algumaListaFiltrada)</code>, desenha só o que passar. Isso vai ser útil na busca e no filtro de seguir.</p>
+                    <p>O <code>souEu</code> compara o autor do post com <code>perfilAtual.nome</code> — o botão de excluir só entra no HTML quando bate. Essa é a <strong>primeira</strong> camada de proteção; no capítulo 14 você adiciona a segunda, dentro da própria função de excluir.</p>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Desafio: Curtir um Post</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função alternarCurtida(id)</h4>
+                        <p>Ela precisa:</p>
+                        <ul>
+                            <li>Encontrar, dentro do array <code>posts</code>, o post cujo <code>id</code> bate com o parâmetro recebido — desta vez use <code>.find()</code> em vez de <code>.splice()</code>. <code>find()</code> devolve o <strong>objeto</strong> direto (não a posição), procurando o primeiro que bate com a condição: <code>posts.find(p =&gt; p.id === id)</code>;</li>
+                            <li>Inverter <code>post.curtiu</code> (<code>true</code> vira <code>false</code> e vice-versa);</li>
+                            <li>Se ficou <code>true</code>, somar 1 em <code>post.curtidas</code>; se ficou <code>false</code>, subtrair 1;</li>
+                            <li>Salvar o array <code>posts</code> inteiro de novo no <code>localStorage</code> e redesenhar o feed.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> como <code>find()</code> devolve o objeto (não uma cópia), mudar <code>post.curtiu</code> já muda ele dentro do array <code>posts</code> também — não precisa recolocar na lista.</div>
+                    <div class="faca-voce"><strong>Faça você:</strong> curta um post duas vezes seguidas. O contador deve subir e depois voltar ao número original, e o botão deve mudar de contorno pra preenchido e voltar.</div>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Desafio: Comentar num Post</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função comentarPost(id)</h4>
+                        <p>Ela precisa:</p>
+                        <ul>
+                            <li>Usar <code>prompt("Seu comentário:")</code> pra pedir o texto — se a pessoa clicar em cancelar, <code>prompt()</code> devolve <code>null</code>, então confira antes de continuar (<code>if (texto)</code> já resolve, porque <code>null</code> e string vazia são "falsy");</li>
+                            <li>Encontrar o post certo (de novo com <code>.find()</code>);</li>
+                            <li>Adicionar um objeto <code>{ autor: perfilAtual.nome, texto: texto }</code> dentro do array <code>post.comentarios</code>, com <code>.push()</code>;</li>
+                            <li>Salvar e redesenhar o feed.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> o feed do capítulo 11 já sabe desenhar os comentários existentes de cada post (variável <code>comentariosHtml</code>) — você só precisa colocar o comentário novo dentro do array antes de redesenhar.</div>
+                </section>
+
+                <!-- 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Desafio: Excluir Só os Seus Posts</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função excluirPost(id)</h4>
+                        <p>Ela precisa:</p>
+                        <ul>
+                            <li>Encontrar o post com <code>.find()</code>;</li>
+                            <li>Conferir se <code>post.autor</code> é igual a <code>perfilAtual.nome</code>. Se <strong>não</strong> for, mostrar <code>alert("Você só pode excluir seus próprios posts.")</code> e parar ali (<code>return;</code>);</li>
+                            <li>Se for, perguntar com <code>confirm("Excluir este post?")</code>;</li>
+                            <li>Se confirmar, remover o post do array — desta vez use <code>.filter()</code>: <code>posts = posts.filter(p =&gt; p.id !== id)</code> troca o array inteiro por uma cópia sem aquele post;</li>
+                            <li>Salvar e redesenhar.</li>
+                        </ul>
+                    </div>
+                    <div class="highlight">⚠️ O botão de excluir já só aparece nos seus próprios posts (capítulo 11) — mas alguém que souber programar poderia forçar a função pelo Console do navegador, passando o <code>id</code> de um post de outra pessoa. Por isso a função <em>também</em> confere o autor, e não confia só em esconder o botão. Essa ideia — nunca confiar só no que a tela esconde — vale pra qualquer sistema.</div>
+                </section>
+
+                <!-- 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Tela de Buscar</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — dentro de #tela-buscar</span>
+                        <div class="code-block"><span class="code-label">www/index.html</span>&lt;ion-searchbar id="busca-posts" placeholder="Buscar por texto ou autor"&gt;&lt;/ion-searchbar&gt;
+&lt;div id="resultado-busca"&gt;&lt;/div&gt;</div>
+                    </div>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva a função de busca</h4>
+                        <p>Ligue um listener de <code>'ionInput'</code> em <code>busca-posts</code> que:</p>
+                        <ul>
+                            <li>Pega o texto digitado (<code>evento.target.value</code>) e transforma em minúsculo;</li>
+                            <li>Filtra o array <code>posts</code> mantendo só quem tem o termo <strong>no texto OU no autor</strong> (dica: <code>.includes()</code> dentro de um <code>||</code>);</li>
+                            <li>Chama <code>desenharFeed(filtrados)</code> — mas repare que o feed é desenhado dentro de <code>feed-container</code>, que fica em outra aba. Pra funcionar na tela de buscar, adicione um segundo <code>&lt;div id="feed-container-busca"&gt;</code> junto do <code>resultado-busca</code>, e adapte <code>desenharFeed</code> pra receber também o <code>id</code> do container onde desenhar.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> a forma mais simples é dar um segundo parâmetro pra <code>desenharFeed</code>: <code>function desenharFeed(lista = posts, idContainer = 'feed-container') { const container = document.getElementById(idContainer); ... }</code>. Aí a busca chama <code>desenharFeed(filtrados, 'feed-container-busca')</code>.</div>
+                </section>
+
+                <!-- 16 -->
+                <section class="chapter" data-chapter="16">
+                    <h2>16. Desafio: Seguir Colegas e Filtrar o Feed</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — segmento de filtro, no topo de #tela-feed</span>
+                        <div class="code-block"><span class="code-label">www/index.html</span>&lt;ion-segment id="filtro-feed" value="todos"&gt;
+  &lt;ion-segment-button value="todos"&gt;&lt;ion-label&gt;Todos&lt;/ion-label&gt;&lt;/ion-segment-button&gt;
+  &lt;ion-segment-button value="seguindo"&gt;&lt;ion-label&gt;Seguindo&lt;/ion-label&gt;&lt;/ion-segment-button&gt;
+&lt;/ion-segment&gt;
+&lt;div id="feed-container"&gt;&lt;/div&gt;</div>
+                    </div>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Escreva alternarSeguir(nome) e o filtro do feed</h4>
+                        <p>Você vai precisar de:</p>
+                        <ul>
+                            <li>Uma variável <code>let seguindo = [];</code> carregada do <code>localStorage</code> (chave <code>ct_seguindo</code>) do mesmo jeito que o perfil — <code>JSON.parse(...) || []</code>;</li>
+                            <li><code>alternarSeguir(nome)</code>: se <code>seguindo.includes(nome)</code>, tire com <code>.filter()</code>; senão, adicione com <code>.push()</code>. Salve e redesenhe;</li>
+                            <li>Um botão de seguir em cada post do feed (edite o template do capítulo 11), que mostra "Seguir" ou "Seguindo" dependendo do <code>.includes()</code>, e chama <code>alternarSeguir(post.autor)</code> — mas só quando <code>post.autor !== perfilAtual.nome</code> (não faz sentido seguir a si mesmo);</li>
+                            <li>Um listener <code>'ionChange'</code> em <code>filtro-feed</code> que, quando o valor for <code>"seguindo"</code>, chama <code>desenharFeed(posts.filter(p =&gt; seguindo.includes(p.autor)))</code>; quando for <code>"todos"</code>, chama <code>desenharFeed()</code> normal.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> teste seguindo a "Ana" e depois mude o segmento pra "Seguindo" — só os posts dela devem sobrar no feed.</div>
+                </section>
+
+                <!-- 17 -->
+                <section class="chapter" data-chapter="17">
+                    <h2>17. Desafio: Modo Escuro Persistente</h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Desafio</span>
+                        <h4>Sem código novo desta vez — só memória</h4>
+                        <p>Você já implementou exatamente isso na atividade de LocalStorage e Emulador: um toggle (<code>ionChange</code>) que muda o fundo e a cor do app, e salva o estado (<code>true</code>/<code>false</code>) numa chave do <code>localStorage</code> — lembrando que tudo que vem de lá é <strong>texto</strong>, então a comparação é <code>=== 'true'</code>, não <code>=== true</code>.</p>
+                        <p>Coloque um <code>ion-toggle id="toggle-tema"</code> na tela de Perfil, e implemente:</p>
+                        <ul>
+                            <li>Salvar o estado ao mudar o toggle (chave sugerida: <code>ct_tema</code>);</li>
+                            <li>Aplicar o tema salvo assim que o app abre, junto da <code>carregarPerfil()</code>.</li>
+                        </ul>
+                    </div>
+                    <div class="dica"><strong>Dica:</strong> se travar, volte na atividade "LocalStorage e Emulador", no capítulo sobre "Salvando o Tema" — a lógica é idêntica, só muda o nome da chave.</div>
+                </section>
+
+                <!-- 18 -->
+                <section class="chapter" data-chapter="18">
+                    <h2>18. Testando Tudo no Emulador</h2>
+                    <p>Com as 4 telas funcionando no navegador, é hora de ver o ConectaTurma rodando dentro de um celular Android de verdade (simulado) — os mesmos passos da atividade anterior.</p>
+                    <div class="terminal-fake"><span class="prompt">$</span> cordova platform add android
+<span class="prompt">$</span> cordova run android</div>
+                    <ul>
+                        <li>Abra o Android Studio → Virtual Device Manager → confira que existe um dispositivo criado;</li>
+                        <li>Ligue o emulador antes de rodar o segundo comando, ou o Cordova não vai encontrar onde instalar;</li>
+                        <li>Teste as 4 abas, publique um post, curta, comente, siga alguém e busque — tudo precisa funcionar igual ao navegador.</li>
+                    </ul>
+                    <div class="highlight">Se o emulador estiver lento, é normal — ele está simulando um celular inteiro dentro do seu computador. Espere o boot terminar antes de rodar o comando.</div>
+                </section>
+
+                <!-- 19 -->
+                <section class="chapter" data-chapter="19">
+                    <h2>19. Checklist de Requisitos</h2>
+                    <p>Confira cada item com o app aberto, testando de verdade — não só lendo o código.</p>
+                    <ul class="checklist grande">
+                        <li>Salvar o perfil (nome, avatar, bio) e ele continua lá depois de fechar e abrir o app;</li>
+                        <li>O feed mostra os 3 posts de exemplo na primeira vez, e não os recria depois;</li>
+                        <li>Publicar um post novo, e ele aparece no topo do feed, com seu nome e avatar certos;</li>
+                        <li>Curtir e descurtir qualquer post — o número muda certo;</li>
+                        <li>Comentar em qualquer post — o comentário aparece embaixo do texto;</li>
+                        <li>O botão de excluir só aparece nos seus próprios posts;</li>
+                        <li>Tentar excluir um post de outra pessoa pelo Console (chamando <code>excluirPost()</code> direto com o id de outro autor) mostra o alerta de bloqueio;</li>
+                        <li>A busca filtra por texto <strong>e</strong> por nome de autor, em tempo real;</li>
+                        <li>Seguir/deixar de seguir funciona, e o filtro "Seguindo" mostra só quem você segue;</li>
+                        <li>O modo escuro muda o app e continua ligado depois de fechar e abrir de novo;</li>
+                        <li>O app roda sem erros no Console, no navegador e no emulador Android.</li>
+                    </ul>
+                </section>
+
+                <!-- 20 -->
+                <section class="chapter" data-chapter="20">
+                    <h2>20. Gabarito Comentado — Só Depois de Tentar</h2>
+                    <div class="highlight">Isto é o sistema inteiro, resolvido. Use pra <strong>comparar</strong> com o que você escreveu — sua solução pode ser diferente e estar igualmente certa. Se você ainda não tentou os Desafios, volte lá primeiro: olhar a resposta antes tira o ponto principal do exercício.</div>
+                    <div class="peca">
+                        <span class="peca-tag">www/js/index.js — completo</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="cm">// ---------- PERFIL ----------</span>
+<span class="kw">const</span> <span class="var">avatares</span> = [<span class="str">"🦊"</span>, <span class="str">"🐱"</span>, <span class="str">"🐶"</span>, <span class="str">"🐼"</span>, <span class="str">"🦁"</span>, <span class="str">"🐸"</span>, <span class="str">"🦄"</span>, <span class="str">"🐧"</span>];
+<span class="kw">let</span> <span class="var">avatarEscolhido</span> = avatares[<span class="val">0</span>];
+<span class="kw">let</span> <span class="var">perfilAtual</span>;
+
+<span class="kw">function</span> <span class="fn">desenharAvatares</span>() {
+  <span class="kw">const</span> <span class="var">grade</span> = document.getElementById(<span class="str">'grade-avatares'</span>);
+  grade.innerHTML = <span class="str">""</span>;
+  avatares.forEach(<span class="var">emoji</span> =&gt; {
+    <span class="kw">const</span> <span class="var">sel</span> = emoji === avatarEscolhido ? <span class="str">"3px solid #3880ff"</span> : <span class="str">"3px solid transparent"</span>;
+    grade.innerHTML += <span class="str">`&lt;button style="font-size:1.6em;border:${sel};border-radius:10px;background:#f5f5f5;margin:4px;padding:6px 10px;" onclick="escolherAvatar('${emoji}')"&gt;${emoji}&lt;/button&gt;`</span>;
+  });
+}
+<span class="kw">function</span> <span class="fn">escolherAvatar</span>(<span class="var">emoji</span>) { avatarEscolhido = emoji; desenharAvatares(); }
+
+<span class="kw">function</span> <span class="fn">salvarPerfil</span>() {
+  <span class="kw">const</span> <span class="var">nome</span> = document.getElementById(<span class="str">'perfil-nome'</span>).value;
+  <span class="kw">const</span> <span class="var">bio</span> = document.getElementById(<span class="str">'perfil-bio'</span>).value;
+  <span class="kw">const</span> <span class="var">perfil</span> = { <span class="var">nome</span>, <span class="var">avatar</span>: avatarEscolhido, <span class="var">bio</span> };
+  localStorage.setItem(<span class="str">'ct_perfil'</span>, JSON.stringify(perfil));
+  perfilAtual = perfil;
+  alert(<span class="str">"Perfil salvo!"</span>);
+}
+
+<span class="kw">function</span> <span class="fn">carregarPerfil</span>() {
+  <span class="kw">const</span> <span class="var">salvo</span> = JSON.parse(localStorage.getItem(<span class="str">'ct_perfil'</span>));
+  perfilAtual = salvo || { <span class="var">nome</span>: <span class="str">"Visitante"</span>, <span class="var">avatar</span>: <span class="str">"🦊"</span>, <span class="var">bio</span>: <span class="str">""</span> };
+  document.getElementById(<span class="str">'perfil-nome'</span>).value = perfilAtual.nome;
+  document.getElementById(<span class="str">'perfil-bio'</span>).value = perfilAtual.bio;
+  avatarEscolhido = perfilAtual.avatar;
+  desenharAvatares();
+}
+
+<span class="cm">// ---------- POSTS ----------</span>
+<span class="kw">let</span> <span class="var">posts</span> = [];
+<span class="kw">let</span> <span class="var">seguindo</span> = [];
+
+<span class="kw">function</span> <span class="fn">carregarOuSemearPosts</span>() {
+  <span class="kw">const</span> <span class="var">salvos</span> = JSON.parse(localStorage.getItem(<span class="str">'ct_posts'</span>));
+  <span class="kw">if</span> (salvos) { posts = salvos; <span class="kw">return</span>; }
+  posts = [
+    { <span class="var">id</span>: <span class="val">1</span>, <span class="var">autor</span>: <span class="str">"Ana"</span>, <span class="var">avatar</span>: <span class="str">"🐱"</span>, <span class="var">texto</span>: <span class="str">"Gente, terminei o app de missões ontem! Alguém mais travou no localStorage? 😅"</span>, <span class="var">curtidas</span>: <span class="val">3</span>, <span class="var">curtiu</span>: <span class="kw">false</span>, <span class="var">comentarios</span>: [{ <span class="var">autor</span>: <span class="str">"Bruno"</span>, <span class="var">texto</span>: <span class="str">"Eu travei kkkk"</span> }] },
+    { <span class="var">id</span>: <span class="val">2</span>, <span class="var">autor</span>: <span class="str">"Bruno"</span>, <span class="var">avatar</span>: <span class="str">"🐶"</span>, <span class="var">texto</span>: <span class="str">"Rodando meu primeiro app no emulador agora. Muito irado ver funcionando de verdade!"</span>, <span class="var">curtidas</span>: <span class="val">5</span>, <span class="var">curtiu</span>: <span class="kw">false</span>, <span class="var">comentarios</span>: [] },
+    { <span class="var">id</span>: <span class="val">3</span>, <span class="var">autor</span>: <span class="str">"Carla"</span>, <span class="var">avatar</span>: <span class="str">"🐼"</span>, <span class="var">texto</span>: <span class="str">"Dica: se o botão não faz nada, confere se o id no HTML bate com o getElementById 👀"</span>, <span class="var">curtidas</span>: <span class="val">7</span>, <span class="var">curtiu</span>: <span class="kw">false</span>, <span class="var">comentarios</span>: [{ <span class="var">autor</span>: <span class="str">"Ana"</span>, <span class="var">texto</span>: <span class="str">"Foi exatamente meu erro ontem!"</span> }] },
+  ];
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+}
+
+<span class="kw">function</span> <span class="fn">desenharFeed</span>(<span class="var">lista</span> = posts, <span class="var">idContainer</span> = <span class="str">'feed-container'</span>) {
+  <span class="kw">const</span> <span class="var">container</span> = document.getElementById(idContainer);
+  container.innerHTML = <span class="str">""</span>;
+  lista.forEach(<span class="var">post</span> =&gt; {
+    <span class="kw">const</span> <span class="var">souEu</span> = post.autor === perfilAtual.nome;
+    <span class="kw">const</span> <span class="var">botaoExcluir</span> = souEu ? <span class="str">`&lt;ion-button fill="clear" color="danger" onclick="excluirPost(${post.id})"&gt;&lt;ion-icon name="trash" slot="icon-only"&gt;&lt;/ion-icon&gt;&lt;/ion-button&gt;`</span> : <span class="str">""</span>;
+    <span class="kw">const</span> <span class="var">botaoSeguir</span> = souEu ? <span class="str">""</span> : <span class="str">`&lt;ion-button fill="outline" size="small" onclick="alternarSeguir('${post.autor}')"&gt;${seguindo.includes(post.autor) ? 'Seguindo' : 'Seguir'}&lt;/ion-button&gt;`</span>;
+    <span class="kw">const</span> <span class="var">comentariosHtml</span> = post.comentarios.map(<span class="var">c</span> =&gt; <span class="str">`&lt;p style="font-size:0.85em;color:#666;"&gt;&lt;strong&gt;${c.autor}:&lt;/strong&gt; ${c.texto}&lt;/p&gt;`</span>).join(<span class="str">""</span>);
+    container.innerHTML += <span class="str">`
+      &lt;ion-card&gt;
+        &lt;ion-card-header&gt;&lt;ion-card-title&gt;${post.avatar} ${post.autor}&lt;/ion-card-title&gt;${botaoSeguir}&lt;/ion-card-header&gt;
+        &lt;ion-card-content&gt;
+          &lt;p&gt;${post.texto}&lt;/p&gt;
+          &lt;ion-button fill="${post.curtiu ? 'solid' : 'outline'}" onclick="alternarCurtida(${post.id})"&gt;❤️ ${post.curtidas}&lt;/ion-button&gt;
+          &lt;ion-button fill="clear" onclick="comentarPost(${post.id})"&gt;💬 ${post.comentarios.length}&lt;/ion-button&gt;
+          ${botaoExcluir}${comentariosHtml}
+        &lt;/ion-card-content&gt;
+      &lt;/ion-card&gt;
+    `</span>;
+  });
+}
+
+<span class="kw">function</span> <span class="fn">publicarPost</span>() {
+  <span class="kw">const</span> <span class="var">campo</span> = document.getElementById(<span class="str">'post-texto'</span>);
+  <span class="kw">const</span> <span class="var">texto</span> = campo.value.trim();
+  <span class="kw">if</span> (texto === <span class="str">""</span>) <span class="kw">return</span>;
+  posts.unshift({ <span class="var">id</span>: Date.now(), <span class="var">autor</span>: perfilAtual.nome, <span class="var">avatar</span>: perfilAtual.avatar, <span class="var">texto</span>, <span class="var">curtidas</span>: <span class="val">0</span>, <span class="var">curtiu</span>: <span class="kw">false</span>, <span class="var">comentarios</span>: [] });
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+  campo.value = <span class="str">""</span>;
+  desenharFeed();
+  mostrarTela(<span class="str">'feed'</span>);
+}
+document.getElementById(<span class="str">'btn-publicar'</span>).addEventListener(<span class="str">'click'</span>, publicarPost);
+
+<span class="kw">function</span> <span class="fn">alternarCurtida</span>(<span class="var">id</span>) {
+  <span class="kw">const</span> <span class="var">post</span> = posts.find(<span class="var">p</span> =&gt; p.id === id);
+  post.curtiu = !post.curtiu;
+  post.curtidas += post.curtiu ? <span class="val">1</span> : -<span class="val">1</span>;
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+  desenharFeed();
+}
+
+<span class="kw">function</span> <span class="fn">comentarPost</span>(<span class="var">id</span>) {
+  <span class="kw">const</span> <span class="var">texto</span> = prompt(<span class="str">"Seu comentário:"</span>);
+  <span class="kw">if</span> (!texto) <span class="kw">return</span>;
+  <span class="kw">const</span> <span class="var">post</span> = posts.find(<span class="var">p</span> =&gt; p.id === id);
+  post.comentarios.push({ <span class="var">autor</span>: perfilAtual.nome, <span class="var">texto</span> });
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+  desenharFeed();
+}
+
+<span class="kw">function</span> <span class="fn">excluirPost</span>(<span class="var">id</span>) {
+  <span class="kw">const</span> <span class="var">post</span> = posts.find(<span class="var">p</span> =&gt; p.id === id);
+  <span class="kw">if</span> (post.autor !== perfilAtual.nome) { alert(<span class="str">"Você só pode excluir seus próprios posts."</span>); <span class="kw">return</span>; }
+  <span class="kw">if</span> (!confirm(<span class="str">"Excluir este post?"</span>)) <span class="kw">return</span>;
+  posts = posts.filter(<span class="var">p</span> =&gt; p.id !== id);
+  localStorage.setItem(<span class="str">'ct_posts'</span>, JSON.stringify(posts));
+  desenharFeed();
+}
+
+<span class="kw">function</span> <span class="fn">alternarSeguir</span>(<span class="var">nome</span>) {
+  seguindo = seguindo.includes(nome) ? seguindo.filter(<span class="var">n</span> =&gt; n !== nome) : [...seguindo, nome];
+  localStorage.setItem(<span class="str">'ct_seguindo'</span>, JSON.stringify(seguindo));
+  desenharFeed();
+}
+
+document.getElementById(<span class="str">'busca-posts'</span>).addEventListener(<span class="str">'ionInput'</span>, (<span class="var">e</span>) =&gt; {
+  <span class="kw">const</span> <span class="var">termo</span> = e.target.value.toLowerCase();
+  <span class="kw">const</span> <span class="var">filtrados</span> = posts.filter(<span class="var">p</span> =&gt; p.texto.toLowerCase().includes(termo) || p.autor.toLowerCase().includes(termo));
+  desenharFeed(filtrados, <span class="str">'feed-container-busca'</span>);
+});
+
+document.getElementById(<span class="str">'filtro-feed'</span>).addEventListener(<span class="str">'ionChange'</span>, (<span class="var">e</span>) =&gt; {
+  <span class="kw">if</span> (e.target.value === <span class="str">'seguindo'</span>) desenharFeed(posts.filter(<span class="var">p</span> =&gt; seguindo.includes(p.autor)));
+  <span class="kw">else</span> desenharFeed();
+});
+
+document.getElementById(<span class="str">'toggle-tema'</span>).addEventListener(<span class="str">'ionChange'</span>, (<span class="var">e</span>) =&gt; {
+  document.body.style.background = e.target.checked ? <span class="str">"#1a1a2e"</span> : <span class="str">"#ffffff"</span>;
+  document.body.style.color = e.target.checked ? <span class="str">"#eee"</span> : <span class="str">"#333"</span>;
+  localStorage.setItem(<span class="str">'ct_tema'</span>, e.target.checked);
+});
+
+<span class="cm">// ---------- TABS ----------</span>
+<span class="kw">function</span> <span class="fn">mostrarTela</span>(<span class="var">nome</span>) {
+  document.querySelectorAll(<span class="str">'.tela'</span>).forEach(<span class="var">t</span> =&gt; t.style.display = <span class="str">'none'</span>);
+  document.getElementById(<span class="str">`tela-${nome}`</span>).style.display = <span class="str">'block'</span>;
+}
+
+<span class="cm">// ---------- INÍCIO ----------</span>
+<span class="kw">const</span> <span class="var">seguindoSalvo</span> = JSON.parse(localStorage.getItem(<span class="str">'ct_seguindo'</span>));
+seguindo = seguindoSalvo || [];
+<span class="kw">const</span> <span class="var">temaSalvo</span> = localStorage.getItem(<span class="str">'ct_tema'</span>) === <span class="str">'true'</span>;
+<span class="kw">if</span> (temaSalvo) { document.body.style.background = <span class="str">"#1a1a2e"</span>; document.body.style.color = <span class="str">"#eee"</span>; document.getElementById(<span class="str">'toggle-tema'</span>).checked = <span class="kw">true</span>; }
+carregarPerfil();
+carregarOuSemearPosts();
+desenharFeed();</div>
+                    </div>
+                    <div class="dica"><strong>Ideias pra ir além (bônus):</strong> editar um post já publicado; mostrar quantos posts cada autor tem no card de perfil; guardar uma foto de perfil de verdade com <code>&lt;input type="file"&gt;</code>; um botão de "exportar meus posts" que baixa um arquivo <code>.json</code>.</div>
+                    <div class="success">🎉 Parabéns — você projetou e construiu um sistema completo a partir de uma especificação, não de um passo a passo. Isso é, literalmente, o trabalho de um(a) programador(a).</div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <a href="../../atividade.html?curso=cordova" style="display:block; text-align:center; padding: 16px; color:#3880ff; text-decoration:none; font-weight:600;">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+        <footer><p><strong>Ionic — Projeto Livre: Rede Social</strong> | 20 capítulos | ~3h de projeto</p></footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 20;
+        const chapters = [
+            "Bem-vindo ao Projeto Livre", "O Sistema que Você Vai Construir", "Planejando os Dados",
+            "Tabs de Navegação", "Tela de Perfil (HTML)", "Desafio: Salvar o Perfil",
+            "Desafio: Carregar o Perfil", "A Base de Posts", "Tela de Publicar (HTML)",
+            "Desafio: Função publicarPost()", "Desenhando o Feed", "Desafio: Curtir um Post",
+            "Desafio: Comentar num Post", "Desafio: Excluir Só os Seus Posts", "Tela de Buscar",
+            "Desafio: Seguir Colegas", "Desafio: Modo Escuro Persistente", "Testando no Emulador",
+            "Checklist de Requisitos", "Gabarito Comentado"
+        ];
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((c, i) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${i + 1}. ${c}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(i + 1);
+                a.className = i + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a); tocList.appendChild(li);
+            });
+        }
+        function showChapter(n) {
+            document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+            document.querySelectorAll('.chapter')[n - 1].classList.add('active');
+            updateTOC(); updateButtons(); updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, i) => {
+                link.classList.remove('active');
+                if (i + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+        function updateProgress() {
+            document.getElementById('progressFill').style.width = (currentChapter / totalChapters) * 100 + '%';
+        }
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

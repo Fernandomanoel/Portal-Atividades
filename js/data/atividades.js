@@ -64,20 +64,6 @@ const ATIVIDADES = [
         url: "atividades/paginas/windows11-personalizando-area-trabalho.html",
       },
       {
-        titulo: "Gerenciador de Tarefas",
-        descricao:
-          "Revisão (Dia 2) com 5 atividades: Gerenciador de Tarefas, captura de tela com a Ferramenta de Recorte, OneDrive, criação de atalhos e segurança/atualizações do Windows.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-gerenciador-tarefas.html",
-      },
-      {
-        titulo: "Produtividade e Acessibilidade",
-        descricao:
-          "Revisão (Dia 3) com 5 atividades: Bloco de Notas e WordPad, Calendário, Microsoft To Do, recursos de Acessibilidade e organização de janelas com Snap Layouts.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-produtividade-acessibilidade.html",
-      },
-      {
         titulo: "Copiar, Recortar e Colar Arquivos",
         descricao:
           "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
@@ -85,24 +71,32 @@ const ATIVIDADES = [
         url: "atividades/paginas/windows11-copiar-recortar-colar.html",
       },
       {
-        titulo: "Desinstalar o Avast no Windows 11",
+        titulo: "Personalização Avançada",
         descricao:
-          "Atividade prática para aprender a desinstalar o Avast Antivirus no Windows 11 usando as Configurações do sistema.",
+          "6 atividades além do papel de parede: cursor do mouse, cores de destaque, plano de fundo em apresentação de slides, tema salvo, sons do sistema e comportamento da barra de tarefas.",
         tipo: "link",
-        url: "atividades/paginas/windows11-desinstalar-avast.html",
+        url: "atividades/paginas/windows11-personalizacao-avancada.html",
       },
       {
-        titulo: "Uso da Tecla SHIFT no Bloco de Notas",
+        titulo: "Arquivos, Compactação e Segurança de Pastas",
         descricao:
-          "Atividade prática para treinar o uso da tecla SHIFT no Windows, utilizando o Bloco de Notas para digitação de textos com letras maiúsculas e símbolos do teclado.",
+          "6 atividades: estrutura de pastas de projeto, renomeação em lote, compactação em ZIP, compactação NTFS, ocultar pastas e verificar permissões de segurança.",
         tipo: "link",
-        url: "atividades/paginas/windows11-tecla-shift-bloco-notas.html",
+        url: "atividades/paginas/windows11-arquivos-compactacao-seguranca.html",
       },
       {
-        titulo: "Lista de Atividades antes da Prova",
-        descricao: "Revisão geral do curso, para praticar antes da avaliação.",
+        titulo: "Particionamento de Disco e Memória",
+        descricao:
+          "6 atividades com o Gerenciamento de Disco: criar e formatar uma partição de até 1 GB, usá-la, desfazê-la com segurança, e entender RAM vs. memória virtual.",
         tipo: "link",
-        url: "atividades/paginas/windows11-lista-atividades-prova.html",
+        url: "atividades/paginas/windows11-particionamento-memoria.html",
+      },
+      {
+        titulo: "Atalhos de Teclado e Acessibilidade",
+        descricao:
+          "6 atividades: atalhos essenciais, organizar janelas sem mouse, um desafio 'sem mouse', teclas de aderência/filtragem, Acesso por Voz, Narrador, alto contraste e Lupa.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-atalhos-acessibilidade.html",
       },
     ],
   },
@@ -817,15 +811,17 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Fazendo o Primeiro Código",
-        descricao: "Aprendendo o início da programação por meio do Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Primeiro programa em Python.pdf",
+        descricao:
+          "Primeiro contato com Python: print(), comentários e tipos de dados básicos (texto, inteiro, decimal), com exercícios progressivos.",
+        tipo: "link",
+        url: "atividades/paginas/python-primeiro-codigo.html",
       },
       {
         titulo: "Lógica de Programação em Python",
-        descricao: "Prática de lógica de programação utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Lógica de Programação em Python.pdf",
+        descricao:
+          "Variáveis, input() e conversão de tipos (int/float), f-strings, e um mini formulário com várias perguntas.",
+        tipo: "link",
+        url: "atividades/paginas/python-logica-e-variaveis.html",
       },
       {
         titulo: "Entrada de Dados em Python",
@@ -836,9 +832,10 @@ const ATIVIDADES = [
       },
       {
         titulo: "Usando e aprendendo Operadores Matemáticos",
-        descricao: "Prática dos operadores matemáticos básicos utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Usando e aprendendo Operadores Matemáticos.pdf",
+        descricao:
+          "Os 5 operadores aritméticos, a diferença entre / e //, operadores de comparação (==, >, <...) e uma calculadora completa.",
+        tipo: "link",
+        url: "atividades/paginas/python-operadores-matematicos.html",
       },
       {
         titulo: "Lista de Atividades",
@@ -859,16 +856,17 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Desvendando a Lógica de Programação!",
-        descricao: "Atividade introdutória para compreender a ordem correta das instruções.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - De inicio na Lógica de Programação.pdf",
+        descricao:
+          "O que é um algoritmo, variáveis e tipos, estrutura SE/SENÃO, com exercícios em Portugol (Olá Mundo, soma, maioridade, par/ímpar, média de notas).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-fundamentos.html",
       },
       {
         titulo: "Além do Básico — Lógica Avançada",
         descricao:
-          "Continuação da atividade introdutória, com problemas que exigem mais raciocínio lógico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - Além do Básico Lógica avançada.pdf",
+          "Vetores e matrizes, funções com retorno, laço enquanto x para, com 5 desafios em Portugol (média, busca, matriz 3x3, função e validação).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-avancada.html",
       },
     ],
   },
@@ -938,9 +936,15 @@ const ATIVIDADES = [
     grupo: "extras",
     sigla: "IA",
     cor: "#ff4d4d",
-    // Os PDFs de IA ainda não foram enviados — assim que estiverem em
-    // atividades/pdfs/IA/, é só acrescentar os materiais aqui.
-    materiais: [],
+    materiais: [
+      {
+        titulo: "Introdução à IA e Engenharia de Prompt",
+        descricao:
+          "O que é IA/IA generativa/LLM na prática, como escrever bons prompts (com exemplos ruim x bom), atividade guiada numa IA de conversação gratuita, e uso responsável.",
+        tipo: "link",
+        url: "atividades/paginas/ia-introducao-e-prompts.html",
+      },
+    ],
   },
 
   {
@@ -954,15 +958,16 @@ const ATIVIDADES = [
       {
         titulo: "Conhecendo o Godot",
         descricao:
-          "Primeiro contato com a Godot: interface, cena, nós e como o projeto é organizado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3d - Conhecendo o Godot.pdf",
+          "Primeiro contato com a Godot: interface, árvore de nós, Sprite2D, Inspector (Position/Scale/Rotation) e como o projeto é organizado.",
+        tipo: "link",
+        url: "atividades/paginas/godot-conhecendo-o-editor.html",
       },
       {
         titulo: "Criando o Primeiro Jogo 3D",
-        descricao: "Atividade prática montando um jogo 3D simples do começo ao fim na Godot.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3D - Criando o Primeiro Jogo.pdf",
+        descricao:
+          "Monte o jogo \"Pegue a Moeda\" do zero: jogador, colisão, script de movimento em GDScript explicado linha por linha, e detecção de vitória.",
+        tipo: "link",
+        url: "atividades/paginas/godot-primeiro-jogo.html",
       },
     ],
   },
@@ -989,9 +994,10 @@ const ATIVIDADES = [
       },
       {
         titulo: "Cadastrando Dados no SQL",
-        descricao: "Prática de pegar uma planilha e cadastrar usando um banco de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/ATIVIDADE PRÁTICA - CADASTRANDO DADOS NO SQL.pdf",
+        descricao:
+          "Crie a tabela de produtos de uma loja, cadastre os dados e pratique SELECT, WHERE, ORDER BY, UPDATE e DELETE.",
+        tipo: "link",
+        url: "atividades/paginas/sql-cadastro-de-produtos.html",
       },
       {
         titulo: "Baixar MySQL Workbench",
@@ -1004,6 +1010,98 @@ const ATIVIDADES = [
         descricao: "Servidor local usado para rodar o banco de dados.",
         tipo: "link",
         url: "https://sourceforge.net/projects/xampp/",
+      },
+    ],
+  },
+
+  {
+    slug: "cordova",
+    titulo: "Apps Mobile com Ionic e Cordova",
+    descricao: "Construa um aplicativo de celular de verdade, do primeiro componente ao emulador Android.",
+    grupo: "extras",
+    sigla: "ION",
+    cor: "#3880ff",
+    materiais: [
+      {
+        titulo: "Ionic e Cordova — Primeiros Passos",
+        descricao:
+          "Guia completo com índice navegável (16 capítulos): o que são Ionic e Cordova, criando o projeto pelo terminal, primeiro componente, cores, e o Console como ferramenta de investigação de erros.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-primeiros-passos.html",
+      },
+      {
+        titulo: "Ionic — Prática de Componentes",
+        descricao:
+          "Mão na massa com 15 capítulos: input, button, list, badge, chip, toggle, searchbar, fab, avatar, grid e mais — cada peça com código pronto para testar e um desafio para fazer sozinho.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-componentes-visuais.html",
+      },
+      {
+        titulo: "Ionic — Prática de JavaScript",
+        descricao:
+          "15 capítulos só de código: array de missões, adicionar, excluir, marcar como concluída, busca em tempo real, ordenar a lista, modo escuro — e uma caçada a três bugs de propósito.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-javascript-e-listas.html",
+      },
+      {
+        titulo: "Ionic — LocalStorage e Emulador",
+        descricao:
+          "14 capítulos: salvando as missões no localStorage, testando a persistência, e o passo a passo completo para criar o celular virtual no Android Studio e rodar o app nele.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-localstorage-e-emulador.html",
+      },
+      {
+        titulo: "Ionic — Projeto Final",
+        descricao:
+          "13 capítulos de desafios (tema de cores, editar missão, ordenar por status, animação, limpar concluídas) fechando com o código de referência completo do app inteiro.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-final.html",
+      },
+      {
+        titulo: "Ionic — Projeto Livre: Rede Social",
+        descricao:
+          "20 capítulos: em vez de código pronto, uma especificação completa. Construa do zero uma rede social (perfil, feed, curtir, comentar, excluir só os seus posts, buscar, seguir colegas) com desafios guiados por dica e um gabarito comentado no final.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-livre-rede-social.html",
+      },
+    ],
+  },
+
+  {
+    slug: "administracao",
+    titulo: "Administração",
+    descricao: "Rotinas administrativas de escritório em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "AD",
+    cor: "#1e3a8a",
+    materiais: [
+      {
+        titulo: "Simulação Prática de Rotinas Administrativas",
+        descricao:
+          "6 módulos: gestão documental (GED) e nomenclatura de arquivos, comunicação corporativa, reembolso de viagens (RDV), cotação de fornecedores, organização de eventos e criação de um POP.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-assistente-simulacao-integrada.html",
+      },
+      {
+        titulo: "Simulação de Operações Administrativas e Suporte de Gestão",
+        descricao:
+          "6 módulos: ata de reunião a partir de notas soltas, auditoria de ponto e escala, controle patrimonial, análise de minuta contratual e vencimentos de licenças, KPIs com plano 5W2H e triagem de ligações.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-rotinas-avancadas.html",
+      },
+      {
+        titulo: "Simulação de Rotinas de Escritório e Suporte Operacional",
+        descricao:
+          "6 módulos: contas a pagar e receber, itinerário de viagem corporativa, controle de estoque de almoxarifado, priorização com Matriz GUT, e-mail de pós-venda e relatório gerencial.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-rotinas-suporte-operacional.html",
+      },
+      {
+        titulo: "Simulação de Eficiência Operacional e Gestão de Rotinas",
+        descricao:
+          "6 módulos: avaliação de SLA de fornecedores, onboarding de novo colaborador, quadro Kanban, auditoria de caixa pequeno, ergonomia/segurança do escritório e etiqueta digital.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-eficiencia-operacional.html",
       },
     ],
   },

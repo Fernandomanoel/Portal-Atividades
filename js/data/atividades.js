@@ -415,60 +415,12 @@ const ATIVIDADES = [
     cor: "#7c4dff",
     materiais: [
       {
-        titulo: "Digitação com Personagens de Desenhos",
-        descricao:
-          "Atividade divertida para crianças aprenderem digitação no Word usando textos com personagens de desenhos animados, treinando atenção, parágrafos e uso correto do teclado.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-desenhos-animados.html",
-      },
-      {
-        titulo: "Treinando Digitação de Textos Longos",
-        descricao:
-          "Atividade prática para desenvolver a digitação no Word, com textos mais longos e simples.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-textos-longos.html",
-      },
-      {
-        titulo: "Digitação com a Turma da Mônica",
-        descricao:
-          "Atividade prática para crianças aprenderem digitação no Word com textos da Turma da Mônica, trabalhando parágrafos, inserção de imagens e uso de lista com marcadores.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-turma-da-monica.html",
-      },
-      {
-        titulo: "Digitação com O Incrível Mundo de Gumball",
-        descricao:
-          "Atividade educativa para crianças treinarem digitação no Word com textos inspirados em O Incrível Mundo de Gumball, incluindo inserção de imagens e criação de lista não ordenada.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-gumball.html",
-      },
-      {
-        titulo: "Digitando com a Patrulha Canina",
-        descricao:
-          "Atividade básica e interativa para crianças aprenderem digitação no Word, inserir imagens e criar listas não ordenadas.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-patrulha-canina.html",
-      },
-      {
-        titulo: "Digitando com o Bluey",
-        descricao:
-          "Atividade educativa para crianças treinarem digitação no Word com textos grandes, listas com bolinhas e inserção de imagens, usando a personagem Bluey.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-bluey.html",
-      },
-      {
-        titulo: "Digitação com PJ Masks",
-        descricao:
-          "Material prático para crianças aprenderem digitação no Word, organizar textos, criar listas não ordenadas e inserir imagens com os personagens PJ Masks.",
-        tipo: "link",
-        url: "atividades/paginas/kids-digitacao-pj-masks.html",
-      },
-      {
         titulo: "Missão: Computador Arrumado",
         descricao:
           "Atividade guiada para crianças aprenderem a desinstalar programas (Adobe, WinRAR, McAfee) pelas Configurações do Windows e a ativar os atalhos padrão da área de trabalho, com checklist interativo.",
         tipo: "link",
         url: "atividades/paginas/kids-desinstalar-programas-atalhos.html",
+        categoria: "windows",
       },
       {
         titulo: "Missão: Arquivos Organizados",
@@ -476,6 +428,7 @@ const ATIVIDADES = [
           "Atividade guiada para crianças aprenderem a criar pastas, mover, recortar/colar (Ctrl+X/Ctrl+V) e compactar arquivos em ZIP, com checklist interativo de prática.",
         tipo: "link",
         url: "atividades/paginas/kids-organizando-arquivos.html",
+        categoria: "windows",
       },
       {
         titulo: "Missão: Meu Primeiro Relatório",
@@ -497,6 +450,7 @@ const ATIVIDADES = [
           "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-missao-arquivos.html",
+        categoria: "windows",
       },
       {
         titulo: "Minha Grande Aventura no Windows 11",
@@ -504,6 +458,31 @@ const ATIVIDADES = [
           "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-aventura-windows11.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Personalizando o Windows 11",
+        descricao:
+          "Atividade bem visual sobre personalização do Windows 11: papel de fundo, cores, temas, tela de bloqueio, sons e barra de tarefas, com trilhas de onde clicar, jogos de ordenar/ligar e checklist final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-personalizando-windows11.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Conhecendo o Computador",
+        descricao:
+          "Atividade interativa para descobrir as partes do computador (monitor, mouse, CPU, HD, portas de conexão) com jogos de explorar, jogo de pintar separando peças de programas e quiz final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-conhecendo-o-computador.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Jogos do Computador",
+        descricao:
+          "Atividade extensa e prática com 10 jogos: ligar peça ao nome, caça-figuras (ache o nome da figura no caça-palavras), memória, montar o computador, completar palavras e mais.",
+        tipo: "link",
+        url: "atividades/paginas/kids-jogos-do-computador.html",
+        categoria: "windows",
       },
     ],
   },

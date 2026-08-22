@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Auto-Corretiva de Marketing, Branding e Mídia</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #4338ca;
+            --brand-light: #e0e7ff;
+            --accent-color: #3730a3;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #4338ca 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #c7d2fe;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Painel de Status */
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .status-info {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-validate-all:active {
+            transform: scale(0.98);
+        }
+
+        /* Módulos */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(67, 56, 202, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Badges de Feedback */
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa com Validação Automática</span>
+        <h1>Atividade Auto-Corretiva de Marketing, Branding e Mídia</h1>
+        <p>Desenvolva estratégias de promoção, copywriting e análise de mídia diretamente nesta tela. O sistema possui correção instantânea com algoritmos anti-spam que rejeitam textos aleatórios, sequências numéricas e digitações incoerentes.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status do Progresso: <span id="completion-text" style="color: var(--warning-color);">Em Execução</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Respostas" para verificar seu desempenho.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Respostas</button>
+    </div>
+
+    <!-- MÓDULO 1: OS 4 PS DO MARKETING (MÚLTIPLA ESCOLHA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Composto de Marketing (Os 4 Ps)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Questão 1:</strong> Uma empresa decidiu criar um programa de descontos progressivos para clientes recorrentes e divulgar essa ação através de anúncios patrocinados no Instagram. A quais elementos dos 4 Ps do Marketing essas duas ações pertencem, respectivamente?
+        </div>
+
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="m1" value="a">
+                a) Produto e Praça.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="m1" value="b">
+                b) Preço e Promoção.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="m1" value="c">
+                c) Praça e Preço.
+            </label>
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: COPYWRITING PERSUASIVO - MÉTODO PAS (PROBLEMA, AGITAÇÃO, SOLUÇÃO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Redação Publicitária: Copywriting no Método PAS</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Desafio de Copywriting:</strong> Escreva um texto de anúncio curto para um **aplicativo de marmitas saudáveis por assinatura** utilizando a estrutura **PAS** (Apresente o *Problema*, *Agite* a frustração do cliente e apresente a *Solução*).
+        </div>
+
+        <div class="task-instruction">
+            ✍️ Digite o texto do anúncio no campo abaixo (O sistema valida a presença de estrutura textual coerente e vocabulário relevante):
+        </div>
+
+        <textarea id="m2-copy" class="input-box" placeholder="Ex: Sem tempo para cozinhar durante a semana? Comer mal na rua prejudica sua saúde e pesa no bolso. O NutriBox entrega refeições saudáveis, saborosas e prontas em 3 minutos na sua porta..."></textarea>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: POSICIONAMENTO E SLOGAN DE MARCA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Branding: Criação de Slogan e Proposta de Valor</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Crie a identidade verbal de uma nova marca de **tênis de corrida sustentável feitos de plástico reciclado do oceano**.
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Slogan da Marca (Frase marcante e curta):</label>
+                <input type="text" id="m3-slogan" class="input-box" placeholder="Ex: A cada passo, um oceano mais limpo.">
+                <div id="feedback-m3-slogan" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Diferencial Competitivo (Proposta de Valor):</label>
+                <input type="text" id="m3-diferencial" class="input-box" placeholder="Ex: Alta performance esportiva aliada à retirada de 1kg de plástico por par vendido.">
+                <div id="feedback-m3-diferencial" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: ADEQUAÇÃO DE FORMATO POR REDE SOCIAL (SELETORES INTERATIVOS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Planejamento de Mídia: Formato de Conteúdo vs. Objetivo</h2>
+        </div>
+
+        <div class="scenario-description">
+            Associe o tipo de formato de mídia ao objetivo estratégico mais adequado:
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Objetivo de Comunicação</th>
+                        <th style="width: 50%;">Melhor Formato Recomendado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Explicar um passo a passo educativo com 5 dicas detalhadas.</td>
+                        <td>
+                            <select id="m4-f1" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="carrossel">Carrossel de Imagens (Instagram)</option>
+                                <option value="stories">Stories Interativos com Enquete</option>
+                                <option value="artigo">Artigo de Opinião no LinkedIn</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Interagir rapidamente com os seguidores tirando dúvidas em tempo real.</td>
+                        <td>
+                            <select id="m4-f2" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="carrossel">Carrossel de Imagens (Instagram)</option>
+                                <option value="stories">Stories Interativos com Caixinha de Perguntas</option>
+                                <option value="artigo">Artigo de Opinião no LinkedIn</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ANÁLISE DE GESTÃO DE CRISE E REPUTAÇÃO (AVALIAÇÃO TEXTUAL) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Gestão de Reputação: Atendimento e Retenção de Clientes</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Estudo de Caso:</strong> Um cliente insatisfeito postou uma reclamação pública alegando que o produto atrasou 5 dias e chegou com a embalagem amassada. Escreva uma resposta pública profissional em nome da empresa, demonstrando **agilidade, empatia e solução do problema**.
+        </div>
+
+        <textarea id="m5-crise" class="input-box" style="min-height: 120px;" placeholder="Escreva a resposta pública da marca..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO ANTI-SPAM, ANTI-NUMÉRICO E ANTI-GIBBERISH
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Tamanho mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Texto muito curto. Digite ao menos ${minComprimento} caracteres coerentes.` };
+        }
+
+        // 2. Filtro de números isolados
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Resposta inválida: Você digitou apenas números. Escreva uma resposta em português." };
+        }
+
+        // 3. Filtro de texto sem espaços (palavrões aleatórios no teclado)
+        if (!limpo.includes(' ') && limpo.length > 15) {
+            return { valido: false, motivo: "Resposta inválida: Digitação contínua sem espaços detectada." };
+        }
+
+        // 4. Mínimo de palavras reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Escreva uma frase completa com pelo menos ${minPalavras} palavras.` };
+        }
+
+        // 5. Proporção de Vogais (Detecta teclado arrastado ex: "sfdghjkl")
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou aleatório. Utilize palavras reais da língua portuguesa." };
+        }
+
+        // 6. Padrões de repetição de teclas
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão de repetição de teclado detectado. Digite uma resposta séria." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    // APLICAR FEEDBACK VISUAL
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    // VALIDAÇÃO GERAL
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // M1
+        const m1Selected = document.querySelector('input[name="m1"]:checked');
+        if (m1Selected && m1Selected.value === 'b') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Correto! Descontos referem-se ao Preço e anúncios referem-se à Promoção." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. A opção B é a correta (Preço e Promoção)." });
+        }
+
+        // M2
+        const copyVal = document.getElementById('m2-copy').value;
+        const resM2 = validarTextoInteligente(copyVal, 5, 20);
+        if (resM2.valido) {
+            const palavrasChave = /saúde|prátic|tempo|marmita|saudáv|refeiç|entreg|sabor|rotina|peso/i;
+            if (!palavrasChave.test(copyVal)) {
+                resM2.valido = false;
+                resM2.motivo = "A estrutura está coerente, mas faltam palavras-chave relacionadas ao tema de alimentação/marmitas saudáveis.";
+            }
+        }
+        aplicarFeedback('feedback-m2', resM2);
+        if (resM2.valido) acertos++;
+
+        // M3 - Slogan e Diferencial
+        const sloganVal = document.getElementById('m3-slogan').value;
+        const difVal = document.getElementById('m3-diferencial').value;
+        const resM3S = validarTextoInteligente(sloganVal, 2, 8);
+        const resM3D = validarTextoInteligente(difVal, 3, 12);
+
+        aplicarFeedback('feedback-m3-slogan', resM3S);
+        aplicarFeedback('feedback-m3-diferencial', resM3D);
+        if (resM3S.valido && resM3D.valido) acertos++;
+
+        // M4
+        const f1 = document.getElementById('m4-f1').value;
+        const f2 = document.getElementById('m4-f2').value;
+        if (f1 === 'carrossel' && f2 === 'stories') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Perfeito! Carrossel é ótimo para conteúdo educativo e Stories para interações diretas." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. Selecione Carrossel para o 1º item e Stories para o 2º item." });
+        }
+
+        // M5
+        const criseVal = document.getElementById('m5-crise').value;
+        const resM5 = validarTextoInteligente(criseVal, 5, 20);
+        if (resM5.valido) {
+            const termosEmpatia = /desculp|lament|resolver|soluç|atravé|suporte|contato|reembols|troca|experiênc/i;
+            if (!termosEmpatia.test(criseVal)) {
+                resM5.valido = false;
+                resM5.motivo = "O texto é legível, mas deve conter termos de empatia e solução (ex: desculpas, resolver, suporte, troca).";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // STATUS FINAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você concluiu ${acertos} de ${total} módulos com validação completa.`;
+        } else {
+            completionText.innerText = "Pendências Encontradas";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Você validou apenas ${acertos} de ${total} módulos. Verifique as caixas em vermelho e tente novamente.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('m2-copy').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const palavrasChave = /saúde|prátic|tempo|marmita|saudáv|refeiç|entreg|sabor|rotina|peso/i;
+                if (!palavrasChave.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Inclua palavras relacionadas a alimentação, tempo ou praticidade no seu texto.";
+                }
+            }
+            aplicarFeedback('feedback-m2', res);
+        });
+
+        document.getElementById('m3-slogan').addEventListener('blur', function() {
+            aplicarFeedback('feedback-m3-slogan', validarTextoInteligente(this.value, 2, 8));
+        });
+
+        document.getElementById('m3-diferencial').addEventListener('blur', function() {
+            aplicarFeedback('feedback-m3-diferencial', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('m5-crise').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosEmpatia = /desculp|lament|resolver|soluç|atravé|suporte|contato|reembols|troca|experiênc/i;
+                if (!termosEmpatia.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Sua resposta deve demonstrar empatia e oferecer uma solução ao cliente (ex: suporte, solução, desculpas).";
+                }
+            }
+            aplicarFeedback('feedback-m5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

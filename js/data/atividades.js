@@ -1084,6 +1084,66 @@ const ATIVIDADES = [
       },
     ],
   },
+
+  {
+    slug: "marketing",
+    titulo: "Marketing",
+    descricao: "Marketing, propaganda, branding e mídia em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "MK",
+    cor: "#ff6b35",
+    materiais: [
+      {
+        titulo: "Atividade Auto-Corretiva de Marketing e Propaganda",
+        descricao:
+          "Diferença entre Marketing e Propaganda, criação de headline, mapeamento de persona, funil de vendas e resposta a um caso de atendimento.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-propaganda.html",
+      },
+      {
+        titulo: "Atividade Auto-Corretiva de Marketing, Branding e Mídia",
+        descricao: "Segunda versão da atividade de marketing e propaganda, com questões e casos práticos de branding e mídia.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-branding-midia.html",
+      },
+      {
+        titulo: "Atividade Prática: Estratégia de Marketing, Copywriting e Mídia",
+        descricao: "Estratégia de marketing, escrita persuasiva (copywriting) e planejamento de mídia em exercícios práticos corrigidos automaticamente.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-estrategia-copywriting.html",
+      },
+      {
+        titulo: "Atividade Prática: Criação de Campanha e Plano de Divulgação",
+        descricao: "Criação de uma campanha completa e de um plano de divulgação para uma empresa, do conceito à execução.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-campanha-empresa.html",
+      },
+      {
+        titulo: "Desafio de Growth Marketing, Unit Economics & CRO",
+        descricao: "Desafio avançado sobre crescimento (growth), métricas de unit economics e otimização de conversão (CRO).",
+        tipo: "link",
+        url: "atividades/paginas/marketing-growth-avancado.html",
+      },
+      {
+        titulo: "Simulação Prática de Marketing, Publicidade e Modelagem de Mídia",
+        descricao: "Simulação prática de marketing, publicidade e modelagem de investimento em mídia.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-campanhas-modelagem-midia.html",
+      },
+      {
+        titulo: "Simulação de Growth Marketing, Estratégia de Mídia e Lançamentos",
+        descricao: "Simulação de estratégias de growth marketing, planejamento de mídia e lançamento de produtos.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-growth-midia-lancamentos.html",
+      },
+      {
+        titulo: "Simulação Prática de Branding, Publicidade e Ativação de Marca",
+        descricao: "Simulação prática de construção de marca (branding), publicidade e ações de ativação de marca.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-branding-publicidade-avancada.html",
+      },
+    ],
+  },
 ];
 
 // Busca um curso pelo slug da URL. Devolve undefined se não existir.

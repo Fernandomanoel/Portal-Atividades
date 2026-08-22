@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Criação de Campanha Corporativa e Plano de Divulgação</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #1e40af;
+            --brand-light: #dbeafe;
+            --accent-color: #1d4ed8;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #bfdbfe;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Painel de Status Geral */
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .status-info {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-validate-all:active {
+            transform: scale(0.98);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Mensagens de Feedback */
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        /* Radio Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Criação de Campanha e Plano de Divulgação</h1>
+        <p>Desenvolva do zero o planejamento de uma campanha publicitária para uma empresa e estruture o seu plano de mídia e divulgação. O sistema conta com validação interativa anti-spam em tempo real.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade" para verificar suas respostas.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: OBJETIVO E BRIEFING DA CAMPANHA (MÚLTIPLA ESCOLHA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Briefing e Objetivo Principal da Campanha</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Uma empresa de soluções em tecnologia e softwares corporativos chamada <strong>"TechSoluções"</strong> deseja lançar uma nova campanha nacional para atrair pequenas e médias empresas.
+            <br><br>
+            <strong>Questão 1:</strong> Qual deve ser o objetivo primário dessa campanha se a meta principal da empresa no trimestre for gerar novas reuniões comerciais diretamente com gerentes e diretores?
+        </div>
+
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="c1" value="branding">
+                a) Institucional / Brand Awareness (Apenas tornar a marca mais conhecida do público geral)
+            </label>
+            <label class="option-label">
+                <input type="radio" name="c1" value="leads">
+                b) Geração de Leads Qualificados / Conversão (Captação de contatos decisores para o time de vendas)
+            </label>
+            <label class="option-label">
+                <input type="radio" name="c1" value="endomarketing">
+                c) Endomarketing (Motivação interna dos funcionários da própria empresa)
+            </label>
+        </div>
+        <div id="feedback-c1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: CONCEITO CRIATIVO E SLOGAN (VALIDAÇÃO TEXTUAL) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Conceito Criativo, Chamada de Impacto e Slogan</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Desafio de Criação:</strong> Defina o **Slogan da Campanha** e o **Conceito Central** que será usado em todas as peças publicitárias para convencer as empresas de que a "TechSoluções" vai otimizar o tempo e reduzir custos operacionais.
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Slogan da Campanha (Frase curta e impactante):</label>
+                <input type="text" id="c2-slogan" class="input-box" placeholder="Ex: TechSoluções: A tecnologia que faz seu negócio crescer sem complicações.">
+                <div id="feedback-c2-slogan" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Proposta Central de Valor (Mensagem da Campanha):</label>
+                <input type="text" id="c2-proposta" class="input-box" placeholder="Ex: Automatize processos manuais, reduza custos em até 30% e foque no que realmente importa.">
+                <div id="feedback-c2-proposta" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: CANAIS E ESTRATÉGIA DE DIVULGAÇÃO (SELEÇÃO INTERATIVA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Plano de Mídia: Onde e Como Será a Divulgação?</h2>
+        </div>
+
+        <div class="scenario-description">
+            Associe os canais de divulgação B2B ao formato de mídia mais adequado para alcançar os diretores e empresários:
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Canal / Meio de Divulgação</th>
+                        <th style="width: 50%;">Formato de Peça / Estratégia Recomendada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>LinkedIn Ads</strong> (Foco em diretores e gestores de empresas)</td>
+                        <td>
+                            <select id="c3-m1" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="sponsored">Anúncios de Vídeo e Carrossel com Estudo de Caso B2B</option>
+                                <option value="dancinha">Vídeos curtos de entretenimento sem foco profissional</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Google Search (Anúncios de Pesquisa)</strong></td>
+                        <td>
+                            <select id="c3-m2" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="search_ads">Anúncios no topo da busca para palavras-chave como 'software de gestão'</option>
+                                <option value="panfletos">Distribuição de panfletos em semáforos</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-c3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: ROTEIRO DO PLANO DE DIVULGAÇÃO (PRÉ, LANÇAMENTO E PÓS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Cronograma e Fases da Divulgação</h2>
+        </div>
+
+        <div class="scenario-description">
+            Descreva como será dividida a divulgação nas 2 fases principais da campanha:
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Fase 1: Teaser / Aquecimento (O que divulgar antes do lançamento?):</label>
+                <textarea id="c4-fase1" class="input-box" placeholder="Descreva os conteúdos para gerar curiosidade e expectativa no mercado..."></textarea>
+                <div id="feedback-c4-fase1" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Fase 2: Lançamento Oficial e Oferta (O que divulgar no dia do lançamento?):</label>
+                <textarea id="c4-fase2" class="input-box" placeholder="Descreva o anúncio principal, demonstração gratuita e chamada de vendas..."></textarea>
+                <div id="feedback-c4-fase2" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: MÉTRICAS E AVALIAÇÃO DO SUCESSO DA DIVULGAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Indicadores de Sucesso (KPIs da Campanha)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Para comprovar à diretoria da empresa que a divulgação funcionou, quais métricas principais devem ser apresentadas no relatório final de resultados e por quê?
+        </div>
+
+        <textarea id="c5-metricas" class="input-box" style="min-height: 120px;" placeholder="Explique quais indicadores (ex: custo por lead, reuniões agendadas, número de cadastros, retorno sobre investimento) provam o sucesso da campanha..."></textarea>
+        <div id="feedback-c5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO ANTI-SPAM, ANTI-GIBBERISH E ANTI-NUMÉRICO
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Comprimento mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Texto muito curto. Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        }
+
+        // 2. Bloqueio de números isolados (ex: "12124128471568596983056908")
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Resposta inválida: Apenas números foram digitados. Escreva uma resposta em português." };
+        }
+
+        // 3. Bloqueio de palavras sem espaços (ex: "hikhdfisfjsa~fp~pfpoasfj")
+        if (!limpo.includes(' ') && limpo.length > 16) {
+            return { valido: false, motivo: "Resposta inválida: Sequência contínua sem espaços detectada." };
+        }
+
+        // 4. Mínimo de palavras reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+        }
+
+        // 5. Proporção de Vogais
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou digitação aleatória. Escreva palavras reais em português." };
+        }
+
+        // 6. Padrões de repetição
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão repetitivo do teclado detectado. Digite uma resposta séria." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    // APLICAR FEEDBACK VISUAL
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    // VALIDAÇÃO GERAL DA ATIVIDADE
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1
+        const c1Selected = document.querySelector('input[name="c1"]:checked');
+        if (c1Selected && c1Selected.value === 'leads') {
+            aplicarFeedback('feedback-c1', { valido: true, motivo: "Correto! Para gerar reuniões comerciais B2B, o foco do objetivo é Geração de Leads e Conversão." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-c1', { valido: false, motivo: "Incorreto. A opção B é a mais adequada para atração de novos clientes comerciais." });
+        }
+
+        // Módulo 2
+        const sloganVal = document.getElementById('c2-slogan').value;
+        const propVal = document.getElementById('c2-proposta').value;
+        const resSlogan = validarTextoInteligente(sloganVal, 2, 8);
+        const resProp = validarTextoInteligente(propVal, 3, 12);
+
+        aplicarFeedback('feedback-c2-slogan', resSlogan);
+        aplicarFeedback('feedback-c2-proposta', resProp);
+        if (resSlogan.valido && resProp.valido) acertos++;
+
+        // Módulo 3
+        const m1 = document.getElementById('c3-m1').value;
+        const m2 = document.getElementById('c3-m2').value;
+        if (m1 === 'sponsored' && m2 === 'search_ads') {
+            aplicarFeedback('feedback-c3', { valido: true, motivo: "Excelente escolha! LinkedIn Ads com estudos de caso e Google Ads de pesquisa são os canais B2B ideais." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-c3', { valido: false, motivo: "Incorreto. Escolha as opções profissionais de anúncios B2B adequados para empresas." });
+        }
+
+        // Módulo 4
+        const f1Val = document.getElementById('c4-fase1').value;
+        const f2Val = document.getElementById('c4-fase2').value;
+        const resF1 = validarTextoInteligente(f1Val, 3, 15);
+        const resF2 = validarTextoInteligente(f2Val, 3, 15);
+
+        aplicarFeedback('feedback-c4-fase1', resF1);
+        aplicarFeedback('feedback-c4-fase2', resF2);
+        if (resF1.valido && resF2.valido) acertos++;
+
+        // Módulo 5
+        const metricaVal = document.getElementById('c5-metricas').value;
+        const resM = validarTextoInteligente(metricaVal, 5, 20);
+        if (resM.valido) {
+            const termosChave = /lead|custo|roi|conversão|venda|reunião|retorno|cadast|resultado|cliente/i;
+            if (!termosChave.test(metricaVal)) {
+                resM.valido = false;
+                resM.motivo = "A resposta está legível, mas inclua termos de métricas comerciais (leads, ROI, conversão, reuniões, etc.).";
+            }
+        }
+        aplicarFeedback('feedback-c5', resM);
+        if (resM.valido) acertos++;
+
+        // ATUALIZAR STATUS GERAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Campanha Aprovada com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você concluiu com êxito ${acertos} de ${total} módulos do planejamento de campanha.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários no Plano";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as caixas destacadas em vermelho.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('c2-slogan').addEventListener('blur', function() {
+            aplicarFeedback('feedback-c2-slogan', validarTextoInteligente(this.value, 2, 8));
+        });
+
+        document.getElementById('c2-proposta').addEventListener('blur', function() {
+            aplicarFeedback('feedback-c2-proposta', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('c4-fase1').addEventListener('blur', function() {
+            aplicarFeedback('feedback-c4-fase1', validarTextoInteligente(this.value, 3, 15));
+        });
+
+        document.getElementById('c4-fase2').addEventListener('blur', function() {
+            aplicarFeedback('feedback-c4-fase2', validarTextoInteligente(this.value, 3, 15));
+        });
+
+        document.getElementById('c5-metricas').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosChave = /lead|custo|roi|conversão|venda|reunião|retorno|cadast|resultado|cliente/i;
+                if (!termosChave.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione indicadores comerciais como número de leads, reuniões, ROI ou conversões no relatório.";
+                }
+            }
+            aplicarFeedback('feedback-c5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

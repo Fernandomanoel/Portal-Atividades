@@ -87,7 +87,7 @@ function cardCurso(curso) {
 function cardMaterial(material) {
   const tipo = material.tipo || "pdf";
   const el = document.createElement("article");
-  el.className = "material";
+  el.className = material.categoria === "windows" ? "material material--windows" : "material";
   el.innerHTML = `
     <div class="material-icone" aria-hidden="true">${ICONES_MATERIAL[tipo] || "📎"}</div>
 

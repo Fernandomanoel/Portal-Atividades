@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de Growth Marketing e Lançamentos - Auto-Corretivo</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #c2410c;
+            --brand-light: #ffedd5;
+            --accent-color: #ea580c;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); line-height: 1.6; padding: 40px 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header { background: linear-gradient(135deg, #0f172a 0%, #c2410c 100%); color: white; padding: 40px 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fed7aa; max-width: 820px; }
+        .badge-tag { display: inline-block; background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
+
+        .status-panel { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+        .btn-validate-all { background-color: var(--brand-color); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 0.2s; }
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .intro-card { background-color: var(--bg-card); border-left: 5px solid var(--accent-color); padding: 22px 25px; border-radius: 8px; margin-bottom: 30px; border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .intro-card h3 { color: var(--brand-color); font-size: 16px; margin-bottom: 8px; }
+        .intro-card p { font-size: 14px; color: var(--text-muted); }
+
+        .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .module-header { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid var(--brand-light); padding-bottom: 14px; margin-bottom: 22px; }
+        .module-number { background-color: var(--brand-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description { background-color: var(--highlight-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 18px; font-size: 14px; margin-bottom: 20px; color: var(--text-main); }
+        .task-instruction { font-weight: 600; font-size: 14px; color: var(--primary-dark); margin: 18px 0 10px 0; }
+
+        .input-box { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13.5px; font-family: inherit; color: var(--text-main); background-color: #ffffff; }
+        .input-box:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15); }
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge { margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 600; display: none; }
+        .feedback-badge.success { display: block; background-color: var(--success-bg); color: var(--success-color); border: 1px solid #bbf7d0; }
+        .feedback-badge.error { display: block; background-color: var(--error-bg); color: var(--error-color); border: 1px solid #fecaca; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Versão Auto-Corretiva Avançada</span>
+        <h1>Simulação de Growth Marketing, Estratégia de Mídia e Lançamentos</h1>
+        <p>Capacitação cobrindo neuromarketing, réguas de lançamento, tráfego pago (Google e Meta Ads) e rebranding com sistema interativo de correção de respostas.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os campos e clique no botão ao lado para validar suas respostas.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade Completa</button>
+    </div>
+
+    <!-- MÓDULO 1 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Neuromarketing Aplicado e Aversão à Perda</h2>
+        </div>
+
+        <div class="scenario-description">
+            Reformulação de chamadas comerciais utilizando aversão à perda e prova social.
+        </div>
+
+        <div class="task-instruction">💡 Análise do Viés de Aversão à Perda</div>
+        <textarea id="v3-m1-aversao" class="input-box" placeholder="Explique como a sensação de 'medo de perder uma oportunidade' pode ser aplicada eticamente em um e-commerce..."></textarea>
+        <div id="fb-v3-m1-aversao" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Tráfego Pago: Redação de Anúncio no Google Search Ads</h2>
+        </div>
+
+        <div class="scenario-description">
+            Crie os títulos de anúncio patrocinado de pesquisa para o fone sem fio <strong>AuraTech</strong>.
+        </div>
+
+        <div class="grid-3">
+            <div class="field-group">
+                <label>Título 1 (Máx 30 caracteres):</label>
+                <input type="text" id="v3-m2-t1" class="input-box" placeholder="Ex: Fone Bluetooth AuraTech">
+                <div id="fb-v3-m2-t1" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Título 2 (Máx 30 caracteres):</label>
+                <input type="text" id="v3-m2-t2" class="input-box" placeholder="Ex: Cancelamento de Ruído 99%">
+                <div id="fb-v3-m2-t2" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Título 3 (Máx 30 caracteres):</label>
+                <input type="text" id="v3-m2-t3" class="input-box" placeholder="Ex: Frete Grátis Para Todo Brasil">
+                <div id="fb-v3-m2-t3" class="feedback-badge"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 10px;">
+            <label style="font-size: 12.5px; font-weight: 600; color: var(--text-muted);">Descrição do Anúncio do Google:</label>
+            <input type="text" id="v3-m2-desc" class="input-box" placeholder="Ex: Garanta som de alta fidelidade e bateria para 30 horas. Compre em até 10x sem juros no site!">
+            <div id="fb-v3-m2-desc" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Estratégia de Rebranding e Reposicionamento</h2>
+        </div>
+
+        <div class="scenario-description">
+            Proposta de rejuvenescimento de uma marca tradicional de calçados para atingir a Geração Z.
+        </div>
+
+        <div class="task-instruction">📝 Resumo da Estratégia de Rebranding</div>
+        <textarea id="v3-m3-rebrand" class="input-box" placeholder="Resuma como esse reposicionamento ajudará a rejuvenescer a marca sem perder os clientes antigos..."></textarea>
+        <div id="fb-v3-m3-rebrand" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Texto muito curto. Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Resposta inválida: Você digitou apenas números. Digite em português." };
+        if (!limpo.includes(' ') && limpo.length > 15) return { valido: false, motivo: "Resposta inválida: Digitação contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou aleatório. Escreva palavras reais." };
+
+        return { valido: true, motivo: "Resposta válida e coerente!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        const campos = [
+            { id: 'v3-m1-aversao', fb: 'fb-v3-m1-aversao', minP: 5, minL: 20 },
+            { id: 'v3-m2-t1', fb: 'fb-v3-m2-t1', minP: 2, minL: 8 },
+            { id: 'v3-m2-t2', fb: 'fb-v3-m2-t2', minP: 2, minL: 8 },
+            { id: 'v3-m2-t3', fb: 'fb-v3-m2-t3', minP: 2, minL: 8 },
+            { id: 'v3-m2-desc', fb: 'fb-v3-m2-desc', minP: 5, minL: 20 },
+            { id: 'v3-m3-rebrand', fb: 'fb-v3-m3-rebrand', minP: 5, minL: 20 }
+        ];
+
+        let validsCount = 0;
+        campos.forEach(c => {
+            const val = document.getElementById(c.id).value;
+            const res = validarTextoInteligente(val, c.minP, c.minL);
+            aplicarFeedback(c.fb, res);
+            if (res.valido) validsCount++;
+        });
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (validsCount >= 5) {
+            completionText.innerText = "Atividade Aprovada!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou ${validsCount} de ${campos.length} campos obrigatórios.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${validsCount} de ${campos.length} campos foram validados. Corrija os destaques em vermelho.`;
+        }
+    }
+</script>
+
+</body>
+</html>

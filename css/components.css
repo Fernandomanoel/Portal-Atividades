@@ -219,6 +219,39 @@
   box-shadow: var(--sombra-forte);
 }
 
+/* Box diferenciada para as atividades de Windows/computador do Informática Kids,
+   para distinguir de cabeça das de Word/PowerPoint na mesma lista. */
+.material--windows {
+  position: relative;
+  border-color: #0078d4;
+  background: linear-gradient(160deg, rgba(0, 120, 212, 0.08), var(--card) 45%);
+}
+
+.material--windows::before {
+  content: "🖥️ Windows";
+  position: absolute;
+  top: -11px;
+  left: 22px;
+  background: linear-gradient(135deg, #0078d4, #00bcf2);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 120, 212, 0.35);
+}
+
+.material--windows .material-icone {
+  background: linear-gradient(135deg, #0078d4, #00bcf2);
+  color: #fff;
+}
+
+.material--windows:hover {
+  border-color: #00bcf2;
+  box-shadow: 0 12px 25px rgba(0, 120, 212, 0.3);
+}
+
 .material-icone {
   flex-shrink: 0;
   width: 64px;

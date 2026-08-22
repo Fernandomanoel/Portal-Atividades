@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório Prático de Branding e Publicidade - Auto-Corretivo</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #581c87;
+            --brand-light: #f3e8ff;
+            --accent-color: #7e22ce;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background-color: var(--bg-page); color: var(--text-main); line-height: 1.6; padding: 40px 20px; }
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header { background: linear-gradient(135deg, #0f172a 0%, #581c87 100%); color: white; padding: 40px 30px; border-radius: 12px; margin-bottom: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #e9d5ff; max-width: 820px; }
+        .badge-tag { display: inline-block; background: rgba(255, 255, 255, 0.15); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
+
+        .status-panel { background-color: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 20px; margin-bottom: 30px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+        .btn-validate-all { background-color: var(--brand-color); color: white; border: none; padding: 12px 24px; border-radius: 6px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background-color 0.2s; }
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .intro-card { background-color: var(--bg-card); border-left: 5px solid var(--accent-color); padding: 22px 25px; border-radius: 8px; margin-bottom: 30px; border-top: 1px solid var(--border-color); border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .intro-card h3 { color: var(--brand-color); font-size: 16px; margin-bottom: 8px; }
+        .intro-card p { font-size: 14px; color: var(--text-muted); }
+
+        .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 10px; padding: 30px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02); }
+        .module-header { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid var(--brand-light); padding-bottom: 14px; margin-bottom: 22px; }
+        .module-number { background-color: var(--brand-color); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 14px; flex-shrink: 0; }
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description { background-color: var(--highlight-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 18px; font-size: 14px; margin-bottom: 20px; color: var(--text-main); }
+        .task-instruction { font-weight: 600; font-size: 14px; color: var(--primary-dark); margin: 18px 0 10px 0; }
+
+        .input-box { width: 100%; padding: 10px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13.5px; font-family: inherit; color: var(--text-main); background-color: #ffffff; }
+        .input-box:focus { outline: none; border-color: var(--accent-color); box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.15); }
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge { margin-top: 8px; padding: 8px 12px; border-radius: 6px; font-size: 12.5px; font-weight: 600; display: none; }
+        .feedback-badge.success { display: block; background-color: var(--success-bg); color: var(--success-color); border: 1px solid #bbf7d0; }
+        .feedback-badge.error { display: block; background-color: var(--error-bg); color: var(--error-color); border: 1px solid #fecaca; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Versão Auto-Corretiva Avançada</span>
+        <h1>Simulação Prática de Branding, Publicidade e Ativação de Marca</h1>
+        <p>Exercícios cobrindo arquitetura e arquétipos de marca, copywriting AIDA, e-mail marketing e gestão de crises de PR com validação inteligente contra textos ilegíveis.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os campos e clique no botão ao lado para validar suas respostas.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade Completa</button>
+    </div>
+
+    <!-- MÓDULO 1 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Construção de Branding e Arquétipo da Marca</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Posicionamento de marca para a nova startup de bebidas funcionais <strong>"NéctarVibe"</strong>.
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Arquétipo Principal Escolhido:</label>
+                <select id="v2-m1-arq" class="input-box">
+                    <option value="">Selecione...</option>
+                    <option value="criador">O Criador (Inovação e Expressão)</option>
+                    <option value="heroi">O Herói (Superação e Desafio)</option>
+                    <option value="mago">O Mago (Transformação e Magia)</option>
+                    <option value="explorador">O Explorador (Liberdade e Aventura)</option>
+                </select>
+                <div id="fb-v2-m1-arq" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Justificativa do Posicionamento:</label>
+                <input type="text" id="v2-m1-just" class="input-box" placeholder="Explique como o arquétipo conecta com o consumidor...">
+                <div id="fb-v2-m1-just" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 2 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Copywriting Publicitário: Estrutura AIDA</h2>
+        </div>
+
+        <div class="scenario-description">
+            Crie a estrutura de vendas no método AIDA (Atenção, Interesse, Desejo e Ação).
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>1. Atenção (Headline de Impacto):</label>
+                <textarea id="v2-m2-att" class="input-box" placeholder="Promessa principal ou pergunta chamativa..."></textarea>
+                <div id="fb-v2-m2-att" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>2. Interesse (Aprofundamento da Dor):</label>
+                <textarea id="v2-m2-int" class="input-box" placeholder="Desenvolva o problema e gere retenção..."></textarea>
+                <div id="fb-v2-m2-int" class="feedback-badge"></div>
+            </div>
+        </div>
+
+        <div class="grid-2" style="margin-top: 10px;">
+            <div class="field-group">
+                <label>3. Desejo (Solução e Benefícios):</label>
+                <textarea id="v2-m2-des" class="input-box" placeholder="Apresente os benefícios do produto..."></textarea>
+                <div id="fb-v2-m2-des" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>4. Ação (Chamada Final / CTA):</label>
+                <textarea id="v2-m2-act" class="input-box" placeholder="Crie a chamada com oferta ou urgência..."></textarea>
+                <div id="fb-v2-m2-act" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3 -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Gestão de Crise de Relações Públicas (PR)</h2>
+        </div>
+
+        <div class="scenario-description">
+            Uma falha nas entregas gerou reclamações nas redes sociais. Redija o comunicado oficial de esclarecimento da empresa.
+        </div>
+
+        <div class="task-instruction">📜 Nota Oficial de Esclarecimento</div>
+        <textarea id="v2-m3-pr" class="input-box" style="min-height: 140px;" placeholder="COMUNICADO OFICIAL: Assuma a responsabilidade com transparência, empatia e sem desculpas evasivas..."></textarea>
+        <div id="fb-v2-m3-pr" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Texto muito curto. Digite ao menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Resposta inválida: Apenas números foram digitados. Escreva em português." };
+        if (!limpo.includes(' ') && limpo.length > 15) return { valido: false, motivo: "Resposta inválida: Digitação contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou aleatório. Use palavras reais." };
+
+        return { valido: true, motivo: "Resposta válida e coerente!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let validsCount = 0;
+
+        // Arquétipo
+        const arqVal = document.getElementById('v2-m1-arq').value;
+        if (arqVal !== "") {
+            aplicarFeedback('fb-v2-m1-arq', { valido: true, motivo: "Arquétipo selecionado!" });
+            validsCount++;
+        } else {
+            aplicarFeedback('fb-v2-m1-arq', { valido: false, motivo: "Selecione uma opção da lista." });
+        }
+
+        const campos = [
+            { id: 'v2-m1-just', fb: 'fb-v2-m1-just', minP: 3, minL: 12 },
+            { id: 'v2-m2-att', fb: 'fb-v2-m2-att', minP: 3, minL: 12 },
+            { id: 'v2-m2-int', fb: 'fb-v2-m2-int', minP: 4, minL: 15 },
+            { id: 'v2-m2-des', fb: 'fb-v2-m2-des', minP: 4, minL: 15 },
+            { id: 'v2-m2-act', fb: 'fb-v2-m2-act', minP: 3, minL: 12 },
+            { id: 'v2-m3-pr', fb: 'fb-v2-m3-pr', minP: 6, minL: 25 }
+        ];
+
+        campos.forEach(c => {
+            const val = document.getElementById(c.id).value;
+            const res = validarTextoInteligente(val, c.minP, c.minL);
+            aplicarFeedback(c.fb, res);
+            if (res.valido) validsCount++;
+        });
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (validsCount >= 6) {
+            completionText.innerText = "Atividade Aprovada!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você concluiu ${validsCount} de 7 campos com validação completa.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${validsCount} de 7 campos foram validados. Verifique os destaques em vermelho.`;
+        }
+    }
+</script>
+
+</body>
+</html>

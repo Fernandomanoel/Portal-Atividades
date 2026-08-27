@@ -604,6 +604,36 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/seguranca-emails-suspeitos.html",
       },
+      {
+        titulo: "Atividade Prática: Segurança na Era Digital e Cibersegurança",
+        descricao: "Fundamentos de cibersegurança: senhas, autenticação, redes e boas práticas para se proteger online.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-ciberseguranca-fundamentos.html",
+      },
+      {
+        titulo: "Atividade Prática: Segurança na Era Digital e Defesa Cibernética",
+        descricao: "Cenários práticos de defesa cibernética: identificar ataques, reagir a incidentes e reduzir riscos digitais.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-defesa-cibernetica.html",
+      },
+      {
+        titulo: "Atividade Prática: Privacidade Avançada, Anonimato e Navegação Tor",
+        descricao: "Privacidade digital avançada, anonimato online e como funciona a navegação pela rede Tor.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-privacidade-avancada-tor.html",
+      },
+      {
+        titulo: "Atividade Prática: Inteligência Artificial e Produtividade Digital",
+        descricao: "Uso responsável e produtivo de ferramentas de Inteligência Artificial no dia a dia digital.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-ia-produtividade-digital.html",
+      },
+      {
+        titulo: "Atividade Prática: Defesa Pessoal, Consciência Situacional e Proteção Urbana",
+        descricao: "Consciência situacional e proteção pessoal no dia a dia, além da segurança digital.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-defesa-pessoal-consciencia-situacional.html",
+      },
     ],
   },
 
@@ -923,6 +953,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ia-introducao-e-prompts.html",
       },
+      {
+        titulo: "Atividade Prática: IA Generativa, Engenharia de Prompt e Aplicações",
+        descricao:
+          "Aprofunda engenharia de prompt e explora aplicações práticas de IA generativa no dia a dia e no trabalho, com correção automática das respostas.",
+        tipo: "link",
+        url: "atividades/paginas/ia-generativa-engenharia-prompt-aplicacoes.html",
+      },
     ],
   },
 
@@ -1141,6 +1178,111 @@ const ATIVIDADES = [
         descricao: "Simulação prática de construção de marca (branding), publicidade e ações de ativação de marca.",
         tipo: "link",
         url: "atividades/paginas/marketing-branding-publicidade-avancada.html",
+      },
+    ],
+  },
+
+  {
+    slug: "departamento-pessoal",
+    titulo: "Departamento Pessoal",
+    descricao: "Rotinas de departamento pessoal (DP) em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "DP",
+    cor: "#0d9488",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Assistente de Departamento Pessoal (DP)",
+        descricao: "Rotinas básicas de um assistente de DP: admissão, documentação e cálculos do dia a dia.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-basico.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal II — Férias, Adicionais e Rescisão Contratual",
+        descricao: "Cálculo de férias, adicionais (noturno, insalubridade) e rescisão contratual.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-ferias-adicionais-rescisao.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal III — Jornada Noturna, Horas Extras, Licenças e CAT",
+        descricao: "Jornada noturna, horas extras, licenças e Comunicação de Acidente de Trabalho (CAT).",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-jornada-horas-extras-licencas.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal IV — Novos Formatos de Interação",
+        descricao: "Novos cenários e formatos de interação para praticar rotinas de departamento pessoal.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-novos-formatos-interacao.html",
+      },
+    ],
+  },
+
+  {
+    slug: "credito-cobranca",
+    titulo: "Crédito e Cobrança",
+    descricao: "Análise de crédito, cobrança e gestão financeira em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "CC",
+    cor: "#16a34a",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Análise de Crédito, Gestão de Risco e Régua de Cobrança",
+        descricao: "Análise de crédito, gestão de risco e a régua de cobrança usada para recuperar valores em atraso.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-analise-risco.html",
+      },
+      {
+        titulo: "Atividade Prática: Crédito e Cobrança II — Credit Scoring, Garantias e Títulos Executivos",
+        descricao: "Credit scoring, tipos de garantia e títulos executivos usados na cobrança.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-scoring-garantias-titulos.html",
+      },
+      {
+        titulo: "Atividade Prática: Crédito e Cobrança III — Open Finance, Prevenção a Fraudes e Recebíveis",
+        descricao: "Open Finance, prevenção a fraudes e gestão de recebíveis.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-open-finance-fraudes-recebiveis.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão Financeira, Fluxo de Caixa e Controladoria",
+        descricao: "Gestão financeira, controle de fluxo de caixa e rotinas de controladoria.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-gestao-financeira-fluxo-caixa.html",
+      },
+    ],
+  },
+
+  {
+    slug: "gestao-pessoas",
+    titulo: "Gestão de Pessoas",
+    descricao: "Recrutamento, desenvolvimento e gestão de pessoas em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "GP",
+    cor: "#8b5cf6",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas I — Recrutamento, Seleção e Onboarding",
+        descricao: "Descrição de cargo, recrutamento interno x externo, etapas do processo seletivo, documentação admissional e onboarding.",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-recrutamento-selecao-onboarding.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas II — Seleção STAR, Métricas e PDI",
+        descricao: "Método de seleção STAR, métricas de RH e Plano de Desenvolvimento Individual (PDI).",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-selecao-star-metricas-pdi.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas III — Segurança Psicológica, People Analytics e DEI",
+        descricao: "Segurança psicológica no trabalho, People Analytics e Diversidade, Equidade e Inclusão (DEI).",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-seguranca-psicologica-people-analytics.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas IV — Carreira em Y, Modelo CHA e Offboarding",
+        descricao: "Plano de carreira em Y, modelo CHA (Conhecimento, Habilidade e Atitude) e processo de offboarding.",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-carreira-y-cha-offboarding.html",
       },
     ],
   },

@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Privacidade Avançada, Anonimato e Navegação Tor</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #7c3aed;
+            --brand-light: #ede9fe;
+            --accent-color: #6d28d9;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #ddd6fe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Privacidade Avançada, Anonimato e Navegação Tor</h1>
+        <p>Aprenda os princípios da rede Tor (The Onion Router), criptografia em camadas, segurança operacional (OpSec) e mitos sobre a Dark Web. O sistema valida suas respostas em tempo real com algoritmo anti-spam.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=seguranca-era-digital">← Voltar para Segurança na Era Digital</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ARQUITETURA DA REDE TOR -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Arquitetura e Roteamento em Cebola (Onion Routing)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Questão 1:</strong> Como a rede Tor (The Onion Router) garante o anonimato do tráfego do usuário ao navegar entre nós (relays) distribuídos pelo mundo?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="tor1" value="direto">
+                a) Conectando o computador do usuário diretamente ao servidor final por um único túnel simples.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="tor1" value="onion">
+                b) Criptografando os dados em múltiplas camadas e repassando por três nós aleatórios (Entrada, Intermediário e Saída), onde cada nó decodifica apenas a sua própria camada.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="tor1" value="antivirus">
+                c) Bloqueando fisicamente a placa de rede do computador.
+            </label>
+        </div>
+        <div id="feedback-tor1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: CAMADAS DA WEB E DOMÍNIOS .ONION -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Divisão da Web: Surface Web, Deep Web e Dark Web</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio de Conceituação:</strong> Explique a diferença entre **Deep Web** e **Dark Web**, e cite qual é a característica técnica dos domínios do tipo <code>.onion</code> acessados via Tor.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Diferença entre Deep Web e Dark Web:</label>
+                <input type="text" id="tor2-camadas" class="input-box" placeholder="Ex: Deep Web são páginas não indexadas (ex: e-mails); Dark Web exige softwares como o Tor...">
+                <div id="feedback-tor2-camadas" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Características dos Serviços Ocultos (.onion):</label>
+                <input type="text" id="tor2-onion" class="input-box" placeholder="Ex: Domínios criptográficos sem DNS tradicional, mantendo cliente e servidor anônimos...">
+                <div id="feedback-tor2-onion" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: COMPARAÇÃO TÉCNICA: VPN vs. REDE TOR -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Análise Comparativa: VPN Comercial vs. Navegador Tor</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o cenário à tecnologia mais adequada:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Cenário / Necessidade</th>
+                    <th style="width: 50%;">Tecnologia Recomendada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Garantir anonimato descentralizado para evitar vigilância sem depender de uma única empresa comercial.</td>
+                    <td>
+                        <select id="tor3-p1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="tor">Rede Tor (Múltiplos nós descentralizados)</option>
+                            <option value="vpn">VPN Comercial (Servidor centralizado)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Criptografar todo o tráfego do computador para jogos online e streaming com alta velocidade.</td>
+                    <td>
+                        <select id="tor3-p2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="tor">Rede Tor (Múltiplos nós descentralizados)</option>
+                            <option value="vpn">VPN Comercial (Servidor centralizado)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-tor3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: SEGURANÇA OPERACIONAL (OpSec) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Segurança Operacional (OpSec) e Erros de Comportamento</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> Um usuário navega pelo Tor Browser, mas faz login na sua conta pessoal do Google e baixa arquivos PDF abrindo-os fora do navegador. Por que esse comportamento **compromete totalmente o anonimato**?
+        </div>
+        <textarea id="tor4-opsec" class="input-box" placeholder="Explique como fazer login em contas pessoais ou abrir arquivos expõe a identidade real do usuário..."></textarea>
+        <div id="feedback-tor4-opsec" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: USOS LEGÍTIMOS E DIREITOS HUMANOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Casos Legítimos de Uso do Tor e Direitos Humanos</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Descreva pelo menos dois **usos legítimos e éticos** da rede Tor (ex: jornalismo investigativo, proteção de ativistas sob censura, denúncia de corrupção/whistleblowing).
+        </div>
+        <textarea id="tor5-etica" class="input-box" placeholder="Discorra sobre a importância do Tor para jornalistas, denunciantes de abusos e cidadãos sob regimes autoritários..."></textarea>
+        <div id="feedback-tor5-etica" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const tor1Selected = document.querySelector('input[name="tor1"]:checked');
+        if (tor1Selected && tor1Selected.value === 'onion') {
+            aplicarFeedback('feedback-tor1', { valido: true, motivo: "Correto! O Tor utiliza criptografia em camadas repassando o tráfego por múltiplos nós." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-tor1', { valido: false, motivo: "Incorreto. A opção B descreve o Onion Routing." });
+        }
+
+        // Mód 2
+        const resC = validarTextoInteligente(document.getElementById('tor2-camadas').value, 3, 12);
+        const resO = validarTextoInteligente(document.getElementById('tor2-onion').value, 3, 12);
+        aplicarFeedback('feedback-tor2-camadas', resC);
+        aplicarFeedback('feedback-tor2-onion', resO);
+        if (resC.valido && resO.valido) acertos++;
+
+        // Mód 3
+        const p1 = document.getElementById('tor3-p1').value;
+        const p2 = document.getElementById('tor3-p2').value;
+        if (p1 === 'tor' && p2 === 'vpn') {
+            aplicarFeedback('feedback-tor3', { valido: true, motivo: "Excelente! Tor é para anonimato descentralizado e VPN para velocidade/streaming." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-tor3', { valido: false, motivo: "Incorreto. Tor = anonimato descentralizado; VPN = servidor de alta velocidade." });
+        }
+
+        // Mód 4
+        const opVal = document.getElementById('tor4-opsec').value;
+        const resOp = validarTextoInteligente(opVal, 4, 15);
+        if (resOp.valido) {
+            const termosOpsec = /identid|login|conta|ip|vazam|pessoal|revela|rastre|quebra|seguranç/i;
+            if (!termosOpsec.test(opVal)) {
+                resOp.valido = false;
+                resOp.motivo = "Explique como fazer login em contas pessoais ou abrir arquivos expõe o IP e identidade real.";
+            }
+        }
+        aplicarFeedback('feedback-tor4-opsec', resOp);
+        if (resOp.valido) acertos++;
+
+        // Mód 5
+        const etVal = document.getElementById('tor5-etica').value;
+        const resEt = validarTextoInteligente(etVal, 4, 15);
+        if (resEt.valido) {
+            const termosEtica = /jornal|denúnci|censura|liberdad|regime|whistleblower|direit|proteç|ativis/i;
+            if (!termosEtica.test(etVal)) {
+                resEt.valido = false;
+                resEt.motivo = "Mencione termos como jornalismo, denúncias, ativismo, censura ou direitos humanos.";
+            }
+        }
+        aplicarFeedback('feedback-tor5-etica', resEt);
+        if (resEt.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('tor2-camadas').addEventListener('blur', function() {
+            aplicarFeedback('feedback-tor2-camadas', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('tor2-onion').addEventListener('blur', function() {
+            aplicarFeedback('feedback-tor2-onion', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('tor4-opsec').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosOpsec = /identid|login|conta|ip|vazam|pessoal|revela|rastre|quebra|seguranç/i;
+                if (!termosOpsec.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Explique como fazer login em contas pessoais expõe o IP ou a identidade do usuário.";
+                }
+            }
+            aplicarFeedback('feedback-tor4-opsec', res);
+        });
+        document.getElementById('tor5-etica').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosEtica = /jornal|denúnci|censura|liberdad|regime|whistleblower|direit|proteç|ativis/i;
+                if (!termosEtica.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione usos legítimos como proteção a jornalistas, ativistas ou denúncias de corrupção.";
+                }
+            }
+            aplicarFeedback('feedback-tor5-etica', res);
+        });
+    });
+</script>
+
+</body>
+</html>

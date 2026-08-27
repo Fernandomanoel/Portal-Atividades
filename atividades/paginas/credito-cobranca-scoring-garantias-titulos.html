@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Crédito e Cobrança II — Credit Scoring, Garantias e Títulos Executivos</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #0284c7;
+            --brand-light: #e0f2fe;
+            --accent-color: #0369a1;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bae6fd; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Crédito e Cobrança II — Credit Scoring, Garantias e Títulos Executivos</h1>
+        <p>Aprofunde seus conhecimentos em Credit Scoring estatístico, gestão de limites dinâmicos, diferenciação de garantias reais e pessoais, títulos de crédito executivos e modelos de cobrança terceirizada vs. in-house.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=credito-cobranca">← Voltar para Crédito e Cobrança</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: CREDIT SCORING E ANÁLISE ESTATÍSTICA DE DEFAULTS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Modelagem de Crédito: Credit Scoring e Probabilidade de Default</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Os modelos modernos de **Credit Scoring** utilizam inteligência estatística para atribuir uma pontuação aos tomadores. Qual é a principal função do Score de Crédito na mesa de aprovação?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="ccv2_1" value="isencao">
+                a) Garantir 100% de isenção de risco, eliminando totalmente a chance de inadimplência futura.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ccv2_1" value="probabilidade">
+                b) Estimar estatisticamente a probabilidade de inadimplência (default) do cliente em um determinado período, automatizando decisões de concessão.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ccv2_1" value="patrimonio">
+                c) Avaliar unicamente a quantidade de imóveis e veículos registrados em nome do cliente.
+            </label>
+        </div>
+        <div id="feedback-ccv2-1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: GARANTIAS REAIS vs. FIDEJUSSÓRIAS (PESSOAIS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Mitigação de Risco: Garantias Reais vs. Garantias Fidejussórias</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o tipo de garantia exigida na concessão de crédito à sua respectiva categoria jurídica:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Modalidade de Garantia em Operação de Crédito</th>
+                    <th style="width: 50%;">Classificação da Garantia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Alienação Fiduciária** (vínculo do próprio bem móvel ou imóvel ao contrato para execução rápida).</td>
+                    <td>
+                        <select id="ccv2-2-g1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="real">Garantia Real (Incide diretamente sobre um bem específico)</option>
+                            <option value="fidejussoria">Garantia Fidejussória/Pessoal (Compromisso patrimonial de um terceiro - Aval/Fiança)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**Aval / Fiança** (compromisso assinado por um terceiro garantidor que responde com seu patrimônio genérico).</td>
+                    <td>
+                        <select id="ccv2-2-g2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="real">Garantia Real (Incide diretamente sobre um bem específico)</option>
+                            <option value="fidejussoria">Garantia Fidejussória/Pessoal (Compromisso patrimonial de um terceiro - Aval/Fiança)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-ccv2-2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: GESTÃO DINÂMICA DE LIMITE DE CRÉDITO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Política de Limites de Crédito Dinâmicos e Reciprocidade</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio Tático:</strong> Em vendas B2B (entre empresas), o limite de crédito concedido a um comprador não deve ser estático. Explique como funciona a **revisão periódica do limite de crédito** e o papel da **pontualidade e pontuação de reciprocidade** nesse processo.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Objetivo do Limite Dinâmico de Crédito:</label>
+                <input type="text" id="ccv2-3-limite" class="input-box" placeholder="Ex: Ajustar o limite de compras conforme o crescimento do cliente e seu histórico de pagamentos...">
+                <div id="feedback-ccv2-3-limite" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Impacto da Inadimplência ou Atrasos:</label>
+                <input type="text" id="ccv2-3-atrasos" class="input-box" placeholder="Ex: Bloqueio automático de novos pedidos, redução de limite e exigência de pagamentos à vista...">
+                <div id="feedback-ccv2-3-atrasos" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: INSTRUMENTOS CAMBIAIS E TÍTULOS DE CRÉDITO EXECUTIVOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Títulos Executivos Extrajudiciais (Duplicata, Promissória e Cheque)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> Para acelerar a cobrança judicial caso ocorra inadimplência, as operações B2B devem ser lastreadas por **Títulos Executivos Extrajudiciais**. Explique a importância da **Duplicata Mercantil com comprovante de entrega de mercadoria (aceite)** no processo de cobrança judicial via Ação de Execução.
+        </div>
+        <textarea id="ccv2-4-titulo" class="input-box" placeholder="Explique que a duplicata acompanhada do comprovante de entrega (canhoto da nota) comprova a dívida líquida, certa e exigível, permitindo execução judicial direta sem necessidade de processo lento de conhecimento..."></textarea>
+        <div id="feedback-ccv2-4-titulo" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: COBRANÇA IN-HOUSE vs. TERCEIRIZADA (ASSESSORIAS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Estratégia de Cobrança: Operação Própria (In-House) vs. Assessoria Terceirizada</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> A partir de quantos dias de atraso costuma-se transferir a cobrança interna (In-House) para uma **Assessoria Externa de Cobrança**? Compare os fatores de **custo de comissionamento (success fee)** e **preservação do relacionamento corporativo**.
+        </div>
+        <textarea id="ccv2-5-terceirizacao" class="input-box" placeholder="Discorra sobre a transição (ex: após 60-90 dias), onde a cobrança interna preserva a relação comercial em atrasos recentes e a assessoria externa foca na recuperação ostensiva com remuneração por taxa de sucesso..."></textarea>
+        <div id="feedback-ccv2-5-terceirizacao" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const ccv2_1Selected = document.querySelector('input[name="ccv2_1"]:checked');
+        if (ccv2_1Selected && ccv2_1Selected.value === 'probabilidade') {
+            aplicarFeedback('feedback-ccv2-1', { valido: true, motivo: "Correto! O Credit Scoring estima a probabilidade estatística de inadimplência (default)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ccv2-1', { valido: false, motivo: "Incorreto. O Score calcula estatisticamente a probabilidade de inadimplência do cliente." });
+        }
+
+        // Mód 2
+        const g1 = document.getElementById('ccv2-2-g1').value;
+        const g2 = document.getElementById('ccv2-2-g2').value;
+        if (g1 === 'real' && g2 === 'fidejussoria') {
+            aplicarFeedback('feedback-ccv2-2', { valido: true, motivo: "Perfeito! Alienação Fiduciária é Garantia Real; Aval/Fiança é Garantia Fidejussória (Pessoal)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ccv2-2', { valido: false, motivo: "Incorreto. Verifique a diferença entre Garantia Real (bem) e Fidejussória (pessoa/avalist)." });
+        }
+
+        // Mód 3
+        const resLim = validarTextoInteligente(document.getElementById('ccv2-3-limite').value, 3, 12);
+        const resAtr = validarTextoInteligente(document.getElementById('ccv2-3-atrasos').value, 3, 12);
+        aplicarFeedback('feedback-ccv2-3-limite', resLim);
+        aplicarFeedback('feedback-ccv2-3-atrasos', resAtr);
+        if (resLim.valido && resAtr.valido) acertos++;
+
+        // Mód 4
+        const titVal = document.getElementById('ccv2-4-titulo').value;
+        const resTit = validarTextoInteligente(titVal, 4, 15);
+        if (resTit.valido) {
+            const termosTit = /duplicat|execuç|líquid|certa|exigível|comprovant|entreg|canhot|judicial/i;
+            if (!termosTit.test(titVal)) {
+                resTit.valido = false;
+                resTit.motivo = "Mencione a duplicata, comprovante de entrega (canhoto) ou execução judicial líquida e certa.";
+            }
+        }
+        aplicarFeedback('feedback-ccv2-4-titulo', resTit);
+        if (resTit.valido) acertos++;
+
+        // Mód 5
+        const tercVal = document.getElementById('ccv2-5-terceirizacao').value;
+        const resTerc = validarTextoInteligente(tercVal, 4, 15);
+        if (resTerc.valido) {
+            const termosTerc = /terceiriz|assessori|dias|atras|comiss|sucess|relacionament|in-house/i;
+            if (!termosTerc.test(tercVal)) {
+                resTerc.valido = false;
+                resTerc.motivo = "Mencione o período de transição (ex: 60 a 90 dias), comissionamento por sucesso ou relacionamento.";
+            }
+        }
+        aplicarFeedback('feedback-ccv2-5-terceirizacao', resTerc);
+        if (resTerc.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ccv2-3-limite').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ccv2-3-limite', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('ccv2-3-atrasos').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ccv2-3-atrasos', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('ccv2-4-titulo').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosTit = /duplicat|execuç|líquid|certa|exigível|comprovant|entreg|canhot|judicial/i;
+                if (!termosTit.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione a duplicata com comprovante de entrega garantindo dívida líquida, certa e exigível.";
+                }
+            }
+            aplicarFeedback('feedback-ccv2-4-titulo', res);
+        });
+        document.getElementById('ccv2-5-terceirizacao').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosTerc = /terceiriz|assessori|dias|atras|comiss|sucess|relacionament|in-house/i;
+                if (!termosTerc.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre a transferência para assessoria (dias de atraso), taxa de sucesso e relacionamento.";
+                }
+            }
+            aplicarFeedback('feedback-ccv2-5-terceirizacao', res);
+        });
+    });
+</script>
+
+</body>
+</html>

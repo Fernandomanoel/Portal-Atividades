@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Crédito e Cobrança III — Open Finance, Fraudes e Trava de Recebíveis</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #0d9488;
+            --brand-light: #ccfbf1;
+            --accent-color: #0f766e;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #0d9488 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #99f6e4; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Crédito e Cobrança III — Open Finance, Prevenção a Fraudes e Recebíveis</h1>
+        <p>Aprenda a utilizar dados do Open Finance na análise de crédito, aplicar rotinas de KYC contra fraudes, estruturar travas de recebíveis de cartão e criar réguas de cobrança omnichannel com inteligência artificial.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=credito-cobranca">← Voltar para Crédito e Cobrança</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: OPEN FINANCE E CADASTRO POSITIVO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Open Finance e Análise de Crédito Baseada em Dados Abertos</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Com o avanço do **Open Finance** e do **Cadastro Positivo**, os analistas de crédito ganharam acesso a um histórico financeiro completo e consentido pelos clientes. Qual a principal vantagem dessa abordagem em relação aos métodos tradicionais de consulta de restrições?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="ccv3_1" value="apenas_negativos">
+                a) Avaliar apenas as contas que já foram negativadas nos órgãos de proteção ao crédito.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ccv3_1" value="comportamento_real">
+                b) Enxergar o fluxo de caixa real, hábitos de pagamento pontuais e capacidade financeira atualizada do tomador, permitindo taxas personalizadas e redução do risco.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ccv3_1" value="aprovacao_automatica">
+                c) Aprovar o crédito automaticamente sem necessidade de qualquer análise ou comprovação de renda.
+            </label>
+        </div>
+        <div id="feedback-ccv3-1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: PREVENÇÃO A FRAUDES E CONHEÇA SEU CLIENTE (KYC) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Prevenção a Fraudes e Processo KYC (Know Your Customer)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio Tático:</strong> Na concessão de crédito digital, a falsificação de documentos e o roubo de identidade são grandes riscos de perda imediata. Explique o papel da **Biometria Facial (Liveness Detection)** e do **Bureau de Proteção Antifraude** na validação de proposta.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Função da Biometria Facial e Liveness:</label>
+                <input type="text" id="ccv3-2-biometria" class="input-box" placeholder="Ex: Garantir a presença real do titular no momento da proposta contra fotos ou identidades falsas...">
+                <div id="feedback-ccv3-2-biometria" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Função do Cheque de Dados (KYC / Antifraude):</label>
+                <input type="text" id="ccv3-2-kyc" class="input-box" placeholder="Ex: Confirmar a consistência do CPF, renda presumida, endereço e histórico do solicitante...">
+                <div id="feedback-ccv3-2-kyc" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: TRAVA DE RECEBÍVEIS E CESSÃO FIDUCIÁRIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Garantias Financeiras Modernas: Trava de Recebíveis de Cartão</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o instrumento de garantia de crédito ao seu mecanismo de funcionamento comercial:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Mecanismo de Garantia Financeira</th>
+                    <th style="width: 50%;">Funcionamento no Contrato de Crédito</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Cessão Fiduciária de Recebíveis de Cartão (Trava de Cartão)**</td>
+                    <td>
+                        <select id="ccv3-3-g1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="trava">O credor retém diretamente a agenda de pagamentos das maquininhas do lojista para quitação das parcelas</option>
+                            <option value="fianca">Exigência de declaração patrimonial simples assinada pelo proprietário sem retenção de recebíveis</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**Fiança Pessoal do Sócio**</td>
+                    <td>
+                        <select id="ccv3-3-g2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="trava">O credor retém diretamente a agenda de pagamentos das maquininhas do lojista para quitação das parcelas</option>
+                            <option value="fianca">Exigência de declaração patrimonial simples assinada pelo proprietário sem retenção de recebíveis</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-ccv3-3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: COBRANÇA OMNICHANNEL E PIX COM CÓDIGO COBRANÇA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Cobrança Digital Omnichannel e Agilidade via Pix Cobrança</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> A modernização da cobrança substituiu boletos bancários tradicionais e ligações frias por canais integrados (WhatsApp, e-mail, SMS) com **Pix Cobrança (QR Code dinâmico com juros e multa pré-calculados)**. Explique como a redução da fricção no pagamento aumenta a taxa de recuperação em atrasos recentes.
+        </div>
+        <textarea id="ccv3-4-pix" class="input-box" placeholder="Explique que a praticidade do Pix permite quitação instantânea no canal de atendimento, sem necessidade de digitação de linha digitável ou espera de compensação, facilitando acordos rápidos..."></textarea>
+        <div id="feedback-ccv3-4-pix" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: TESTES DE ESTRESSE DE CARTEIRA E RISCO MACROECONÔMICO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Gestão de Riscos de Carteira: Stress Testing e Cenários de Crise</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Diante de um cenário de alta da inflação ou desaceleração econômica, o risco de inadimplência generalizada aumenta. O que é um **Teste de Estresse (Stress Testing) na Carteira de Crédito** e quais decisões estratégicas a diretoria de crédito deve tomar ao simular alta da inadimplência?
+        </div>
+        <textarea id="ccv3-5-stress" class="input-box" placeholder="Discorra sobre a simulação de cenários adversos para medir perdas potenciais, o ajuste preventivo na régua de concessão (restringindo perfis de alto risco) e o reforço da provisão (PDD)..."></textarea>
+        <div id="feedback-ccv3-5-stress" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const ccv3_1Selected = document.querySelector('input[name="ccv3_1"]:checked');
+        if (ccv3_1Selected && ccv3_1Selected.value === 'comportamento_real') {
+            aplicarFeedback('feedback-ccv3-1', { valido: true, motivo: "Correto! O Open Finance permite visualizar a capacidade financeira real e o histórico positivo do cliente." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ccv3-1', { valido: false, motivo: "Incorreto. A maior vantagem do Open Finance é permitir análise de comportamento de caixa em tempo real." });
+        }
+
+        // Mód 2
+        const resBio = validarTextoInteligente(document.getElementById('ccv3-2-biometria').value, 3, 12);
+        const resKyc = validarTextoInteligente(document.getElementById('ccv3-2-kyc').value, 3, 12);
+        aplicarFeedback('feedback-ccv3-2-biometria', resBio);
+        aplicarFeedback('feedback-ccv3-2-kyc', resKyc);
+        if (resBio.valido && resKyc.valido) acertos++;
+
+        // Mód 3
+        const g1 = document.getElementById('ccv3-3-g1').value;
+        const g2 = document.getElementById('ccv3-3-g2').value;
+        if (g1 === 'trava' && g2 === 'fianca') {
+            aplicarFeedback('feedback-ccv3-3', { valido: true, motivo: "Perfeito! A Trava de Cartão retém a agenda financeira do lojista como garantia automatizada." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ccv3-3', { valido: false, motivo: "Incorreto. Verifique a associação da trava de recebíveis." });
+        }
+
+        // Mód 4
+        const pixVal = document.getElementById('ccv3-4-pix').value;
+        const resPix = validarTextoInteligente(pixVal, 4, 15);
+        if (resPix.valido) {
+            const termosPix = /pix|praticidad|instantân|fricção|quitaç|acordo|facilita|pagament/i;
+            if (!termosPix.test(pixVal)) {
+                resPix.valido = false;
+                resPix.motivo = "Mencione a redução de fricção, pagamento instantâneo via Pix ou agilidade no acordo.";
+            }
+        }
+        aplicarFeedback('feedback-ccv3-4-pix', resPix);
+        if (resPix.valido) acertos++;
+
+        // Mód 5
+        const stressVal = document.getElementById('ccv3-5-stress').value;
+        const resStress = validarTextoInteligente(stressVal, 4, 15);
+        if (resStress.valido) {
+            const termosStress = /estresse|simula|cenário|inadimplênc|perda|provis|pdd|restriç|risco/i;
+            if (!termosStress.test(stressVal)) {
+                resStress.valido = false;
+                resStress.motivo = "Mencione a simulação de cenários de crise, ajuste no risco da carteira ou reforço na provisão (PDD).";
+            }
+        }
+        aplicarFeedback('feedback-ccv3-5-stress', resStress);
+        if (resStress.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ccv3-2-biometria').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ccv3-2-biometria', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('ccv3-2-kyc').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ccv3-2-kyc', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('ccv3-4-pix').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosPix = /pix|praticidad|instantân|fricção|quitaç|acordo|facilita|pagament/i;
+                if (!termosPix.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione a facilidade de quitação instantânea via Pix e redução da fricção do cliente.";
+                }
+            }
+            aplicarFeedback('feedback-ccv3-4-pix', res);
+        });
+        document.getElementById('ccv3-5-stress').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosStress = /estresse|simula|cenário|inadimplênc|perda|provis|pdd|restriç|risco/i;
+                if (!termosStress.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre testes de estresse, simulação de inadimplência e ajustes em réguas de concessão.";
+                }
+            }
+            aplicarFeedback('feedback-ccv3-5-stress', res);
+        });
+    });
+</script>
+
+</body>
+</html>

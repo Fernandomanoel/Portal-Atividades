@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Gestão de Pessoas I — Recrutamento, Seleção e Onboarding</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #db2777;
+            --brand-light: #fce7f3;
+            --accent-color: #be185d;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #db2777 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fbcfe8; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        .table-responsive { overflow-x: auto; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; vertical-align: middle; }
+
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Gestão de Pessoas I — Recrutamento, Seleção e Onboarding</h1>
+        <p>Fundamentos de RH: descrição de cargo, recrutamento interno x externo, etapas do processo seletivo, documentação admissional obrigatória e integração (onboarding) do novo colaborador.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=gestao-pessoas">← Voltar para Gestão de Pessoas</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: DESCRIÇÃO DE CARGO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Abertura de Vaga e Descrição do Cargo</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> O gestor da área de vendas pediu a abertura de uma vaga para <strong>Analista de Vendas Pleno</strong>, pois um colaborador pediu demissão. Antes de divulgar a vaga, o RH precisa redigir a descrição do cargo.
+        </div>
+        <textarea id="gp1-1-descricao" class="input-box" placeholder="Descreva os principais requisitos (hard e soft skills) e as responsabilidades do cargo de Analista de Vendas Pleno..."></textarea>
+        <div id="feedback-gp1-1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: RECRUTAMENTO INTERNO X EXTERNO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Recrutamento Interno vs. Recrutamento Externo</h2>
+        </div>
+        <div class="scenario-description">
+            A empresa tem duas vagas abertas ao mesmo tempo. Escolha, para cada uma, a estratégia de recrutamento mais adequada.
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 60%;">Situação</th>
+                        <th style="width: 40%;">Estratégia Recomendada</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Coordenador de TI:</strong> a empresa quer aproveitar quem já conhece os sistemas internos e reter um talento que já está se destacando.</td>
+                        <td>
+                            <select id="gp1-2-a" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="interno">Recrutamento Interno</option>
+                                <option value="externo">Recrutamento Externo</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Analista de Marketing Digital:</strong> a empresa quer trazer ideias novas e experiências que a equipe atual ainda não tem.</td>
+                        <td>
+                            <select id="gp1-2-b" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="interno">Recrutamento Interno</option>
+                                <option value="externo">Recrutamento Externo</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-gp1-2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: ETAPAS DO PROCESSO SELETIVO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Ordem das Etapas do Processo Seletivo</h2>
+        </div>
+        <div class="scenario-description">
+            Numere de <strong>1 a 5</strong> a ordem correta em que essas etapas normalmente acontecem em um processo seletivo.
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 70%;">Etapa</th>
+                        <th style="width: 30%;">Ordem (1 a 5)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Divulgação da vaga (site de empregos, LinkedIn, mural interno)</td>
+                        <td>
+                            <select id="gp1-3-divulgacao" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Triagem de currículos recebidos</td>
+                        <td>
+                            <select id="gp1-3-triagem" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Entrevista inicial com o RH</td>
+                        <td>
+                            <select id="gp1-3-entrevista-rh" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Entrevista técnica com o gestor da área</td>
+                        <td>
+                            <select id="gp1-3-entrevista-tecnica" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Exame admissional e contratação</td>
+                        <td>
+                            <select id="gp1-3-admissional" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-gp1-3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: DOCUMENTAÇÃO ADMISSIONAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Documentação Admissional Obrigatória</h2>
+        </div>
+        <div class="scenario-description">
+            Antes do primeiro dia do novo colaborador, o RH monta o checklist de documentos. Classifique cada item abaixo.
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 60%;">Item</th>
+                        <th style="width: 40%;">Classificação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Carteira de Trabalho (CTPS)</td>
+                        <td>
+                            <select id="gp1-4-ctps" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="obrigatorio">Documento admissional obrigatório</option>
+                                <option value="nao">Não é documento admissional</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Exame médico admissional (ASO)</td>
+                        <td>
+                            <select id="gp1-4-aso" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="obrigatorio">Documento admissional obrigatório</option>
+                                <option value="nao">Não é documento admissional</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Currículo do candidato, usado durante a seleção</td>
+                        <td>
+                            <select id="gp1-4-curriculo" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="obrigatorio">Documento admissional obrigatório</option>
+                                <option value="nao">Não é documento admissional</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>RG e CPF</td>
+                        <td>
+                            <select id="gp1-4-rgcpf" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="obrigatorio">Documento admissional obrigatório</option>
+                                <option value="nao">Não é documento admissional</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-gp1-4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ONBOARDING NOS PRIMEIROS DIAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Onboarding Estruturado nos Primeiros Dias</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> O novo Analista de Vendas Pleno começa na próxima segunda-feira. Descreva como deve ser a integração (onboarding) dele na primeira semana.
+        </div>
+        <textarea id="gp1-5-onboarding" class="input-box" placeholder="Descreva pontos como apresentação da empresa e da equipe, liberação de acessos e sistemas, treinamento inicial e acompanhamento do gestor nos primeiros dias..."></textarea>
+        <div id="feedback-gp1-5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1 — descrição do cargo
+        const val1 = document.getElementById('gp1-1-descricao').value;
+        const res1 = validarTextoInteligente(val1, 4, 20);
+        if (res1.valido) {
+            const termos1 = /requisit|responsab|habilidad|compet|experi|conhecim|funç/i;
+            if (!termos1.test(val1)) {
+                res1.valido = false;
+                res1.motivo = "Descreva os requisitos (habilidades/experiência) e as responsabilidades do cargo.";
+            }
+        }
+        aplicarFeedback('feedback-gp1-1', res1);
+        if (res1.valido) acertos++;
+
+        // Mód 2 — interno x externo
+        const a2 = document.getElementById('gp1-2-a').value;
+        const b2 = document.getElementById('gp1-2-b').value;
+        if (a2 === 'interno' && b2 === 'externo') {
+            aplicarFeedback('feedback-gp1-2', { valido: true, motivo: "Correto! Reter e aproveitar quem já conhece a empresa pede recrutamento interno; buscar ideias novas pede recrutamento externo." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-gp1-2', { valido: false, motivo: "Incorreto. Revise qual situação pede recrutamento interno e qual pede externo." });
+        }
+
+        // Mód 3 — ordem do processo seletivo
+        const ordem = {
+            divulgacao: document.getElementById('gp1-3-divulgacao').value,
+            triagem: document.getElementById('gp1-3-triagem').value,
+            entrevistaRh: document.getElementById('gp1-3-entrevista-rh').value,
+            entrevistaTecnica: document.getElementById('gp1-3-entrevista-tecnica').value,
+            admissional: document.getElementById('gp1-3-admissional').value,
+        };
+        const ordemCorreta = ordem.divulgacao === '1' && ordem.triagem === '2' && ordem.entrevistaRh === '3' && ordem.entrevistaTecnica === '4' && ordem.admissional === '5';
+        if (ordemCorreta) {
+            aplicarFeedback('feedback-gp1-3', { valido: true, motivo: "Ordem correta: divulgação, triagem, entrevista com RH, entrevista técnica e, por fim, exame admissional." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-gp1-3', { valido: false, motivo: "Ordem incorreta. Revise a sequência do processo seletivo." });
+        }
+
+        // Mód 4 — documentação admissional
+        const doc = {
+            ctps: document.getElementById('gp1-4-ctps').value,
+            aso: document.getElementById('gp1-4-aso').value,
+            curriculo: document.getElementById('gp1-4-curriculo').value,
+            rgcpf: document.getElementById('gp1-4-rgcpf').value,
+        };
+        const docCorreto = doc.ctps === 'obrigatorio' && doc.aso === 'obrigatorio' && doc.curriculo === 'nao' && doc.rgcpf === 'obrigatorio';
+        if (docCorreto) {
+            aplicarFeedback('feedback-gp1-4', { valido: true, motivo: "Correto! CTPS, ASO, RG e CPF são documentos admissionais; o currículo é usado só na seleção." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-gp1-4', { valido: false, motivo: "Incorreto. Revise quais itens são realmente documentos admissionais." });
+        }
+
+        // Mód 5 — onboarding
+        const val5 = document.getElementById('gp1-5-onboarding').value;
+        const res5 = validarTextoInteligente(val5, 5, 25);
+        if (res5.valido) {
+            const termos5 = /apresentaç|acesso|treinament|acompanhament|gestor|equipe|integraç|sistema/i;
+            if (!termos5.test(val5)) {
+                res5.valido = false;
+                res5.motivo = "Mencione apresentação da equipe, liberação de acessos, treinamento inicial e acompanhamento do gestor.";
+            }
+        }
+        aplicarFeedback('feedback-gp1-5', res5);
+        if (res5.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('gp1-1-descricao').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 20);
+            if (res.valido) {
+                const termos1 = /requisit|responsab|habilidad|compet|experi|conhecim|funç/i;
+                if (!termos1.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Descreva os requisitos e as responsabilidades do cargo.";
+                }
+            }
+            aplicarFeedback('feedback-gp1-1', res);
+        });
+        document.getElementById('gp1-5-onboarding').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 25);
+            if (res.valido) {
+                const termos5 = /apresentaç|acesso|treinament|acompanhament|gestor|equipe|integraç|sistema/i;
+                if (!termos5.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione apresentação, acessos, treinamento inicial e acompanhamento do gestor.";
+                }
+            }
+            aplicarFeedback('feedback-gp1-5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

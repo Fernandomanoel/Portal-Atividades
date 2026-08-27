@@ -1261,6 +1261,12 @@ const ATIVIDADES = [
     cor: "#8b5cf6",
     materiais: [
       {
+        titulo: "Atividade Prática: Gestão de Pessoas I — Recrutamento, Seleção e Onboarding",
+        descricao: "Descrição de cargo, recrutamento interno x externo, etapas do processo seletivo, documentação admissional e onboarding.",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-recrutamento-selecao-onboarding.html",
+      },
+      {
         titulo: "Atividade Prática: Gestão de Pessoas II — Seleção STAR, Métricas e PDI",
         descricao: "Método de seleção STAR, métricas de RH e Plano de Desenvolvimento Individual (PDI).",
         tipo: "link",

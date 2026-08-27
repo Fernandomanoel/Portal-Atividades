@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Segurança na Era Digital e Cibersegurança</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #0f766e;
+            --brand-light: #ccfbf1;
+            --accent-color: #0d9488;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #0f766e 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #99f6e4;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Painel de Status Geral */
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .status-info {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-validate-all:active {
+            transform: scale(0.98);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Mensagens de Feedback */
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        /* Radio Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Segurança na Era Digital e Cibersegurança</h1>
+        <p>Aprenda a identificar ameaças digitais, proteger credenciais e responder a incidentes de segurança corporativos e pessoais. Todas as respostas possuem validação em tempo real com bloqueio anti-spam.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=seguranca-era-digital">← Voltar para Segurança na Era Digital</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade" para verificar o resultado.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ENGENHARIA SOCIAL E PHISHING (MÚLTIPLA ESCOLHA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Engenharia Social e Identificação de Phishing</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Você recebeu um e-mail urgente com o assunto <i>"Sua conta bancária será bloqueada em 2 horas! Atualize seus dados imediatamente"</i>. O e-mail contém um link para recadastramento com o domínio <code>http://bancoseguro-atualizacao-conta.com</code>.
+            <br><br>
+            <strong>Questão 1:</strong> Qual é o diagnóstico correto sobre esta mensagem?
+        </div>
+
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="s1" value="legitimo">
+                a) É um comunicado legítimo, pois o banco tem obrigação de avisar antes de bloquear a conta.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="s1" value="phishing">
+                b) É um ataque de Phishing/Engenharia Social, caracterizado pelo tom de urgência alarmista e link suspeito fora do site oficial.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="s1" value="virus">
+                c) É um vírus que se ativa automaticamente apenas abrindo a caixa de entrada, sem precisar clicar no link.
+            </label>
+        </div>
+        <div id="feedback-s1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: AUTENTICAÇÃO E POLÍTICA DE SENHAS (VALIDAÇÃO TEXTUAL) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Gestão de Credenciais e Autenticação de Dois Fatores (2FA/MFA)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Desafio de Segurança:</strong> Explique quais são os critérios fundamentais para a criação de uma **senha forte e segura** e por que a ativação da **Autenticação em Duas Etapas (2FA)** é indispensável hoje em dia.
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Critérios para uma Senha Forte:</label>
+                <input type="text" id="s2-senha" class="input-box" placeholder="Ex: Mínimo de 12 caracteres, combinação de maiúsculas, minúsculas, números e símbolos...">
+                <div id="feedback-s2-senha" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Importância do 2FA / MFA (Duplo Fator):</label>
+                <input type="text" id="s2-mfa" class="input-box" placeholder="Ex: Exige um código temporário no celular mesmo se a senha for vazada ou descoberta...">
+                <div id="feedback-s2-mfa" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: CLASSIFICAÇÃO DE RISCOS DE REDE E DISPOSITIVOS (SELEÇÃO INTERATIVA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Classificação de Riscos em Redes e Dispositivos</h2>
+        </div>
+
+        <div class="scenario-description">
+            Associe o comportamento à sua respectiva classificação de risco para a segurança da informação:
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Comportamento / Ação do Usuário</th>
+                        <th style="width: 50%;">Classificação de Risco</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Acessar o sistema financeiro da empresa usando Wi-Fi público de aeroporto sem VPN.</td>
+                        <td>
+                            <select id="s3-r1" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="alto">Alto Risco (Vulnerável à interceptação de dados / Man-in-the-Middle)</option>
+                                <option value="seguro">Prática Segura e Recomendada</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Conectar um pendrive desconhecido encontrado no estacionamento no computador da empresa.</td>
+                        <td>
+                            <select id="s3-r2" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="alto">Alto Risco (Possível infecção por Malware / BadUSB)</option>
+                                <option value="seguro">Prática Segura e Recomendada</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-s3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: RESPOSTA A INCIDENTES DE SEGURANÇA (PLANO DE AÇÃO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Resposta a Incidentes: Ação Imediata</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Estudo de Caso:</strong> Um funcionário percebeu que clicou em um anexo suspeito de e-mail e que arquivos no computador começaram a mudar de extensão sozinhos (suspeita de **Ransomware**). Escreva os **passos de ação imediata** que o funcionário deve tomar para conter o incidente.
+        </div>
+
+        <textarea id="s4-incidente" class="input-box" style="min-height: 110px;" placeholder="Descreva os passos imediatos (ex: desconectar a máquina da rede/Wi-Fi, avisar a equipe de TI, não desligar o computador abruptamente)..."></textarea>
+        <div id="feedback-s4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRIVACIDADE DE DADOS E LGPD (PROTEÇÃO DE DADOS PESSOAIS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Privacidade de Dados Pessoais e LGPD</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Final:</strong> Por que as empresas devem aplicar o princípio do **Acesso Mínimo Necessário (Least Privilege)** e garantir o consentimento explicito ao coletar dados pessoais de clientes?
+        </div>
+
+        <textarea id="s5-lgpd" class="input-box" style="min-height: 120px;" placeholder="Explique como o controle de acesso reduz vazamentos e garante o cumprimento da Lei Geral de Proteção de Dados (LGPD)..."></textarea>
+        <div id="feedback-s5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO ANTI-SPAM, ANTI-GIBBERISH E ANTI-NUMÉRICO
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Comprimento mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Resposta muito curta. Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        }
+
+        // 2. Bloqueio de números isolados (ex: "12124128471568596983056908")
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Resposta inválida: Apenas números foram digitados. Escreva uma resposta em português." };
+        }
+
+        // 3. Bloqueio de palavras sem espaços (ex: "hikhdfisfjsa~fp~pfpoasfj")
+        if (!limpo.includes(' ') && limpo.length > 16) {
+            return { valido: false, motivo: "Resposta inválida: Sequência contínua sem espaços detectada." };
+        }
+
+        // 4. Mínimo de palavras reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+        }
+
+        // 5. Proporção de Vogais (Detecta teclado aleatório)
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou digitação aleatória. Escreva palavras reais em português." };
+        }
+
+        // 6. Padrões de repetição do teclado
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão repetitivo do teclado detectado. Digite uma resposta séria." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    // APLICAR FEEDBACK VISUAL
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    // VALIDAÇÃO GERAL DA ATIVIDADE
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1
+        const s1Selected = document.querySelector('input[name="s1"]:checked');
+        if (s1Selected && s1Selected.value === 'phishing') {
+            aplicarFeedback('feedback-s1', { valido: true, motivo: "Correto! Alertas alarmistas com links externos não oficiais são sinais claros de Phishing." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-s1', { valido: false, motivo: "Incorreto. Trata-se de um ataque de Phishing (Engenharia Social)." });
+        }
+
+        // Módulo 2
+        const senhaVal = document.getElementById('s2-senha').value;
+        const mfaVal = document.getElementById('s2-mfa').value;
+        const resSenha = validarTextoInteligente(senhaVal, 3, 12);
+        const resMfa = validarTextoInteligente(mfaVal, 3, 12);
+
+        aplicarFeedback('feedback-s2-senha', resSenha);
+        aplicarFeedback('feedback-s2-mfa', resMfa);
+        if (resSenha.valido && resMfa.valido) acertos++;
+
+        // Módulo 3
+        const r1 = document.getElementById('s3-r1').value;
+        const r2 = document.getElementById('s3-r2').value;
+        if (r1 === 'alto' && r2 === 'alto') {
+            aplicarFeedback('feedback-s3', { valido: true, motivo: "Excelente! Tanto Wi-Fi público sem VPN quanto pendrives desconhecidos representam alto risco de segurança." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-s3', { valido: false, motivo: "Incorreto. Ambas as condutas representam alto risco à infraestrutura corporativa." });
+        }
+
+        // Módulo 4
+        const incidenteVal = document.getElementById('s4-incidente').value;
+        const resIncidente = validarTextoInteligente(incidenteVal, 4, 15);
+        if (resIncidente.valido) {
+            const termosSeguranca = /desconect|rede|internet|wi-fi|cab|ti|suporte|ransomware|comunic|avisa|isol/i;
+            if (!termosSeguranca.test(incidenteVal)) {
+                resIncidente.valido = false;
+                resIncidente.motivo = "A resposta está legível, mas inclua ações como desconectar da rede/Wi-Fi ou avisar a equipe de TI.";
+            }
+        }
+        aplicarFeedback('feedback-s4', resIncidente);
+        if (resIncidente.valido) acertos++;
+
+        // Módulo 5
+        const lgpdVal = document.getElementById('s5-lgpd').value;
+        const resLgpd = validarTextoInteligente(lgpdVal, 4, 15);
+        if (resLgpd.valido) {
+            const termosLgpd = /dado|privacid|lgpd|acesso|vazament|proteç|seguranç|client|consent/i;
+            if (!termosLgpd.test(lgpdVal)) {
+                resLgpd.valido = false;
+                resLgpd.motivo = "Inclua conceitos como proteção de dados, vazamentos, controle de acesso ou LGPD na resposta.";
+            }
+        }
+        aplicarFeedback('feedback-s5', resLgpd);
+        if (resLgpd.valido) acertos++;
+
+        // ATUALIZAR STATUS GERAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos de segurança digital.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as caixas destacadas em vermelho.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL NOS INPUTS
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('s2-senha').addEventListener('blur', function() {
+            aplicarFeedback('feedback-s2-senha', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('s2-mfa').addEventListener('blur', function() {
+            aplicarFeedback('feedback-s2-mfa', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('s4-incidente').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosSeguranca = /desconect|rede|internet|wi-fi|cab|ti|suporte|ransomware|comunic|avisa|isol/i;
+                if (!termosSeguranca.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione a necessidade de desconectar o cabo de rede/Wi-Fi e avisar o suporte de TI.";
+                }
+            }
+            aplicarFeedback('feedback-s4', res);
+        });
+
+        document.getElementById('s5-lgpd').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosLgpd = /dado|privacid|lgpd|acesso|vazament|proteç|seguranç|client|consent/i;
+                if (!termosLgpd.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione termos como vazamentos de dados, permissão de acesso ou LGPD no seu texto.";
+                }
+            }
+            aplicarFeedback('feedback-s5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

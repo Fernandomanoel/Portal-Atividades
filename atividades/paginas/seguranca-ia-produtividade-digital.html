@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Inteligência Artificial e Produtividade Digital</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #6366f1;
+            --brand-light: #e0e7ff;
+            --accent-color: #4f46e5;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #6366f1 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #c7d2fe;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Painel de Status Geral */
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .status-info {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-validate-all:active {
+            transform: scale(0.98);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Mensagens de Feedback */
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        /* Radio Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Inteligência Artificial e Produtividade Digital</h1>
+        <p>Aprenda a estruturar prompts eficazes, aplicar ferramentas de automação no trabalho e avaliar os aspectos éticos da IA. Todas as respostas contam com correção instantânea e validação anti-spam.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=seguranca-era-digital">← Voltar para Segurança na Era Digital</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade" para verificar suas respostas.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: CONCEITOS DE IA GENERATIVA (MÚLTIPLA ESCOLHA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Fundamentos de Inteligência Artificial Generativa</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Questão 1:</strong> O que define fundamentalmente um modelo de <i>Inteligência Artificial Generativa</i> (como LLMs de texto ou geradores de imagem) em comparação com sistemas tradicionais de busca?
+        </div>
+
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="ia1" value="busca">
+                a) Ele apenas copia e cola links de sites da internet sem processar o texto.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ia1" value="geracao">
+                b) Ele sintetiza informações e gera novos conteúdos (textos, códigos, imagens) com base no aprendizado de padrões de dados.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ia1" value="hardware">
+                c) É um programa de antivírus que limpa arquivos duplicados do computador.
+            </label>
+        </div>
+        <div id="feedback-ia1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: PROMPT ENGINEERING (VALIDAÇÃO TEXTUAL) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Engenharia de Prompt: Estrutura Profissional</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Desafio de Criação:</strong> Escreva um **Prompt Estruturado** para solicitar que uma IA elabore um e-mail de cobrança amigável para um cliente com fatura em atraso.
+            <br><br>
+            Seu prompt deve conter obrigatoriamente: <strong>Papel/Atuação</strong> (ex: "Atue como gestor financeiro"), <strong>Contexto</strong>, <strong>Tarefa principal</strong> e <strong>Tom de voz desejado</strong>.
+        </div>
+
+        <div class="task-instruction">
+            ✍️ Escreva o prompt completo no campo abaixo:
+        </div>
+
+        <textarea id="ia2-prompt" class="input-box" style="min-height: 120px;" placeholder="Ex: Atue como um especialista em atendimento ao cliente. Escreva um e-mail lembrando um cliente sobre o vencimento de uma fatura há 3 dias. O tom deve ser respeitoso, profissional e oferecer opções de segunda via do boleto..."></textarea>
+        <div id="feedback-ia2-prompt" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: APLICAÇÃO DE FERRAMENTAS DE IA (SELEÇÃO INTERATIVA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Mapeamento de Casos de Uso na Rotina de Trabalho</h2>
+        </div>
+
+        <div class="scenario-description">
+            Associe a tarefa do dia a dia à aplicação mais adequada da Inteligência Artificial:
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Necessidade do Trabalho</th>
+                        <th style="width: 50%;">Aplicação Ideal da IA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Resumir uma reunião gravada de 1 hora e extrair os pontos de ação (Action Items).</td>
+                        <td>
+                            <select id="ia3-u1" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="transcricao">Transcrição automática com IA e geração de ata sintética</option>
+                                <option value="imagem">Geração de imagem fidedigna da sala de reunião</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Analisar uma planilha com milhares de linhas e identificar padrões de vendas.</td>
+                        <td>
+                            <select id="ia3-u2" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="analise_dados">Análise de dados com intérprete de código/IA analítica</option>
+                                <option value="imagem">Tradução de áudio em tempo real sem suporte a números</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-ia3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: REVISÃO CRÍTICA E ALUCINAÇÃO DE IA (PLANO DE VERIFICAÇÃO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Checagem de Fatos e Mitigação de Alucinações</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Ao gerar um relatório jurídico ou técnico usando IA, o modelo citou leis ou estatísticas que parecem muito convincentes, mas que você não conhece. O que significa o fenômeno da **"Alucinação de IA"** e quais cuidados de verificação devem ser tomados antes de enviar o documento?
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>O que é Alucinação de IA?</label>
+                <input type="text" id="ia4-def" class="input-box" placeholder="Ex: Quando a IA inventa informações falsas ou referências inexistentes com aparente certeza...">
+                <div id="feedback-ia4-def" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Ação de Checagem / Verificação Humana (Human-in-the-loop):</label>
+                <input type="text" id="ia4-acao" class="input-box" placeholder="Ex: Checar fontes primárias, consultar bases oficiais e nunca publicar dados sem revisão humana...">
+                <div id="feedback-ia4-acao" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: ÉTICA, PRIVACIDADE E PROPRIEDADE INTELECTUAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Segurança de Dados Corporativos ao Usar IA</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Um funcionário colou o código-fonte confidencial de um software da empresa ou uma lista de CPF de clientes na versão pública de uma ferramenta de IA para pedir uma correção. Por que esse comportamento é considerado uma **grave violação de privacidade e segurança**?
+        </div>
+
+        <textarea id="ia5-etica" class="input-box" style="min-height: 120px;" placeholder="Explique os riscos de vazamento de segredo industrial, treinamento de modelos públicos com dados da empresa e LGPD..."></textarea>
+        <div id="feedback-ia5-etica" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO ANTI-SPAM, ANTI-GIBBERISH E ANTI-NUMÉRICO
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Comprimento mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Texto muito curto. Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        }
+
+        // 2. Bloqueio de números isolados (ex: "12124128471568596983056908")
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Resposta inválida: Apenas números foram digitados. Escreva uma resposta em português." };
+        }
+
+        // 3. Bloqueio de palavras sem espaços (ex: "hikhdfisfjsa~fp~pfpoasfj")
+        if (!limpo.includes(' ') && limpo.length > 16) {
+            return { valido: false, motivo: "Resposta inválida: Sequência contínua sem espaços detectada." };
+        }
+
+        // 4. Mínimo de palavras reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+        }
+
+        // 5. Proporção de Vogais
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou digitação aleatória. Escreva palavras reais em português." };
+        }
+
+        // 6. Padrões de repetição
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão repetitivo do teclado detectado. Digite uma resposta séria." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    // APLICAR FEEDBACK VISUAL
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    // VALIDAÇÃO GERAL DA ATIVIDADE
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1
+        const ia1Selected = document.querySelector('input[name="ia1"]:checked');
+        if (ia1Selected && ia1Selected.value === 'geracao') {
+            aplicarFeedback('feedback-ia1', { valido: true, motivo: "Correto! A IA Generativa sintetiza dados e cria novos conteúdos com base em padrões." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ia1', { valido: false, motivo: "Incorreto. A alternativa B é a correta." });
+        }
+
+        // Módulo 2
+        const promptVal = document.getElementById('ia2-prompt').value;
+        const resPrompt = validarTextoInteligente(promptVal, 5, 20);
+        if (resPrompt.valido) {
+            const termosPrompt = /atue|escreva|tom|e-mail|fatura|cobranç|respeit|profission|client|atras/i;
+            if (!termosPrompt.test(promptVal)) {
+                resPrompt.valido = false;
+                resPrompt.motivo = "O prompt está legível, mas deve conter instruções claras (papel, contexto, tarefa e tom de voz).";
+            }
+        }
+        aplicarFeedback('feedback-ia2-prompt', resPrompt);
+        if (resPrompt.valido) acertos++;
+
+        // Módulo 3
+        const u1 = document.getElementById('ia3-u1').value;
+        const u2 = document.getElementById('ia3-u2').value;
+        if (u1 === 'transcricao' && u2 === 'analise_dados') {
+            aplicarFeedback('feedback-ia3', { valido: true, motivo: "Excelente! Transcrição/Ata automática e Intérprete de Código são os casos de uso perfeitos." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-ia3', { valido: false, motivo: "Incorreto. Selecione as ferramentas de IA adequadas para reuniões e planilhas." });
+        }
+
+        // Módulo 4
+        const defVal = document.getElementById('ia4-def').value;
+        const acaoVal = document.getElementById('ia4-acao').value;
+        const resDef = validarTextoInteligente(defVal, 3, 12);
+        const resAcao = validarTextoInteligente(acaoVal, 3, 12);
+
+        aplicarFeedback('feedback-ia4-def', resDef);
+        aplicarFeedback('feedback-ia4-acao', resAcao);
+        if (resDef.valido && resAcao.valido) acertos++;
+
+        // Módulo 5
+        const eticaVal = document.getElementById('ia5-etica').value;
+        const resEtica = validarTextoInteligente(eticaVal, 5, 20);
+        if (resEtica.valido) {
+            const termosEtica = /vazam|confidenc|privacid|lgpd|segred|dado|treinam|risco|exposiç/i;
+            if (!termosEtica.test(eticaVal)) {
+                resEtica.valido = false;
+                resEtica.motivo = "Mencione riscos de vazamento de dados confidenciais, segredo industrial ou LGPD na sua resposta.";
+            }
+        }
+        aplicarFeedback('feedback-ia5-etica', resEtica);
+        if (resEtica.valido) acertos++;
+
+        // ATUALIZAR STATUS GERAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos do exercício de Inteligência Artificial.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as caixas destacadas em vermelho.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ia2-prompt').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosPrompt = /atue|escreva|tom|e-mail|fatura|cobranç|respeit|profission|client|atras/i;
+                if (!termosPrompt.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Inclua os elementos de um prompt estruturado (papel da IA, contexto, tarefa e tom).";
+                }
+            }
+            aplicarFeedback('feedback-ia2-prompt', res);
+        });
+
+        document.getElementById('ia4-def').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ia4-def', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('ia4-acao').addEventListener('blur', function() {
+            aplicarFeedback('feedback-ia4-acao', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('ia5-etica').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosEtica = /vazam|confidenc|privacid|lgpd|segred|dado|treinam|risco|exposiç/i;
+                if (!termosEtica.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Sua resposta deve explicar os riscos de vazamento de informações confidenciais ou LGPD.";
+                }
+            }
+            aplicarFeedback('feedback-ia5-etica', res);
+        });
+    });
+</script>
+
+</body>
+</html>

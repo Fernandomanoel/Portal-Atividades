@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Assistente de Departamento Pessoal</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #6d28d9;
+            --brand-light: #ede9fe;
+            --accent-color: #5b21b6;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #6d28d9 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #ddd6fe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(109, 40, 217, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Assistente de Departamento Pessoal (DP)</h1>
+        <p>Desenvolva competências práticas em Admissão e eSocial, Cálculos Trabalhistas de Horas Extras e DSR, Encargos de Folha (INSS/FGTS), Gestão de Férias e Rescisão Contratual segundo a CLT.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=departamento-pessoal">← Voltar para Departamento Pessoal</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ADMISSÃO DE EMPREGADOS E ESOCIAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Rotinas de Admissão e Transmissão do eSocial (Evento S-2200)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Um novo colaborador foi contratado para iniciar suas atividades na próxima segunda-feira. De acordo com as regras do eSocial e da legislação trabalhista vigentes, qual é o prazo correto para o envio do evento de Cadastramento Inicial / Admissão de Trabalhador (S-2200 ou S-2190 preliminar)?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="dp1" value="ate_5_dias">
+                a) Até 5 dias úteis após o início do trabalho do funcionário na empresa.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="dp1" value="ate_dia_anterior">
+                b) Até o dia imediatamente anterior ao início da prestação de serviços do trabalhador.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="dp1" value="ate_dia_7_mes_seguinte">
+                c) Até o dia 7 do mês subsequente ao da contratação, junto com o fechamento da folha.
+            </label>
+        </div>
+        <div id="feedback-dp1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: CÁLCULOS TRABALHISTAS (HORAS EXTRAS E DSR) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Jornada de Trabalho: Horas Extras (50%) e Descanso Semanal Remunerado (DSR)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio Tático:</strong> Um funcionário com salário mensal fixo recebe pelo valor por hora de R$ 20,00. No mês corrente, ele realizou **10 horas extras diurnas (com adicional de 50%)**. Explique como calcular o valor das horas extras e a incidência sobre o **DSR (Descanso Semanal Remunerado)**.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Cálculo do Valor das 10 Horas Extras (R$ 20/h + 50%):</label>
+                <input type="text" id="dp2-he" class="input-box" placeholder="Ex: Hora com adicional = R$ 30,00. Total das 10 horas extras = R$ 300,00...">
+                <div id="feedback-dp2-he" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Lógica de Cálculo do DSR sobre Horas Extras:</label>
+                <input type="text" id="dp2-dsr" class="input-box" placeholder="Ex: Divide-se o valor das HE pelos dias úteis e multiplica-se pelos domingos e feriados do mês...">
+                <div id="feedback-dp2-dsr" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: ENCARGOS E DESCONTOS DA FOLHA DE PAGAMENTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Folha de Pagamento: Retenção de INSS e Depósito de FGTS</h2>
+        </div>
+        <div class="scenario-description">
+            Associe os conceitos de encargos sociais e trabalhistas incidentes sobre o salário bruto:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Tributo / Encargo Trabalhista</th>
+                    <th style="width: 50%;">Característica de Aplicação na Folha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**INSS (Contribuição Previdenciária do Empregado)**</td>
+                    <td>
+                        <select id="dp3-inss" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="desconto">Desconto progressivo retido em folha diretamente do salário do empregado</option>
+                            <option value="encargo">Encargo exclusivo do empregador (8%), sem qualquer desconto no salário do empregado</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**FGTS (Fundo de Garantia do Tempo de Serviço)**</td>
+                    <td>
+                        <select id="dp3-fgts" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="desconto">Desconto progressivo retido em folha diretamente do salário do empregado</option>
+                            <option value="encargo">Encargo exclusivo do empregador (8%), sem qualquer desconto no salário do empregado</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-dp3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: GESTÃO DE FÉRIAS E PERÍODO CONCESSIVO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Gestão de Férias: Período Aquisitivo, Concessivo e Férias em Dobro</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> A cada 12 meses de trabalho (Período Aquisitivo), o empregado adquire o direito a 30 dias de férias, que devem ser concedidas nos 12 meses subsequentes (Período Concessivo). Explique o que ocorre juridicamente e financeiramente caso a empresa **não conceda as férias dentro do período concessivo**.
+        </div>
+        <textarea id="dp4-ferias" class="input-box" placeholder="Explique que a empresa é obrigada a pagar a remuneração das férias em dobro (conforme Art. 137 da CLT), além do terço constitucional, mantendo a obrigação do gozo dos dias de descanso..."></textarea>
+        <div id="feedback-dp4-ferias" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: RESCISÃO CONTRATUAL E TIPOS DE DESLIGAMENTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Rescisão do Contrato de Trabalho: Demissão por Acordo (Art. 484-A da CLT)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Com a Reforma Trabalhista, criou-se a figura do **Desligamento por Acordo Mutuo (Art. 484-A da CLT)**. Quais são os direitos do empregado nessa modalidade de rescisão em relação ao **Aviso Prévio indenizado**, à **multa rescisória do FGTS** e ao **saque do FGTS**?
+        </div>
+        <textarea id="dp5-rescisao" class="input-box" placeholder="Discorra sobre o pagamento de metade do aviso prévio indenizado (50%), metade da multa do FGTS (20%), movimentação de até 80% do saldo do FGTS e impossibilidade de recebimento do seguro-desemprego..."></textarea>
+        <div id="feedback-dp5-rescisao" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const dp1Selected = document.querySelector('input[name="dp1"]:checked');
+        if (dp1Selected && dp1Selected.value === 'ate_dia_anterior') {
+            aplicarFeedback('feedback-dp1', { valido: true, motivo: "Correto! O evento S-2200 deve ser transmitido até o dia útil imediatamente anterior ao início do trabalho." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-dp1', { valido: false, motivo: "Incorreto. A legislação do eSocial exige a transmissão da admissão até o dia anterior ao início do trabalho." });
+        }
+
+        // Mód 2
+        const resHe = validarTextoInteligente(document.getElementById('dp2-he').value, 3, 12);
+        const resDsr = validarTextoInteligente(document.getElementById('dp2-dsr').value, 3, 12);
+        aplicarFeedback('feedback-dp2-he', resHe);
+        aplicarFeedback('feedback-dp2-dsr', resDsr);
+        if (resHe.valido && resDsr.valido) acertos++;
+
+        // Mód 3
+        const inssVal = document.getElementById('dp3-inss').value;
+        const fgtsVal = document.getElementById('dp3-fgts').value;
+        if (inssVal === 'desconto' && fgtsVal === 'encargo') {
+            aplicarFeedback('feedback-dp3', { valido: true, motivo: "Perfeito! INSS é descontado do empregado; FGTS é encargo suportado integralmente pelo empregador." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-dp3', { valido: false, motivo: "Incorreto. Lembre-se: INSS é descontado do salário; FGTS é encargo da empresa." });
+        }
+
+        // Mód 4
+        const feriasVal = document.getElementById('dp4-ferias').value;
+        const resFerias = validarTextoInteligente(feriasVal, 4, 15);
+        if (resFerias.valido) {
+            const termosFerias = /dobro|137|clt|concessiv|multa|pagament|terço|penalidad/i;
+            if (!termosFerias.test(feriasVal)) {
+                resFerias.valido = false;
+                resFerias.motivo = "Mencione a obrigação de pagamento em dobro (Art. 137 da CLT) das férias não concedidas no prazo.";
+            }
+        }
+        aplicarFeedback('feedback-dp4-ferias', resFerias);
+        if (resFerias.valido) acertos++;
+
+        // Mód 5
+        const rescisaoVal = document.getElementById('dp5-rescisao').value;
+        const resRescisao = validarTextoInteligente(rescisaoVal, 4, 15);
+        if (resRescisao.valido) {
+            const termosRescisao = /50%|20%|80%|metade|acordo|multa|aviso|fgts|seguro|484/i;
+            if (!termosRescisao.test(rescisaoVal)) {
+                resRescisao.valido = false;
+                resRescisao.motivo = "Mencione a redução do aviso prévio (50%), multa do FGTS (20%) ou o saque limitado de 80% do FGTS.";
+            }
+        }
+        aplicarFeedback('feedback-dp5-rescisao', resRescisao);
+        if (resRescisao.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('dp2-he').addEventListener('blur', function() {
+            aplicarFeedback('feedback-dp2-he', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('dp2-dsr').addEventListener('blur', function() {
+            aplicarFeedback('feedback-dp2-dsr', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('dp4-ferias').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosFerias = /dobro|137|clt|concessiv|multa|pagament|terço|penalidad/i;
+                if (!termosFerias.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione o pagamento em dobro das férias vencidas e o terço constitucional.";
+                }
+            }
+            aplicarFeedback('feedback-dp4-ferias', res);
+        });
+        document.getElementById('dp5-rescisao').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosRescisao = /50%|20%|80%|metade|acordo|multa|aviso|fgts|seguro|484/i;
+                if (!termosRescisao.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione a regra de aviso prévio (metade), multa do FGTS (20%) ou limite de saque (80%).";
+                }
+            }
+            aplicarFeedback('feedback-dp5-rescisao', res);
+        });
+    });
+</script>
+
+</body>
+</html>

@@ -50,53 +50,18 @@ const ATIVIDADES = [
     cor: "#2b579a",
     materiais: [
       {
-        titulo: "Organização de Pastas e Arquivos",
+        titulo: "Avaliação Prática: Recursos do Windows 11",
         descricao:
-          "Atividade prática para aprender a criar e organizar pastas, editar arquivos e salvar imagens (print) no formato .bmp no Windows.",
+          "Roteiro prático sobre as novas funcionalidades de organização e interface do Windows 11: Configurações Rápidas, alinhamento da barra de tarefas, Áreas de Trabalho Virtuais, Snap Layouts, Ferramenta de Captura avançada e Bloco de Notas com abas.",
         tipo: "link",
-        url: "atividades/paginas/windows11-organizacao-pastas-arquivos.html",
+        url: "atividades/paginas/windows11-avaliacao-recursos-novos.html",
       },
       {
-        titulo: "Personalizando a Área de Trabalho",
+        titulo: "Avaliação Prática: Windows 11",
         descricao:
-          "Revisão (Dia 1) com 5 atividades: personalizar a área de trabalho, organizar arquivos no Explorador, usar a barra de tarefas e o menu Iniciar, ajustar configurações do sistema e gerenciar aplicativos instalados.",
+          "Passo a passo detalhado de gerenciamento e personalização do sistema: criação de pastas e subpastas, papel de parede, cursor do mouse, Gerenciador de Tarefas e compactação final em ZIP.",
         tipo: "link",
-        url: "atividades/paginas/windows11-personalizando-area-trabalho.html",
-      },
-      {
-        titulo: "Copiar, Recortar e Colar Arquivos",
-        descricao:
-          "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-copiar-recortar-colar.html",
-      },
-      {
-        titulo: "Personalização Avançada",
-        descricao:
-          "6 atividades além do papel de parede: cursor do mouse, cores de destaque, plano de fundo em apresentação de slides, tema salvo, sons do sistema e comportamento da barra de tarefas.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-personalizacao-avancada.html",
-      },
-      {
-        titulo: "Arquivos, Compactação e Segurança de Pastas",
-        descricao:
-          "6 atividades: estrutura de pastas de projeto, renomeação em lote, compactação em ZIP, compactação NTFS, ocultar pastas e verificar permissões de segurança.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-arquivos-compactacao-seguranca.html",
-      },
-      {
-        titulo: "Particionamento de Disco e Memória",
-        descricao:
-          "6 atividades com o Gerenciamento de Disco: criar e formatar uma partição de até 1 GB, usá-la, desfazê-la com segurança, e entender RAM vs. memória virtual.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-particionamento-memoria.html",
-      },
-      {
-        titulo: "Atalhos de Teclado e Acessibilidade",
-        descricao:
-          "6 atividades: atalhos essenciais, organizar janelas sem mouse, um desafio 'sem mouse', teclas de aderência/filtragem, Acesso por Voz, Narrador, alto contraste e Lupa.",
-        tipo: "link",
-        url: "atividades/paginas/windows11-atalhos-acessibilidade.html",
+        url: "atividades/paginas/windows11-avaliacao-detalhada.html",
       },
     ],
   },
@@ -402,6 +367,20 @@ const ATIVIDADES = [
           "Atividade guiada para inserir um vídeo em um slide, aplicar recursos de edição de vídeo (cortar, fade) e efeitos de transição entre slides. Inclui vídeo de prática para download.",
         tipo: "link",
         url: "atividades/paginas/powerpoint-video-e-transicoes.html",
+      },
+      {
+        titulo: "Avaliação Prática: Criação de Slides com Conteúdo Fornecido",
+        descricao:
+          "Atividade com textos prontos para copiar e colar: tema de Energias Renováveis, SmartArt, gráfico, hiperlink, cabeçalho/rodapé, transições e exportação em PDF.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-avaliacao-conteudo-fornecido.html",
+      },
+      {
+        titulo: "Avaliação Prática: Slides Textuais Extensos",
+        descricao:
+          "Apresentação densa sobre a Evolução da Computação, com textos longos para formatar (alinhamento, justificação), SmartArt, gráfico, hiperlinks de navegação e caça às imagens.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-avaliacao-texto-extenso.html",
       },
     ],
   },

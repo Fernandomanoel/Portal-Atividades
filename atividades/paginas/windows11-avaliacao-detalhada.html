@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática: Windows 11</title>
+    <style>
+        :root {
+            --win-blue: #0078D4;
+            --win-bg: #f3f3f3;
+            --card-bg: #ffffff;
+            --text-main: #202020;
+            --text-muted: #404040;
+            --success: #107C10;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--win-bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            max-width: 900px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-top: 6px solid var(--win-blue);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--win-blue);
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            height: 22px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background-color: var(--win-blue);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease, background-color 0.4s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 0;
+            line-height: 22px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            mix-blend-mode: difference;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background-color: #f0f8ff;
+            border-color: #cce3f6;
+        }
+
+        .task-item.completed {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .task-item.completed h3 {
+            color: var(--success);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            margin-top: 2px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .task-checkbox:checked {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox:checked::after {
+            content: '✔';
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .task-content h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .task-content p {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+        
+        .task-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--border-radius);
+            color: var(--success);
+            animation: fadeIn 0.5s;
+        }
+
+        .success-message h2 {
+            margin: 0 0 10px 0;
+        }
+
+        .btn-print {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 24px;
+            background-color: var(--win-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: #005a9e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            .btn-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Avaliação Prática: Windows 11</h1>
+            <p>Siga o passo a passo detalhado abaixo para realizar as tarefas de gerenciamento e personalização de sistema.</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0% Concluído</div>
+        </div>
+
+        <div class="task-list" id="taskList">
+            
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>1. Criação da Pasta Principal</h3>
+                    <p>Vá até a <strong>Área de Trabalho (Desktop)</strong>, que é a tela inicial do Windows. Clique com o botão direito do mouse em um espaço vazio, posicione o cursor sobre a opção <strong>"Novo"</strong> e, em seguida, clique em <strong>"Pasta"</strong>.</p>
+                    <p>Digite o nome <strong>Avaliacao_Windows_SeuNome</strong> e aperte a tecla Enter para confirmar.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>2. Criação das Subpastas</h3>
+                    <p>Dê um duplo clique para abrir a pasta principal que você acabou de criar. Dentro dela, clique novamente com o botão direito do mouse no espaço em branco, vá em <strong>"Novo" > "Pasta"</strong>.</p>
+                    <p>Repita este processo três vezes para criar as subpastas. Nomeie a primeira como <strong>Personalizacao</strong>, a segunda como <strong>Cursor</strong> e a terceira como <strong>Sistema</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>3. Personalização do Papel de Parede</h3>
+                    <p>Feche ou minimize a pasta. Na Área de Trabalho, clique com o botão direito do mouse em uma área vazia e selecione <strong>"Personalizar"</strong> (geralmente a última opção da lista).</p>
+                    <p>No menu que se abrirá, clique em <strong>"Tela de Fundo"</strong> e altere a imagem, cor sólida ou apresentação de slides para modificar a aparência do seu computador.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>4. Captura de Tela (Personalização)</h3>
+                    <p>Com o novo papel de parede visível na tela, pressione a tecla <strong>Print Screen (PrtScn)</strong> no seu teclado, ou utilize o atalho <strong>Windows + Shift + S</strong> para capturar a tela inteira.</p>
+                    <p>Abra o programa <strong>Paint</strong>, cole a imagem pressionando <strong>Ctrl + V</strong>, vá em <strong>Arquivo > Salvar como</strong> e salve esta imagem dentro da subpasta <strong>Personalizacao</strong> que criamos no Passo 2.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>5. Modificação do Cursor do Mouse</h3>
+                    <p>Clique no botão Iniciar do Windows (na barra de tarefas) e digite <strong>"Configurações do Mouse"</strong>. Abra o aplicativo e procure pela opção <strong>"Ponteiro do mouse e toque"</strong> (dentro da aba de Acessibilidade).</p>
+                    <p>Nesta tela, altere o estilo, a cor ou aumente o tamanho do ponteiro do mouse para que a modificação fique bem aparente.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>6. Captura de Tela (Cursor)</h3>
+                    <p>Deixe a janela de configurações do mouse aberta, mostrando claramente a alteração que você fez. Tire um novo <strong>Print Screen</strong> da tela.</p>
+                    <p>Abra o <strong>Paint</strong> novamente, cole a imagem com <strong>Ctrl + V</strong> e salve este arquivo de imagem dentro da subpasta <strong>Cursor</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>7. Gerenciador de Tarefas</h3>
+                    <p>Pressione simultaneamente as teclas <strong>Ctrl + Shift + Esc</strong> para abrir o Gerenciador de Tarefas. <em>(Dica: se ele abrir em uma janela pequena, clique em "Mais detalhes" na parte inferior).</em></p>
+                    <p>No menu lateral esquerdo, clique no ícone de <strong>"Desempenho"</strong> (parecido com um gráfico de batimentos cardíacos) para visualizar o uso de CPU, Memória RAM e Disco.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>8. Captura de Tela (Sistema)</h3>
+                    <p>Com a aba "Desempenho" aberta e exibindo os gráficos vitais do seu computador, tire o último <strong>Print Screen</strong>.</p>
+                    <p>Vá ao <strong>Paint</strong>, cole a captura e salve o arquivo final dentro da subpasta <strong>Sistema</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>9. Fechar Janelas e Revisão de Arquivos</h3>
+                    <p>Feche o Gerenciador de Tarefas, a janela de Configurações e o Paint. Em seguida, abra a sua pasta principal (Avaliacao_Windows_SeuNome).</p>
+                    <p>Navegue pelas 3 subpastas (Personalizacao, Cursor e Sistema) e confirme visualmente se cada uma delas contém o arquivo de imagem salvo corretamente em seu interior.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>10. Compactação (Arquivo ZIP)</h3>
+                    <p>Feche todas as janelas para visualizar apenas a Área de Trabalho. Clique com o botão direito do mouse sobre a pasta principal.</p>
+                    <p>No menu que aparecer, selecione a opção <strong>"Compactar para arquivo ZIP"</strong>. Isso vai gerar um novo arquivo (com o desenho de um zíper), contendo todas as suas pastas e capturas de tela. Este é o arquivo final para entrega!</p>
+                </div>
+            </label>
+
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h2>🎉 Avaliação Finalizada com Sucesso!</h2>
+            <p>Você executou e checou corretamente todos os passos práticos.</p>
+            <p>Envie o arquivo <strong>.zip</strong> gerado para a plataforma ou pen-drive do instrutor.</p>
+            <button class="btn-print" onclick="window.print()">🖨️ Imprimir Resumo / Salvar em PDF</button>
+        </div>
+
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const taskItems = document.querySelectorAll('.task-item');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const successMessage = document.getElementById('successMessage');
+
+            let checkedCount = 0;
+            const total = checkboxes.length;
+
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) {
+                    checkedCount++;
+                    taskItems[index].classList.add('completed');
+                } else {
+                    taskItems[index].classList.remove('completed');
+                }
+            });
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = percentage + '% Concluído';
+
+            if (percentage === 100) {
+                progressBar.style.backgroundColor = 'var(--success)';
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                progressBar.style.backgroundColor = 'var(--win-blue)';
+                successMessage.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

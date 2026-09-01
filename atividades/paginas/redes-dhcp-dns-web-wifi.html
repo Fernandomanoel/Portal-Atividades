@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuração de Rede com DHCP, DNS, Web Server e Wi-Fi — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📡 Configuração de Rede com DHCP, DNS, Web Server e Wi-Fi</h1>
+        <p>Redes de Computadores</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">"A felicidade da sua vida depende da qualidade dos seus pensamentos." — Marco Aurélio</p>
+
+        <h2>01) Faça a infraestrutura abaixo</h2>
+
+        <div class="topologia">
+            <div class="dispositivos">
+                <div class="dispositivo pc">🗄️<span>Server0</span><small>DHCP Server<br>192.168.1.1</small></div>
+                <div class="dispositivo pc">🗄️<span>Server1</span><small>Web Server<br>192.168.1.2</small></div>
+                <div class="dispositivo pc">🗄️<span>Server2</span><small>DNS Server<br>192.168.1.3</small></div>
+            </div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>Switch0</span><small>2960-24TT</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">📶<span>AccessPoint-PT</span><small>Wi-Fi Fundamentos de Redes</small></div>
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC1</span></div>
+                <div class="dispositivo pc">💻<span>PC0</span></div>
+                <div class="dispositivo pc">💻<span>PC2</span></div>
+                <div class="dispositivo pc">💻<span>Laptop0</span><small>(sem fio, via AP)</small></div>
+            </div>
+        </div>
+
+        <h3>Equipamentos</h3>
+        <p>Monte a rede conforme a imagem fornecida contendo:</p>
+        <ul>
+            <li>01 Switch 2960-24TT</li>
+            <li>03 Servidores</li>
+            <li>03 Computadores</li>
+            <li>01 Notebook</li>
+            <li>01 Access Point</li>
+        </ul>
+
+        <h3>Endereçamento dos servidores</h3>
+        <p>Configure os servidores com IP fixo:</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Equipamentos</th><th>Função</th><th>Endereço IP</th></tr>
+                <tr><td>Server0</td><td>DHCP Server</td><td>192.168.1.1</td></tr>
+                <tr><td>Server1</td><td>Web Server</td><td>192.168.1.2</td></tr>
+                <tr><td>Server2</td><td>DNS Server</td><td>192.168.1.3</td></tr>
+            </table>
+        </div>
+
+        <p>Máscara de rede para todos:</p>
+        <div class="code-block">255.255.255.0</div>
+
+        <p>Gateway:</p>
+        <div class="code-block">192.168.1.1</div>
+
+        <h2>🛠️ Montagem física</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 1</h3>
+                <p>Adicione os equipamentos:</p>
+                <ul>
+                    <li>1 Switch 2960-24TT</li>
+                    <li>3 Servers</li>
+                    <li>3 PCs</li>
+                    <li>1 Laptop</li>
+                    <li>1 Access Point</li>
+                </ul>
+            </li>
+            <li>
+                <h3 style="margin-top:0">Passo 2</h3>
+                <p>Conecte todos os dispositivos ao switch utilizando cabo Copper Straight-Through.</p>
+            </li>
+            <li>
+                <h3 style="margin-top:0">Passo 3</h3>
+                <p>Conecte o notebook ao Access Point utilizando conexão Wireless.</p>
+            </li>
+        </ol>
+
+        <h2>📡 Configuração do DHCP</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 4</h3>
+                <p>No servidor DHCP (192.168.1.1):</p>
+                <p>Acesse:</p>
+                <div class="code-block">Services → DHCP</div>
+                <p>Ative o serviço:</p>
+                <div class="code-block">DHCP Service = ON</div>
+                <p>Crie um pool com as configurações:</p>
+                <div class="sheet-wrap">
+                    <table class="sheet">
+                        <tr><th>Campos</th><th>Valor</th></tr>
+                        <tr><td>Pool Name</td><td>REDE</td></tr>
+                        <tr><td>Default Gateway</td><td>192.168.1.1</td></tr>
+                        <tr><td>DNS Server</td><td>192.168.1.3</td></tr>
+                        <tr><td>Start IP Address</td><td>192.168.1.10</td></tr>
+                        <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                        <tr><td>Maximum Users</td><td>100</td></tr>
+                    </table>
+                </div>
+                <p>Clique em:</p>
+                <div class="code-block">Add</div>
+            </li>
+        </ol>
+
+        <h2>🖥️ Configuração dos clientes</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 5</h3>
+                <p>Nos computadores PC0, PC1, PC2 e Laptop:</p>
+                <p>Acesse:</p>
+                <div class="code-block">Desktop → IP Configuration</div>
+                <p>Selecione:</p>
+                <div class="code-block">DHCP</div>
+                <p>Verifique se receberam IP automaticamente.</p>
+            </li>
+        </ol>
+
+        <h2>📶 Configuração do Access Point</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 6</h3>
+                <p>Configure o Access Point:</p>
+                <p>SSID:</p>
+                <div class="code-block">FGTI</div>
+                <p>Segurança:</p>
+                <div class="code-block">WPA2-PSK</div>
+                <p>Senha:</p>
+                <div class="code-block">FP2026UCM</div>
+            </li>
+            <li>
+                <h3 style="margin-top:0">Passo 7</h3>
+                <p>No notebook:</p>
+                <p>Conecte-se à rede Wi-Fi:</p>
+                <div class="code-block">FGTI</div>
+                <p>Usando a senha:</p>
+                <div class="code-block">FP2026UCM</div>
+            </li>
+        </ol>
+
+        <h2>🌍 Configuração do DNS</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 8</h3>
+                <p>No servidor DNS (192.168.1.3):</p>
+                <p>Acesse:</p>
+                <div class="code-block">Services → DNS</div>
+                <p>Ative:</p>
+                <div class="code-block">DNS Service = ON</div>
+                <p>Adicione o registro:</p>
+                <div class="sheet-wrap">
+                    <table class="sheet">
+                        <tr><th>Nome</th><th>Endereço</th></tr>
+                        <tr><td>www.fgti.com</td><td>192.168.1.2</td></tr>
+                    </table>
+                </div>
+                <p>Clique em:</p>
+                <div class="code-block">Add</div>
+            </li>
+        </ol>
+
+        <h2>🖥️ Configuração do servidor Web</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 9</h3>
+                <p>No servidor Web (192.168.1.2):</p>
+                <p>Acesse:</p>
+                <div class="code-block">Services → HTTP</div>
+                <p>Ative:</p>
+                <div class="code-block">HTTP = ON</div>
+                <p>Edite a página <strong>index.html</strong> com o seguinte conteúdo:</p>
+                <div class="code-block">&lt;html&gt;
+&lt;head&gt;
+&lt;title&gt;FGTI&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Fundamentos de Redes&lt;/h1&gt;
+&lt;h2&gt;Atividade de DHCP, DNS e HTTP&lt;/h2&gt;
+&lt;p&gt;Servidor Web funcionando corretamente.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</div>
+            </li>
+        </ol>
+
+        <h2>✅ Testes</h2>
+        <ol class="passos">
+            <li>
+                <h3 style="margin-top:0">Passo 10</h3>
+                <p>Teste:</p>
+                <div class="code-block">ping 192.168.1.1
+ping 192.168.1.2
+ping 192.168.1.3</div>
+                <p>Abra o navegador:</p>
+                <div class="code-block">Desktop → Web Browser</div>
+                <p>Digite:</p>
+                <div class="code-block">http://192.168.1.2</div>
+                <p>A página deverá abrir.</p>
+            </li>
+            <li>
+                <h3 style="margin-top:0">Passo 11</h3>
+                <p>Teste o DNS:</p>
+                <p>Digite:</p>
+                <div class="code-block">http://www.fgti.com</div>
+                <p>A mesma página deverá ser exibida.</p>
+            </li>
+        </ol>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

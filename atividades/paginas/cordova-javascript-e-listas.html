@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic — Prática de JavaScript e Listas Dinâmicas (Guia Completo)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+        .sidebar h3 {
+            color: #1f4fb0; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #3880ff; padding-bottom: 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #3880ff; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; min-width: 0; }
+        .content > .chapter, .content > .nav-buttons, .content > .progress-bar { max-width: 900px; margin-left: auto; margin-right: auto; }
+
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1f4fb0; margin-bottom: 25px; border-bottom: 3px solid #3880ff; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #3880ff; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #3880ff;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6; white-space: pre;
+        }
+        .code-label {
+            background: #3880ff; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .code-block .tag { color: #569cd6; }
+        .code-block .attr { color: #9cdcfe; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .var { color: #9cdcfe; }
+        .code-block .val { color: #b5cea8; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+
+        .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+        .peca { border: 2px dashed #3880ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; background: #fff; }
+        .peca-tag {
+            display: inline-block; background: #eef4ff; color: #1f4fb0; font-size: 0.78em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+        }
+        .faca-voce { background: #fff9e8; border: 2px solid #f0b429; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .faca-voce strong { color: #a06b00; }
+
+        .detetive { background: #2b1b3d; color: #e8d9ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; border-left: 4px solid #a855f7; }
+        .detetive h4 { color: #d8b4fe; margin-bottom: 8px; }
+        .detetive .erro { background: #1a0f28; border-radius: 6px; padding: 10px 14px; margin: 10px 0; font-family: 'Courier New', monospace; font-size: 0.88em; color: #ff9494; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #3880ff; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1f4fb0; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(56,128,255,0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #3880ff; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Ionic — Prática de JavaScript</h1>
+            <p>Eventos, arrays e listas dinâmicas: seu app ganha vida de verdade</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 2 horas</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Pré-requisito:</strong> Ionic — Prática de Componentes<br>
+                        <strong>Tempo:</strong> ~2h<br>
+                        <strong>Formato:</strong> prática direta, pouca teoria
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. O Plano de Hoje</h2>
+                    <p>Sua tela já existe (campo, botão, lista vazia, busca, toggle). Hoje tudo isso ganha lógica: cliques que funcionam, uma lista que aparece e desaparece de verdade, busca que filtra, ordenação, marcar como concluída. Tudo em <code>www/js/index.js</code>.</p>
+                    <div class="highlight">Crie (ou abra) o arquivo <code>www/js/index.js</code> e confira que ele está carregado no fim do <code>&lt;body&gt;</code> com <code>&lt;script src="js/index.js"&gt;&lt;/script&gt;</code>.</div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Pegando os Elementos da Tela</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — cole no topo do arquivo</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">const</span> <span class="var">campoMissao</span> = document.getElementById(<span class="str">'campo-missao'</span>);
+<span class="kw">const</span> <span class="var">botaoAdicionar</span> = document.getElementById(<span class="str">'btn-adicionar'</span>);
+<span class="kw">const</span> <span class="var">listaNaTela</span> = document.getElementById(<span class="str">'lista-missoes'</span>);
+<span class="kw">const</span> <span class="var">campoBusca</span> = document.getElementById(<span class="str">'busca-missao'</span>);</div>
+                    </div>
+                    <div class="faca-voce"><strong>Faça você:</strong> confira que os 4 <code>id</code> aqui batem exatamente com os do seu <code>index.html</code>. Se algum estiver diferente, o resto do código vai falhar em silêncio.</div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. O Array de Missões</h2>
+                    <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">let</span> <span class="var">missoes</span> = [];</div>
+                    <p>Cada missão vai ser um objeto com dois dados: o texto e se está concluída.</p>
+                    <div class="code-block"><span class="code-label">exemplo de item dentro do array</span>{ <span class="var">texto</span>: <span class="str">"Arrumar o quarto"</span>, <span class="var">feita</span>: <span class="kw">false</span> }</div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Clique no Botão Adicionar</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>botaoAdicionar.addEventListener(<span class="str">'click'</span>, () => {
+  <span class="kw">const</span> <span class="var">texto</span> = campoMissao.value;
+  <span class="kw">if</span> (texto.trim() !== <span class="str">""</span>) {
+    missoes.push({ <span class="var">texto</span>: texto, <span class="var">feita</span>: <span class="kw">false</span> });
+    desenharLista();
+    campoMissao.value = <span class="str">""</span>;
+  }
+});</div>
+                    </div>
+                    <p><code>.trim()</code> remove espaços em branco do início e fim — evita adicionar uma missão "vazia" só com espaços digitados. <code>desenharLista()</code> ainda não existe — próximo capítulo.</p>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Desenhando a Lista na Tela</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">desenharLista</span>() {
+  listaNaTela.innerHTML = <span class="str">""</span>;
+
+  missoes.forEach((<span class="var">missao</span>, <span class="var">indice</span>) => {
+    <span class="kw">const</span> <span class="var">estilo</span> = missao.feita ? <span class="str">"text-decoration:line-through;color:#999"</span> : <span class="str">""</span>;
+    listaNaTela.innerHTML += <span class="str">`
+      &lt;ion-item&gt;
+        &lt;ion-label style="${estilo}"&gt;${missao.texto}&lt;/ion-label&gt;
+      &lt;/ion-item&gt;
+    `</span>;
+  });
+}</div>
+                    </div>
+                    <div class="faca-voce"><strong>Faça você:</strong> salve, rode <code>cordova run browser</code>, digite 3 missões diferentes e clique em adicionar em cada uma. Elas devem aparecer na lista.</div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Botão de Excluir</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Atualize desenharLista() e adicione excluirMissao()</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">desenharLista</span>() {
+  listaNaTela.innerHTML = <span class="str">""</span>;
+  missoes.forEach((<span class="var">missao</span>, <span class="var">indice</span>) => {
+    <span class="kw">const</span> <span class="var">estilo</span> = missao.feita ? <span class="str">"text-decoration:line-through;color:#999"</span> : <span class="str">""</span>;
+    listaNaTela.innerHTML += <span class="str">`
+      &lt;ion-item&gt;
+        &lt;ion-label style="${estilo}"&gt;${missao.texto}&lt;/ion-label&gt;
+        &lt;ion-button slot="end" color="danger" fill="clear" onclick="excluirMissao(${indice})"&gt;
+          &lt;ion-icon name="trash" slot="icon-only"&gt;&lt;/ion-icon&gt;
+        &lt;/ion-button&gt;
+      &lt;/ion-item&gt;
+    `</span>;
+  });
+}
+
+<span class="kw">function</span> <span class="fn">excluirMissao</span>(<span class="var">indice</span>) {
+  missoes.splice(<span class="var">indice</span>, <span class="val">1</span>);
+  desenharLista();
+}</div>
+                    </div>
+                    <div class="faca-voce"><strong>Faça você:</strong> adicione 4 missões e exclua a 2ª. Confira que sobraram as outras 3, na ordem certa.</div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Marcar como Concluída (clique no texto)</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Adicione o onclick no ion-label e a função</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js — dentro do template</span>&lt;ion-label style="${estilo}" onclick="alternarFeita(${indice})"&gt;${missao.texto}&lt;/ion-label&gt;</div>
+                        <div class="code-block"><span class="code-label">www/js/index.js — nova função</span><span class="kw">function</span> <span class="fn">alternarFeita</span>(<span class="var">indice</span>) {
+  missoes[indice].feita = !missoes[indice].feita;
+  desenharLista();
+}</div>
+                    </div>
+                    <p><code>!missoes[indice].feita</code> inverte o valor: se era <code>true</code> vira <code>false</code>, e vice-versa. Clique no texto de uma missão — ela deve ficar riscada e cinza.</p>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Adicionar Apertando Enter</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>campoMissao.addEventListener(<span class="str">'keyup'</span>, (<span class="var">evento</span>) => {
+  <span class="kw">if</span> (evento.key === <span class="str">'Enter'</span>) {
+    botaoAdicionar.click(); <span class="cm">// simula um clique no botão</span>
+  }
+});</div>
+                    </div>
+                    <p><code>keyup</code> dispara toda vez que uma tecla é solta. <code>evento.key</code> diz qual tecla foi — comparando com <code>'Enter'</code>, a gente reage só a ela. <code>botaoAdicionar.click()</code> é um truque útil: em vez de repetir a lógica de adicionar, a gente só "aperta o botão" via código.</p>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Contador de Missões</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Adicione um &lt;p id="contador"&gt; no HTML, acima da lista</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js — dentro de desenharLista()</span><span class="kw">const</span> <span class="var">pendentes</span> = missoes.filter(<span class="var">m</span> => !m.feita).length;
+document.getElementById(<span class="str">'contador'</span>).innerText =
+  <span class="str">`${pendentes} pendente(s) de ${missoes.length} no total`</span>;</div>
+                    </div>
+                    <p><code>filter()</code> cria um novo array só com os itens que passam no teste — aqui, só as missões <strong>não</strong> concluídas (<code>!m.feita</code>). <code>.length</code> conta quantas sobraram.</p>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Busca em Tempo Real</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>campoBusca.addEventListener(<span class="str">'ionInput'</span>, (<span class="var">evento</span>) => {
+  <span class="kw">const</span> <span class="var">termo</span> = evento.target.value.toLowerCase();
+  <span class="kw">const</span> <span class="var">filtradas</span> = missoes.filter(<span class="var">m</span> => m.texto.toLowerCase().includes(termo));
+  desenharListaFiltrada(filtradas);
+});
+
+<span class="kw">function</span> <span class="fn">desenharListaFiltrada</span>(<span class="var">lista</span>) {
+  listaNaTela.innerHTML = <span class="str">""</span>;
+  lista.forEach((<span class="var">missao</span>) => {
+    listaNaTela.innerHTML += <span class="str">`&lt;ion-item&gt;&lt;ion-label&gt;${missao.texto}&lt;/ion-label&gt;&lt;/ion-item&gt;`</span>;
+  });
+}</div>
+                    </div>
+                    <div class="highlight">⚠️ Componentes do Ionic disparam eventos com nomes próprios, começando com <code>ion</code> — <code>ionInput</code> em vez do <code>input</code> comum, <code>ionChange</code> em vez de <code>change</code>. É a única diferença de sintaxe ao lidar com eles.</div>
+                    <p><code>toLowerCase()</code> em ambos os lados (o termo buscado e o texto da missão) faz a busca não se importar com maiúsculas/minúsculas. <code>includes()</code> verifica se um texto está contido dentro do outro.</p>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Ordenando a Lista</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Adicione um botão "Ordenar A-Z" no HTML com id="btn-ordenar"</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>document.getElementById(<span class="str">'btn-ordenar'</span>).addEventListener(<span class="str">'click'</span>, () => {
+  missoes.sort((<span class="var">a</span>, <span class="var">b</span>) => a.texto.localeCompare(b.texto));
+  desenharLista();
+});</div>
+                    </div>
+                    <p><code>sort()</code> reordena o array no lugar. <code>localeCompare()</code> compara dois textos respeitando acentos e o alfabeto em português — melhor que uma comparação simples de <code>&lt;</code>/<code>&gt;</code>, que trataria "Á" de forma estranha.</p>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Ligando o Toggle de Modo Escuro</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>document.getElementById(<span class="str">'toggle-tema'</span>).addEventListener(<span class="str">'ionChange'</span>, (<span class="var">evento</span>) => {
+  document.body.style.background = evento.target.checked ? <span class="str">"#1a1a2e"</span> : <span class="str">"#ffffff"</span>;
+  document.body.style.color = evento.target.checked ? <span class="str">"#eee"</span> : <span class="str">"#333"</span>;
+});</div>
+                    </div>
+                    <p><code>evento.target.checked</code> é <code>true</code> quando o toggle está ligado. Com uma linha, você troca o fundo e a cor do texto de todo o app — um mini modo escuro de verdade.</p>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Confirmação Antes de Excluir</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Atualize excluirMissao()</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">excluirMissao</span>(<span class="var">indice</span>) {
+  <span class="kw">const</span> <span class="var">confirmou</span> = confirm(<span class="str">"Excluir esta missão?"</span>);
+  <span class="kw">if</span> (confirmou) {
+    missoes.splice(<span class="var">indice</span>, <span class="val">1</span>);
+    desenharLista();
+  }
+}</div>
+                    </div>
+                    <p><code>confirm()</code> abre uma janelinha pronta do navegador com OK/Cancelar. O código só continua se a pessoa clicar em OK.</p>
+                </section>
+
+                <!-- 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Modo Detetive: 3 Erros de Propósito</h2>
+                    <div class="detetive">
+                        <h4>Erro 1 — array vs objeto</h4>
+                        <div class="erro">missoes.push(texto); // guardando só o texto, sem { texto, feita }</div>
+                        <p>O app não quebra, mas <code>missao.feita</code> vira <code>undefined</code> em todo lugar, e <code>missao.texto</code> também — porque <code>missao</code> agora É o texto, não um objeto. Na tela aparece <code>undefined</code> em vez do texto digitado.</p>
+                    </div>
+                    <div class="detetive">
+                        <h4>Erro 2 — índice fora do array</h4>
+                        <div class="erro">missoes.splice(missoes.length, 1); // tenta remover uma posição que não existe</div>
+                        <p>Não dá erro no Console, mas também não remove nada — <code>splice</code> simplesmente não encontra nada pra tirar naquela posição.</p>
+                    </div>
+                    <div class="detetive">
+                        <h4>Erro 3 — esqueceu o await/função</h4>
+                        <div class="erro">botaoAdicionar.addEventListener('click', desenharLista()); // chamou a função em vez de passar ela</div>
+                        <p>Os parênteses depois de <code>desenharLista</code> fazem ela rodar <strong>na hora</strong>, uma vez só, em vez de esperar o clique. O jeito certo é <code>() => { desenharLista(); }</code> ou só <code>desenharLista</code> sem parênteses.</p>
+                    </div>
+                    <div class="faca-voce"><strong>Faça você:</strong> provoque cada um desses 3 erros de propósito no seu código, veja o que acontece, e desfaça (<code>Ctrl+Z</code>).</div>
+                </section>
+
+                <!-- 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Checklist Final</h2>
+                    <ul class="checklist">
+                        <li>Adicionar missão funciona pelo botão <strong>e</strong> pela tecla Enter;</li>
+                        <li>Excluir missão pede confirmação antes de remover;</li>
+                        <li>Clicar no texto de uma missão risca ela (marca como concluída);</li>
+                        <li>O contador mostra o número certo de pendentes;</li>
+                        <li>A busca filtra a lista em tempo real;</li>
+                        <li>O botão de ordenar organiza a lista em ordem alfabética;</li>
+                        <li>O toggle de modo escuro muda o fundo do app.</li>
+                    </ul>
+                    <div class="success">🎉 Seu app já reage a tudo — falta só uma coisa: ele esquece tudo quando você fecha a aba. A próxima atividade resolve isso com localStorage, e te leva pra ver o app rodando dentro de um celular Android de verdade (simulado).</div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <a href="../../atividade.html?curso=cordova" style="display:block; text-align:center; padding: 16px; color:#3880ff; text-decoration:none; font-weight:600;">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+        <footer><p><strong>Ionic — Prática de JavaScript</strong> | 15 capítulos | ~2h de prática</p></footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 15;
+        const chapters = [
+            "O Plano de Hoje", "Pegando os Elementos", "O Array de Missões", "Clique no Adicionar",
+            "Desenhando a Lista", "Botão de Excluir", "Marcar como Concluída", "Enter para Adicionar",
+            "Contador de Missões", "Busca em Tempo Real", "Ordenando a Lista", "Toggle Modo Escuro",
+            "Confirmação de Exclusão", "Modo Detetive", "Checklist Final"
+        ];
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((c, i) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${i + 1}. ${c}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(i + 1);
+                a.className = i + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a); tocList.appendChild(li);
+            });
+        }
+        function showChapter(n) {
+            document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+            document.querySelectorAll('.chapter')[n - 1].classList.add('active');
+            updateTOC(); updateButtons(); updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, i) => {
+                link.classList.remove('active');
+                if (i + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+        function updateProgress() {
+            document.getElementById('progressFill').style.width = (currentChapter / totalChapters) * 100 + '%';
+        }
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

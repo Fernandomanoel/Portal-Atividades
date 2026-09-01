@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamento Prático de Rotinas de Escritório e Suporte Operacional</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #4338ca;
+            --brand-light: #e0e7ff;
+            --accent-color: #4f46e5;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --highlight-bg: #f1f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #4338ca 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #c7d2fe;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Seção de Introdução */
+        .intro-card {
+            background-color: var(--bg-card);
+            border-left: 5px solid var(--accent-color);
+            padding: 22px 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border-top: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .intro-card h3 {
+            color: var(--brand-color);
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .intro-card p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: var(--highlight-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .scenario-description strong {
+            color: var(--brand-color);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        code { overflow-wrap: break-word; word-break: break-word; }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* Form Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tag-info {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        /* ---- Navegação e motor de correção (adicionados) ---- */
+        .voltar-admin { display: block; max-width: 1000px; margin: 0 auto 14px; color: var(--accent-color); text-decoration: none; font-weight: 600; font-size: 14px; }
+        .voltar-admin:hover { text-decoration: underline; }
+
+        .correcao-painel {
+            background: var(--bg-card);
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 16px 22px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-corrigir {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .btn-corrigir:hover { filter: brightness(1.1); }
+        .correcao-resumo { font-size: 13.5px; color: var(--text-muted); font-weight: 600; }
+
+        .campo-ok { border-color: #16a34a !important; box-shadow: 0 0 0 2px rgba(22,163,74,0.15) !important; }
+        .campo-invalido { border-color: #dc2626 !important; box-shadow: 0 0 0 2px rgba(220,38,38,0.15) !important; }
+        .msg-correcao { font-size: 12px; font-weight: 600; margin-top: 4px; display: block; }
+        .msg-correcao.ok { color: #15803d; }
+        .msg-correcao.invalido { color: #b91c1c; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <a class="voltar-admin" href="../../atividade.html?curso=administracao">← Voltar para Administração</a>
+
+    <!-- CABEÇALHO PRINCIPAL DA ATIVIDADE PRÁTICA -->
+    <header class="main-header">
+        <span class="badge-tag">Caderno de Exercícios e Prática Aplicada - Volume 3</span>
+        <h1>Simulação de Rotinas de Escritório e Suporte Operacional</h1>
+        <p>Atividades imersivas focadas em contas a pagar e receber, organização de itinerário de viagens, gestão de estoque de materiais, matriz GUT de priorização, atendimento pós-venda e elaboração de relatórios gerenciais.</p>
+    </header>
+
+    <!-- GUIA DE USO -->
+    <div class="intro-card">
+        <h3>📌 Proposta de Treinamento Imersivo</h3>
+        <p>Este material simula as principais demandas executivas e operacionais cotidianas do suporte de escritório. Os cenários foram desenvolvidos para treinar raciocínio lógico, atenção aos detalhes, comunicação corporativa eficiente e organização financeira. Você pode digitar diretamente nos campos interativos para praticar.</p>
+    </div>
+
+    <!-- PAINEL DE CORREÇÃO -->
+    <div class="correcao-painel">
+        <button type="button" class="btn-corrigir" onclick="corrigirAtividade()">✅ Corrigir Atividade</button>
+        <span class="correcao-resumo" id="resumoCorrecao">Preencha os campos e clique em "Corrigir Atividade" para conferir suas respostas.</span>
+    </div>
+
+    <!-- MÓDULO 1: GESTÃO DE CONTAS A PAGAR, RECEBER E CONCILIAÇÃO FINANCEIRA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Lançamento Financeiro e Fluxo de Contas a Pagar e Receber</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> No início da manhã, você recebeu uma pasta com faturas, boletos de fornecedores e comprovantes de recebimento de clientes. Sua tarefa é registrar cada item na planilha de controle diário, categorizar a conta no plano de contas da empresa e determinar a ação operacional adequada.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 10%;">Tipo</th>
+                        <th style="width: 35%;">Descrição do Documento / Titular</th>
+                        <th style="width: 20%;">Categoria (Plano de Contas)</th>
+                        <th style="width: 15%;">Valor (R$)</th>
+                        <th style="width: 20%;">Ação Operacional Requerida</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>A Pagar</strong></td>
+                        <td>Boleto da Licença de Softwares de Gestão (Vencimento Hoje)</td>
+                        <td>
+                            <select class="input-box" id="cat-row1">
+                                <option value="">Selecione...</option>
+                                <option value="ti">Tecnologia e Licenças</option>
+                                <option value="utilidades">Água / Luz / Internet</option>
+                                <option value="impostos">Tributos e Impostos</option>
+                                <option value="fornecedores">Insumos de Terceiros</option>
+                            </select>
+                        </td>
+                        <td>R$ 890,00</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Agendar no Internet Banking"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A Receber</strong></td>
+                        <td>Comprovante de PIX do Cliente Beta Ref. Contrato Mês 07</td>
+                        <td>
+                            <select class="input-box" id="cat-row2">
+                                <option value="">Selecione...</option>
+                                <option value="receita">Receita de Serviços</option>
+                                <option value="reembolso">Reembolso de Despesas</option>
+                                <option value="outros">Outras Entradas</option>
+                            </select>
+                        </td>
+                        <td>R$ 4.500,00</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Baixar no sistema e emitir recibo"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A Pagar</strong></td>
+                        <td>Conta de Energia Elétrica da Sede Principal</td>
+                        <td>
+                            <select class="input-box" id="cat-row3">
+                                <option value="">Selecione...</option>
+                                <option value="ti">Tecnologia e Licenças</option>
+                                <option value="utilidades">Água / Luz / Internet</option>
+                                <option value="impostos">Tributos e Impostos</option>
+                                <option value="fornecedores">Insumos de Terceiros</option>
+                            </select>
+                        </td>
+                        <td>R$ 1.340,50</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td><strong>A Pagar</strong></td>
+                        <td>Fatura de Compra de Copos Descartáveis e Produtos de Limpeza</td>
+                        <td>
+                            <select class="input-box" id="cat-row4">
+                                <option value="">Selecione...</option>
+                                <option value="ti">Tecnologia e Licenças</option>
+                                <option value="utilidades">Água / Luz / Internet</option>
+                                <option value="impostos">Tributos e Impostos</option>
+                                <option value="fornecedores">Insumos de Terceiros</option>
+                            </select>
+                        </td>
+                        <td>R$ 320,00</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            📝 Parecer do Controle Financeiro
+        </div>
+        <textarea class="input-box" data-minpalavras="12" style="min-height: 100px;" placeholder="Resuma o total de entradas, total de saídas e o saldo financeiro líquido apurado no dia..."></textarea>
+    </article>
+
+    <!-- MÓDULO 2: LOGÍSTICA DE VIAGENS CORPORATIVAS E ELABORAÇÃO DE ITINERÁRIO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Logística de Viagens Executivas e Gestão de Itinerário</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> O diretor de operações participará de um congresso corporativo em outra cidade na próxima semana. Você precisa organizar todo o itinerário da viagem, desde a compra das passagens aéreas e reserva do hotel até os traslados e agenda dos compromissos.
+        </div>
+
+        <div class="task-instruction">
+            ✈️ Tarefa 2.1: Minuta do Itinerário de Viagem Corporativa
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Data e Hora</th>
+                        <th style="width: 25%;">Etapa / Compromisso</th>
+                        <th style="width: 35%;">Detalhes (Voo / Hotel / Endereço)</th>
+                        <th style="width: 25%;">Documentação Necessária</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>14/09 - 06:00 AM</td>
+                        <td>Deslocamento e Embarque Aeroporto</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Voo LA3421 - Cia LATAM"></td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Cartão de embarque e RG"></td>
+                    </tr>
+                    <tr>
+                        <td>14/09 - 10:30 AM</td>
+                        <td>Check-in no Hotel Executivo</td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Hotel Grand Plaza - Voucher #883"></td>
+                        <td><input type="text" class="input-box" placeholder="Ex: Voucher impresso e cartão corp."></td>
+                    </tr>
+                    <tr>
+                        <td>14/09 - 14:00 PM</td>
+                        <td>Abertura do Congresso de Gestão</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>15/09 - 18:00 PM</td>
+                        <td>Check-out e Voo de Retorno</td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            📌 Tarefa 2.2: Checklist de Apoio ao Viajante
+        </div>
+        <textarea class="input-box" data-minpalavras="8" placeholder="Mencione os detalhes preventivos organizados (ex: seguro viagem, adiantamento de taxa de táxi/Uber, envio da pasta de apresentação por e-mail)..."></textarea>
+    </article>
+
+    <!-- MÓDULO 3: GESTÃO DE ESTOQUE DE ALMOXARIFADO E PONTO DE RESSUPRIMENTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Controle de Estoque do Almoxarifado e Solicitação de Compras</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Você realizou a contagem física quinzenal do estoque de insumos de escritório. Para evitar que os materiais faltem, você deve comparar o estoque atual com o <strong>Estoque Mínimo (Ponto de Pedido)</strong> e emitir a Solicitação de Compra para os itens críticos.
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item / Material</th>
+                        <th>Estoque Atual (Unidades)</th>
+                        <th>Estoque Mínimo Recomendado</th>
+                        <th>Status do Estoque</th>
+                        <th>Quantidade a Comprar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Papel A4 Sulfite (Caixa c/ 10 resmas)</td>
+                        <td>2 Caixas</td>
+                        <td>5 Caixas</td>
+                        <td>
+                            <select class="input-box" id="estoque-row1">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Estoque Normal</option>
+                                <option value="critico">Nível Crítico (Fazer Pedido)</option>
+                                <option value="excesso">Estoque em Excesso</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="Ex: 5 caixas"></td>
+                    </tr>
+                    <tr>
+                        <td>Toner de Impressora HP Preto</td>
+                        <td>4 Unidades</td>
+                        <td>2 Unidades</td>
+                        <td>
+                            <select class="input-box" id="estoque-row2">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Estoque Normal</option>
+                                <option value="critico">Nível Crítico (Fazer Pedido)</option>
+                                <option value="excesso">Estoque em Excesso</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="0 unidades"></td>
+                    </tr>
+                    <tr>
+                        <td>Caneta Esferográfica Azul (Caixa c/ 50)</td>
+                        <td>0 Caixas</td>
+                        <td>2 Caixas</td>
+                        <td>
+                            <select class="input-box" id="estoque-row3">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Estoque Normal</option>
+                                <option value="critico">Nível Crítico (Fazer Pedido)</option>
+                                <option value="excesso">Estoque em Excesso</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>Pasta Suspensa para Arquivo Morto</td>
+                        <td>15 Unidades</td>
+                        <td>30 Unidades</td>
+                        <td>
+                            <select class="input-box" id="estoque-row4">
+                                <option value="">Selecione...</option>
+                                <option value="ok">Estoque Normal</option>
+                                <option value="critico">Nível Crítico (Fazer Pedido)</option>
+                                <option value="excesso">Estoque em Excesso</option>
+                            </select>
+                        </td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            📦 Tarefa 3.1: Justificativa da Solicitação de Compras
+        </div>
+        <textarea class="input-box" data-minpalavras="12" style="min-height: 100px;" placeholder="Escreva a justificativa para o setor de suprimentos explicando o impacto operacional caso os itens críticos não sejam repostos no prazo..."></textarea>
+    </article>
+
+    <!-- MÓDULO 4: PRIORIZAÇÃO DE PROBLEMAS OPERACIONAIS COM MATRIZ GUT -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Priorização de Demandas Complexas via Matriz GUT</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> No meio do expediente, quatro problemas diferentes foram relatados ao mesmo tempo. Para definir a ordem exata de solução sem agir por impulso, você utilizará a **Matriz GUT** (Gravidade, Urgência e Tendência - notas de 1 a 5, onde a prioridade final é a multiplicação: <code>G × U × T</code>).
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 35%;">Problema Relatado</th>
+                        <th style="width: 12%;">Gravidade (1 a 5)</th>
+                        <th style="width: 12%;">Urgência (1 a 5)</th>
+                        <th style="width: 12%;">Tendência (1 a 5)</th>
+                        <th style="width: 14%;">Pontuação (G × U × T)</th>
+                        <th style="width: 15%;">Ordem de Solução</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ar-condicionado da recepção pingando água no piso.</td>
+                        <td><input type="text" class="input-box" id="gut-r1-g" placeholder="Ex: 2"></td>
+                        <td><input type="text" class="input-box" id="gut-r1-u" placeholder="Ex: 3"></td>
+                        <td><input type="text" class="input-box" id="gut-r1-t" placeholder="Ex: 2"></td>
+                        <td><input type="text" class="input-box" id="gut-r1-pontuacao" placeholder="Ex: 12"></td>
+                        <td><input type="text" class="input-box" placeholder="Ex: 4º"></td>
+                    </tr>
+                    <tr>
+                        <td>Sistema de emissão de Notas Fiscais fora do ar em dia de fechamento.</td>
+                        <td><input type="text" class="input-box" id="gut-r2-g" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r2-u" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r2-t" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r2-pontuacao" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>Falta de papel de rascunho na sala de reuniões do 2º andar.</td>
+                        <td><input type="text" class="input-box" id="gut-r3-g" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r3-u" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r3-t" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r3-pontuacao" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                    <tr>
+                        <td>Vazamento de água no banheiro dos clientes podendo alagar o corredor.</td>
+                        <td><input type="text" class="input-box" id="gut-r4-g" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r4-u" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r4-t" placeholder="..."></td>
+                        <td><input type="text" class="input-box" id="gut-r4-pontuacao" placeholder="..."></td>
+                        <td><input type="text" class="input-box" placeholder="..."></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="task-instruction">
+            💡 Tarefa 4.1: Plano de Ação Imediato para o Problema #1
+        </div>
+        <textarea class="input-box" data-minpalavras="10" placeholder="Descreva quais contatos, chamados ou avisos você fará imediatamente para resolver o problema de maior pontuação..."></textarea>
+    </article>
+
+    <!-- MÓDULO 5: REDAÇÃO DE E-MAIL DE PÓS-VENDA E RESOLUÇÃO DE DÚVIDAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Atendimento ao Cliente, Pós-Venda e Suporte Escrito</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> Um cliente antigo enviou um e-mail solicitando esclarecimentos sobre a cobrança de uma taxa adicional de serviço na fatura deste mês. Ele alega que não foi informado previamente e que cogita cancelar o contrato caso o valor não seja estornado.
+        </div>
+
+        <div class="task-instruction">
+            ✉️ Tarefa 5.1: Redação de E-mail Profissional de Esclarecimento
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">
+            Elabore uma resposta cordial e técnica, explicando de forma transparente que a taxa refere-se ao aditivo solicitado pela própria equipe dele na semana passada, mas oferecendo flexibilidade para parcelamento ou atendimento personalizado.
+        </p>
+        <textarea class="input-box" data-minpalavras="25" style="min-height: 180px;" placeholder="Assunto: Esclarecimento referente à fatura mensal - Contrato #4029&#10;&#10;Prezado(a) [Nome do Cliente],&#10;&#10;..."></textarea>
+    </article>
+
+    <!-- MÓDULO 6: REDAÇÃO DE RELATÓRIO TÉCNICO E SÍNTESE GERENCIAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>Sintetização de Dados e Elaboração de Relatório Executivo</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário Real:</strong> A gerência solicitou um breve **Relatório de Desempenho do Setor de Operações** referente ao último mês. Você reuniu os seguintes indicadores bruto:
+            <ul style="margin: 10px 0 10px 20px; font-size: 13.5px; color: var(--text-muted);">
+                <li>Atendimentos telefônicos realizados: 420 chamadas (95% resolvidas no primeiro contato).</li>
+                <li>Processos de compras finalizados: 18 cotações (economia média de 8% nos orçamentos).</li>
+                <li>Correspondências e encomendas processadas: 150 pacotes sem nenhum extravio.</li>
+                <li>Despesa geral com insumos: R$ 4.200,00 (dentro do teto orçamentário previsto de R$ 4.500,00).</li>
+            </ul>
+        </div>
+
+        <div class="task-instruction">
+            📊 Tarefa 6.1: Redação do Relatório Gerencial
+        </div>
+        <textarea class="input-box" data-minpalavras="25" style="min-height: 180px;" placeholder="RELATÓRIO MENSAL DE DESEMPENHO OPERACIONAL&#10;&#10;1. Resumo Executivo:&#10;...&#10;&#10;2. Principais Resultados e Métricas Alcançadas:&#10;...&#10;&#10;3. Conclusão e Recomendações para o Próximo Mês:&#10;..."></textarea>
+    </article>
+
+</div>
+
+<script>
+/* ==========================================================================
+   MOTOR DE CORREÇÃO — genérico para as atividades de Administração.
+   1) Todo campo preenchido é testado contra digitação aleatória (gibberish).
+   2) Campos com gabarito objetivo (ids abaixo) são conferidos de verdade.
+   3) Campo vazio nunca é marcado — a correção só aparece se houver resposta.
+   ========================================================================== */
+(function () {
+    function contarPalavras(texto) {
+        return texto.trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    function pareceGibberish(texto) {
+        var t = texto.trim();
+        if (!t) return false;
+
+        if ((t.match(/[´`^~]/g) || []).length >= 2) return true;
+        if (t.length >= 12 && !/\s/.test(t)) return true;
+        if (/(.)\1{5,}/.test(t)) return true;
+        if (/asdfgh|qwerty|zxcvbn|qazwsx|1234567890/i.test(t.replace(/\s/g, ''))) return true;
+
+        var palavras = t.split(/\s+/).filter(Boolean);
+        var suspeitas = 0, avaliadas = 0;
+        palavras.forEach(function (p) {
+            var letras = p.replace(/[^a-zà-úA-ZÀ-Ú]/g, '');
+            if (letras.length < 3) return;
+            avaliadas++;
+            var vogais = (letras.match(/[aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ]/g) || []).length;
+            var razao = vogais / letras.length;
+            if (razao < 0.15 || razao > 0.85) { suspeitas++; return; }
+            if (/[^aeiouàáâãéêíóôõúAEIOUÀÁÂÃÉÊÍÓÔÕÚ\d]{5,}/.test(letras)) suspeitas++;
+        });
+        if (avaliadas > 0 && (suspeitas / avaliadas) > 0.4) return true;
+
+        return false;
+    }
+
+    function parseNumero(texto) {
+        var limpo = texto.replace(/[^\d,.-]/g, '').replace(/\.(?=\d{3}(\D|$))/g, '').replace(',', '.');
+        var n = parseFloat(limpo);
+        return isNaN(n) ? null : n;
+    }
+
+    function limparCampo(campo) {
+        campo.classList.remove('campo-ok', 'campo-invalido');
+        var antigo = campo.parentElement.querySelector('.msg-correcao');
+        if (antigo) antigo.remove();
+    }
+
+    function marcarCampo(campo, valido, mensagem) {
+        limparCampo(campo);
+        campo.classList.add(valido ? 'campo-ok' : 'campo-invalido');
+        if (mensagem) {
+            var span = document.createElement('span');
+            span.className = 'msg-correcao ' + (valido ? 'ok' : 'invalido');
+            span.textContent = mensagem;
+            campo.insertAdjacentElement('afterend', span);
+        }
+    }
+
+    window.corrigirAtividade = function () {
+        var cont = { ok: 0, invalidos: 0, vazios: 0 };
+        var gabarito = window.__gabaritoCorrecao || [];
+        var formulas = window.__formulasCorrecao || [];
+
+        var idsComGabarito = {};
+        gabarito.forEach(function (r) { idsComGabarito[r.seletor] = true; });
+        var idsComFormula = {};
+        (window.__camposFormula || []).forEach(function (sel) { idsComFormula[sel] = true; });
+
+        document.querySelectorAll('.input-box:not([readonly])').forEach(function (campo) {
+            limparCampo(campo);
+            var seletorProprio = campo.id ? ('#' + campo.id) : null;
+            if (seletorProprio && (idsComGabarito[seletorProprio] || idsComFormula[seletorProprio])) return;
+
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            if (campo.tagName === 'SELECT') {
+                marcarCampo(campo, true, null);
+                cont.ok++;
+                return;
+            }
+
+            var minPalavras = parseInt(campo.getAttribute('data-minpalavras') || '0', 10);
+            if (pareceGibberish(valor)) {
+                marcarCampo(campo, false, '⚠️ Isso não parece uma resposta válida — parece digitação aleatória.');
+                cont.invalidos++;
+                return;
+            }
+            if (minPalavras > 0 && contarPalavras(valor) < minPalavras) {
+                marcarCampo(campo, false, '⚠️ Resposta muito curta — desenvolva mais (mínimo ' + minPalavras + ' palavras).');
+                cont.invalidos++;
+                return;
+            }
+            marcarCampo(campo, true, null);
+            cont.ok++;
+        });
+
+        gabarito.forEach(function (regra) {
+            var campo = document.querySelector(regra.seletor);
+            if (!campo) return;
+            var valor = (campo.value || '').trim();
+            if (!valor) { cont.vazios++; return; }
+
+            var correto = false;
+            if (regra.tipo === 'select') {
+                correto = valor === regra.esperado;
+            } else if (regra.tipo === 'numero-proximo') {
+                var n = parseNumero(valor);
+                if (n === null) { cont.vazios++; return; }
+                var alvo = typeof regra.esperado === 'function' ? regra.esperado() : regra.esperado;
+                correto = Math.abs(n - alvo) <= (regra.tolerancia || 0);
+            } else if (regra.tipo === 'regex') {
+                correto = regra.esperado.test(valor);
+            }
+            marcarCampo(campo, correto, correto ? (regra.msgOk || '✅ Correto.') : (regra.msgErro || '❌ Reveja essa resposta.'));
+            if (correto) cont.ok++; else cont.invalidos++;
+        });
+
+        formulas.forEach(function (fn) { fn({ marcarCampo: marcarCampo, parseNumero: parseNumero, cont: cont }); });
+
+        var resumo = document.getElementById('resumoCorrecao');
+        if (resumo) {
+            resumo.textContent = cont.ok + ' resposta(s) válida(s) · ' + cont.invalidos + ' para revisar · ' + cont.vazios + ' em branco.';
+        }
+    };
+})();
+</script>
+
+<script>
+/* ---- Gabarito específico desta atividade ---- */
+window.__gabaritoCorrecao = [
+    { seletor: '#cat-row1', tipo: 'select', esperado: 'ti',
+      msgOk: '✅ Correto: licença de software é despesa de Tecnologia e Licenças.',
+      msgErro: '❌ Uma licença de software de gestão entra em Tecnologia e Licenças.' },
+    { seletor: '#cat-row2', tipo: 'select', esperado: 'receita',
+      msgOk: '✅ Correto: recebimento de cliente por serviço prestado é Receita de Serviços.',
+      msgErro: '❌ Um PIX recebido de cliente referente a contrato é Receita de Serviços.' },
+    { seletor: '#cat-row3', tipo: 'select', esperado: 'utilidades',
+      msgOk: '✅ Correto: energia elétrica é Água / Luz / Internet.',
+      msgErro: '❌ Conta de energia elétrica entra em Água / Luz / Internet.' },
+    { seletor: '#cat-row4', tipo: 'select', esperado: 'fornecedores',
+      msgOk: '✅ Correto: copos e produtos de limpeza são insumos comprados de terceiros.',
+      msgErro: '❌ Copos descartáveis e produtos de limpeza são Insumos de Terceiros.' },
+
+    { seletor: '#estoque-row1', tipo: 'select', esperado: 'critico',
+      msgOk: '✅ Correto: 2 caixas está abaixo do mínimo de 5 — nível crítico.',
+      msgErro: '❌ 2 caixas contra um mínimo de 5 é nível crítico, não normal.' },
+    { seletor: '#estoque-row2', tipo: 'select', esperado: 'ok',
+      msgOk: '✅ Correto: 4 unidades está acima do mínimo de 2 — estoque normal.',
+      msgErro: '❌ 4 unidades contra um mínimo de 2 é estoque normal, não crítico nem excesso.' },
+    { seletor: '#estoque-row3', tipo: 'select', esperado: 'critico',
+      msgOk: '✅ Correto: 0 caixas é nível crítico — não há nenhuma em estoque.',
+      msgErro: '❌ 0 caixas contra um mínimo de 2 é claramente nível crítico.' },
+    { seletor: '#estoque-row4', tipo: 'select', esperado: 'critico',
+      msgOk: '✅ Correto: 15 unidades está abaixo do mínimo de 30 — nível crítico.',
+      msgErro: '❌ 15 unidades contra um mínimo de 30 é nível crítico.' },
+];
+
+window.__camposFormula = [
+    '#gut-r1-g', '#gut-r1-u', '#gut-r1-t', '#gut-r1-pontuacao',
+    '#gut-r2-g', '#gut-r2-u', '#gut-r2-t', '#gut-r2-pontuacao',
+    '#gut-r3-g', '#gut-r3-u', '#gut-r3-t', '#gut-r3-pontuacao',
+    '#gut-r4-g', '#gut-r4-u', '#gut-r4-t', '#gut-r4-pontuacao',
+];
+
+function checarLinhaGUT(prefixo) {
+    return function (ctx) {
+        var campoG = document.getElementById(prefixo + '-g');
+        var campoU = document.getElementById(prefixo + '-u');
+        var campoT = document.getElementById(prefixo + '-t');
+        var campoP = document.getElementById(prefixo + '-pontuacao');
+        if (!campoG || !campoU || !campoT || !campoP) return;
+
+        var vG = (campoG.value || '').trim(), vU = (campoU.value || '').trim();
+        var vT = (campoT.value || '').trim(), vP = (campoP.value || '').trim();
+        if (!vG && !vU && !vT && !vP) return;
+
+        [['G', campoG, vG], ['U', campoU, vU], ['T', campoT, vT]].forEach(function (par) {
+            if (!par[2]) { ctx.cont.vazios++; return; }
+            var n = ctx.parseNumero(par[2]);
+            var valido = n !== null && n >= 1 && n <= 5 && Number.isInteger(n);
+            ctx.marcarCampo(par[1], valido, valido ? null : '⚠️ Nota de ' + par[0] + ' deve ser um número inteiro de 1 a 5.');
+            if (valido) ctx.cont.ok++; else ctx.cont.invalidos++;
+        });
+
+        if (!vP) { ctx.cont.vazios++; return; }
+        var nG = ctx.parseNumero(vG), nU = ctx.parseNumero(vU), nT = ctx.parseNumero(vT), nP = ctx.parseNumero(vP);
+        if (nG === null || nU === null || nT === null || nP === null) { ctx.cont.vazios++; return; }
+        var esperado = nG * nU * nT;
+        var correto = nP === esperado;
+        ctx.marcarCampo(campoP, correto,
+            correto ? '✅ Cálculo correto: G × U × T = ' + esperado + '.'
+                    : '❌ G × U × T deveria dar ' + esperado + ' — reconfira a multiplicação.');
+        if (correto) ctx.cont.ok++; else ctx.cont.invalidos++;
+    };
+}
+
+window.__formulasCorrecao = [
+    checarLinhaGUT('gut-r1'),
+    checarLinhaGUT('gut-r2'),
+    checarLinhaGUT('gut-r3'),
+    checarLinhaGUT('gut-r4'),
+];
+</script>
+
+</body>
+</html>

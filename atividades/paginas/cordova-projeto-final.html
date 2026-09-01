@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic — Projeto Final: Desafios Práticos (Guia Completo)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+        .sidebar h3 {
+            color: #1f4fb0; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #3880ff; padding-bottom: 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #3880ff; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; min-width: 0; }
+        .content > .chapter, .content > .nav-buttons, .content > .progress-bar { max-width: 900px; margin-left: auto; margin-right: auto; }
+
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1f4fb0; margin-bottom: 25px; border-bottom: 3px solid #3880ff; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #3880ff; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #3880ff;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre;
+        }
+        .code-label {
+            background: #3880ff; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .code-block .tag { color: #569cd6; }
+        .code-block .attr { color: #9cdcfe; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .var { color: #9cdcfe; }
+        .code-block .val { color: #b5cea8; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+
+        .desafio { border: 2px dashed #3880ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; background: #fff; }
+        .desafio-tag {
+            display: inline-block; background: #eef4ff; color: #1f4fb0; font-size: 0.78em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+        }
+        .nivel { font-size: 0.75em; font-weight: 700; padding: 3px 10px; border-radius: 12px; margin-left: 8px; }
+        .nivel.facil { background: #d4edda; color: #155724; }
+        .nivel.medio { background: #fff3cd; color: #7a5200; }
+        .nivel.dificil { background: #f8d7da; color: #721c24; }
+
+        .arvore-pastas { font-family: 'Courier New', monospace; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+        .checklist.grande li { font-weight: 600; font-size: 1.05em; padding: 6px 0 6px 32px; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #3880ff; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1f4fb0; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(56,128,255,0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #3880ff; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏆 Ionic — Projeto Final</h1>
+            <p>Desafios práticos, código de referência completo e a entrega</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 2 horas</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Pré-requisito:</strong> as 3 atividades anteriores<br>
+                        <strong>Tempo:</strong> ~2h<br>
+                        <strong>Formato:</strong> desafios, pouca teoria
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. O Plano de Hoje</h2>
+                    <p>Seu app já faz tudo: adiciona, exclui, marca como feita, busca, ordena, salva no localStorage e roda no emulador. Hoje é resolver desafios que faltam, escolher pelo menos 4, e fechar o projeto com um código de referência completo.</p>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Estrutura Final da Pasta</h2>
+                    <div class="code-block arvore-pastas"><span class="code-label">meu-app/www/</span>
+www/
+├── index.html         <span class="cm"># header, card, searchbar, input, botão, lista, footer</span>
+├── css/
+│   └── index.css       <span class="cm"># suas cores e ajustes visuais</span>
+└── js/
+    └── index.js          <span class="cm"># eventos, array, localStorage, filtro, ordenação</span></div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Desafio: Tema de Cores <span class="nivel facil">fácil</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/css/index.css</span><span class="tag">ion-toolbar</span> {
+  <span class="attr">--background</span>: <span class="val">#ff6b9d</span>; <span class="cm">/* escolha a sua cor */</span>
+  <span class="attr">--color</span>: <span class="val">#ffffff</span>;
+}
+
+<span class="tag">ion-card</span> {
+  <span class="prop">border-radius</span>: <span class="val">16px</span>;
+}</div>
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Desafio: Renomeie o App <span class="nivel facil">fácil</span></h2>
+                    <p>Troque "Minhas Missões" por outro tema — os nomes de variável no JS podem continuar iguais por dentro:</p>
+                    <ul>
+                        <li>📚 "Minha Lista de Leitura" com ícone <code>book</code>;</li>
+                        <li>🎬 "Filmes Pra Assistir" com ícone <code>film</code>;</li>
+                        <li>🎮 "Jogos Pra Zerar" com ícone <code>game-controller</code>.</li>
+                    </ul>
+                    <p>Troque o <code>&lt;ion-title&gt;</code>, o <code>name="add-circle"</code> do ícone do botão, e o <code>placeholder</code> do campo de texto pra combinar com o novo tema.</p>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Desafio: Badge com Contador Dinâmico <span class="nivel medio">médio</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código</span>
+                        <p>No <code>index.html</code>, dentro do <code>&lt;ion-toolbar&gt;</code>, depois do <code>&lt;ion-title&gt;</code>:</p>
+                        <div class="code-block"><span class="code-label">www/index.html</span><span class="tag">&lt;ion-badge</span> <span class="attr">id=</span><span class="str">"badge-pendentes"</span> <span class="attr">slot=</span><span class="str">"end"</span> <span class="attr">color=</span><span class="str">"danger"</span><span class="tag">&gt;</span>0<span class="tag">&lt;/ion-badge&gt;</span></div>
+                        <p>No <code>index.js</code>, dentro de <code>desenharLista()</code>:</p>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">const</span> <span class="var">pendentes</span> = missoes.filter(<span class="var">m</span> => !m.feita).length;
+document.getElementById(<span class="str">'badge-pendentes'</span>).innerText = pendentes;</div>
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Desafio: Editar uma Missão Existente <span class="nivel medio">médio</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código</span>
+                        <p>Adicione um botão de edição antes do de excluir, no template de <code>desenharLista()</code>:</p>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>&lt;ion-button slot="end" color="primary" fill="clear" onclick="editarMissao(${indice})"&gt;
+  &lt;ion-icon name="pencil" slot="icon-only"&gt;&lt;/ion-icon&gt;
+&lt;/ion-button&gt;</div>
+                        <div class="code-block"><span class="code-label">www/js/index.js — nova função</span><span class="kw">function</span> <span class="fn">editarMissao</span>(<span class="var">indice</span>) {
+  <span class="kw">const</span> <span class="var">novoTexto</span> = prompt(<span class="str">"Editar missão:"</span>, missoes[indice].texto);
+  <span class="kw">if</span> (novoTexto !== <span class="kw">null</span> && novoTexto.trim() !== <span class="str">""</span>) {
+    missoes[indice].texto = novoTexto;
+    desenharLista();
+  }
+}</div>
+                    </div>
+                    <p><code>prompt(mensagem, valorInicial)</code> abre uma caixa de texto pronta do navegador, já preenchida com o texto atual. Se a pessoa cancelar, <code>novoTexto</code> vira <code>null</code> — por isso o <code>if</code> confere isso antes de salvar.</p>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Desafio: Ordenar Pendentes Primeiro <span class="nivel medio">médio</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">ordenarPorStatus</span>() {
+  missoes.sort((<span class="var">a</span>, <span class="var">b</span>) => a.feita - b.feita); <span class="cm">// false (0) vem antes de true (1)</span>
+  desenharLista();
+}</div>
+                    </div>
+                    <p>Truque de JavaScript: <code>false - true</code> vira <code>0 - 1 = -1</code>, e <code>sort</code> usa esse número negativo/positivo pra decidir a ordem. Pendentes (<code>false</code>) sobem pro topo.</p>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Desafio: Animação ao Adicionar <span class="nivel dificil">difícil</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código</span>
+                        <div class="code-block"><span class="code-label">www/css/index.css</span><span class="tag">@keyframes</span> entrarSuave {
+  <span class="prop">from</span> { <span class="prop">opacity</span>: <span class="val">0</span>; <span class="prop">transform</span>: <span class="val">translateY(-10px)</span>; }
+  <span class="prop">to</span>   { <span class="prop">opacity</span>: <span class="val">1</span>; <span class="prop">transform</span>: <span class="val">translateY(0)</span>; }
+}
+
+<span class="tag">ion-item</span> {
+  <span class="prop">animation</span>: <span class="val">entrarSuave 0.3s ease</span>;
+}</div>
+                    </div>
+                    <p>Todo <code>&lt;ion-item&gt;</code> novo (inclusive quando a lista inteira é redesenhada) entra com um pequeno deslize suave em vez de aparecer seco. Repare no efeito ao adicionar uma missão nova.</p>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Desafio: Limpar Todas as Concluídas <span class="nivel dificil">difícil</span></h2>
+                    <div class="desafio">
+                        <span class="desafio-tag">Código — adicione um botão com id="btn-limpar"</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span>document.getElementById(<span class="str">'btn-limpar'</span>).addEventListener(<span class="str">'click'</span>, () => {
+  <span class="kw">const</span> <span class="var">confirmou</span> = confirm(<span class="str">"Remover todas as missões já concluídas?"</span>);
+  <span class="kw">if</span> (confirmou) {
+    missoes = missoes.filter(<span class="var">m</span> => !m.feita); <span class="cm">// mantém só as NÃO concluídas</span>
+    desenharLista();
+  }
+});</div>
+                    </div>
+                    <p><code>filter()</code> aqui reconstrói o array inteiro, mantendo só quem passa no teste (<code>!m.feita</code>) — as concluídas simplesmente não entram no novo array.</p>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Código de Referência Completo</h2>
+                    <p>Se quiser conferir seu projeto contra uma versão de referência (com os desafios fáceis e médios já aplicados):</p>
+                    <div class="code-block"><span class="code-label">www/js/index.js — completo</span><span class="kw">const</span> <span class="var">campoMissao</span> = document.getElementById(<span class="str">'campo-missao'</span>);
+<span class="kw">const</span> <span class="var">botaoAdicionar</span> = document.getElementById(<span class="str">'btn-adicionar'</span>);
+<span class="kw">const</span> <span class="var">listaNaTela</span> = document.getElementById(<span class="str">'lista-missoes'</span>);
+
+<span class="kw">let</span> <span class="var">missoes</span> = JSON.parse(localStorage.getItem(<span class="str">'minhas_missoes'</span>)) || [];
+
+<span class="kw">function</span> <span class="fn">desenharLista</span>() {
+  localStorage.setItem(<span class="str">'minhas_missoes'</span>, JSON.stringify(missoes));
+  <span class="kw">const</span> <span class="var">pendentes</span> = missoes.filter(<span class="var">m</span> => !m.feita).length;
+  document.getElementById(<span class="str">'badge-pendentes'</span>).innerText = pendentes;
+
+  listaNaTela.innerHTML = <span class="str">""</span>;
+  missoes.forEach((<span class="var">missao</span>, <span class="var">indice</span>) => {
+    <span class="kw">const</span> <span class="var">estilo</span> = missao.feita ? <span class="str">"text-decoration:line-through;color:#999"</span> : <span class="str">""</span>;
+    listaNaTela.innerHTML += <span class="str">`
+      &lt;ion-item&gt;
+        &lt;ion-label style="${estilo}" onclick="alternarFeita(${indice})"&gt;${missao.texto}&lt;/ion-label&gt;
+        &lt;ion-button slot="end" color="primary" fill="clear" onclick="editarMissao(${indice})"&gt;
+          &lt;ion-icon name="pencil" slot="icon-only"&gt;&lt;/ion-icon&gt;
+        &lt;/ion-button&gt;
+        &lt;ion-button slot="end" color="danger" fill="clear" onclick="excluirMissao(${indice})"&gt;
+          &lt;ion-icon name="trash" slot="icon-only"&gt;&lt;/ion-icon&gt;
+        &lt;/ion-button&gt;
+      &lt;/ion-item&gt;
+    `</span>;
+  });
+}
+
+botaoAdicionar.addEventListener(<span class="str">'click'</span>, () => {
+  <span class="kw">const</span> <span class="var">texto</span> = campoMissao.value;
+  <span class="kw">if</span> (texto.trim() !== <span class="str">""</span>) {
+    missoes.push({ <span class="var">texto</span>: texto, <span class="var">feita</span>: <span class="kw">false</span> });
+    desenharLista();
+    campoMissao.value = <span class="str">""</span>;
+  }
+});
+
+<span class="kw">function</span> <span class="fn">alternarFeita</span>(<span class="var">indice</span>) {
+  missoes[indice].feita = !missoes[indice].feita;
+  desenharLista();
+}
+
+<span class="kw">function</span> <span class="fn">editarMissao</span>(<span class="var">indice</span>) {
+  <span class="kw">const</span> <span class="var">novoTexto</span> = prompt(<span class="str">"Editar missão:"</span>, missoes[indice].texto);
+  <span class="kw">if</span> (novoTexto !== <span class="kw">null</span> && novoTexto.trim() !== <span class="str">""</span>) {
+    missoes[indice].texto = novoTexto;
+    desenharLista();
+  }
+}
+
+<span class="kw">function</span> <span class="fn">excluirMissao</span>(<span class="var">indice</span>) {
+  <span class="kw">const</span> <span class="var">confirmou</span> = confirm(<span class="str">"Excluir esta missão?"</span>);
+  <span class="kw">if</span> (confirmou) {
+    missoes.splice(<span class="var">indice</span>, <span class="val">1</span>);
+    desenharLista();
+  }
+}
+
+desenharLista(); <span class="cm">// desenha a lista salva assim que o app abre</span></div>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Testando Tudo Junto</h2>
+                    <p>Rode <code>cordova run browser</code> e passe por todo o fluxo, do início ao fim:</p>
+                    <ol>
+                        <li>Adicione 5 missões diferentes;</li>
+                        <li>Marque 2 como concluídas;</li>
+                        <li>Edite o texto de 1;</li>
+                        <li>Exclua 1;</li>
+                        <li>Recarregue a página — as outras 3 devem continuar exatamente como estavam;</li>
+                        <li>Rode <code>cordova run android</code> e repita o teste dentro do celular virtual.</li>
+                    </ol>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Preparando pra Apresentar</h2>
+                    <p>Separe, pra mostrar seu projeto:</p>
+                    <ul>
+                        <li>O app aberto no navegador (<code>cordova run browser</code>);</li>
+                        <li>O app aberto no celular virtual (<code>cordova run android</code>), com pelo menos 3 missões cadastradas;</li>
+                        <li>Uma frase curta explicando o que cada parte faz — treine dizer em voz alta, é a melhor forma de fixar o que você aprendeu.</li>
+                    </ul>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Checklist Final do Curso</h2>
+                    <ul class="checklist grande">
+                        <li>Cabeçalho, campo, botão, lista, busca e rodapé, todos personalizados;</li>
+                        <li>Adicionar, excluir, editar e marcar como concluída funcionando;</li>
+                        <li>Busca e ordenação funcionando;</li>
+                        <li>Dados salvos com localStorage, sobrevivendo a fechar e abrir o app;</li>
+                        <li>App rodando de verdade dentro do celular virtual Android;</li>
+                        <li>Pelo menos 4 desafios desta atividade resolvidos.</li>
+                    </ul>
+                    <div class="success">
+                        🎉 <strong>Você concluiu o curso!</strong> Em poucas aulas você foi de "nunca abri o Ionic" a um aplicativo funcional completo — com lógica própria, memória permanente, e rodando de verdade num Android simulado. Guarde este projeto: ele é a prova de que você consegue.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <a href="../../atividade.html?curso=cordova" style="display:block; text-align:center; padding: 16px; color:#3880ff; text-decoration:none; font-weight:600;">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+        <footer><p><strong>Ionic — Projeto Final</strong> | 13 capítulos | ~2h de prática</p></footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 13;
+        const chapters = [
+            "O Plano de Hoje", "Estrutura Final", "Desafio: Tema de Cores", "Desafio: Renomeie o App",
+            "Desafio: Badge Dinâmico", "Desafio: Editar Missão", "Desafio: Ordenar por Status",
+            "Desafio: Animação", "Desafio: Limpar Concluídas", "Código Completo de Referência",
+            "Testando Tudo Junto", "Preparando pra Apresentar", "Checklist Final"
+        ];
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((c, i) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${i + 1}. ${c}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(i + 1);
+                a.className = i + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a); tocList.appendChild(li);
+            });
+        }
+        function showChapter(n) {
+            document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+            document.querySelectorAll('.chapter')[n - 1].classList.add('active');
+            updateTOC(); updateButtons(); updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, i) => {
+                link.classList.remove('active');
+                if (i + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+        function updateProgress() {
+            document.getElementById('progressFill').style.width = (currentChapter / totalChapters) * 100 + '%';
+        }
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

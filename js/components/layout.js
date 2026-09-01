@@ -21,6 +21,11 @@ function textoSeguro(valor) {
   return div.innerHTML;
 }
 
+// Cursos com `grupo: "nav"` em data/atividades.js — saem das grades da
+// home e ganham link próprio aqui no menu (não ficam marcados como se
+// fossem só mais um curso dentro de "Início").
+const CURSOS_NAV = [{ slug: "ingles", titulo: "Inglês" }];
+
 // ---- <app-navbar> ----------------------------------------------------
 // Menu do topo. Marca sozinho o link da página atual (via Rotas.atual())
 // e cuida do botão de modo escuro.
@@ -28,8 +33,9 @@ function textoSeguro(valor) {
 class AppNavbar extends HTMLElement {
   connectedCallback() {
     const rotaAtual = Rotas.atual();
-    // A página de uma atividade faz parte da área "Início".
-    const ativo = rotaAtual === "atividade" ? "inicio" : rotaAtual;
+    const cursoDaUrl = rotaAtual === "atividade" ? Rotas.parametro("curso") : null;
+    const cursoNav = CURSOS_NAV.find((c) => c.slug === cursoDaUrl);
+    const ativo = cursoNav ? cursoNav.slug : rotaAtual === "atividade" ? "inicio" : rotaAtual;
 
     this.className = "navbar";
     this.innerHTML = `
@@ -37,6 +43,10 @@ class AppNavbar extends HTMLElement {
 
       <ul class="navbar-links">
         <li><a href="${Rotas.url("inicio")}" class="nav-link ${ativo === "inicio" ? "active" : ""}">Início</a></li>
+        ${CURSOS_NAV.map(
+          (c) =>
+            `<li><a href="${Rotas.url("atividade", { curso: c.slug })}" class="nav-link ${ativo === c.slug ? "active" : ""}">${c.titulo}</a></li>`
+        ).join("")}
         <li><a href="${Rotas.url("provas")}" class="nav-link ${ativo === "provas" ? "active" : ""}">Provas</a></li>
       </ul>
 
@@ -139,6 +149,7 @@ class AppFooter extends HTMLElement {
         <div class="footer-links">
           <h4>Navegação</h4>
           <a href="${Rotas.url("inicio")}">Início</a>
+          ${CURSOS_NAV.map((c) => `<a href="${Rotas.url("atividade", { curso: c.slug })}">${c.titulo}</a>`).join("")}
           <a href="${Rotas.url("provas")}">Provas</a>
         </div>
 

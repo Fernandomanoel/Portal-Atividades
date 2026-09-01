@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel 2021 — Relatório de Vendas Mensais (EOBRA S/A)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; text-align: center; font-weight: 700; font-size: 1.1em; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet tables */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fafafa; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.formula { color: #0f5132; font-family: 'Courier New', monospace; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📊 Atividade Prática — Relatório de Vendas Mensais</h1>
+        <p>Excel Básico — Empresa: EOBRA S/A</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo da Atividade</h2>
+        <p>Aprender a:</p>
+        <ul>
+            <li>Digitar e organizar dados</li>
+            <li>Formatar células</li>
+            <li>Usar fórmulas básicas</li>
+            <li>Calcular total, média, maior e menor valor</li>
+            <li>Trabalhar com planilhas empresariais simples</li>
+        </ul>
+
+        <h2>📋 Situação-Problema</h2>
+        <p>A empresa <strong>EOBRA S/A</strong> precisa organizar um <strong>relatório simples de vendas mensais</strong> para controle interno.</p>
+
+        <h3>Criando a Planilha</h3>
+        <ol>
+            <li>Abra o <strong>Microsoft Excel</strong>.</li>
+            <li>Crie uma planilha em branco.</li>
+            <li>Preencha conforme abaixo:</li>
+        </ol>
+
+        <h3>Cabeçalho</h3>
+        <ul>
+            <li><strong>A1:</strong> EOBRA S/A</li>
+            <li><strong>A2:</strong> RELATÓRIO DE VENDAS – MÊS ATUAL</li>
+        </ul>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">1</td><td colspan="3" class="merged">EOBRA S/A</td></tr>
+                <tr><td class="rownum">2</td><td colspan="3" class="merged">RELATÓRIO DE VENDAS – MÊS ATUAL</td></tr>
+            </table>
+        </div>
+
+        <p>A tabela de dados você fará desta forma:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">1</td><td colspan="3" class="merged">EOBRA S/A</td></tr>
+                <tr><td class="rownum">2</td><td colspan="3" class="merged">RELATÓRIO DE VENDAS – MÊS ATUAL</td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="headcell">FUNCIONARIO</td><td class="headcell">SETOR</td><td class="headcell">VENDAS (R$)</td></tr>
+            </table>
+        </div>
+
+        <p>Os dados dos Funcionários:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">4</td><td class="headcell">FUNCIONARIO</td><td class="headcell">SETOR</td><td class="headcell">VENDAS (R$)</td></tr>
+                <tr><td class="rownum">5</td><td>Ana Souza</td><td>Comercial</td><td class="money">127000</td></tr>
+                <tr><td class="rownum">6</td><td>Carlos Lima</td><td>Comercial</td><td class="money">82000</td></tr>
+                <tr><td class="rownum">7</td><td>João Pereira</td><td>Comercial</td><td class="money">103000</td></tr>
+                <tr><td class="rownum">8</td><td>Maria Santos</td><td>Comercial</td><td class="money">106500</td></tr>
+                <tr><td class="rownum">9</td><td>Pedro Alves</td><td>Comercial</td><td class="money">57000</td></tr>
+            </table>
+        </div>
+
+        <h3>Formatação Básica (Manual)</h3>
+        <ol>
+            <li>Selecione o cabeçalho da tabela.</li>
+            <li>Aplique:
+                <ul>
+                    <li>Fonte <strong>Arial</strong></li>
+                    <li>Tamanho <strong>12</strong></li>
+                    <li>Negrito</li>
+                    <li>Bordas na tabela</li>
+                </ul>
+            </li>
+            <li>Formate a coluna <strong>VENDAS</strong> como <strong>Moeda (R$)</strong>.</li>
+        </ol>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">1</td><td colspan="3" class="merged">EOBRA S/A</td></tr>
+                <tr><td class="rownum">2</td><td colspan="3" class="merged">RELATÓRIO DE VENDAS – MÊS ATUAL</td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="headcell">FUNCIONARIO</td><td class="headcell">SETOR</td><td class="headcell">VENDAS (R$)</td></tr>
+                <tr><td class="rownum">5</td><td>Ana Souza</td><td>Comercial</td><td class="money">R$ 127.000,00</td></tr>
+                <tr><td class="rownum">6</td><td>Carlos Lima</td><td>Comercial</td><td class="money">R$ 82.000,00</td></tr>
+                <tr><td class="rownum">7</td><td>João Pereira</td><td>Comercial</td><td class="money">R$ 103.000,00</td></tr>
+                <tr><td class="rownum">8</td><td>Maria Santos</td><td>Comercial</td><td class="money">R$ 106.500,00</td></tr>
+                <tr><td class="rownum">9</td><td>Pedro Alves</td><td>Comercial</td><td class="money">R$ 57.000,00</td></tr>
+            </table>
+        </div>
+
+        <h2>🧮 Cálculos Básicos</h2>
+
+        <div class="box">
+            <h4>✍️ Atividade — Total de Vendas</h4>
+            <p style="margin-bottom: 0;">Na célula <strong>C10</strong>, digite:</p>
+        </div>
+        <div class="code-block"><span class="fn">=SOMA</span>(C5:C9)</div>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">4</td><td class="headcell">FUNCIONARIO</td><td class="headcell">SETOR</td><td class="headcell">VENDAS (R$)</td></tr>
+                <tr><td class="rownum">5</td><td>Ana Souza</td><td>Comercial</td><td class="money">R$ 127.000,00</td></tr>
+                <tr><td class="rownum">6</td><td>Carlos Lima</td><td>Comercial</td><td class="money">R$ 82.000,00</td></tr>
+                <tr><td class="rownum">7</td><td>João Pereira</td><td>Comercial</td><td class="money">R$ 103.000,00</td></tr>
+                <tr><td class="rownum">8</td><td>Maria Santos</td><td>Comercial</td><td class="money">R$ 106.500,00</td></tr>
+                <tr><td class="rownum">9</td><td>Pedro Alves</td><td>Comercial</td><td class="money">R$ 57.000,00</td></tr>
+                <tr><td class="rownum">10</td><td class="empty"></td><td class="headcell">TOTAL DE VENDAS</td><td class="formula">=SOMA(C5:C9)</td></tr>
+            </table>
+        </div>
+
+        <p>Logo após você fará a outra parte:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">4</td><td class="headcell">FUNCIONARIO</td><td class="headcell">SETOR</td><td class="headcell">VENDAS (R$)</td></tr>
+                <tr><td class="rownum">5</td><td>Ana Souza</td><td>Comercial</td><td class="money">R$ 127.000,00</td></tr>
+                <tr><td class="rownum">6</td><td>Carlos Lima</td><td>Comercial</td><td class="money">R$ 82.000,00</td></tr>
+                <tr><td class="rownum">7</td><td>João Pereira</td><td>Comercial</td><td class="money">R$ 103.000,00</td></tr>
+                <tr><td class="rownum">8</td><td>Maria Santos</td><td>Comercial</td><td class="money">R$ 106.500,00</td></tr>
+                <tr><td class="rownum">9</td><td>Pedro Alves</td><td>Comercial</td><td class="money">R$ 57.000,00</td></tr>
+                <tr><td class="rownum">10</td><td class="empty"></td><td class="headcell">TOTAL DE VENDAS</td><td class="money">R$ 475.500,00</td></tr>
+                <tr><td class="rownum">11</td><td class="empty"></td><td class="headcell">MÉDIA DE VENDAS</td><td class="formula">=MÉDIA(C5:C9)</td></tr>
+            </table>
+        </div>
+
+        <div class="success">E FIM.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade Prática de Excel Básico</footer>
+</div>
+</body>
+</html>

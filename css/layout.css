@@ -90,10 +90,22 @@
 
 /* ================= CONTAINER ================= */
 
+/* .container cresce para empurrar o rodapé até o fim da tela em páginas
+   curtas (body é flex-column, ver base.css) — sem isso o rodapé "sobe"
+   e sobra fundo vazio abaixo dele quando o conteúdo não enche a tela,
+   principalmente com o zoom reduzido. */
 .container {
+  width: 100%;
   max-width: 1200px;
-  margin: auto;
+  margin: 0 auto;
   padding: 20px;
+  flex: 1 0 auto;
+}
+
+app-navbar,
+app-footer {
+  display: block;
+  flex-shrink: 0;
 }
 
 /* ================= BOTÃO VOLTAR ================= */

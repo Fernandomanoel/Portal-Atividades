@@ -22,7 +22,9 @@
 //   titulo    → nome exibido
 //   descricao → uma frase curta (aparece no card da home)
 //   grupo     → em qual seção da home o curso entra: "cursos"
-//               (Atividades disponíveis) ou "extras" (Mais Atividades)
+//               (Atividades disponíveis) ou "extras" (Mais Atividades).
+//               "nav" tira o curso das duas grades da home — ele só é
+//               alcançado por um link próprio no menu (ver components/layout.js)
 //   sigla     → 1-2 letras usadas na capa gerada do curso
 //   cor       → cor tema do curso (banner da página, véu do card)
 //   materiais → lista de materiais (ver abaixo)
@@ -48,59 +50,18 @@ const ATIVIDADES = [
     cor: "#2b579a",
     materiais: [
       {
-        titulo: "Organização de Pastas e Arquivos",
+        titulo: "Avaliação Prática: Recursos do Windows 11",
         descricao:
-          "Atividade prática para aprender a criar e organizar pastas, editar arquivos e salvar imagens (print) no formato .bmp no Windows.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Organização de Pastas e Arquivos.pdf",
+          "Roteiro prático sobre as novas funcionalidades de organização e interface do Windows 11: Configurações Rápidas, alinhamento da barra de tarefas, Áreas de Trabalho Virtuais, Snap Layouts, Ferramenta de Captura avançada e Bloco de Notas com abas.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-avaliacao-recursos-novos.html",
       },
       {
-        titulo: "Personalizando a Área de Trabalho",
+        titulo: "Avaliação Prática: Windows 11",
         descricao:
-          "Exercício para desenvolver habilidades básicas no Windows 11, explorando a personalização da área de trabalho, temas, plano de fundo e ícones do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Personalizando a Área de Trabalho.pdf",
-      },
-      {
-        titulo: "Gerenciador de Tarefas",
-        descricao:
-          "Atividade de revisão voltada ao uso do Gerenciador de Tarefas, ajudando o aluno a compreender recursos do Windows 11.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Gerenciador de Tarefas.pdf",
-      },
-      {
-        titulo: "Produtividade e Acessibilidade",
-        descricao:
-          "Atividade voltada ao uso de ferramentas de produtividade e recursos de acessibilidade do Windows 11, ajudando na organização pessoal e no melhor aproveitamento do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 -  Produtividade e Acessibilidade no Windows .pdf",
-      },
-      {
-        titulo: "Copiar, Recortar e Colar Arquivos",
-        descricao:
-          "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Copiando e Colando.pdf",
-      },
-      {
-        titulo: "Desinstalar o Avast no Windows 11",
-        descricao:
-          "Atividade prática para aprender a desinstalar o Avast Antivirus no Windows 11 usando as Configurações do sistema.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Desistalando Programas no Windows.pdf",
-      },
-      {
-        titulo: "Uso da Tecla SHIFT no Bloco de Notas",
-        descricao:
-          "Atividade prática para treinar o uso da tecla SHIFT no Windows, utilizando o Bloco de Notas para digitação de textos com letras maiúsculas e símbolos do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Escrevendo e usando o Shift.pdf",
-      },
-      {
-        titulo: "Lista de Atividades antes da Prova",
-        descricao: "Revisão geral do curso, para praticar antes da avaliação.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Windows 11/Windows 11 - Lista de Atividades antes da Prova.pdf",
+          "Passo a passo detalhado de gerenciamento e personalização do sistema: criação de pastas e subpastas, papel de parede, cursor do mouse, Gerenciador de Tarefas e compactação final em ZIP.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-avaliacao-detalhada.html",
       },
     ],
   },
@@ -135,101 +96,101 @@ const ATIVIDADES = [
         titulo: "Tabela INSS",
         descricao:
           "Atividade prática para aprender a criar tabelas no Excel e calcular o desconto do INSS utilizando fórmulas simples e porcentagem.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/ATIVIDADE_TABELA_INSS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-inss.html",
       },
       {
         titulo: "Cálculo de Empréstimo",
         descricao: "Exercício voltado ao cálculo de juros simples usando Excel.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADE DE CALCULO DO EMPRESTIMO.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-calculo-emprestimo.html",
       },
       {
         titulo: "Formatação Básica",
         descricao:
           "Primeiros passos no Excel: formatar células, ajustar colunas e deixar a planilha organizada.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADES BÁSICO FORMATAÇÃO.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-formatacao-basica.html",
       },
       {
         titulo: "Tabela de Receitas de Bolo",
         descricao:
           "Atividade prática montando uma tabela de receitas, trabalhando organização de dados e cálculo de quantidades.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - Tabela de Receitas de Bolo.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-receitas-bolo.html",
       },
       {
         titulo: "Tabela de Impostos",
         descricao: "Atividade para criar uma tabela de impostos utilizando fórmulas básicas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - ATIVIDADE TABELA IMPOSTOS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-tabela-impostos.html",
       },
       {
         titulo: "Planilha Empresarial (EOBRA S/A)",
         descricao:
           "Atividade prática que simula um relatório de vendas de uma empresa, trabalhando organização de dados e cálculos como total, média, maior e menor valor.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - RELATÓRIO SIMPLES DE VENDAS MENSAIS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-relatorio-vendas-mensais.html",
       },
       {
         titulo: "Fórmulas e Funções",
         descricao:
           "Atividade introdutória para compreender o uso de fórmulas e funções no Excel aplicadas em situações do dia a dia.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - TRABALHANDO COM FÓRMULAS E FUNÇÕES.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-formulas-e-funcoes.html",
       },
       {
         titulo: "Contas a Pagar usando o Excel",
         descricao:
           "Atividade prática para criar uma planilha de contas a pagar utilizando Excel no dia a dia.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Contas a Pagar fazendo no Excel.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-contas-a-pagar.html",
       },
       {
         titulo: "Convertendo em Dólar e usando o SE",
         descricao: "Exercício para aprender a função SE no Excel convertendo valores em dólar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Convertendo em Dolar e usando o SE.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-conversao-dolar-se.html",
       },
       {
         titulo: "Planilha com Máximo, Mínimo e Soma",
         descricao:
           "Exercício para aprender a fazer uma planilha com as funções Máximo, Mínimo e Soma.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Fazendo uma planilha Com Maximo - Minimo e Soma.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-maximo-minimo-soma.html",
       },
       {
         titulo: "Departamento de Vendas e Filtro de Dados",
         descricao:
           "Atividade prática de organização de dados, filtro de dados e gráfico dinâmico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Distribuição e Organização de Bases.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-filtro-de-dados.html",
       },
       {
         titulo: "Aprendendo e Fazendo na Prática — Básico",
         descricao: "Atividade prática de organização de dados, filtro de dados e gráfico dinâmico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Aprendendo e Fazendo Básico.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-aprendendo-fazendo-basico.html",
       },
       {
         titulo: "Lista de Atividades Excel",
         descricao: "Uma lista de atividades práticas para o Excel.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/Excel 2021 - Lista de Atividades.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-lista-de-atividades.html",
       },
       {
         titulo: "Função SE — Bônus por Faltas",
         descricao:
           "Exercício para aprender a função SE no Excel calculando bônus de funcionários conforme faltas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - USANDO O SE PARA DEFINIR BÔNUS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-funcao-se-bonus-faltas.html",
       },
       {
         titulo: "Função SE — Multa por Atraso",
         descricao:
           "Atividade para aplicar a função SE no cálculo automático de multa de 2% em pagamentos atrasados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL 2021 - Função SE – Multa por Atraso.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-funcao-se-multa-atraso.html",
       },
       {
         titulo: "Planilha da Atividade de Estoque",
@@ -252,8 +213,8 @@ const ATIVIDADES = [
         titulo: "Iniciando com o PROCV",
         descricao:
           "Primeira atividade do Excel Avançado: buscar informações em outra tabela com a função PROCV.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Excel 2021/EXCEL AVANÇADO I - INICIANDO COM O PROCV.pdf",
+        tipo: "link",
+        url: "atividades/paginas/excel-procv.html",
       },
       {
         titulo: "Controle de Vendas e Comissões (Cálculo Avançado)",
@@ -290,26 +251,26 @@ const ATIVIDADES = [
       {
         titulo: "Criando o seu primeiro Dashboard",
         descricao: "Conectar o Excel ao Power BI e tratar os dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Atividade 1.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-primeiro-dashboard.html",
       },
       {
         titulo: "Fazendo Análise de Funcionários de RH",
         descricao: "Criar gráficos a partir de uma base de RH.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Atividade 2.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-analise-rh.html",
       },
       {
         titulo: "Análise de Vendas",
         descricao: "Criar o primeiro dashboard de vendas com os recursos básicos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Analise de Vendas com o Básico .pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-analise-de-vendas.html",
       },
       {
         titulo: "Dashboard de Vendas do Atacadão",
         descricao: "Criar um dashboard de vendas completo.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Power Bi/Power Bi - Dashboard de Vendas do Atacadão.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerbi-dashboard-atacadao.html",
       },
     ],
   },
@@ -326,42 +287,42 @@ const ATIVIDADES = [
         titulo: "A Importância do Celular na Vida Escolar",
         descricao:
           "Atividade prática para aprender a criar e formatar um documento no Word, utilizando título, fonte adequada e texto reflexivo sobre o uso do celular nos estudos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/Word 2021 - Atividade de Escrita Básica.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-importancia-celular-vida-escolar.html",
       },
       {
         titulo: "Coisas da Vida",
         descricao:
           "Atividade introdutória para praticar digitação, organização de texto e uso básico do Word 2021.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Coisas da Vida.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-coisas-da-vida.html",
       },
       {
         titulo: "Criando e Formatando um Documento",
         descricao:
           "Atividade prática para aprender a criar, formatar e organizar documentos no Word 2021, utilizando fontes, alinhamento e estilos.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Criando e Formatando um Documento no Word.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-criando-formatando-documento.html",
       },
       {
         titulo: "Lista de Atividades",
         descricao: "Lista de atividades para o Word 2021.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/Word 2021 - Lista Atividades.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-lista-de-atividades.html",
       },
       {
         titulo: "Mala Direta",
         descricao:
           "Atividade voltada à criação de documentos com Mala Direta no Word 2021, automatizando o preenchimento de informações a partir de uma lista de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Criando um Documento com Mala Direta no Word.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-mala-direta.html",
       },
       {
         titulo: "Normas ABNT",
         descricao:
           "Atividade prática de formatação de trabalho acadêmico no Word seguindo as normas ABNT.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Word 2021/WORD 2021 - Normas ABNT.pdf",
+        tipo: "link",
+        url: "atividades/paginas/word-normas-abnt.html",
       },
       {
         titulo: "Atividade interativa (Genially)",
@@ -383,8 +344,8 @@ const ATIVIDADES = [
       {
         titulo: "Lista de Atividades",
         descricao: "Criação de slides básicos com título, texto e organização.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/PowerPoint/PowerPoint - Lista de Atividades 01.pdf",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-lista-atividades-basico.html",
       },
       {
         titulo: "Avaliação Prática: Criação e Design de Apresentação",
@@ -407,6 +368,20 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/powerpoint-video-e-transicoes.html",
       },
+      {
+        titulo: "Avaliação Prática: Criação de Slides com Conteúdo Fornecido",
+        descricao:
+          "Atividade com textos prontos para copiar e colar: tema de Energias Renováveis, SmartArt, gráfico, hiperlink, cabeçalho/rodapé, transições e exportação em PDF.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-avaliacao-conteudo-fornecido.html",
+      },
+      {
+        titulo: "Avaliação Prática: Slides Textuais Extensos",
+        descricao:
+          "Apresentação densa sobre a Evolução da Computação, com textos longos para formatar (alinhamento, justificação), SmartArt, gráfico, hiperlinks de navegação e caça às imagens.",
+        tipo: "link",
+        url: "atividades/paginas/powerpoint-avaliacao-texto-extenso.html",
+      },
     ],
   },
 
@@ -419,60 +394,12 @@ const ATIVIDADES = [
     cor: "#7c4dff",
     materiais: [
       {
-        titulo: "Digitação com Personagens de Desenhos",
-        descricao:
-          "Atividade divertida para crianças aprenderem digitação no Word usando textos com personagens de desenhos animados, treinando atenção, parágrafos e uso correto do teclado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Missão dos Desenhos Animados no Word.pdf",
-      },
-      {
-        titulo: "Treinando Digitação de Textos Longos",
-        descricao:
-          "Atividade prática para desenvolver a digitação no Word, com textos mais longos e simples.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitando textos grandes.pdf",
-      },
-      {
-        titulo: "Digitação com a Turma da Mônica",
-        descricao:
-          "Atividade prática para crianças aprenderem digitação no Word com textos da Turma da Mônica, trabalhando parágrafos, inserção de imagens e uso de lista com marcadores.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com Turma da Mônica.pdf",
-      },
-      {
-        titulo: "Digitação com O Incrível Mundo de Gumball",
-        descricao:
-          "Atividade educativa para crianças treinarem digitação no Word com textos inspirados em O Incrível Mundo de Gumball, incluindo inserção de imagens e criação de lista não ordenada.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com O Incrível Mundo de Gumball.pdf",
-      },
-      {
-        titulo: "Digitando com a Patrulha Canina",
-        descricao:
-          "Atividade básica e interativa para crianças aprenderem digitação no Word, inserir imagens e criar listas não ordenadas.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com a Patrulha Canina.pdf",
-      },
-      {
-        titulo: "Digitando com o Bluey",
-        descricao:
-          "Atividade educativa para crianças treinarem digitação no Word com textos grandes, listas com bolinhas e inserção de imagens, usando a personagem Bluey.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com o Bluey.pdf",
-      },
-      {
-        titulo: "Digitação com PJ Masks",
-        descricao:
-          "Material prático para crianças aprenderem digitação no Word, organizar textos, criar listas não ordenadas e inserir imagens com os personagens PJ Masks.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Kids/Word Kids - Digitação com PJ Masks.pdf",
-      },
-      {
         titulo: "Missão: Computador Arrumado",
         descricao:
           "Atividade guiada para crianças aprenderem a desinstalar programas (Adobe, WinRAR, McAfee) pelas Configurações do Windows e a ativar os atalhos padrão da área de trabalho, com checklist interativo.",
         tipo: "link",
         url: "atividades/paginas/kids-desinstalar-programas-atalhos.html",
+        categoria: "windows",
       },
       {
         titulo: "Missão: Arquivos Organizados",
@@ -480,6 +407,7 @@ const ATIVIDADES = [
           "Atividade guiada para crianças aprenderem a criar pastas, mover, recortar/colar (Ctrl+X/Ctrl+V) e compactar arquivos em ZIP, com checklist interativo de prática.",
         tipo: "link",
         url: "atividades/paginas/kids-organizando-arquivos.html",
+        categoria: "windows",
       },
       {
         titulo: "Missão: Meu Primeiro Relatório",
@@ -501,6 +429,7 @@ const ATIVIDADES = [
           "Continuação da Aventura no Windows 11, no mesmo formato: criar e renomear pastas, tipos de arquivo, separar arquivos nas pastas certas, compactar em ZIP e extrair. Tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-missao-arquivos.html",
+        categoria: "windows",
       },
       {
         titulo: "Minha Grande Aventura no Windows 11",
@@ -508,6 +437,31 @@ const ATIVIDADES = [
           "Versão interativa do livro de atividades: 4 missões (excluir app, trocar idioma, plano de fundo e pastas) com pintura, ordenar passos, caça-palavras, verdadeiro ou falso e diploma final. Feito para criança que ainda lê pouco — tudo por clique, com botão de ouvir a instrução.",
         tipo: "link",
         url: "atividades/paginas/kids-aventura-windows11.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Personalizando o Windows 11",
+        descricao:
+          "Atividade bem visual sobre personalização do Windows 11: papel de fundo, cores, temas, tela de bloqueio, sons e barra de tarefas, com trilhas de onde clicar, jogos de ordenar/ligar e checklist final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-personalizando-windows11.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Conhecendo o Computador",
+        descricao:
+          "Atividade interativa para descobrir as partes do computador (monitor, mouse, CPU, HD, portas de conexão) com jogos de explorar, jogo de pintar separando peças de programas e quiz final.",
+        tipo: "link",
+        url: "atividades/paginas/kids-conhecendo-o-computador.html",
+        categoria: "windows",
+      },
+      {
+        titulo: "Jogos do Computador",
+        descricao:
+          "Atividade extensa e prática com 10 jogos: ligar peça ao nome, caça-figuras (ache o nome da figura no caça-palavras), memória, montar o computador, completar palavras e mais.",
+        tipo: "link",
+        url: "atividades/paginas/kids-jogos-do-computador.html",
+        categoria: "windows",
       },
     ],
   },
@@ -556,49 +510,47 @@ const ATIVIDADES = [
         titulo: "Fazendo uma conexão usando comandos no Cisco",
         descricao:
           "Primeiros comandos no Cisco Packet Tracer para colocar dois equipamentos para se comunicar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/Redes - Fazendo uma conexão usando comandos no Cisco.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-conexao-cisco.html",
       },
       {
         titulo: "Implementação de uma Topologia de Redes",
         descricao:
           "Montagem de uma topologia completa no Cisco Packet Tracer, ligando switches, roteadores e computadores.",
-        tipo: "pdf",
-        arquivo:
-          "atividades/pdfs/Redes/Redes - Implementação de uma Topologia de Redes com o Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-topologia-de-redes.html",
       },
       {
         titulo: "Configuração de Serviço DHCP",
         descricao: "Atividade prática para configurar a distribuição automática de endereços IP.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - Configuração de Serviço DHCP.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-configuracao-dhcp.html",
       },
       {
         titulo: "Criando um Servidor Web com Cisco Packet Tracer",
         descricao: "Subir um servidor web dentro da rede simulada e acessá-lo pelos clientes.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/Redes - Criando um Servidor Web com Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-servidor-web-cisco.html",
       },
       {
         titulo: "Laboratório de VLANs",
         descricao:
           "Separação da rede em VLANs no Cisco Packet Tracer, trabalhando segmentação e organização do tráfego.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - Laboratório de VLANs no Cisco Packet Tracer.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-laboratorio-vlans.html",
       },
       {
         titulo: "Configuração de Rede com DHCP, DNS, Web Server e Wi-Fi",
         descricao:
           "Atividade completa juntando todos os serviços da rede: endereçamento, nomes, servidor web e rede sem fio.",
-        tipo: "pdf",
-        arquivo:
-          "atividades/pdfs/Redes/REDES - CONFIGURAÇÃO DE REDE COM DHCP, DNS, WEB SERVER E WI-FI.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-dhcp-dns-web-wifi.html",
       },
       {
         titulo: "Redes Wireless — Prova",
         descricao: "Avaliação teórica da parte de redes sem fio.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Redes/REDES - WIRELESS - PROVA.pdf",
+        tipo: "link",
+        url: "atividades/paginas/redes-wireless-prova.html",
       },
       {
         titulo: "Redes Wireless — Prova Prática",
@@ -621,15 +573,45 @@ const ATIVIDADES = [
         titulo: "Atividade de Segurança",
         descricao:
           "Atividade prática sobre os cuidados básicos de segurança no uso do computador e da internet.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Segurança na Era Digital/AtividadeSegurança.pdf",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-atividade-basica.html",
       },
       {
         titulo: "Identificando E-mails Suspeitos",
         descricao:
           "Exercício para reconhecer tentativas de golpe e phishing antes de clicar em qualquer link.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Segurança na Era Digital/EmailsSuspeito.pdf",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-emails-suspeitos.html",
+      },
+      {
+        titulo: "Atividade Prática: Segurança na Era Digital e Cibersegurança",
+        descricao: "Fundamentos de cibersegurança: senhas, autenticação, redes e boas práticas para se proteger online.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-ciberseguranca-fundamentos.html",
+      },
+      {
+        titulo: "Atividade Prática: Segurança na Era Digital e Defesa Cibernética",
+        descricao: "Cenários práticos de defesa cibernética: identificar ataques, reagir a incidentes e reduzir riscos digitais.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-defesa-cibernetica.html",
+      },
+      {
+        titulo: "Atividade Prática: Privacidade Avançada, Anonimato e Navegação Tor",
+        descricao: "Privacidade digital avançada, anonimato online e como funciona a navegação pela rede Tor.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-privacidade-avancada-tor.html",
+      },
+      {
+        titulo: "Atividade Prática: Inteligência Artificial e Produtividade Digital",
+        descricao: "Uso responsável e produtivo de ferramentas de Inteligência Artificial no dia a dia digital.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-ia-produtividade-digital.html",
+      },
+      {
+        titulo: "Atividade Prática: Defesa Pessoal, Consciência Situacional e Proteção Urbana",
+        descricao: "Consciência situacional e proteção pessoal no dia a dia, além da segurança digital.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-defesa-pessoal-consciencia-situacional.html",
       },
     ],
   },
@@ -641,10 +623,121 @@ const ATIVIDADES = [
     slug: "ingles",
     titulo: "Inglês",
     descricao: "Atividades de inglês para os cursos de informática.",
-    grupo: "cursos",
+    grupo: "nav",
     sigla: "EN",
     cor: "#0ea5e9",
-    materiais: [],
+    materiais: [
+      {
+        titulo: "Inglês em Letras de Música — Treino de Digitação",
+        descricao:
+          "Jogo de digitação com 8 letras de música em inglês: cada acerto e cada erro tem uma reação própria no HUD, com estatísticas de precisão, velocidade e combo. Música toca durante a digitação assim que os arquivos forem adicionados.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-letras-digitacao.html",
+      },
+    ],
+  },
+
+  {
+    // Atividades de projeto, sem prazo de entrega fixo — o aluno entrega
+    // mantendo o próprio repositório no Git atualizado (ver o primeiro
+    // material). Mais 4 atividades entram aqui depois.
+    slug: "criar-seu-site",
+    titulo: "Criando seu Site",
+    descricao: "Projetos reais de HTML, CSS e JavaScript, do primeiro repositório no Git a sites completos.",
+    grupo: "cursos",
+    sigla: "GIT",
+    cor: "#f05033",
+    imagem: "img/criar-seu-site.jpg",
+    materiais: [
+      {
+        titulo: "Git e GitHub — Criando seu Repositório",
+        descricao:
+          "Guia completo, passo a passo: instalar o Git, criar sua conta e seu repositório no GitHub, e aprender os comandos que você vai usar em toda atividade (init, add, commit, push e mais). Comece por aqui.",
+        tipo: "link",
+        url: "atividades/paginas/site-git-repositorio.html",
+      },
+      {
+        titulo: "Atividade 1 — Site SaaS",
+        descricao:
+          "Construa a landing page de um produto SaaS fictício: cabeçalho, seção de destaque, recursos, planos e contato. Tema livre, imagens que você mesmo busca, sem prazo de entrega — salve o progresso no seu repositório.",
+        tipo: "link",
+        url: "atividades/paginas/site-atividade1-saas.html",
+      },
+      {
+        titulo: "Atividade 2 — Site Pessoal com Python",
+        descricao:
+          "Monte o seu portfólio (um site sobre você) com um back-end em Python usando Flask: servir páginas, gerar a lista de projetos com Jinja, receber o formulário de contato e contar visitas. Introdução ao Python aplicada a um site real.",
+        tipo: "link",
+        url: "atividades/paginas/site-atividade2-portfolio-python.html",
+      },
+    ],
+  },
+
+  {
+    slug: "photoshop",
+    titulo: "Adobe Photoshop",
+    descricao: "Do primeiro clique a composições avançadas — curso completo em 8 graus.",
+    grupo: "cursos",
+    sigla: "PS",
+    cor: "#001e36",
+    materiais: [
+      {
+        titulo: "Grau 1 — Conhecendo a Ferramenta",
+        descricao:
+          "Guia explicativo para quem nunca abriu o Photoshop: reconhecer a tela, inserir uma imagem, recortar e remover fundo. Cerca de 1h.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau1-estilo-guia.html",
+      },
+      {
+        titulo: "Grau 2 — Seleções e Camadas Avançadas",
+        descricao:
+          "Seleção por cor, Laço Poligonal/Magnético, máscaras de camada e modos de mesclagem, com prática de montagem por máscara.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau2-selecoes-e-camadas.html",
+      },
+      {
+        titulo: "Grau 3 — Ajustes de Cor e Retoque",
+        descricao:
+          "Níveis, Curvas, Balanço de Cor e as ferramentas de retoque (Carimbo, Pincel de Recuperação, Correção Pontual) em camadas de ajuste não destrutivas.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau3-cor-e-retoque.html",
+      },
+      {
+        titulo: "Grau 4 — Texto, Formas e Composição",
+        descricao:
+          "Ferramenta Texto, estilos de camada, formas vetoriais, Regra dos Terços e a montagem de um post pronto para redes sociais.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau4-texto-formas-e-composicao.html",
+      },
+      {
+        titulo: "Grau 5 — Efeitos e Filtros Criativos",
+        descricao:
+          "Objetos Inteligentes, Filtros Inteligentes e a montagem de um efeito de dupla exposição.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau5-efeitos-e-filtros.html",
+      },
+      {
+        titulo: "Grau 6 — Composição Avançada",
+        descricao:
+          "Perspectiva, refinamento de seleção, harmonização de cor e luz entre elementos de fontes diferentes — a técnica por trás de qualquer montagem que engana o olho.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau6-composicao-avancada.html",
+      },
+      {
+        titulo: "Grau 7 — Projeto Final Integrador",
+        descricao:
+          "Um briefing de verdade, do planejamento à entrega organizada: peça principal, adaptação para Stories e exportação para diferentes usos.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau7-projeto-final.html",
+      },
+      {
+        titulo: "Grau 8 — Auras e Efeitos de Invocação (Bônus)",
+        descricao:
+          "Luz de contorno, auras coloridas e texto de efeito — o estilo por trás dos memes de personagem com elemento fantástico atrás dele.",
+        tipo: "link",
+        url: "atividades/paginas/photoshop-grau8-auras-e-invocacao.html",
+      },
+    ],
   },
 
   // ======================= MAIS ATIVIDADES (cards) =======================
@@ -657,17 +750,17 @@ const ATIVIDADES = [
     cor: "#ff4da6",
     materiais: [
       {
-        titulo: "Estrutura Básica de uma Página",
+        titulo: "Estilizando uma Página do Zero",
         descricao:
-          "Atividade para praticar a estrutura básica do HTML e a aplicação de estilos com CSS.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Html e CSS/HTML E CSS - ESTRUTURA BASICA.pdf",
+          "Atividade prática de CSS: você recebe uma página HTML pronta e sem nenhum estilo, e vai transformá-la visualmente em 7 passos (header, box model, cards em grade, hover, responsivo), sem tocar no HTML.",
+        tipo: "link",
+        url: "atividades/paginas/html-css-estilizando-uma-pagina.html",
       },
       {
         titulo: "Usando o CSS e colocando imagens em HTML",
         descricao: "Adição do CSS em uma página do HTML e inserção de imagens nessa página.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Html e CSS/CSS - USANDO O CSS EM SITE.pdf",
+        tipo: "link",
+        url: "atividades/paginas/html-css-usando-css.html",
       },
       {
         titulo: "Slides — HTML, Parte 1",
@@ -706,34 +799,37 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Fazendo o Primeiro Código",
-        descricao: "Aprendendo o início da programação por meio do Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Primeiro programa em Python.pdf",
+        descricao:
+          "Primeiro contato com Python: print(), comentários e tipos de dados básicos (texto, inteiro, decimal), com exercícios progressivos.",
+        tipo: "link",
+        url: "atividades/paginas/python-primeiro-codigo.html",
       },
       {
         titulo: "Lógica de Programação em Python",
-        descricao: "Prática de lógica de programação utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Lógica de Programação em Python.pdf",
+        descricao:
+          "Variáveis, input() e conversão de tipos (int/float), f-strings, e um mini formulário com várias perguntas.",
+        tipo: "link",
+        url: "atividades/paginas/python-logica-e-variaveis.html",
       },
       {
         titulo: "Entrada de Dados em Python",
         descricao:
           "Atividade introdutória para aprender os primeiros comandos e conceitos básicos da linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Entrada de Dados em Python.pdf",
+        tipo: "link",
+        url: "atividades/paginas/python-entrada-de-dados.html",
       },
       {
         titulo: "Usando e aprendendo Operadores Matemáticos",
-        descricao: "Prática dos operadores matemáticos básicos utilizando a linguagem Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Python - Usando e aprendendo Operadores Matemáticos.pdf",
+        descricao:
+          "Os 5 operadores aritméticos, a diferença entre / e //, operadores de comparação (==, >, <...) e uma calculadora completa.",
+        tipo: "link",
+        url: "atividades/paginas/python-operadores-matematicos.html",
       },
       {
         titulo: "Lista de Atividades",
         descricao: "Lista de atividades com o foco de reforçar as aulas de Python.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Python/Atividade Complementar - Python.pdf",
+        tipo: "link",
+        url: "atividades/paginas/python-atividade-complementar.html",
       },
     ],
   },
@@ -748,16 +844,17 @@ const ATIVIDADES = [
     materiais: [
       {
         titulo: "Desvendando a Lógica de Programação!",
-        descricao: "Atividade introdutória para compreender a ordem correta das instruções.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - De inicio na Lógica de Programação.pdf",
+        descricao:
+          "O que é um algoritmo, variáveis e tipos, estrutura SE/SENÃO, com exercícios em Portugol (Olá Mundo, soma, maioridade, par/ímpar, média de notas).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-fundamentos.html",
       },
       {
         titulo: "Além do Básico — Lógica Avançada",
         descricao:
-          "Continuação da atividade introdutória, com problemas que exigem mais raciocínio lógico.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Logica de Programaçao/Log. Prog - Além do Básico Lógica avançada.pdf",
+          "Vetores e matrizes, funções com retorno, laço enquanto x para, com 5 desafios em Portugol (média, busca, matriz 3x3, função e validação).",
+        tipo: "link",
+        url: "atividades/paginas/logica-programacao-avancada.html",
       },
     ],
   },
@@ -774,15 +871,15 @@ const ATIVIDADES = [
         titulo: "Sistema de Análise de Números",
         descricao:
           "O aluno cria um programa em JavaScript que solicita um número inicial e um número final, exibe os valores do intervalo e identifica números pares e ímpares.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - SistemadeAnálisedeNúmeros.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-analise-numeros.html",
       },
       {
         titulo: "Simulador de Tabuada Inteligente",
         descricao:
           "O aluno cria um programa em JavaScript que gera a tabuada de um número informado pelo usuário.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - SimuladordeTabuadaInteligente.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-tabuada-inteligente.html",
       },
       {
         titulo: "Guia: Criando sua Primeira API REST",
@@ -795,15 +892,15 @@ const ATIVIDADES = [
         titulo: "Simulador de Caixa Eletrônico",
         descricao:
           "O aluno desenvolve um simulador de caixa eletrônico com saldo inicial, menu de opções (ver saldo, depositar, sacar e sair), validação de saldo e execução contínua até encerrar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - Simulador de Caixa Eletrônico.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-caixa-eletronico.html",
       },
       {
         titulo: "Jogo de Adivinhação com Tentativas Limitadas",
         descricao:
           "O aluno cria um jogo em JavaScript que gera um número aleatório entre 1 e 50 e permite até 5 tentativas para adivinhar.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Javascript/Javascript - Jogo Adivinhaçao.pdf",
+        tipo: "link",
+        url: "atividades/paginas/javascript-jogo-adivinhacao.html",
       },
       {
         titulo: "Slides — Javascript, Parte 1",
@@ -827,9 +924,22 @@ const ATIVIDADES = [
     grupo: "extras",
     sigla: "IA",
     cor: "#ff4d4d",
-    // Os PDFs de IA ainda não foram enviados — assim que estiverem em
-    // atividades/pdfs/IA/, é só acrescentar os materiais aqui.
-    materiais: [],
+    materiais: [
+      {
+        titulo: "Introdução à IA e Engenharia de Prompt",
+        descricao:
+          "O que é IA/IA generativa/LLM na prática, como escrever bons prompts (com exemplos ruim x bom), atividade guiada numa IA de conversação gratuita, e uso responsável.",
+        tipo: "link",
+        url: "atividades/paginas/ia-introducao-e-prompts.html",
+      },
+      {
+        titulo: "Atividade Prática: IA Generativa, Engenharia de Prompt e Aplicações",
+        descricao:
+          "Aprofunda engenharia de prompt e explora aplicações práticas de IA generativa no dia a dia e no trabalho, com correção automática das respostas.",
+        tipo: "link",
+        url: "atividades/paginas/ia-generativa-engenharia-prompt-aplicacoes.html",
+      },
+    ],
   },
 
   {
@@ -843,15 +953,16 @@ const ATIVIDADES = [
       {
         titulo: "Conhecendo o Godot",
         descricao:
-          "Primeiro contato com a Godot: interface, cena, nós e como o projeto é organizado.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3d - Conhecendo o Godot.pdf",
+          "Primeiro contato com a Godot: interface, árvore de nós, Sprite2D, Inspector (Position/Scale/Rotation) e como o projeto é organizado.",
+        tipo: "link",
+        url: "atividades/paginas/godot-conhecendo-o-editor.html",
       },
       {
         titulo: "Criando o Primeiro Jogo 3D",
-        descricao: "Atividade prática montando um jogo 3D simples do começo ao fim na Godot.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Godot/Desenvolvimento de Games 3D - Criando o Primeiro Jogo.pdf",
+        descricao:
+          "Monte o jogo \"Pegue a Moeda\" do zero: jogador, colisão, script de movimento em GDScript explicado linha por linha, e detecção de vitória.",
+        tipo: "link",
+        url: "atividades/paginas/godot-primeiro-jogo.html",
       },
     ],
   },
@@ -867,20 +978,21 @@ const ATIVIDADES = [
       {
         titulo: "Apostila — Banco de Dados SQL",
         descricao: "Introdução ao banco de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/Apostila - Banco de Dados - SQL.pdf",
+        tipo: "link",
+        url: "atividades/paginas/sql-apostila.html",
       },
       {
         titulo: "Meu Primeiro Banco de Dados",
         descricao: "Exercícios de atividade básica de SQL.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/ATIVIDADE PRÁTICA - MEU PRIMEIRO BANCO DE DADOS.pdf",
+        tipo: "link",
+        url: "atividades/paginas/sql-primeiro-banco-de-dados.html",
       },
       {
         titulo: "Cadastrando Dados no SQL",
-        descricao: "Prática de pegar uma planilha e cadastrar usando um banco de dados.",
-        tipo: "pdf",
-        arquivo: "atividades/pdfs/Banco de Dados/ATIVIDADE PRÁTICA - CADASTRANDO DADOS NO SQL.pdf",
+        descricao:
+          "Crie a tabela de produtos de uma loja, cadastre os dados e pratique SELECT, WHERE, ORDER BY, UPDATE e DELETE.",
+        tipo: "link",
+        url: "atividades/paginas/sql-cadastro-de-produtos.html",
       },
       {
         titulo: "Baixar MySQL Workbench",
@@ -893,6 +1005,263 @@ const ATIVIDADES = [
         descricao: "Servidor local usado para rodar o banco de dados.",
         tipo: "link",
         url: "https://sourceforge.net/projects/xampp/",
+      },
+    ],
+  },
+
+  {
+    slug: "cordova",
+    titulo: "Apps Mobile com Ionic e Cordova",
+    descricao: "Construa um aplicativo de celular de verdade, do primeiro componente ao emulador Android.",
+    grupo: "extras",
+    sigla: "ION",
+    cor: "#3880ff",
+    materiais: [
+      {
+        titulo: "Ionic e Cordova — Primeiros Passos",
+        descricao:
+          "Guia completo com índice navegável (16 capítulos): o que são Ionic e Cordova, criando o projeto pelo terminal, primeiro componente, cores, e o Console como ferramenta de investigação de erros.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-primeiros-passos.html",
+      },
+      {
+        titulo: "Ionic — Prática de Componentes",
+        descricao:
+          "Mão na massa com 15 capítulos: input, button, list, badge, chip, toggle, searchbar, fab, avatar, grid e mais — cada peça com código pronto para testar e um desafio para fazer sozinho.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-componentes-visuais.html",
+      },
+      {
+        titulo: "Ionic — Prática de JavaScript",
+        descricao:
+          "15 capítulos só de código: array de missões, adicionar, excluir, marcar como concluída, busca em tempo real, ordenar a lista, modo escuro — e uma caçada a três bugs de propósito.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-javascript-e-listas.html",
+      },
+      {
+        titulo: "Ionic — LocalStorage e Emulador",
+        descricao:
+          "14 capítulos: salvando as missões no localStorage, testando a persistência, e o passo a passo completo para criar o celular virtual no Android Studio e rodar o app nele.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-localstorage-e-emulador.html",
+      },
+      {
+        titulo: "Ionic — Projeto Final",
+        descricao:
+          "13 capítulos de desafios (tema de cores, editar missão, ordenar por status, animação, limpar concluídas) fechando com o código de referência completo do app inteiro.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-final.html",
+      },
+      {
+        titulo: "Ionic — Projeto Livre: Rede Social",
+        descricao:
+          "20 capítulos: em vez de código pronto, uma especificação completa. Construa do zero uma rede social (perfil, feed, curtir, comentar, excluir só os seus posts, buscar, seguir colegas) com desafios guiados por dica e um gabarito comentado no final.",
+        tipo: "link",
+        url: "atividades/paginas/cordova-projeto-livre-rede-social.html",
+      },
+    ],
+  },
+
+  {
+    slug: "administracao",
+    titulo: "Administração",
+    descricao: "Rotinas administrativas de escritório em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "AD",
+    cor: "#1e3a8a",
+    materiais: [
+      {
+        titulo: "Simulação Prática de Rotinas Administrativas",
+        descricao:
+          "6 módulos: gestão documental (GED) e nomenclatura de arquivos, comunicação corporativa, reembolso de viagens (RDV), cotação de fornecedores, organização de eventos e criação de um POP.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-assistente-simulacao-integrada.html",
+      },
+      {
+        titulo: "Simulação de Operações Administrativas e Suporte de Gestão",
+        descricao:
+          "6 módulos: ata de reunião a partir de notas soltas, auditoria de ponto e escala, controle patrimonial, análise de minuta contratual e vencimentos de licenças, KPIs com plano 5W2H e triagem de ligações.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-rotinas-avancadas.html",
+      },
+      {
+        titulo: "Simulação de Rotinas de Escritório e Suporte Operacional",
+        descricao:
+          "6 módulos: contas a pagar e receber, itinerário de viagem corporativa, controle de estoque de almoxarifado, priorização com Matriz GUT, e-mail de pós-venda e relatório gerencial.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-rotinas-suporte-operacional.html",
+      },
+      {
+        titulo: "Simulação de Eficiência Operacional e Gestão de Rotinas",
+        descricao:
+          "6 módulos: avaliação de SLA de fornecedores, onboarding de novo colaborador, quadro Kanban, auditoria de caixa pequeno, ergonomia/segurança do escritório e etiqueta digital.",
+        tipo: "link",
+        url: "atividades/paginas/administracao-eficiencia-operacional.html",
+      },
+    ],
+  },
+
+  {
+    slug: "marketing",
+    titulo: "Marketing",
+    descricao: "Marketing, propaganda, branding e mídia em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "MK",
+    cor: "#ff6b35",
+    materiais: [
+      {
+        titulo: "Atividade Auto-Corretiva de Marketing e Propaganda",
+        descricao:
+          "Diferença entre Marketing e Propaganda, criação de headline, mapeamento de persona, funil de vendas e resposta a um caso de atendimento.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-propaganda.html",
+      },
+      {
+        titulo: "Atividade Auto-Corretiva de Marketing, Branding e Mídia",
+        descricao: "Segunda versão da atividade de marketing e propaganda, com questões e casos práticos de branding e mídia.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-branding-midia.html",
+      },
+      {
+        titulo: "Atividade Prática: Estratégia de Marketing, Copywriting e Mídia",
+        descricao: "Estratégia de marketing, escrita persuasiva (copywriting) e planejamento de mídia em exercícios práticos corrigidos automaticamente.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-estrategia-copywriting.html",
+      },
+      {
+        titulo: "Atividade Prática: Criação de Campanha e Plano de Divulgação",
+        descricao: "Criação de uma campanha completa e de um plano de divulgação para uma empresa, do conceito à execução.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-campanha-empresa.html",
+      },
+      {
+        titulo: "Desafio de Growth Marketing, Unit Economics & CRO",
+        descricao: "Desafio avançado sobre crescimento (growth), métricas de unit economics e otimização de conversão (CRO).",
+        tipo: "link",
+        url: "atividades/paginas/marketing-growth-avancado.html",
+      },
+      {
+        titulo: "Simulação Prática de Marketing, Publicidade e Modelagem de Mídia",
+        descricao: "Simulação prática de marketing, publicidade e modelagem de investimento em mídia.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-campanhas-modelagem-midia.html",
+      },
+      {
+        titulo: "Simulação de Growth Marketing, Estratégia de Mídia e Lançamentos",
+        descricao: "Simulação de estratégias de growth marketing, planejamento de mídia e lançamento de produtos.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-growth-midia-lancamentos.html",
+      },
+      {
+        titulo: "Simulação Prática de Branding, Publicidade e Ativação de Marca",
+        descricao: "Simulação prática de construção de marca (branding), publicidade e ações de ativação de marca.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-branding-publicidade-avancada.html",
+      },
+    ],
+  },
+
+  {
+    slug: "departamento-pessoal",
+    titulo: "Departamento Pessoal",
+    descricao: "Rotinas de departamento pessoal (DP) em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "DP",
+    cor: "#0d9488",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Assistente de Departamento Pessoal (DP)",
+        descricao: "Rotinas básicas de um assistente de DP: admissão, documentação e cálculos do dia a dia.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-basico.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal II — Férias, Adicionais e Rescisão Contratual",
+        descricao: "Cálculo de férias, adicionais (noturno, insalubridade) e rescisão contratual.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-ferias-adicionais-rescisao.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal III — Jornada Noturna, Horas Extras, Licenças e CAT",
+        descricao: "Jornada noturna, horas extras, licenças e Comunicação de Acidente de Trabalho (CAT).",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-jornada-horas-extras-licencas.html",
+      },
+      {
+        titulo: "Atividade Prática: Departamento Pessoal IV — Novos Formatos de Interação",
+        descricao: "Novos cenários e formatos de interação para praticar rotinas de departamento pessoal.",
+        tipo: "link",
+        url: "atividades/paginas/departamento-pessoal-novos-formatos-interacao.html",
+      },
+    ],
+  },
+
+  {
+    slug: "credito-cobranca",
+    titulo: "Crédito e Cobrança",
+    descricao: "Análise de crédito, cobrança e gestão financeira em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "CC",
+    cor: "#16a34a",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Análise de Crédito, Gestão de Risco e Régua de Cobrança",
+        descricao: "Análise de crédito, gestão de risco e a régua de cobrança usada para recuperar valores em atraso.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-analise-risco.html",
+      },
+      {
+        titulo: "Atividade Prática: Crédito e Cobrança II — Credit Scoring, Garantias e Títulos Executivos",
+        descricao: "Credit scoring, tipos de garantia e títulos executivos usados na cobrança.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-scoring-garantias-titulos.html",
+      },
+      {
+        titulo: "Atividade Prática: Crédito e Cobrança III — Open Finance, Prevenção a Fraudes e Recebíveis",
+        descricao: "Open Finance, prevenção a fraudes e gestão de recebíveis.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-open-finance-fraudes-recebiveis.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão Financeira, Fluxo de Caixa e Controladoria",
+        descricao: "Gestão financeira, controle de fluxo de caixa e rotinas de controladoria.",
+        tipo: "link",
+        url: "atividades/paginas/credito-cobranca-gestao-financeira-fluxo-caixa.html",
+      },
+    ],
+  },
+
+  {
+    slug: "gestao-pessoas",
+    titulo: "Gestão de Pessoas",
+    descricao: "Recrutamento, desenvolvimento e gestão de pessoas em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "GP",
+    cor: "#8b5cf6",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas I — Recrutamento, Seleção e Onboarding",
+        descricao: "Descrição de cargo, recrutamento interno x externo, etapas do processo seletivo, documentação admissional e onboarding.",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-recrutamento-selecao-onboarding.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas II — Seleção STAR, Métricas e PDI",
+        descricao: "Método de seleção STAR, métricas de RH e Plano de Desenvolvimento Individual (PDI).",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-selecao-star-metricas-pdi.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas III — Segurança Psicológica, People Analytics e DEI",
+        descricao: "Segurança psicológica no trabalho, People Analytics e Diversidade, Equidade e Inclusão (DEI).",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-seguranca-psicologica-people-analytics.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Pessoas IV — Carreira em Y, Modelo CHA e Offboarding",
+        descricao: "Plano de carreira em Y, modelo CHA (Conhecimento, Habilidade e Atitude) e processo de offboarding.",
+        tipo: "link",
+        url: "atividades/paginas/gestao-pessoas-carreira-y-cha-offboarding.html",
       },
     ],
   },

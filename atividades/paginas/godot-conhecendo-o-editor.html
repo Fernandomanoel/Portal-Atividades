@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conhecendo o Godot — Desenvolvimento de Games</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); color: #333; line-height: 1.6; }
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+        header { background: linear-gradient(135deg, #2f5f87 0%, #478cbf 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+        h2 { color: #2f5f87; margin: 34px 0 16px; border-bottom: 3px solid #478cbf; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #478cbf; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+        code { background: #eaf3fa; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #2f5f87; }
+        .box { background: #eaf3fa; border: 2px solid #478cbf; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+        .box h4 { color: #2f5f87; margin-bottom: 10px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #478cbf; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .tag { color: #569cd6; } /* extends, func, var, if */
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+        .code-label { background: #478cbf; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+        .passos li::before { counter-increment: passo; content: counter(passo); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: #478cbf; color: #fff; font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.9em; }
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #478cbf; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 18px 0; }
+        .card { background: #f7fafc; border: 1px solid #d7e6f2; border-radius: 8px; padding: 16px 18px; }
+        .card h4 { color: #2f5f87; margin-bottom: 8px; font-size: 1em; }
+        table.props { border-collapse: collapse; width: 100%; margin: 14px 0; }
+        table.props th, table.props td { border: 1px solid #d7e6f2; padding: 10px 14px; text-align: left; font-size: 0.95em; }
+        table.props th { background: #2f5f87; color: #fff; }
+        table.props tr:nth-child(even) { background: #f7fafc; }
+        @media (max-width: 700px) { header { padding: 28px 22px; } .content { padding: 26px 22px 40px; } .code-block { font-size: 0.8em; padding: 14px; } .grid2 { grid-template-columns: 1fr; } table.props { font-size: 0.85em; } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎮 Conhecendo o Godot</h1>
+        <p>Desenvolvimento de Games — Godot Engine</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=godot">← Voltar para Desenvolvimento de Games</a>
+
+    <div class="content">
+
+        <h2>🕹️ O que é a Godot Engine</h2>
+        <p>A <strong>Godot Engine</strong> é um <strong>motor de jogos</strong> (game engine): um programa que já traz pronto tudo aquilo que todo jogo precisa — uma tela para desenhar personagens e cenários, um sistema de física, controle de entrada do teclado e mouse, sons, e uma linguagem de programação para dar vida a tudo isso. Em vez de programar um jogo do zero em uma linguagem qualquer, você monta o jogo dentro da Godot, usando as ferramentas que ela já oferece.</p>
+
+        <div class="box">
+            <h4>Por que usamos a Godot no curso</h4>
+            <ul>
+                <li><strong>Gratuita e de código aberto</strong> — não é preciso pagar licença nem assinatura para usar, mesmo em jogos comerciais.</li>
+                <li><strong>Leve e rápida de instalar</strong> — o programa todo cabe em poucos megabytes, roda em Windows, Linux e Mac.</li>
+                <li><strong>Boa para 2D e 3D</strong> — hoje vamos trabalhar em 2D, que é o ponto de partida ideal para entender os conceitos.</li>
+                <li><strong>Usa GDScript</strong>, uma linguagem de programação própria, parecida com Python, criada para ser fácil de aprender.</li>
+            </ul>
+        </div>
+
+        <p>Jogos famosos feitos com Godot incluem <em>Brotato</em> e <em>Cassette Beasts</em>. É uma ferramenta profissional, usada por estúdios reais — não é um "programa de brinquedo".</p>
+
+        <h2>🧭 Entendendo a interface do editor</h2>
+        <p>Antes de sair clicando, vale entender as três áreas que você vai usar o tempo todo dentro da Godot. Quase tudo que fazemos nesta atividade acontece nelas:</p>
+
+        <div class="grid2">
+            <div class="card">
+                <h4>🌳 Árvore de Cena (Scene Tree)</h4>
+                <p style="margin-bottom:0">Fica geralmente no canto superior esquerdo. Um jogo na Godot é organizado em <strong>cenas</strong>, e cada cena é formada por <strong>Nodes</strong> (nós) organizados em árvore — um dentro do outro, como pastas dentro de pastas. Cada Node é um "pedaço" do jogo: um personagem, um texto na tela, um som, uma colisão. É aqui que você adiciona, renomeia e organiza esses nós.</p>
+            </div>
+            <div class="card">
+                <h4>🔧 Inspector</h4>
+                <p style="margin-bottom:0">Fica no canto direito. Mostra as <strong>propriedades</strong> do Node que está selecionado na árvore de cena: posição, tamanho, cor, texto, imagem, entre outras. É clicando e digitando aqui que você ajusta como cada elemento do jogo se comporta e aparece — sem precisar escrever código para isso.</p>
+            </div>
+            <div class="card">
+                <h4>🖼️ Viewport (área central)</h4>
+                <p style="margin-bottom:0">É o "palco" do jogo: mostra visualmente o que está sendo montado, exatamente como vai aparecer quando o jogo rodar. Você pode clicar e arrastar os objetos diretamente aqui.</p>
+            </div>
+            <div class="card">
+                <h4>📁 FileSystem</h4>
+                <p style="margin-bottom:0">Fica no canto inferior esquerdo. Lista os arquivos do seu projeto: as cenas salvas (<code>.tscn</code>), imagens, scripts, etc. É como o Explorador de Arquivos, mas só para os arquivos do seu jogo.</p>
+            </div>
+        </div>
+
+        <div class="highlight">💡 Guarde essa ideia: <strong>Node = peça do jogo</strong>, <strong>Cena = conjunto de Nodes organizados</strong>, <strong>Inspector = onde você ajusta cada peça</strong>. Todo o resto da atividade é aplicação direta desses três conceitos.</div>
+
+        <h2>1️⃣ Criando o projeto</h2>
+        <p>Todo trabalho na Godot começa dentro de um <strong>projeto</strong> — uma pasta que guarda todas as cenas, scripts e imagens do seu jogo.</p>
+        <ol class="passos">
+            <li>Abra o <strong>Godot Engine</strong>.</li>
+            <li>Na tela inicial (Project Manager), clique em <code>New Project</code> (Novo Projeto).</li>
+            <li>No campo de nome, digite: <code>Meu Primeiro Projeto</code></li>
+            <li>Escolha uma pasta no computador para salvar o projeto e clique em <code>Create &amp; Edit</code>. O editor da Godot vai abrir com o projeto vazio.</li>
+        </ol>
+
+        <h2>2️⃣ Criando a primeira cena</h2>
+        <p>Uma cena vazia ainda não tem nenhum Node. Precisamos criar o primeiro — o que vai servir de "raiz" (o node mais de cima na árvore, dentro do qual todos os outros vão morar).</p>
+        <ol class="passos">
+            <li>Clique no símbolo <code>+</code> no topo do painel de Scene Tree.</li>
+            <li>Na lista de tipos de Node, selecione <code>Node2D</code>.</li>
+            <li>Renomeie o Node para: <code>CenaPrincipal</code></li>
+            <li>Salve a cena com <code>Ctrl + S</code>. Quando pedir o nome do arquivo, use: <code>CenaPrincipal.tscn</code></li>
+        </ol>
+
+        <div class="box">
+            <h4>Por que <code>Node2D</code> e não outro tipo?</h4>
+            <p style="margin-bottom:0">A Godot tem dezenas de tipos de Node, cada um com uma função: alguns desenham imagens, outros tocam som, outros calculam física. O <code>Node2D</code> é o tipo mais básico para jogos em 2 dimensões — ele só sabe que existe em algum lugar do espaço (tem uma <strong>posição</strong>, uma <strong>escala</strong> e uma <strong>rotação</strong>), sem fazer mais nada sozinho. Por isso é ideal como "raiz" da cena: todos os outros Nodes 2D que colocarmos dentro dele (como o Sprite2D e o Label a seguir) herdam esse comportamento de posicionamento.</p>
+        </div>
+
+        <h2>3️⃣ Adicionando um personagem</h2>
+        <p>Agora vamos colocar algo visível na tela: uma imagem, usando o Node responsável por desenhar imagens.</p>
+        <ol class="passos">
+            <li>Com <code>CenaPrincipal</code> selecionado, clique em <code>+</code> para adicionar um filho (Add Child Node).</li>
+            <li>Escolha o tipo <code>Sprite2D</code> — é o Node que existe justamente para exibir uma imagem 2D na tela.</li>
+            <li>Com o <code>Sprite2D</code> selecionado, olhe para o painel <strong>Inspector</strong> à direita.</li>
+            <li>Localize a propriedade <code>Texture</code> e clique em <code>&lt;vazio&gt;</code> ao lado dela para escolher uma imagem disponível no seu computador ou no projeto.</li>
+        </ol>
+        <p>Assim que a imagem for escolhida, ela aparece na Viewport. Esse é o fluxo básico da Godot: <strong>adicionar um Node → configurar suas propriedades no Inspector</strong>.</p>
+
+        <h2>4️⃣ Movendo objetos</h2>
+        <p>Um jogo raramente tem os objetos parados no mesmo lugar — então vamos praticar a movimentação manual, direto na tela.</p>
+        <ol class="passos">
+            <li>Clique no <code>Sprite2D</code> para selecioná-lo (ele fica com um contorno amarelo na Viewport).</li>
+            <li>Use a ferramenta de movimentação (a seta com quatro pontas, no topo da Viewport, ou tecla <code>W</code>).</li>
+            <li>Arraste o objeto com o mouse para experimentar diferentes posições:
+                <ul>
+                    <li>Centro da tela</li>
+                    <li>Canto superior esquerdo</li>
+                    <li>Canto inferior direito</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2>5️⃣ Alterando propriedades no Inspector</h2>
+        <p>Arrastar com o mouse é rápido, mas impreciso. Para um controle exato, usamos os campos numéricos do Inspector. Com o <code>Sprite2D</code> ainda selecionado, procure o grupo <strong>Transform</strong> e altere cada campo, anotando o que muda visualmente:</p>
+
+        <table class="props">
+            <tr><th>Propriedade</th><th>O que ela realmente faz</th></tr>
+            <tr><td><code>Position X</code> / <code>Position Y</code></td><td>Move o objeto no eixo horizontal (X) e vertical (Y). Valores de X maiores empurram para a direita; valores de Y maiores empurram para <strong>baixo</strong> (na Godot, o eixo Y cresce para baixo, ao contrário do que se aprende em matemática).</td></tr>
+            <tr><td><code>Scale X</code> / <code>Scale Y</code></td><td>Redimensiona o objeto. <code>1.0</code> é o tamanho original; <code>2.0</code> deixa duas vezes maior; <code>0.5</code> deixa a metade do tamanho. Um valor negativo espelha a imagem.</td></tr>
+            <tr><td><code>Rotation</code></td><td>Gira o objeto em torno do seu próprio centro. O valor é um ângulo — na Godot, o Inspector já mostra em graus, então basta digitar, por exemplo, <code>45</code> para uma rotação de 45°.</td></tr>
+        </table>
+
+        <div class="highlight">📝 Anote em uma folha (ou nos comentários da entrega) o resultado visual de cada alteração que você testou — isso mostra que você entendeu o efeito de cada propriedade, não só que copiou os passos.</div>
+
+        <h2>6️⃣ Adicionando um texto</h2>
+        <p>Vamos agora adicionar um segundo tipo de Node: um que exibe texto na tela em vez de imagem.</p>
+        <ol class="passos">
+            <li>Com <code>CenaPrincipal</code> selecionado, adicione um novo Node do tipo <code>Label</code>.</li>
+            <li>No Inspector, encontre a propriedade <code>Text</code> e digite: <code>Meu Primeiro Projeto no Godot</code></li>
+            <li>Usando a mesma ferramenta de movimentação do passo anterior, posicione o texto no topo da tela.</li>
+        </ol>
+        <p>Repare que o <code>Label</code> também tem <code>Position</code>, <code>Scale</code> e <code>Rotation</code> — porque ele também é, por baixo dos panos, um tipo de Node2D. Esse é o poder da árvore de cena: os mesmos conceitos valem para qualquer objeto.</p>
+
+        <h2>7️⃣ Executando o projeto</h2>
+        <ol class="passos">
+            <li>Pressione <code>F5</code> (ou clique no botão <code>Run Project</code>, o triângulo de "play" no canto superior direito).</li>
+            <li>Na primeira vez, a Godot vai perguntar qual cena deve ser executada — selecione <code>CenaPrincipal.tscn</code> como cena principal.</li>
+            <li>Uma janela se abre mostrando seu jogo rodando: o personagem e o texto exatamente como você configurou.</li>
+        </ol>
+
+        <div class="box">
+            <h4>✅ O que você deve ter ao final</h4>
+            <p style="margin-bottom:0">Um projeto chamado <strong>Meu Primeiro Projeto</strong>, com uma cena <code>CenaPrincipal.tscn</code> contendo um <code>Node2D</code> raiz, um <code>Sprite2D</code> com imagem, e um <code>Label</code> com o texto "Meu Primeiro Projeto no Godot", rodando ao apertar F5.</p>
+        </div>
+
+        <h2>📤 Enviando a atividade no Portal do Aluno</h2>
+        <p>Com o projeto pronto e salvo, envie os arquivos pelo Portal do Aluno Microlins:</p>
+        <ol class="passos">
+            <li>Faça login no site do aluno: <a href="https://portaldoaluno.microlins.com.br/home/" target="_blank" rel="noopener">https://portaldoaluno.microlins.com.br/home/</a></li>
+            <li>Na parte esquerda, ou seja, na lateral do menu.</li>
+            <li>Aperte em <strong>"Meus Documentos"</strong>.</li>
+            <li>Selecione o curso <strong>Desenvolvimento de Games</strong> ou qualquer outro.</li>
+            <li>Aperte em <strong>Enviar Arquivo</strong>.</li>
+            <li>Clique em <strong>Clique Aqui</strong> e selecione a pasta na qual você salvou esta atividade.</li>
+            <li>Por fim, aperte em <strong>Enviar Arquivo</strong>.</li>
+        </ol>
+
+    </div>
+
+    <footer>Microlins São José — Atividade de Desenvolvimento de Games</footer>
+</div>
+</body>
+</html>

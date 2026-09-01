@@ -159,6 +159,21 @@
    PÁGINA DE UMA ATIVIDADE (atividade.html)
    ========================================================================== */
 
+/* Capa (foto de topo) opcional do curso — some sozinha se não houver
+   imagem, então não deixa buraco em curso nenhum. */
+.atividade-capa {
+  margin: 0 0 24px;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .18);
+}
+.atividade-capa img {
+  display: block;
+  width: 100%;
+  max-height: 340px;
+  object-fit: cover;
+}
+
 .atividade-barra {
   display: flex;
   align-items: center;
@@ -175,13 +190,18 @@
 
 /* ================= LISTA DE MATERIAIS ================= */
 
+/* Grade flexível de cards, mesmo modelo usado nas atividades de
+   Photoshop: cada material vira um card e eles se organizam lado a
+   lado, quebrando linha sozinhos conforme a largura da tela. */
 .materiais {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
 .material {
+  flex: 1 1 340px;
+  max-width: 480px;
   display: flex;
   align-items: center;
   gap: 22px;
@@ -197,6 +217,39 @@
   transform: translateY(-3px);
   border-color: var(--azul);
   box-shadow: var(--sombra-forte);
+}
+
+/* Box diferenciada para as atividades de Windows/computador do Informática Kids,
+   para distinguir de cabeça das de Word/PowerPoint na mesma lista. */
+.material--windows {
+  position: relative;
+  border-color: #0078d4;
+  background: linear-gradient(160deg, rgba(0, 120, 212, 0.08), var(--card) 45%);
+}
+
+.material--windows::before {
+  content: "🖥️ Windows";
+  position: absolute;
+  top: -11px;
+  left: 22px;
+  background: linear-gradient(135deg, #0078d4, #00bcf2);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 120, 212, 0.35);
+}
+
+.material--windows .material-icone {
+  background: linear-gradient(135deg, #0078d4, #00bcf2);
+  color: #fff;
+}
+
+.material--windows:hover {
+  border-color: #00bcf2;
+  box-shadow: 0 12px 25px rgba(0, 120, 212, 0.3);
 }
 
 .material-icone {

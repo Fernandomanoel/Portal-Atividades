@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git e GitHub — Criando seu Repositório</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: o container ocupa a tela inteira, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
+
+    header { background: linear-gradient(135deg, #f05033 0%, #c8390a 100%); color: #fff; padding: 40px 50px; text-align: center; }
+    header h1 { font-size: 2.3em; margin-bottom: 10px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .duracao-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .main-content { display: flex; flex: 1; width: 100%; }
+
+    .sidebar {
+        width: 300px; flex-shrink: 0; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+        overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+    }
+    .sidebar h3 {
+        color: #c8390a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+        text-transform: uppercase; border-bottom: 2px solid #f05033; padding-bottom: 8px;
+    }
+    .sidebar h3:first-child { margin-top: 0; }
+    .sidebar ul { list-style: none; }
+    .sidebar li { margin: 6px 0; }
+    .sidebar a {
+        color: #555; text-decoration: none; display: block; padding: 8px 12px;
+        border-radius: 6px; transition: all 0.3s; font-size: 0.87em;
+    }
+    .sidebar a:hover, .sidebar a.active { background: #f05033; color: #fff; }
+
+    .content { flex: 1; min-width: 0; padding: 50px; overflow-y: auto; max-height: 100vh; }
+    .chapter { display: none; animation: fadeIn 0.4s; }
+    .chapter.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    h2 { color: #c8390a; margin-bottom: 25px; border-bottom: 3px solid #f05033; padding-bottom: 10px; font-size: 1.9em; }
+    h3 { color: #f05033; margin-top: 30px; margin-bottom: 14px; font-size: 1.25em; }
+    p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; max-width: 900px; }
+    ul, ol { margin-left: 25px; margin-bottom: 15px; }
+    li { margin-bottom: 8px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 18px 22px; border-radius: 8px;
+        overflow-x: auto; margin: 18px 0; border-left: 4px solid #f05033;
+        font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.7;
+        max-width: 900px;
+    }
+    .code-block .cm { color: #6a9955; }
+    .code-block .cmd { color: #dcdcaa; }
+    .code-block .arg { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-label {
+        background: #f05033; color: #fff; padding: 5px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.82em; font-weight: 600; display: inline-block; margin-bottom: -4px;
+    }
+
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 20px 0; max-width: 900px; }
+    .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 20px 0; color: #721c24; max-width: 900px; }
+    .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 20px 0; color: #155724; max-width: 900px; }
+
+    .box { background: #fff4f0; border: 2px solid #f05033; border-radius: 8px; padding: 20px 24px; margin: 20px 0; max-width: 900px; }
+    .box h4 { color: #c8390a; margin-bottom: 10px; }
+    .box ul, .box p { max-width: none; }
+
+    table { width: 100%; max-width: 900px; border-collapse: collapse; margin: 20px 0; }
+    th { background: #f05033; color: #fff; padding: 12px; text-align: left; font-weight: 600; }
+    td { border: 1px solid #ddd; padding: 12px; }
+    td code, li code, p code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #c8390a; }
+    tr:nth-child(even) { background: #f9f9f9; }
+
+    .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; max-width: 900px; }
+    button {
+        background: #f05033; color: #fff; border: none; padding: 12px 24px; border-radius: 6px;
+        cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+    }
+    button:hover { background: #c8390a; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(240, 80, 51, 0.35); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 0 0 30px; max-width: 900px; }
+    .progress-fill { height: 100%; background: #f05033; transition: width 0.3s; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    .passos { counter-reset: passo; list-style: none; margin-left: 0; max-width: 900px; }
+    .passos li { counter-increment: passo; padding-left: 36px; position: relative; }
+    .passos li::before {
+        content: counter(passo); position: absolute; left: 0; top: 0;
+        background: #f05033; color: #fff; width: 24px; height: 24px; border-radius: 50%;
+        font-size: 0.78em; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    }
+
+    .cheat-table td:first-child { white-space: nowrap; font-family: 'Courier New', monospace; font-weight: 700; color: #c8390a; }
+
+    @media (max-width: 1024px) {
+        .main-content { flex-direction: column; }
+        .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+        .content { padding: 30px; max-height: none; }
+    }
+    @media (max-width: 600px) {
+        header { padding: 28px 22px; }
+        .content { padding: 22px 18px; }
+        .code-block { font-size: 0.78em; padding: 14px; }
+        h1 { font-size: 1.6em; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🐙 Git e GitHub — Criando seu Repositório</h1>
+        <p>O primeiro passo de toda atividade de criação de sites: guardar e versionar seu código do jeito certo</p>
+        <span class="duracao-badge">Passo 0 — antes de começar a codar</span>
+    </header>
+
+    <a class="voltar-topo" href="../../atividade.html?curso=criar-seu-site" style="display:block;padding:10px 50px;color:#f05033;text-decoration:none;font-weight:600;">← Voltar para Criando seu Site</a>
+
+    <div class="main-content">
+        <aside class="sidebar">
+            <h3>Índice</h3>
+            <ul id="tocList"></ul>
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                <p style="font-size: 0.85em; color: #666;">
+                    <strong>Nível:</strong> Iniciante<br>
+                    <strong>Pré-requisito:</strong> nenhum<br>
+                    <strong>Vale para:</strong> todas as atividades desta aba
+                </p>
+            </div>
+        </aside>
+
+        <main class="content">
+            <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+            <!-- CAPÍTULO 1 -->
+            <section class="chapter active" data-chapter="1">
+                <h2>1. O que é Git e o que é GitHub</h2>
+
+                <p>Antes de escrever a primeira linha de HTML, você vai aprender a guardar o seu trabalho do jeito que profissionais guardam: com <strong>Git</strong>.</p>
+
+                <h3>Git — o controle de versão</h3>
+                <p><strong>Git</strong> é um programa que roda no seu computador e tira "fotografias" do seu projeto sempre que você pedir. Cada fotografia é chamada de <strong>commit</strong>. Com isso você consegue:</p>
+                <ul>
+                    <li>Ver exatamente o que mudou entre uma versão e outra do seu código;</li>
+                    <li>Voltar no tempo se alguma coisa quebrar ("na terça-feira estava funcionando, o que eu mudei depois?");</li>
+                    <li>Ter um histórico completo de tudo que você fez, com data e uma mensagem explicando cada passo;</li>
+                    <li>Trabalhar em equipe sem que uma pessoa apague o trabalho da outra.</li>
+                </ul>
+
+                <h3>GitHub — a nuvem do seu Git</h3>
+                <p><strong>GitHub</strong> é um site (github.com) que guarda uma cópia do seu repositório Git na internet. Pense assim: o Git organiza o histórico <em>no seu computador</em>; o GitHub guarda uma cópia <em>na nuvem</em>, visível de qualquer lugar.</p>
+                <p>Isso serve pra três coisas no seu curso:</p>
+                <ul>
+                    <li><strong>Backup real</strong> — se seu computador tiver problema, seu trabalho está salvo online;</li>
+                    <li><strong>Portfólio</strong> — seu professor (e, no futuro, empregadores) enxergam seu código e seu progresso;</li>
+                    <li><strong>Entrega da atividade</strong> — como você vai ver a seguir, entregar a atividade aqui é justamente manter seu repositório atualizado.</li>
+                </ul>
+
+                <div class="box">
+                    <h4>💡 Uma analogia simples</h4>
+                    <p>Pense no Git como o botão "Salvar" de um editor de texto — só que em vez de sobrescrever o arquivo, cada "Salvar" (commit) fica guardado para sempre, com uma etiqueta escrita por você dizendo o que mudou. O GitHub é o Google Drive onde essa pasta cheia de versões salvas fica hospedada.</p>
+                </div>
+
+                <h3>Por que isso importa nas suas atividades</h3>
+                <p>As atividades desta aba são <strong>grandes e sem prazo fixo</strong> — você vai trabalhar nelas ao longo de várias aulas, não numa sentada só. Por isso, cada commit funciona como um <strong>checkpoint</strong> do seu progresso: se alguma coisa der errado numa aula, você não perde o que já tinha funcionando antes.</p>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 2 -->
+            <section class="chapter" data-chapter="2">
+                <h2>2. Instalando o Git</h2>
+
+                <p>O Git precisa ser instalado uma vez só no seu computador. Escolha o seu sistema operacional:</p>
+
+                <h3>Windows</h3>
+                <ol>
+                    <li>Acesse <code>git-scm.com</code> e baixe o instalador (o site detecta que você está no Windows sozinho);</li>
+                    <li>Execute o instalador e vá clicando em "Next" — as opções padrão servem perfeitamente para começar;</li>
+                    <li>Ao terminar, abra o programa <strong>"Git Bash"</strong> que foi instalado — é o terminal que você vai usar em todas as atividades.</li>
+                </ol>
+
+                <h3>macOS</h3>
+                <p>Na maioria dos Macs o Git já vem instalado. Para confirmar (ou instalar, se faltar), abra o <strong>Terminal</strong> e digite:</p>
+                <div class="code-block">git --version</div>
+                <p>Se não estiver instalado, o próprio macOS vai oferecer para instalar as "Ferramentas de Linha de Comando" — aceite.</p>
+
+                <h3>Linux</h3>
+                <p>Abra o terminal e use o gerenciador de pacotes da sua distribuição:</p>
+                <div class="code-block"><span class="cm"># Ubuntu / Debian</span>
+<span class="cmd">sudo apt</span> install git
+
+<span class="cm"># Fedora</span>
+<span class="cmd">sudo dnf</span> install git</div>
+
+                <h3>Conferindo se deu certo</h3>
+                <p>Em qualquer sistema, digite no terminal:</p>
+                <div class="code-block">git --version</div>
+                <p>Se aparecer um número de versão (algo como <code>git version 2.43.0</code>), está tudo certo.</p>
+
+                <h3>Configurando sua identidade</h3>
+                <p>Antes do primeiro commit, o Git precisa saber quem é você — essa informação fica gravada em <strong>todo commit que você fizer</strong>, pra mostrar quem fez cada mudança. Faça isso uma única vez:</p>
+                <div class="code-block"><span class="cmd">git config</span> --global user.name <span class="str">"Seu Nome Completo"</span>
+<span class="cmd">git config</span> --global user.email <span class="str">"seuemail@exemplo.com"</span></div>
+                <div class="highlight">
+                    <strong>Dica:</strong> use o mesmo e-mail que você vai usar para criar sua conta no GitHub (próximo capítulo) — assim seus commits ficam corretamente ligados ao seu perfil.
+                </div>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 3 -->
+            <section class="chapter" data-chapter="3">
+                <h2>3. Criando sua conta e seu repositório no GitHub</h2>
+
+                <h3>Criando a conta</h3>
+                <ol class="passos">
+                    <li>Acesse <code>github.com</code>;</li>
+                    <li>Clique em <strong>"Sign up"</strong>;</li>
+                    <li>Informe seu e-mail (o mesmo que você configurou no capítulo anterior), crie uma senha e escolha um nome de usuário;</li>
+                    <li>Confirme seu e-mail quando o GitHub pedir.</li>
+                </ol>
+
+                <h3>Criando um repositório novo</h3>
+                <p>Um <strong>repositório</strong> ("repo") é a pasta do seu projeto dentro do GitHub — cada atividade sua vai morar em um repositório separado.</p>
+                <ol class="passos">
+                    <li>Logado no GitHub, clique no <strong>"+"</strong> no canto superior direito e depois em <strong>"New repository"</strong>;</li>
+                    <li>Em <strong>Repository name</strong>, dê um nome sem espaço (ex: <code>meu-site-saas</code>);</li>
+                    <li>Deixe marcado como <strong>Public</strong> (assim seu professor consegue ver e avaliar);</li>
+                    <li>Marque a opção <strong>"Add a README file"</strong> — ela cria um arquivo de descrição inicial;</li>
+                    <li>Clique em <strong>"Create repository"</strong>.</li>
+                </ol>
+
+                <h3>Pegando o endereço do repositório</h3>
+                <p>Na página do repositório recém-criado, clique no botão verde <strong>"Code"</strong> e copie o endereço em <strong>HTTPS</strong> — algo como:</p>
+                <div class="code-block">https://github.com/seu-usuario/meu-site-saas.git</div>
+                <p>Você vai usar esse endereço no Capítulo 5, para ligar sua pasta local ao GitHub.</p>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 4 -->
+            <section class="chapter" data-chapter="4">
+                <h2>4. Iniciando um repositório no seu computador</h2>
+
+                <h3>Criando a pasta do projeto</h3>
+                <p>Crie (ou entre) na pasta onde vai ficar a atividade, e abra o terminal (Git Bash, no Windows) dentro dela. Uma forma fácil: dentro da pasta, clique com o botão direito e procure a opção <strong>"Git Bash Here"</strong> (Windows) ou abra o Terminal e use <code>cd</code> para navegar até ela.</p>
+
+                <h3>git init</h3>
+                <p>Dentro da pasta do projeto, rode:</p>
+                <div class="code-block"><span class="cmd">git init</span></div>
+                <p>Esse comando transforma uma pasta comum em um <strong>repositório Git</strong>. Ele cria uma pasta oculta chamada <code>.git</code> — é ali dentro que todo o histórico de commits vai ser guardado. Você nunca precisa mexer manualmente nessa pasta.</p>
+
+                <div class="warning">
+                    <strong>Atenção:</strong> rode <code>git init</code> apenas <strong>uma vez</strong>, na pasta raiz do projeto. Se você rodar dentro de uma subpasta por engano, vai criar um repositório dentro de outro — se isso acontecer, apague a pasta <code>.git</code> extra que apareceu no lugar errado.
+                </div>
+
+                <h3>git status — o comando que você mais vai usar</h3>
+                <p>A qualquer momento, rode:</p>
+                <div class="code-block"><span class="cmd">git status</span></div>
+                <p>Ele mostra o que mudou na sua pasta desde o último commit. Acostume-se a rodar <code>git status</code> o tempo todo — antes e depois de quase todo comando deste guia.</p>
+
+                <h3>Os três estados de um arquivo</h3>
+                <table>
+                    <tr><th>Estado</th><th>O que significa</th></tr>
+                    <tr><td><strong>Untracked</strong> (não rastreado)</td><td>Arquivo novo, que o Git ainda não conhece.</td></tr>
+                    <tr><td><strong>Staged</strong> (na área de preparação)</td><td>Você marcou esse arquivo para entrar no próximo commit, com <code>git add</code>.</td></tr>
+                    <tr><td><strong>Committed</strong> (commitado)</td><td>Está salvo no histórico do repositório, com <code>git commit</code>.</td></tr>
+                </table>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 5 -->
+            <section class="chapter" data-chapter="5">
+                <h2>5. Seu primeiro commit</h2>
+
+                <p>Crie um arquivo simples para testar — pode ser o <code>index.html</code> que você vai usar na Atividade 1. Depois, siga os três passos abaixo.</p>
+
+                <h3>Passo 1 — git add</h3>
+                <p>Coloca o(s) arquivo(s) na área de staging (preparação para o commit):</p>
+                <div class="code-block"><span class="cm"># adiciona um arquivo específico</span>
+<span class="cmd">git add</span> index.html
+
+<span class="cm"># adiciona TODOS os arquivos novos/modificados de uma vez</span>
+<span class="cmd">git add</span> <span class="arg">.</span></div>
+                <p>O <code>.</code> significa "aqui" — ou seja, "adicione tudo que mudou nesta pasta". É o jeito mais comum de usar no dia a dia.</p>
+
+                <h3>Passo 2 — git commit</h3>
+                <p>Agora sim, salva de verdade os arquivos que estão staged, junto com uma mensagem explicando o que foi feito:</p>
+                <div class="code-block"><span class="cmd">git commit</span> -m <span class="str">"cria estrutura inicial da página"</span></div>
+                <p>A flag <code>-m</code> significa "mensagem" — tudo que vier entre aspas depois dela é a descrição do commit.</p>
+
+                <div class="box">
+                    <h4>✍️ Como escrever uma boa mensagem de commit</h4>
+                    <ul>
+                        <li>Escreva no presente: <code>"adiciona seção de preços"</code>, não <code>"adicionei"</code>;</li>
+                        <li>Seja específico: <code>"corrige menu que não fechava no celular"</code> é melhor que <code>"correção"</code>;</li>
+                        <li>Um commit, uma ideia — não junte "cria header e footer e corrige bug do JS" num commit só;</li>
+                        <li>Evite mensagens genéricas como <code>"mudanças"</code> ou <code>"update"</code>.</li>
+                    </ul>
+                </div>
+
+                <h3>Passo 3 — conferindo o histórico</h3>
+                <div class="code-block"><span class="cmd">git log</span></div>
+                <p>Mostra todos os commits já feitos, do mais recente para o mais antigo, com autor, data e mensagem. Para sair dessa tela, aperte a tecla <code>q</code>.</p>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 6 -->
+            <section class="chapter" data-chapter="6">
+                <h2>6. Conectando ao GitHub e enviando pela primeira vez</h2>
+
+                <p>Até aqui, tudo que você fez existe só no seu computador. Agora vamos ligar essa pasta ao repositório que você criou no Capítulo 3.</p>
+
+                <h3>Passo 1 — git remote add</h3>
+                <p>Use o endereço HTTPS que você copiou do GitHub:</p>
+                <div class="code-block"><span class="cmd">git remote add</span> origin <span class="arg">https://github.com/seu-usuario/meu-site-saas.git</span></div>
+                <p>Um <strong>remote</strong> é um "apelido" para um repositório que vive em outro lugar — nesse caso, no GitHub. <code>origin</code> é o nome padrão usado pela comunidade inteira para o remoto principal.</p>
+
+                <h3>Passo 2 — nomeando a branch principal</h3>
+                <div class="code-block"><span class="cmd">git branch -M</span> main</div>
+                <p>Garante que sua branch (linha do tempo de commits) principal se chama <code>main</code>, o padrão atual do GitHub.</p>
+
+                <h3>Passo 3 — git push</h3>
+                <div class="code-block"><span class="cmd">git push</span> -u origin main</div>
+                <p>Envia todos os seus commits para o GitHub. A flag <code>-u</code> ("upstream") faz o Git memorizar essa ligação entre sua branch local e a do GitHub — da próxima vez, basta digitar <code>git push</code>, sem precisar repetir tudo.</p>
+
+                <div class="warning">
+                    <strong>Sobre login:</strong> o GitHub não aceita mais sua senha normal direto no terminal. Na primeira vez que você der <code>git push</code>, uma janela vai pedir para você entrar com sua conta pelo navegador (o mais comum hoje) — ou vai pedir um <strong>Personal Access Token</strong>, que se gera em <em>GitHub → Settings → Developer settings → Personal access tokens</em>. Siga as instruções que aparecerem na tela.
+                </div>
+
+                <p>Depois do <code>push</code>, atualize a página do seu repositório no GitHub — seus arquivos devem aparecer lá.</p>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 7 -->
+            <section class="chapter" data-chapter="7">
+                <h2>7. O ciclo do dia a dia</h2>
+
+                <p>A partir de agora, toda vez que você for trabalhar na sua atividade, o fluxo é sempre o mesmo:</p>
+
+                <div class="box">
+                    <h4>🔁 O ciclo</h4>
+                    <ol>
+                        <li><code>git status</code> — o que eu mudei desde a última vez?</li>
+                        <li><code>git add .</code> — prepara tudo que mudou;</li>
+                        <li><code>git commit -m "mensagem"</code> — salva com uma descrição;</li>
+                        <li><code>git push</code> — envia pro GitHub.</li>
+                    </ol>
+                </div>
+
+                <h3>git diff — vendo exatamente o que mudou</h3>
+                <p>Antes de commitar, você pode conferir linha por linha o que foi alterado:</p>
+                <div class="code-block"><span class="cmd">git diff</span></div>
+                <p>Linhas em vermelho foram removidas, linhas em verde foram adicionadas. Aperte <code>q</code> para sair.</p>
+
+                <h3>Commits pequenos e frequentes</h3>
+                <p>Prefira vários commits pequenos e lógicos a um único commit gigante no final:</p>
+                <div class="code-block"><span class="cm">✅ bom</span>
+git commit -m <span class="str">"cria estrutura HTML da página inicial"</span>
+git commit -m <span class="str">"estiliza o cabeçalho e o menu"</span>
+git commit -m <span class="str">"adiciona menu responsivo com JavaScript"</span>
+
+<span class="cm">❌ ruim</span>
+git commit -m <span class="str">"site pronto"</span></div>
+                <p>Além de mais fácil de entender, se algo quebrar você consegue achar exatamente em qual commit o problema começou.</p>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 8 -->
+            <section class="chapter" data-chapter="8">
+                <h2>8. O arquivo .gitignore</h2>
+
+                <p>Nem tudo que existe na sua pasta deveria ir para o GitHub — arquivos temporários, configurações locais do seu editor, ou pastas geradas automaticamente. O <code>.gitignore</code> resolve isso.</p>
+
+                <h3>Como criar</h3>
+                <p>Crie, na pasta raiz do seu projeto, um arquivo chamado exatamente <code>.gitignore</code> (com o ponto no início, sem extensão). Escreva uma regra por linha — cada linha é um arquivo, pasta ou padrão que o Git deve ignorar.</p>
+
+                <div class="code-block"><span class="code-label">.gitignore</span>
+<span class="cm"># pasta de dependências (se você usar alguma ferramenta com Node.js)</span>
+node_modules/
+
+<span class="cm"># arquivos do sistema operacional</span>
+.DS_Store
+Thumbs.db
+
+<span class="cm"># arquivos de configuração do seu editor</span>
+.vscode/</div>
+
+                <div class="highlight">
+                    Depois de criar o <code>.gitignore</code>, lembre de commitá-lo também: <code>git add .gitignore</code> e <code>git commit -m "adiciona gitignore"</code>.
+                </div>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 9 -->
+            <section class="chapter" data-chapter="9">
+                <h2>9. Salvando suas atividades (a parte mais importante)</h2>
+
+                <p>As atividades desta aba <strong>não têm prazo de entrega fixo</strong> — elas são propositalmente grandes, para você desenvolver ao longo de várias aulas, no seu ritmo. Isso muda a forma como você deve pensar sobre commits.</p>
+
+                <div class="box">
+                    <h4>📌 A regra de ouro</h4>
+                    <p>Cada commit é um <strong>checkpoint salvo</strong> do seu progresso. Como não existe uma data única de entrega, o commit substitui o "entreguei a atividade" — é o seu histórico de commits que mostra que você trabalhou nela ao longo do tempo.</p>
+                </div>
+
+                <h3>Rotina sugerida</h3>
+                <ul>
+                    <li>Terminou uma parte da atividade (uma seção da página, um efeito novo, uma correção)? Faça um commit;</li>
+                    <li>No fim de cada aula ou sessão de trabalho, sempre rode <code>git push</code> — garante que está salvo na nuvem, não só no seu computador;</li>
+                    <li>Se for testar algo arriscado (mudar bastante código de uma vez), commite <em>antes</em> de mexer — assim, se der errado, você sempre tem para onde voltar.</li>
+                </ul>
+
+                <h3>O que o seu instrutor vai olhar</h3>
+                <p>Seu instrutor vai acompanhar o <strong>histórico de commits</strong> no GitHub, não só o resultado final. Vários commits pequenos e bem descritos ao longo do tempo mostram seu processo de trabalho — é isso que comprova que a atividade foi feita por você, aos poucos, e não copiada de uma vez no último minuto.</p>
+
+                <div class="success">
+                    <strong>Resumindo:</strong> não existe "prazo" — existe seu repositório sempre atualizado. Trabalhou um pouco? Commitou e deu push. Essa é a entrega.
+                </div>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 10 -->
+            <section class="chapter" data-chapter="10">
+                <h2>10. Erros comuns e como resolver</h2>
+
+                <h3>"fatal: not a git repository"</h3>
+                <p>Você tentou rodar um comando do Git numa pasta que não é (ou ainda não é) um repositório.</p>
+                <div class="code-block"><span class="cm"># confira em qual pasta você está</span>
+<span class="cmd">pwd</span>
+
+<span class="cm"># se for a pasta certa e ainda faltar iniciar:</span>
+<span class="cmd">git init</span></div>
+
+                <h3>"Please tell me who you are"</h3>
+                <p>Você esqueceu de configurar seu nome e e-mail (Capítulo 2). Rode:</p>
+                <div class="code-block"><span class="cmd">git config</span> --global user.name <span class="str">"Seu Nome"</span>
+<span class="cmd">git config</span> --global user.email <span class="str">"seuemail@exemplo.com"</span></div>
+
+                <h3>"failed to push some refs"</h3>
+                <p>O GitHub tem commits que você ainda não tem na sua cópia local (por exemplo, se você editou algo direto pelo site, ou trabalhou em outro computador). Antes de enviar de novo, traga essas mudanças:</p>
+                <div class="code-block"><span class="cmd">git pull</span> origin main</div>
+                <p>Depois, tente o <code>git push</code> de novo.</p>
+
+                <h3>Commitei um arquivo por engano, antes do push</h3>
+                <p>Se ainda não deu <code>push</code>, dá para desfazer o último commit mantendo as alterações nos arquivos (elas voltam para staging):</p>
+                <div class="code-block"><span class="cmd">git reset</span> --soft HEAD~1</div>
+
+                <h3>Esqueci de dar um commit e a mensagem ficou errada</h3>
+                <p>Se for o commit mais recente e você ainda não fez <code>push</code>, dá para corrigir a mensagem:</p>
+                <div class="code-block"><span class="cmd">git commit</span> --amend -m <span class="str">"mensagem correta"</span></div>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button onclick="nextChapter()">Próximo →</button>
+                </div>
+            </section>
+
+            <!-- CAPÍTULO 11 -->
+            <section class="chapter" data-chapter="11">
+                <h2>11. Resumo — todos os comandos</h2>
+                <p>Guarde esta página como referência rápida para consultar durante qualquer atividade.</p>
+
+                <table class="cheat-table">
+                    <tr><th>Comando</th><th>Para que serve</th></tr>
+                    <tr><td><code>git --version</code></td><td>Confirma que o Git está instalado.</td></tr>
+                    <tr><td><code>git config --global user.name "..."</code></td><td>Define seu nome nos commits (uma vez só).</td></tr>
+                    <tr><td><code>git config --global user.email "..."</code></td><td>Define seu e-mail nos commits (uma vez só).</td></tr>
+                    <tr><td><code>git init</code></td><td>Transforma a pasta atual em um repositório Git.</td></tr>
+                    <tr><td><code>git status</code></td><td>Mostra o que mudou desde o último commit.</td></tr>
+                    <tr><td><code>git add .</code></td><td>Prepara todos os arquivos modificados para o commit.</td></tr>
+                    <tr><td><code>git add nome-do-arquivo</code></td><td>Prepara só aquele arquivo específico.</td></tr>
+                    <tr><td><code>git commit -m "mensagem"</code></td><td>Salva os arquivos preparados com uma descrição.</td></tr>
+                    <tr><td><code>git log</code></td><td>Mostra o histórico de commits.</td></tr>
+                    <tr><td><code>git diff</code></td><td>Mostra as mudanças linha por linha antes de commitar.</td></tr>
+                    <tr><td><code>git remote add origin URL</code></td><td>Liga sua pasta local a um repositório no GitHub.</td></tr>
+                    <tr><td><code>git branch -M main</code></td><td>Nomeia a branch principal como <code>main</code>.</td></tr>
+                    <tr><td><code>git push -u origin main</code></td><td>Envia os commits para o GitHub (primeira vez).</td></tr>
+                    <tr><td><code>git push</code></td><td>Envia os commits para o GitHub (demais vezes).</td></tr>
+                    <tr><td><code>git pull origin main</code></td><td>Traz para o computador mudanças que estão só no GitHub.</td></tr>
+                </table>
+
+                <div class="success" style="margin-top:30px;">
+                    <strong>Pronto!</strong> Com esses comandos você já tem tudo que precisa para começar a <a href="site-atividade1-saas.html" style="color:#0a5c2e;font-weight:700;">Atividade 1 — Site SaaS</a> e salvar seu progresso do jeito certo.
+                </div>
+
+                <div class="nav-buttons">
+                    <button onclick="previousChapter()">← Anterior</button>
+                    <button disabled>Fim do guia ✓</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p><strong>Git e GitHub — Criando seu Repositório</strong> | 11 capítulos</p>
+        <p>Microlins São José — Base de todas as atividades de "Criando seu Site"</p>
+    </footer>
+</div>
+
+<script>
+    let currentChapter = 1;
+    const totalChapters = 11;
+
+    const chapters = [
+        "O que é Git e GitHub",
+        "Instalando o Git",
+        "Criando conta e repositório",
+        "Iniciando o repositório local",
+        "Seu primeiro commit",
+        "Conectando ao GitHub",
+        "O ciclo do dia a dia",
+        "O arquivo .gitignore",
+        "Salvando suas atividades",
+        "Erros comuns",
+        "Resumo de comandos",
+    ];
+
+    function initTOC() {
+        const tocList = document.getElementById('tocList');
+        chapters.forEach((chapter, index) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.textContent = `${index + 1}. ${chapter}`;
+            a.href = '#';
+            a.onclick = (e) => { e.preventDefault(); goToChapter(index + 1); };
+            a.className = index + 1 === currentChapter ? 'active' : '';
+            li.appendChild(a);
+            tocList.appendChild(li);
+        });
+    }
+
+    function showChapter(n) {
+        document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+        document.querySelectorAll('.chapter')[n - 1].classList.add('active');
+        updateTOC();
+        updateButtons();
+        updateProgress();
+        document.querySelector('.content').scrollTop = 0;
+    }
+
+    function updateTOC() {
+        document.querySelectorAll('.sidebar a').forEach((link, index) => {
+            link.classList.toggle('active', index + 1 === currentChapter);
+        });
+    }
+
+    function updateButtons() {
+        const prev = document.getElementById('prevChapter');
+        if (prev) prev.disabled = currentChapter === 1;
+    }
+
+    function updateProgress() {
+        document.getElementById('progressFill').style.width = (currentChapter / totalChapters) * 100 + '%';
+    }
+
+    function nextChapter() {
+        if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); }
+    }
+    function previousChapter() {
+        if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); }
+    }
+    function goToChapter(n) {
+        currentChapter = n;
+        showChapter(currentChapter);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextChapter();
+        if (e.key === 'ArrowLeft') previousChapter();
+    });
+
+    initTOC();
+    showChapter(currentChapter);
+</script>
+</body>
+</html>

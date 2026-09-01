@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Receitas de Bolo — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #1d6f42; color: #fff; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🍰 Atividade de Excel — Tabela de Receitas de Bolo</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo</h2>
+        <p>Preencher e visualizar uma tabela com diferentes receitas de bolo, ingredientes principais e tempo de preparo.</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Receita de Bolo</td><td class="headcell">Ingredientes Principais</td><td class="headcell">Tempo de Preparo (min)</td><td class="headcell">Dificuldade</td></tr>
+                <tr><td class="rownum">2</td><td>Bolo de Cenoura</td><td>Cenoura, ovos, farinha</td><td class="money">50</td><td>Fácil</td></tr>
+                <tr><td class="rownum">3</td><td>Bolo de Chocolate</td><td>Chocolate, leite, farinha</td><td class="money">60</td><td>Médio</td></tr>
+                <tr><td class="rownum">4</td><td>Bolo de Fubá</td><td>Fubá, leite, ovos</td><td class="money">45</td><td>Fácil</td></tr>
+                <tr><td class="rownum">5</td><td>Bolo de Laranja</td><td>Laranja, ovos, farinha</td><td class="money">55</td><td>Fácil</td></tr>
+                <tr><td class="rownum">6</td><td>Bolo de Milho</td><td>Milho, leite condensado</td><td class="money">50</td><td>Médio</td></tr>
+            </table>
+        </div>
+
+        <h2>📋 Atividade Sugerida</h2>
+        <ol>
+            <li><strong>Abrir o Excel.</strong></li>
+            <li>Criar uma nova planilha e digitar o título: <strong>"Minhas Receitas de Bolo"</strong>.</li>
+            <li>Preencher as colunas com os dados acima (ou outros à sua escolha).</li>
+            <li><strong>Colorir</strong> cada linha com uma cor diferente (ajuda na visualização).</li>
+            <li>Fazer uma <strong>formatação simples</strong>: deixar os títulos em negrito e centralizados.</li>
+            <li>Se quiser, usar a função de <strong>filtro</strong> para classificar por tempo de preparo ou dificuldade.</li>
+        </ol>
+
+        <div class="box">
+            <h4>📝 Atividade Extra (opcional)</h4>
+            <ul>
+                <li>Criar uma nova coluna chamada <strong>"Já fiz?"</strong> com as opções: ✅ ou ❌.</li>
+                <li>A pessoa pode marcar quais receitas já testou.</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

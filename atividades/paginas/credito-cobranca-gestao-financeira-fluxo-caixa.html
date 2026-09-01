@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Gestão Financeira, Fluxo de Caixa e Controladoria</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #059669;
+            --brand-light: #d1fae5;
+            --accent-color: #047857;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Gestão Financeira, Fluxo de Caixa e Controladoria</h1>
+        <p>Aprenda a otimizar o Ciclo Financeiro e Capital de Giro, diferencie Regime de Caixa e Competência, analise Indicadores de Liquidez, calcule o Ponto de Equilíbrio e estruture Orçamentos Empresariais (OBZ).</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=credito-cobranca">← Voltar para Crédito e Cobrança</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: CICLO OPERACIONAL E CICLO FINANCEIRO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Gestão do Capital de Giro: Ciclo Operacional vs. Ciclo Financeiro</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Uma empresa comprou matéria-prima a prazo (pagamento em 30 dias), manteve os produtos em estoque por 20 dias até a venda e concedeu 40 dias de prazo para o cliente pagar. Qual é o valor do **Ciclo Financeiro (Ciclo de Caixa)** dessa empresa?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="gf1" value="60dias">
+                a) 60 dias (Soma do prazo de estocagem de 20 dias com o prazo de recebimento de 40 dias).
+            </label>
+            <label class="option-label">
+                <input type="radio" name="gf1" value="30dias">
+                b) 30 dias (Ciclo Operacional de 60 dias menos o Prazo Médio de Pagamento aos Fornecedores de 30 dias).
+            </label>
+            <label class="option-label">
+                <input type="radio" name="gf1" value="90dias">
+                c) 90 dias (Soma de todos os prazos das etapas comerciais e de compras).
+            </label>
+        </div>
+        <div id="feedback-gf1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: REGIME DE CAIXA vs. REGIME DE COMPETÊNCIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Regime de Caixa vs. Regime de Competência (DRE vs. DFC)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio Tático:</strong> Um equívoco comum na gestão empresarial é confundir **Lucro Contábil** com **Saldo de Caixa Disponível**. Explique a diferença entre reconhecer uma receita pelo **Regime de Competência** e pelo **Regime de Caixa**.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Reconhecimento no Regime de Competência (DRE):</label>
+                <input type="text" id="gf2-competencia" class="input-box" placeholder="Ex: Registra a receita/despesa no momento do fato gerador (venda/emissão da NF), independentemente do pagamento...">
+                <div id="feedback-gf2-competencia" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Reconhecimento no Regime de Caixa (DFC):</label>
+                <input type="text" id="gf2-caixa" class="input-box" placeholder="Ex: Registra a movimentação apenas quando o dinheiro efetivamente entra ou sai da conta bancária...">
+                <div id="feedback-gf2-caixa" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: INDICADORES DE LIQUIDEZ E SAÚDE PATRIMONIAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Análise de Balanço: Indicadores Financeiros de Liquidez</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o indicador financeiro de liquidez à sua respectiva fórmula/conceito analítico:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Indicador de Liquidez</th>
+                    <th style="width: 50%;">Fórmula e Foco Analítico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Liquidez Corrente**</td>
+                    <td>
+                        <select id="gf3-i1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="corrente">Ativo Circulante / Passivo Circulante (Capacidade geral de quitar obrigações de curto prazo)</option>
+                            <option value="seca">(Ativo Circulante - Estoques) / Passivo Circulante (Capacidade imediata sem depender das vendas de estoque)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**Liquidez Seca**</td>
+                    <td>
+                        <select id="gf3-i2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="corrente">Ativo Circulante / Passivo Circulante (Capacidade geral de quitar obrigações de curto prazo)</option>
+                            <option value="seca">(Ativo Circulante - Estoques) / Passivo Circulante (Capacidade imediata sem depender das vendas de estoque)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-gf3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: MARGEM DE CONTRIBUIÇÃO E PONTO DE EQUILÍBRIO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Análise de Custos: Margem de Contribuição e Ponto de Equilíbrio (Break-Even)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> O **Ponto de Equilíbrio Operacional (Break-Even Point)** indica o volume mínimo de vendas necessário para cobrir todos os custos e despesas fixas da empresa, sem gerar lucro nem prejuízo. Explique o conceito de **Margem de Contribuição Unitaria** (Preço de Venda - Custos/Despesas Variáveis) e como ela ajuda a calcular o ponto de equilíbrio.
+        </div>
+        <textarea id="gf4-breakeven" class="input-box" placeholder="Explique que a margem de contribuição é o valor que sobra da venda de cada unidade para pagar os custos fixos da empresa. Dividindo os custos fixos totais por essa margem, encontra-se a quantidade de vendas do ponto de equilíbrio..."></textarea>
+        <div id="feedback-gf4-breakeven" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PLANEJAMENTO ORÇAMENTÁRIO (OBZ - ORÇAMENTO ZERO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Controladoria e Orçamento Empresarial: Orçamento Base Zero (OBZ)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Diferente do orçamento histórico tradicional (que apenas reajusta os gastos do ano anterior pela inflação), o **Orçamento Base Zero (OBZ)** exige que os gestores justifiquem cada custo do zero a cada novo ciclo. Quais são as principais vantagens do OBZ para a eliminação de desperdícios e eficiência operacional?
+        </div>
+        <textarea id="gf5-obz" class="input-box" placeholder="Discorra sobre o questionamento contínuo da necessidade de cada gasto, eliminação de ineficiências históricas, alocação inteligente de recursos prioritários e maior disciplina financeira das lideranças..."></textarea>
+        <div id="feedback-gf5-obz" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const gf1Selected = document.querySelector('input[name="gf1"]:checked');
+        if (gf1Selected && gf1Selected.value === '30dias') {
+            aplicarFeedback('feedback-gf1', { valido: true, motivo: "Correto! Ciclo Financeiro = Ciclo Operacional (20+40 = 60 dias) - Prazo de Pagamento (30 dias) = 30 dias." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-gf1', { valido: false, motivo: "Incorreto. O Ciclo Financeiro é calculado diminuindo o prazo de pagamento do fornecedor do ciclo operacional total." });
+        }
+
+        // Mód 2
+        const resComp = validarTextoInteligente(document.getElementById('gf2-competencia').value, 3, 12);
+        const resCaix = validarTextoInteligente(document.getElementById('gf2-caixa').value, 3, 12);
+        aplicarFeedback('feedback-gf2-competencia', resComp);
+        aplicarFeedback('feedback-gf2-caixa', resCaix);
+        if (resComp.valido && resCaix.valido) acertos++;
+
+        // Mód 3
+        const i1 = document.getElementById('gf3-i1').value;
+        const i2 = document.getElementById('gf3-i2').value;
+        if (i1 === 'corrente' && i2 === 'seca') {
+            aplicarFeedback('feedback-gf3', { valido: true, motivo: "Perfeito! Liquidez Corrente inclui estoques; Liquidez Seca exclui estoques da avaliação de curto prazo." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-gf3', { valido: false, motivo: "Incorreto. Verifique qual indicador desconsidera os estoques no cálculo." });
+        }
+
+        // Mód 4
+        const bkVal = document.getElementById('gf4-breakeven').value;
+        const resBk = validarTextoInteligente(bkVal, 4, 15);
+        if (resBk.valido) {
+            const termosBk = /margem|contribuiç|custo|fix|venda|cobrir|equilíbr|receit|variáv/i;
+            if (!termosBk.test(bkVal)) {
+                resBk.valido = false;
+                resBk.motivo = "Mencione a margem de contribuição (preço - custos variáveis) e a cobertura dos custos fixos totais.";
+            }
+        }
+        aplicarFeedback('feedback-gf4-breakeven', resBk);
+        if (resBk.valido) acertos++;
+
+        // Mód 5
+        const obzVal = document.getElementById('gf5-obz').value;
+        const resObz = validarTextoInteligente(obzVal, 4, 15);
+        if (resObz.valido) {
+            const termosObz = /zero|desperdíci|justifica|gast|cust|eficiênci|históric|recurs|priorida/i;
+            if (!termosObz.test(obzVal)) {
+                resObz.valido = false;
+                resObz.motivo = "Mencione a justificativa do zero de cada gasto, eliminação de desperdícios históricos e otimização de custos.";
+            }
+        }
+        aplicarFeedback('feedback-gf5-obz', resObz);
+        if (resObz.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('gf2-competencia').addEventListener('blur', function() {
+            aplicarFeedback('feedback-gf2-competencia', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('gf2-caixa').addEventListener('blur', function() {
+            aplicarFeedback('feedback-gf2-caixa', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('gf4-breakeven').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosBk = /margem|contribuiç|custo|fix|venda|cobrir|equilíbr|receit|variáv/i;
+                if (!termosBk.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione como a margem de contribuição (preço - custos variáveis) cobre os custos fixos.";
+                }
+            }
+            aplicarFeedback('feedback-gf4-breakeven', res);
+        });
+        document.getElementById('gf5-obz').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosObz = /zero|desperdíci|justifica|gast|cust|eficiênci|históric|recurs|priorida/i;
+                if (!termosObz.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre reavaliar os gastos do zero e eliminar ineficiências operacionais.";
+                }
+            }
+            aplicarFeedback('feedback-gf5-obz', res);
+        });
+    });
+</script>
+
+</body>
+</html>

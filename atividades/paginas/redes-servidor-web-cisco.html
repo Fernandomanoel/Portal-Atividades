@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criando um Servidor Web com Cisco Packet Tracer — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🖥️ Criando um Servidor Web com Cisco Packet Tracer</h1>
+        <p>Redes de Computadores — Wireless &amp; Cabos e Infraestrutura</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">Livro: Aula 01 – 08 · Atividade: 04 · "A felicidade da sua vida depende da qualidade dos seus pensamentos." — Marco Aurélio</p>
+
+        <h2>🌐 Topologia</h2>
+        <div class="topologia">
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC0</span><small>192.168.1.10<br>255.255.255.0</small></div>
+            </div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>SW1</span></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivos">
+                <div class="dispositivo pc">🖥️<span>SERVER0</span><small>192.168.1.100<br>255.255.255.0</small></div>
+            </div>
+        </div>
+
+        <h3>Tabela de endereçamento</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Dispositivo</th><th>Endereço IP</th><th>Máscara</th></tr>
+                <tr><td>PC0</td><td>192.168.1.10</td><td>255.255.255.0</td></tr>
+                <tr><td>SERVER0</td><td>192.168.1.100</td><td>255.255.255.0</td></tr>
+            </table>
+        </div>
+
+        <h3>Equipamentos</h3>
+        <p>Adicione:</p>
+        <ul>
+            <li>1 PC</li>
+            <li>1 Switch 2960</li>
+            <li>1 Server</li>
+        </ul>
+        <p>Conecte os dispositivos utilizando o <strong>Copper Straight Through</strong>.</p>
+        <div class="code-block">PC0 → SW1
+SERVER0 → SW1</div>
+
+        <h2>🖥️ Configuração do PC</h2>
+        <p>Clique em:</p>
+        <div class="code-block">PC0 → Desktop → IP Configuration</div>
+        <p>Configure:</p>
+        <div class="code-block">IP Address: 192.168.1.10
+Subnet Mask: 255.255.255.0</div>
+
+        <h2>🗄️ Configuração do servidor</h2>
+        <p>Clique em:</p>
+        <div class="code-block">SERVER0 → Desktop → IP Configuration</div>
+        <p>Configure:</p>
+        <div class="code-block">IP Address: 192.168.1.100
+Subnet Mask: 255.255.255.0</div>
+
+        <h2>✅ Teste de conectividade</h2>
+        <p>No PC:</p>
+        <div class="code-block">Desktop → Command Prompt</div>
+        <p>Digite:</p>
+        <div class="code-block">ping 192.168.1.100</div>
+
+        <h2>📝 Criando o site</h2>
+        <p>Clique em:</p>
+        <div class="code-block">SERVER0 → Services → HTTP</div>
+        <p>Ative:</p>
+        <div class="code-block">HTTP = On</div>
+        <p>Clique em: <strong>index.html</strong></p>
+        <p>Apague o conteúdo existente.</p>
+        <p>Coloque o código abaixo:</p>
+        <div class="code-block">&lt;div class="card"&gt;
+    &lt;h2&gt;Bem-vindo&lt;/h2&gt;
+    &lt;p&gt;Este servidor foi configurado utilizando o Cisco Packet Tracer.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;div class="card"&gt;
+    &lt;h2&gt;Conteúdo da Disciplina&lt;/h2&gt;
+    &lt;ul&gt;
+        &lt;li&gt;Endereçamento IPv4&lt;/li&gt;
+        &lt;li&gt;Switches e VLANs&lt;/li&gt;
+        &lt;li&gt;Roteamento&lt;/li&gt;
+        &lt;li&gt;DHCP&lt;/li&gt;
+        &lt;li&gt;DNS&lt;/li&gt;
+        &lt;li&gt;Servidores Web&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;div class="card"&gt;
+    &lt;h2&gt;Atividade Atual&lt;/h2&gt;
+    &lt;p&gt;Configuração de VLANs e Troncos 802.1Q.&lt;/p&gt;
+&lt;/div&gt;</div>
+        <p>Clique em:</p>
+        <div class="code-block">Save</div>
+
+        <h2>🔍 Acessando o site</h2>
+        <p>No PC:</p>
+        <div class="code-block">Desktop → Web Browser</div>
+        <p>Digite:</p>
+        <div class="code-block">http://192.168.1.100
+ou
+192.168.1.100</div>
+        <p>Clique em:</p>
+        <div class="code-block">Go</div>
+
+        <h2>🌍 Usar o DNS no Cisco Packet Tracer</h2>
+        <p>Em vez de acessar:</p>
+        <div class="code-block">http://192.168.1.100</div>
+        <p>Você pode acessar:</p>
+        <div class="code-block">http://www.cisco.site</div>
+        <p>Para isso:</p>
+        <ol>
+            <li>Use o Server para DNS.</li>
+            <li>Configure um IP para ele (ex.: 192.168.1.100).</li>
+            <li>Vá em <strong>Services → DNS</strong>.</li>
+            <li>Ative <strong>DNS = On</strong>.</li>
+            <li>Adicione um registro:</li>
+        </ol>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Nome</th><th>Endereço</th></tr>
+                <tr><td>www.cisco.site</td><td>192.168.1.100</td></tr>
+            </table>
+        </div>
+
+        <p>Nos PCs, configure o DNS:</p>
+        <div class="code-block">DNS Server: 192.168.1.200</div>
+        <div class="aviso">⚠️ O PDF original indica <strong>192.168.1.200</strong> como o DNS Server configurado nos PCs, mesmo o servidor DNS tendo sido definido com o IP 192.168.1.100 no passo anterior. Mantivemos exatamente o valor do material original — vale conferir com o instrutor qual IP está correto antes de aplicar na prática.</div>
+
+        <p>Agora o navegador do Packet Tracer poderá abrir:</p>
+        <div class="code-block">http://www.cisco.site</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

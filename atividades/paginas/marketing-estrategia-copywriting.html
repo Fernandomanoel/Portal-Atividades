@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Estratégia de Marketing, Copywriting e Mídia</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #059669;
+            --brand-light: #d1fae5;
+            --accent-color: #047857;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal */
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+        }
+
+        .main-header p {
+            font-size: 15px;
+            color: #a7f3d0;
+            max-width: 820px;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+        }
+
+        /* Painel de Status Geral */
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .status-info {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover {
+            background-color: var(--accent-color);
+        }
+
+        .btn-validate-all:active {
+            transform: scale(0.98);
+        }
+
+        /* Módulos de Exercício */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 {
+            font-size: 20px;
+            color: var(--primary-dark);
+        }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--primary-dark);
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs e Textareas */
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+            color: var(--text-main);
+            background-color: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        /* Mensagens de Feedback */
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        /* Radio Options */
+        .options-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+            transition: background-color 0.15s;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Layout Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .field-group label {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Tabelas */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            border: 1px solid var(--border-color);
+            padding: 10px 12px;
+            vertical-align: middle;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa Prática</span>
+        <h1>Atividade Prática: Estratégia de Marketing, Copywriting e Mídia</h1>
+        <p>Desenvolva ações estratégicas para o lançamento de uma nova marca regional. O sistema analisa suas respostas com filtros inteligentes que impedem textos aleatórios ou numéricos.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status do Exercício: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade" ao final.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ANÁLISE DE MERCADO E MATRIZ FOFA (SWOT) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Análise Estratégica: Diagnóstico de Marca (Matriz FOFA)</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Uma cafeteria artesanal chamada <strong>"Café Aroma & Grão"</strong> deseja lançar uma linha de cafés especiais em grãos embalados para consumo doméstico. Classifique o seguinte fator do ambiente:
+            <br><br>
+            <i>"O aumento significativo no interesse das pessoas por cafés especiais e métodos de preparo artesanais em casa."</i>
+        </div>
+
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="p1" value="forca">
+                a) Força (Fator interno positivo da empresa)
+            </label>
+            <label class="option-label">
+                <input type="radio" name="p1" value="oportunidade">
+                b) Oportunidade (Tendência externa positiva do mercado)
+            </label>
+            <label class="option-label">
+                <input type="radio" name="p1" value="ameaca">
+                c) Ameaça (Risco externo vindo dos concorrentes)
+            </label>
+        </div>
+        <div id="feedback-p1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: COPYWRITING E REDAÇÃO DE ANÚNCIO (INSTAGRAM / FACEBOOK) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Redação Publicitária: Anúncio de Lançamento</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Desafio de Redação:</strong> Escreva a legenda de um anúncio patrocinado para o Instagram apresentando o **Café Aroma & Grão**. A legenda deve convidar o público a conhecer os grãos selecionados e oferecer um desconto de boas-vindas na primeira compra.
+        </div>
+
+        <div class="task-instruction">
+            ✍️ Escreva a legenda do anúncio no campo abaixo:
+        </div>
+
+        <textarea id="p2-legend" class="input-box" placeholder="Ex: Cansado de tomar café comum? Leve a experiência da cafeteria para a sua casa! Grãos 100% arábica selecionados. Use o cupom AROMA10 e ganhe 10% OFF na primeira compra..."></textarea>
+        <div id="feedback-p2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: MARKETING DE CONTEÚDO E INBOUND MARKETING -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Marketing de Conteúdo: Estratégia de Atrair e Reter</h2>
+        </div>
+
+        <div class="scenario-description">
+            Para educar o público e gerar autoridade sobre café artesanal, proponha um tema de conteúdo de **Topo de Funil (Atração)** e um de **Fundo de Funil (Conversão)**:
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Conteúdo para Topo de Funil (Atrair curiosos/iniciantes):</label>
+                <input type="text" id="p3-topo" class="input-box" placeholder="Ex: 3 erros comuns ao passar café em casa que alteram o sabor">
+                <div id="feedback-p3-topo" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Conteúdo para Fundo de Funil (Convencer a comprar os grãos da marca):</label>
+                <input type="text" id="p3-fundo" class="input-box" placeholder="Ex: Comparativo: Veja por que nossos grãos selecionados rendem mais e são mais saborosos">
+                <div id="feedback-p3-fundo" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: MARKETING DE INFLUÊNCIA E PARCERIAS (SELEÇÃO INTERATIVA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Marketing de Influência: Escolha de Parcerias</h2>
+        </div>
+
+        <div class="scenario-description">
+            Associe o perfil de influenciador ao objetivo de campanha mais adequado:
+        </div>
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 50%;">Objetivo de Comunicação</th>
+                        <th style="width: 50%;">Perfil de Influenciador Recomendado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Aumentar o reconhecimento da marca para um grande público geral na cidade.</td>
+                        <td>
+                            <select id="p4-inf1" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="macro">Macro-influenciador regional com grande alcance nas redes</option>
+                                <option value="micro">Micro-influenciador especialista em gastronomia e café</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Gerar credibilidade técnica e alta taxa de recomendação entre entusiastas de café.</td>
+                        <td>
+                            <select id="p4-inf2" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="macro">Macro-influenciador regional com grande alcance nas redes</option>
+                                <option value="micro">Micro-influenciador especialista em gastronomia e café</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-p4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ANÁLISE DE RESULTADOS E MÉTRICAS DE REDES SOCIAIS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Métricas e Avaliação de Performance</h2>
+        </div>
+
+        <div class="scenario-description">
+            <strong>Estudo de Caso:</strong> A campanha de lançamento nas redes sociais teve **50.000 visualizações**, **1.200 cliques no link do site** e **120 vendas**. Explique por que monitorar o **CTR (Taxa de Clique)** e a **Taxa de Conversão** é mais importante do que olhar apenas o número isolado de visualizações (métrica de vaidade).
+        </div>
+
+        <textarea id="p5-metricas" class="input-box" style="min-height: 120px;" placeholder="Explique a importância das métricas de ação em relação às visualizações puras..."></textarea>
+        <div id="feedback-p5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO ANTI-SPAM, ANTI-GIBBERISH E ANTI-NUMÉRICO
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Comprimento mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Resposta muito curta. Digite pelo menos ${minComprimento} caracteres com sentido.` };
+        }
+
+        // 2. Bloqueio de números isolados (ex: "12124128471568596983056908")
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Resposta inválida: Apenas números foram digitados. Escreva uma resposta em português." };
+        }
+
+        // 3. Bloqueio de palavras sem espaços (ex: "hikhdfisfjsa~fp~pfpoasfj")
+        if (!limpo.includes(' ') && limpo.length > 16) {
+            return { valido: false, motivo: "Resposta inválida: Sequência contínua sem espaços detectada." };
+        }
+
+        // 4. Mínimo de palavras reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Escreva uma frase com pelo menos ${minPalavras} palavras.` };
+        }
+
+        // 5. Proporção de Vogais (Detecta teclado arrastado)
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou digitação aleatória. Escreva palavras reais em português." };
+        }
+
+        // 6. Padrões de repetição
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão repetitivo do teclado detectado. Digite uma resposta séria." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    // APLICAR FEEDBACK VISUAL
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    // VALIDAÇÃO GERAL
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const p1Selected = document.querySelector('input[name="p1"]:checked');
+        if (p1Selected && p1Selected.value === 'oportunidade') {
+            aplicarFeedback('feedback-p1', { valido: true, motivo: "Correto! O aumento do interesse de mercado é uma Oportunidade (fator externo positivo)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-p1', { valido: false, motivo: "Incorreto. Tendências externas positivas do mercado são Oportunidades na Matriz FOFA." });
+        }
+
+        // Mód 2
+        const p2Leg = document.getElementById('p2-legend').value;
+        const resP2 = validarTextoInteligente(p2Leg, 5, 20);
+        if (resP2.valido) {
+            const palavrasChave = /café|grão|lançam|sabor|desconto|cupom|compre|oferta|qualidad|experiênc/i;
+            if (!palavrasChave.test(p2Leg)) {
+                resP2.valido = false;
+                resP2.motivo = "O texto é legível, mas falta incluir termos do produto (café, grão, desconto, cupom, etc.).";
+            }
+        }
+        aplicarFeedback('feedback-p2', resP2);
+        if (resP2.valido) acertos++;
+
+        // Mód 3
+        const topoVal = document.getElementById('p3-topo').value;
+        const fundoVal = document.getElementById('p3-fundo').value;
+        const resP3T = validarTextoInteligente(topoVal, 3, 12);
+        const resP3F = validarTextoInteligente(fundoVal, 3, 12);
+
+        aplicarFeedback('feedback-p3-topo', resP3T);
+        aplicarFeedback('feedback-p3-fundo', resP3F);
+        if (resP3T.valido && resP3F.valido) acertos++;
+
+        // Mód 4
+        const inf1 = document.getElementById('p4-inf1').value;
+        const inf2 = document.getElementById('p4-inf2').value;
+        if (inf1 === 'macro' && inf2 === 'micro') {
+            aplicarFeedback('feedback-p4', { valido: true, motivo: "Perfeito! Macro-influenciadores geram alcance amplo e Micro-especialistas geram autoridade e conversão." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-p4', { valido: false, motivo: "Incorreto. Alcance geral = Macro-influenciador; Credibilidade técnica = Micro-influenciador." });
+        }
+
+        // Mód 5
+        const p5Metrica = document.getElementById('p5-metricas').value;
+        const resP5 = validarTextoInteligente(p5Metrica, 5, 20);
+        if (resP5.valido) {
+            const termosM = /venda|clique|conversã|vaidad|resultado|ação|interesse|compra|eficiênc/i;
+            if (!termosM.test(p5Metrica)) {
+                resP5.valido = false;
+                resP5.motivo = "A resposta está legível, mas deve mencionar termos como conversão, vendas, cliques ou resultado real.";
+            }
+        }
+        aplicarFeedback('feedback-p5', resP5);
+        if (resP5.valido) acertos++;
+
+        // ATUALIZAR PAINEL DE STATUS
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você concluiu com êxito ${acertos} de ${total} módulos do exercício.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as caixas destacadas em vermelho.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL NOS INPUTS
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('p2-legend').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const palavrasChave = /café|grão|lançam|sabor|desconto|cupom|compre|oferta|qualidad|experiênc/i;
+                if (!palavrasChave.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Inclua termos de chamada de vendas, como café, grãos, cupom ou desconto.";
+                }
+            }
+            aplicarFeedback('feedback-p2', res);
+        });
+
+        document.getElementById('p3-topo').addEventListener('blur', function() {
+            aplicarFeedback('feedback-p3-topo', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('p3-fundo').addEventListener('blur', function() {
+            aplicarFeedback('feedback-p3-fundo', validarTextoInteligente(this.value, 3, 12));
+        });
+
+        document.getElementById('p5-metricas').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosM = /venda|clique|conversã|vaidad|resultado|ação|interesse|compra|eficiênc/i;
+                if (!termosM.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Explique a diferença entre visualizações e métricas de ação/conversão reais.";
+                }
+            }
+            aplicarFeedback('feedback-p5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

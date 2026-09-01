@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Implementação de uma Topologia de Redes — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🌐 Implementação de uma Topologia de Redes</h1>
+        <p>Redes de Computadores — Wireless &amp; Cabos e Infraestrutura</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">Livro: Aula 01 – 08 · Atividade: 01 · "A felicidade da sua vida depende da qualidade dos seus pensamentos." — Marco Aurélio</p>
+
+        <h2>1) Faça a topologia abaixo</h2>
+
+        <div class="topologia">
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC-A</span><small>192.168.1.10<br>255.255.255.0</small></div>
+            </div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>S1</span><small>F0/6 ↔ PC-A<br>F0/1 ↔ S2<br>VLAN 1: 192.168.1.1</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>S2</span><small>F0/1 ↔ S1<br>F0/18 ↔ PC-B<br>VLAN 2: 192.168.1.2</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC-B</span><small>192.168.1.11<br>255.255.255.0</small></div>
+            </div>
+        </div>
+
+        <h3>Tabela de endereçamento</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Dispositivo</th><th>Interface</th><th>Endereço IP</th><th>Máscara de Sub-Rede</th></tr>
+                <tr><td>S1</td><td>VLAN 1</td><td>192.168.1.1</td><td>255.255.255.0</td></tr>
+                <tr><td>S2</td><td>VLAN 2</td><td>192.168.1.2</td><td>255.255.255.0</td></tr>
+                <tr><td>PC-A</td><td>NIC</td><td>192.168.1.10</td><td>255.255.255.0</td></tr>
+                <tr><td>PC-B</td><td>Placa de Rede</td><td>192.168.1.11</td><td>255.255.255.0</td></tr>
+            </table>
+        </div>
+
+        <h3>Equipamentos</h3>
+        <p>A topologia utilizada será:</p>
+        <ul>
+            <li>Switch S1 - Cisco 2960</li>
+            <li>Switch S2 - Cisco 2960</li>
+            <li>PC-A</li>
+            <li>PC-B</li>
+        </ul>
+
+        <h3>Conexões</h3>
+        <ul>
+            <li>PC-A conectado ao Switch S1 na porta <strong>FastEthernet 0/6</strong></li>
+            <li>PC-B conectado ao Switch S2 na porta <strong>FastEthernet 0/18</strong></li>
+            <li>Switch S1 conectado ao Switch S2 pelas portas <strong>FastEthernet 0/1</strong></li>
+        </ul>
+
+        <h3>Os cabos utilizados são</h3>
+        <ul>
+            <li>Cabo Copper Straight-Through para conectar computadores aos switches.</li>
+            <li>Cabo Copper Cross-Over para conectar os switches.</li>
+        </ul>
+
+        <h2>🖥️ Configuração do PC-A</h2>
+        <p>Para configurar o endereço IP do PC-A:</p>
+        <ol>
+            <li>Clique no computador PC-A.</li>
+            <li>Acesse: <strong>Desktop → IP Configuration</strong></li>
+        </ol>
+        <h3>Configure os valores</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Nomes</th><th>Valores</th></tr>
+                <tr><td>IP Address</td><td>192.168.1.10</td></tr>
+                <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                <tr><td>Gateway Padrão</td><td>Não configurar</td></tr>
+            </table>
+        </div>
+
+        <h2>🖥️ Configuração do PC-B</h2>
+        <p>Para configurar o endereço IP do PC-B:</p>
+        <ol>
+            <li>Clique no computador PC-B.</li>
+            <li>Acesse: <strong>Desktop → IP Configuration</strong></li>
+        </ol>
+        <h3>Configure os valores</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Nomes</th><th>Valores</th></tr>
+                <tr><td>IP Address</td><td>192.168.1.11</td></tr>
+                <tr><td>Subnet Mask</td><td>255.255.255.0</td></tr>
+                <tr><td>Gateway Padrão</td><td>Não configurar</td></tr>
+            </table>
+        </div>
+
+        <h2>⚙️ Configuração do Switch S1</h2>
+        <p>Acesse o Switch S1. Clique em: <strong>CLI</strong></p>
+        <p>Digite os comandos. Entrar no modo privilegiado:</p>
+        <div class="code-block">Enable</div>
+        <p>Entrar no modo de configuração:</p>
+        <div class="code-block">configure terminal</div>
+        <p>Alterar o nome do switch:</p>
+        <div class="code-block">hostname S1</div>
+        <p>Configurar a interface VLAN 1:</p>
+        <div class="code-block">interface vlan 1</div>
+        <p>Adicionar endereço IP:</p>
+        <div class="code-block">ip address 192.168.1.1 255.255.255.0</div>
+        <p>Ativar a interface:</p>
+        <div class="code-block">no shutdown</div>
+        <p>Sair:</p>
+        <div class="code-block">exit</div>
+        <p>Salvar:</p>
+        <div class="code-block">copy running-config startup-config</div>
+
+        <h2>⚙️ Configuração do Switch S2</h2>
+        <p>Acesse o Switch S2. Clique em: <strong>CLI</strong></p>
+        <p>Digite os comandos. Entrar no modo privilegiado:</p>
+        <div class="code-block">Enable</div>
+        <p>Entrar no modo de configuração:</p>
+        <div class="code-block">configure terminal</div>
+        <p>Alterar o nome do switch:</p>
+        <div class="code-block">hostname S2</div>
+        <p>Configurar a interface VLAN 1:</p>
+        <div class="code-block">interface vlan 1</div>
+        <p>Adicionar endereço IP:</p>
+        <div class="code-block">ip address 192.168.1.2 255.255.255.0</div>
+        <p>Ativar a interface:</p>
+        <div class="code-block">no shutdown</div>
+        <p>Sair:</p>
+        <div class="code-block">exit</div>
+        <p>Salvar:</p>
+        <div class="code-block">copy running-config startup-config</div>
+
+        <h2>🔎 Verificação da configuração</h2>
+        <p>Para verificar se os switches receberam os endereços IP corretamente, utilizar o comando:</p>
+        <div class="code-block">show ip interface brief</div>
+        <p>No Switch S1 deve aparecer:</p>
+        <div class="code-block">VLAN1 192.168.1.1 up</div>
+        <p>No Switch S2:</p>
+        <div class="code-block">VLAN1 192.168.1.2 up</div>
+
+        <h2>✅ Teste de comunicação</h2>
+        <p>Para testar a comunicação entre os computadores:</p>
+        <p>No <strong>PC-A</strong>: Acesse <strong>Desktop → Command Prompt</strong>. Digite:</p>
+        <div class="code-block">ping 192.168.1.11</div>
+        <p>Se aparecer:</p>
+        <div class="code-block">Reply from 192.168.1.11</div>
+        <p>significa que o PC-A conseguiu comunicar com o PC-B.</p>
+
+        <h3>Teste dos switches</h3>
+        <p>No <strong>PC-A</strong>, teste o Switch S1:</p>
+        <div class="code-block">ping 192.168.1.1</div>
+        <p>No <strong>PC-B</strong>, teste o Switch S2:</p>
+        <div class="code-block">ping 192.168.1.2</div>
+        <p>Se houver resposta, a configuração está correta.</p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

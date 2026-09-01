@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ionic — Prática de LocalStorage e Emulador Android (Guia Completo)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1f4fb0 0%, #3880ff 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+        .sidebar h3 {
+            color: #1f4fb0; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #3880ff; padding-bottom: 8px;
+        }
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #3880ff; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; min-width: 0; }
+        .content > .chapter, .content > .nav-buttons, .content > .progress-bar { max-width: 900px; margin-left: auto; margin-right: auto; }
+
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1f4fb0; margin-bottom: 25px; border-bottom: 3px solid #3880ff; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #3880ff; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+        code { background: #e9f0ff; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #1f4fb0; overflow-wrap: break-word; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #3880ff;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6; white-space: pre;
+        }
+        .code-label {
+            background: #3880ff; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .code-block .tag { color: #569cd6; }
+        .code-block .attr { color: #9cdcfe; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .var { color: #9cdcfe; }
+        .code-block .val { color: #b5cea8; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+
+        .box { background: #eef4ff; border: 2px solid #3880ff; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1f4fb0; margin-bottom: 10px; }
+
+        .peca { border: 2px dashed #3880ff; border-radius: 10px; padding: 20px 22px; margin: 20px 0; background: #fff; }
+        .peca-tag {
+            display: inline-block; background: #eef4ff; color: #1f4fb0; font-size: 0.78em; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+        }
+        .faca-voce { background: #fff9e8; border: 2px solid #f0b429; border-radius: 8px; padding: 14px 18px; margin: 14px 0; }
+        .faca-voce strong { color: #a06b00; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 14px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #3880ff; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #3880ff; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #3880ff; font-size: 1.2em; }
+
+        .terminal-fake {
+            background: #0d1117; border-radius: 8px; padding: 16px 20px; margin: 16px 0;
+            font-family: 'Courier New', monospace; font-size: 0.9em; color: #c9d1d9;
+        }
+        .terminal-fake .prompt { color: #3fb950; }
+        .terminal-fake .out { color: #8b949e; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #3880ff; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1f4fb0; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(56,128,255,0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #3880ff; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Ionic — LocalStorage e Emulador</h1>
+            <p>Faça o app lembrar de tudo e veja ele rodando num Android de verdade</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 30 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Pré-requisito:</strong> Ionic — Prática de JavaScript<br>
+                        <strong>Tempo:</strong> ~1h30<br>
+                        <strong>Formato:</strong> prática direta, pouca teoria
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. O Plano de Hoje</h2>
+                    <p>Duas partes: primeiro, fazer o app <strong>lembrar</strong> das missões (hoje elas somem quando você fecha a aba). Depois, a parte mais empolgante do curso — instalar e rodar o app dentro de um celular Android simulado.</p>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. localStorage — Teste Rápido</h2>
+                    <p>Abra o Console (F12) em qualquer página e digite, uma linha de cada vez:</p>
+                    <div class="terminal-fake"><span class="prompt">&gt;</span> localStorage.setItem('nome', 'Ana')
+<span class="prompt">&gt;</span> localStorage.getItem('nome')
+<span class="out">"Ana"</span></div>
+                    <p><code>setItem(chave, valor)</code> guarda algo; <code>getItem(chave)</code> busca de volta. Recarregue a página e rode <code>localStorage.getItem('nome')</code> de novo — o valor continua lá, porque o localStorage sobrevive a recarregamentos e até a fechar o navegador.</p>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. JSON.stringify e JSON.parse</h2>
+                    <div class="warning">⚠️ O localStorage só guarda <strong>texto</strong> — nunca um array ou objeto direto.</div>
+                    <div class="code-block"><span class="code-label">teste no console</span><span class="kw">const</span> <span class="var">lista</span> = [<span class="str">"item 1"</span>, <span class="str">"item 2"</span>];
+
+<span class="kw">const</span> <span class="var">textoParaSalvar</span> = JSON.stringify(lista); <span class="cm">// vira '["item 1","item 2"]'</span>
+localStorage.setItem(<span class="str">'teste'</span>, textoParaSalvar);
+
+<span class="kw">const</span> <span class="var">textoSalvo</span> = localStorage.getItem(<span class="str">'teste'</span>);
+<span class="kw">const</span> <span class="var">listaDeVolta</span> = JSON.parse(textoSalvo); <span class="cm">// vira array de novo: ["item 1", "item 2"]</span></div>
+                    <p>Regra simples: <strong>sempre que salvar, é <code>stringify</code></strong> (array/objeto → texto); <strong>sempre que ler, é <code>parse</code></strong> (texto → array/objeto de volta).</p>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Carregando as Missões Salvas</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Troque a linha do array no topo do index.js</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">let</span> <span class="var">missoes</span> = JSON.parse(localStorage.getItem(<span class="str">'minhas_missoes'</span>)) || [];</div>
+                    </div>
+                    <p>Na primeira vez que o app roda, não existe nada salvo — <code>getItem</code> devolve <code>null</code>, e o <code>|| []</code> resolve isso começando com lista vazia em vez de quebrar.</p>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Salvando a Cada Mudança</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Adicione a primeira linha dentro de desenharLista()</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">function</span> <span class="fn">desenharLista</span>() {
+  localStorage.setItem(<span class="str">'minhas_missoes'</span>, JSON.stringify(missoes)); <span class="cm">// salva sempre</span>
+
+  listaNaTela.innerHTML = <span class="str">""</span>;
+  <span class="cm">// ... resto da função continua igual ...</span>
+}</div>
+                    </div>
+                    <p>Como <code>desenharLista()</code> já é chamada depois de adicionar, excluir e marcar como concluída, colocando o <code>setItem</code> no início dela, o app salva sozinho em <strong>toda</strong> mudança.</p>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Testando a Persistência</h2>
+                    <div class="faca-voce"><strong>Faça você:</strong> adicione 3 missões, marque 1 como concluída, feche a aba <strong>completamente</strong>, abra de novo com <code>cordova run browser</code>. As 3 missões devem continuar lá, com a mesma marcada como concluída.</div>
+                    <p>Se sumiu tudo, confira se o nome <code>'minhas_missoes'</code> está <strong>idêntico</strong> nos dois lugares (no <code>getItem</code> do capítulo 4 e no <code>setItem</code> do capítulo 5) — um espaço ou letra diferente já quebra.</p>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Salvando a Preferência de Tema</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Atualize o listener do toggle-tema</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">const</span> <span class="var">toggleTema</span> = document.getElementById(<span class="str">'toggle-tema'</span>);
+
+<span class="cm">// carrega a preferência salva ao iniciar</span>
+<span class="kw">const</span> <span class="var">temaEscuro</span> = localStorage.getItem(<span class="str">'tema_escuro'</span>) === <span class="str">'true'</span>;
+toggleTema.checked = temaEscuro;
+<span class="kw">if</span> (temaEscuro) {
+  document.body.style.background = <span class="str">"#1a1a2e"</span>;
+  document.body.style.color = <span class="str">"#eee"</span>;
+}
+
+toggleTema.addEventListener(<span class="str">'ionChange'</span>, (<span class="var">evento</span>) => {
+  <span class="kw">const</span> <span class="var">ligado</span> = evento.target.checked;
+  document.body.style.background = ligado ? <span class="str">"#1a1a2e"</span> : <span class="str">"#ffffff"</span>;
+  document.body.style.color = ligado ? <span class="str">"#eee"</span> : <span class="str">"#333"</span>;
+  localStorage.setItem(<span class="str">'tema_escuro'</span>, ligado); <span class="cm">// salva a escolha</span>
+});</div>
+                    </div>
+                    <p>Repare: <code>localStorage.getItem('tema_escuro') === 'true'</code> — o localStorage guarda tudo como texto, então mesmo um valor "booleano" (verdadeiro/falso) vira a string <code>"true"</code> ou <code>"false"</code>, e por isso comparamos com <code>=== 'true'</code> em vez de usar o valor direto.</p>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Bônus: Contando as Visitas</h2>
+                    <div class="peca">
+                        <span class="peca-tag">Código — cole em qualquer lugar do index.js</span>
+                        <div class="code-block"><span class="code-label">www/js/index.js</span><span class="kw">let</span> <span class="var">visitas</span> = parseInt(localStorage.getItem(<span class="str">'visitas'</span>)) || <span class="val">0</span>;
+visitas++;
+localStorage.setItem(<span class="str">'visitas'</span>, visitas);
+console.log(<span class="str">`Esta é a visita número ${visitas}`</span>);</div>
+                    </div>
+                    <p><code>parseInt()</code> transforma um texto em número (lembra que tudo no localStorage vira texto). Recarregue a página várias vezes e observe o número aumentar no Console.</p>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Abrindo o Android Studio</h2>
+                    <ol class="passos">
+                        <li>Abra o <strong>Android Studio</strong> (já está instalado no computador).</li>
+                        <li>No menu, procure <strong>More Actions</strong> (ou o ícone de três pontinhos na tela inicial).</li>
+                        <li>Clique em <strong>Virtual Device Manager</strong>.</li>
+                    </ol>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Criando o Celular Virtual</h2>
+                    <ol class="passos">
+                        <li>Clique em <strong>Create Device</strong>.</li>
+                        <li>Escolha o modelo <strong>Pixel 2</strong> (tamanho de tela comum) e clique em <strong>Next</strong>.</li>
+                        <li>Escolha uma imagem do sistema, por exemplo <strong>Q (Android 10)</strong>. Se pedir download, clique em <strong>Download</strong> e espere.</li>
+                        <li>Abra <strong>Show Advanced Settings</strong> e mude a <strong>RAM</strong> para <strong>1500-2000 MB</strong> — evita travar o computador.</li>
+                        <li>Clique em <strong>Finish</strong>.</li>
+                    </ol>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Ligando o Celular Virtual</h2>
+                    <p>Na lista do Virtual Device Manager, clique no botão <strong>Play (▶)</strong> ao lado do dispositivo que você criou. A primeira inicialização demora um pouco — é normal, é como ligar um celular novo pela primeira vez.</p>
+                    <div class="highlight">🐢 Aproveite essa espera pra uma pausa rápida — vale muito nesse ponto do curso.</div>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Rodando o App no Emulador</h2>
+                    <p>Com o celular virtual ligado, volte pro terminal, dentro da pasta <code>meu-app</code>:</p>
+                    <div class="terminal-fake"><span class="prompt">$</span> cordova platform add android
+<span class="prompt">$</span> cordova run android
+<span class="out">→ instalando e abrindo o app no dispositivo...</span></div>
+                    <p>O primeiro comando (só uma vez) ensina o Cordova a construir pra Android. O segundo instala e abre o app dentro do celular virtual. Se tudo deu certo, o ícone "Minhas Missões" aparece no Android simulado, e o app abre igual ao que você viu no navegador — só que dentro de um celular.</p>
+                    <div class="success">🎉 Seu app está rodando de verdade num Android simulado!</div>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Erros Comuns Nesta Fase</h2>
+                    <table>
+                        <tr><th>O que aconteceu</th><th>Causa provável</th></tr>
+                        <tr><td>As missões continuam sumindo</td><td>O nome da chave (<code>'minhas_missoes'</code>) está escrito diferente entre <code>getItem</code> e <code>setItem</code></td></tr>
+                        <tr><td>Erro <code>Unexpected token</code> ao carregar</td><td>Alguma coisa não-JSON foi salva sem <code>JSON.stringify</code> antes</td></tr>
+                        <tr><td>App não abre no emulador</td><td>O celular virtual não estava ligado quando rodou <code>cordova run android</code>, ou esqueceu o <code>platform add android</code> antes</td></tr>
+                        <tr><td>Muito lento / travando</td><td>RAM do celular virtual configurada alta demais pro seu computador — volte no Virtual Device Manager e reduza</td></tr>
+                    </table>
+                </section>
+
+                <!-- 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Checklist Final</h2>
+                    <ul class="checklist">
+                        <li>As missões continuam salvas depois de fechar e abrir o navegador de novo;</li>
+                        <li>A preferência de tema (claro/escuro) também é lembrada;</li>
+                        <li>Criei um celular virtual no Android Studio com RAM ajustada;</li>
+                        <li>Rodei <code>cordova platform add android</code> e <code>cordova run android</code> com sucesso;</li>
+                        <li>Vi o app "Minhas Missões" abrindo de verdade no celular simulado.</li>
+                    </ul>
+                    <div class="success">🎉 Última etapa do curso: na próxima atividade você revisa tudo, personaliza o app do seu jeito e encara 3 desafios extras.</div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <a href="../../atividade.html?curso=cordova" style="display:block; text-align:center; padding: 16px; color:#3880ff; text-decoration:none; font-weight:600;">← Voltar para Apps Mobile com Ionic e Cordova</a>
+
+        <footer><p><strong>Ionic — LocalStorage e Emulador</strong> | 14 capítulos | ~1h30 de prática</p></footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 14;
+        const chapters = [
+            "O Plano de Hoje", "localStorage — Teste Rápido", "JSON.stringify / JSON.parse", "Carregando Missões Salvas",
+            "Salvando a Cada Mudança", "Testando a Persistência", "Salvando o Tema", "Bônus: Contando Visitas",
+            "Abrindo o Android Studio", "Criando o Celular Virtual", "Ligando o Emulador", "Rodando no Emulador",
+            "Erros Comuns", "Checklist Final"
+        ];
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((c, i) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${i + 1}. ${c}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(i + 1);
+                a.className = i + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a); tocList.appendChild(li);
+            });
+        }
+        function showChapter(n) {
+            document.querySelectorAll('.chapter').forEach(ch => ch.classList.remove('active'));
+            document.querySelectorAll('.chapter')[n - 1].classList.add('active');
+            updateTOC(); updateButtons(); updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, i) => {
+                link.classList.remove('active');
+                if (i + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+        function updateProgress() {
+            document.getElementById('progressFill').style.width = (currentChapter / totalChapters) * 100 + '%';
+        }
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

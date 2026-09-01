@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Análise de Crédito, Risco e Régua de Cobrança</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #1e40af;
+            --brand-light: #dbeafe;
+            --accent-color: #1d4ed8;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bfdbfe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Análise de Crédito, Gestão de Risco e Régua de Cobrança</h1>
+        <p>Aprenda a analisar concessão de crédito com a metodologia dos 5 Cs, calcular indicadores financeiros (DSO e PDD), construir réguas de cobrança eficientes e aplicar os limites legais do CDC nas negociações.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=credito-cobranca">← Voltar para Crédito e Cobrança</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ANÁLISE DE RISCO E OS 5 Cs DO CRÉDITO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Análise de Risco de Crédito: Metodologia dos 5 Cs</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Um analista de crédito está avaliando uma proposta de empréstimo empresarial. Ao analisar o histórico de pontualidade de pagamentos anteriores, restrições financeiras em órgãos de proteção (SPC/Serasa) e a idoneidade do tomador, qual dos **5 Cs do Crédito** está sendo avaliado?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="cc1" value="capacidade">
+                a) Capacidade (Avaliação do fluxo de caixa e geração de receita para quitar a dívida).
+            </label>
+            <label class="option-label">
+                <input type="radio" name="cc1" value="carater">
+                b) Caráter (Histórico de honra aos compromissos assumidos, reputação e histórico financeiro).
+            </label>
+            <label class="option-label">
+                <input type="radio" name="cc1" value="colateral">
+                c) Colateral (Bens oferecidos como garantia real em caso de inadimplência).
+            </label>
+        </div>
+        <div id="feedback-cc1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: INDICADORES FINANCEIROS (DSO E PDD) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Métricas de Inadimplência: DSO e Provisão de Devedores Duvidosos (PDD)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio Tático:</strong> Explique a importância do indicador **DSO (Days Sales Outstanding / Prazo Médio de Recebimento)** e a função contábil da **PDD (Provisão para Devedores Duvidosos / Perdas Estimadas com Crédito)**.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Função do indicador DSO (Prazo de Recebimento):</label>
+                <input type="text" id="cc2-dso" class="input-box" placeholder="Ex: Mede o tempo médio em dias que a empresa leva para receber suas vendas a prazo...">
+                <div id="feedback-cc2-dso" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Objetivo da reserva de PDD / PECLD:</label>
+                <input type="text" id="cc2-pdd" class="input-box" placeholder="Ex: Proteger o balanço patrimonial reservando valor estimado de possíveis calotes ou inadimplências...">
+                <div id="feedback-cc2-pdd" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: RÉGUA DE COBRANÇA E FASES DO PROCESSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Estruturação da Régua de Cobrança por Dias de Atraso</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o tempo de atraso do título vencido à fase correta do processo de cobrança:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Período de Atraso do Título Vencido</th>
+                    <th style="width: 50%;">Estágio Apropriado na Régua de Cobrança</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**1 a 15 dias de atraso** (Atraso recente/pontual).</td>
+                    <td>
+                        <select id="cc3-f1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="amigavel">Cobrança Amigável / Lembrete preventivo via e-mail ou WhatsApp sem encargos abusivos</option>
+                            <option value="judicial">Ação Judicial de Execução e Negativação em órgãos de proteção ao crédito</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**Acima de 90 dias de atraso** sem acordo prévio.</td>
+                    <td>
+                        <select id="cc3-f2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="amigavel">Cobrança Amigável / Lembrete preventivo via e-mail ou WhatsApp sem encargos abusivos</option>
+                            <option value="judicial">Ação Judicial de Execução e Negativação em órgãos de proteção ao crédito</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-cc3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: LEGISLAÇÃO E CÓDIGO DE DEFESA DO CONSUMIDOR (ART. 42) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Aspectos Legais na Cobrança: Artigo 42 do CDC e Prazos de Proteção</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> O artigo 42 do Código de Defesa do Consumidor (CDC) estabelece limites rígidos para a cobrança de débitos. Descreva quais condutas são expressamente **proibidas na abordagem ao devedor** e qual é o **prazo máximo de permanência do nome do devedor nos cadastros de restrição (SPC/Serasa)**.
+        </div>
+        <textarea id="cc4-cdc" class="input-box" placeholder="Discorra sobre a proibição de expor o devedor ao ridículo, constrangimento, ligações em horários inadequados ou contato no ambiente de trabalho, e cite o limite máximo de 5 anos de negativação..."></textarea>
+        <div id="feedback-cc4-cdc" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: TÁTICAS DE NEGOCIAÇÃO E RECUPERAÇÃO DE CRÉDITO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Técnicas de Negociação e Repactuação de Dívidas</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Final:</strong> Um cliente inadimplente demonstra interesse genuíno em quitar o débito, mas não possui saldo para pagamento à vista. Quais **estratégias de repactuação** (ex: renegociação, desconto de juros moratórios, parcelamento via confissão de dívida) o cobrador deve adotar para garantir a recuperação sem perder o cliente?
+        </div>
+        <textarea id="cc5-negociacao" class="input-box" placeholder="Explique sobre simulação de parcelamento viável para a renda do cliente, retirada/desconto pontual em juros de mora e formalização via Termo de Confissão de Dívida..."></textarea>
+        <div id="feedback-cc5-negociacao" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1
+        const cc1Selected = document.querySelector('input[name="cc1"]:checked');
+        if (cc1Selected && cc1Selected.value === 'carater') {
+            aplicarFeedback('feedback-cc1', { valido: true, motivo: "Correto! O Caráter avalia o histórico de pagamentos, idoneidade e honra aos compromissos do tomador." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-cc1', { valido: false, motivo: "Incorreto. A análise do histórico financeiro e pontualidade refere-se ao 'Caráter' nos 5 Cs." });
+        }
+
+        // Mód 2
+        const resDso = validarTextoInteligente(document.getElementById('cc2-dso').value, 3, 12);
+        const resPdd = validarTextoInteligente(document.getElementById('cc2-pdd').value, 3, 12);
+        aplicarFeedback('feedback-cc2-dso', resDso);
+        aplicarFeedback('feedback-cc2-pdd', resPdd);
+        if (resDso.valido && resPdd.valido) acertos++;
+
+        // Mód 3
+        const f1 = document.getElementById('cc3-f1').value;
+        const f2 = document.getElementById('cc3-f2').value;
+        if (f1 === 'amigavel' && f2 === 'judicial') {
+            aplicarFeedback('feedback-cc3', { valido: true, motivo: "Perfeito! Atrasos recentes requerem cobrança amigável; atrasos prolongados acionam vias judiciais/negativação." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-cc3', { valido: false, motivo: "Incorreto. Verifique a proporcionalidade do tempo de atraso na régua de cobrança." });
+        }
+
+        // Mód 4
+        const cdcVal = document.getElementById('cc4-cdc').value;
+        const resCdc = validarTextoInteligente(cdcVal, 4, 15);
+        if (resCdc.valido) {
+            const termosCdc = /constrangiment|ridículo|exposiç|5 anos|trabalho|horário|ameaça|cdc/i;
+            if (!termosCdc.test(cdcVal)) {
+                resCdc.valido = false;
+                resCdc.motivo = "Mencione a proibição de constrangimento/exposição do devedor e o prazo limite de 5 anos para negativação.";
+            }
+        }
+        aplicarFeedback('feedback-cc4-cdc', resCdc);
+        if (resCdc.valido) acertos++;
+
+        // Mód 5
+        const negVal = document.getElementById('cc5-negociacao').value;
+        const resNeg = validarTextoInteligente(negVal, 4, 15);
+        if (resNeg.valido) {
+            const termosNeg = /parcela|desconto|juros|acordo|confissão|dívida|renegocia|proposta/i;
+            if (!termosNeg.test(negVal)) {
+                resNeg.valido = false;
+                resNeg.motivo = "Mencione táticas como parcelamento, desconto em juros ou formalização por termo de confissão de dívida.";
+            }
+        }
+        aplicarFeedback('feedback-cc5-negociacao', resNeg);
+        if (resNeg.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('cc2-dso').addEventListener('blur', function() {
+            aplicarFeedback('feedback-cc2-dso', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('cc2-pdd').addEventListener('blur', function() {
+            aplicarFeedback('feedback-cc2-pdd', validarTextoInteligente(this.value, 3, 12));
+        });
+        document.getElementById('cc4-cdc').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosCdc = /constrangiment|ridículo|exposiç|5 anos|trabalho|horário|ameaça|cdc/i;
+                if (!termosCdc.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione que é proibido expor ao constrangimento e citar o limite de 5 anos de restrição no Serasa/SPC.";
+                }
+            }
+            aplicarFeedback('feedback-cc4-cdc', res);
+        });
+        document.getElementById('cc5-negociacao').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosNeg = /parcela|desconto|juros|acordo|confissão|dívida|renegocia|proposta/i;
+                if (!termosNeg.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre simulação de parcelas, desconto de juros e termo de acordo/confissão.";
+                }
+            }
+            aplicarFeedback('feedback-cc5-negociacao', res);
+        });
+    });
+</script>
+
+</body>
+</html>

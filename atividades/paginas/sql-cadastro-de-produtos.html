@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrando Dados no SQL — Banco de Dados | SQL</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #00566a 0%, #00758f 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.1em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.95; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #00566a; margin: 34px 0 16px; border-bottom: 3px solid #00758f; padding-bottom: 8px; font-size: 1.6em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #00758f; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 8px; }
+
+        code { background: #eef7f9; color: #00566a; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; }
+
+        .box { border: 2px solid #00758f; border-radius: 8px; padding: 20px 24px; margin: 18px 0; background: #f0f9fb; }
+        .box h4 { color: #00566a; margin-bottom: 10px; }
+
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px; overflow-x: auto; margin: 14px 0; border-left: 4px solid #00758f; font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6; white-space: pre; }
+        .code-block .kw { color: #569cd6; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .code-block .err { color: #f14c4c; text-decoration: wavy underline; }
+
+        .code-label { background: #00758f; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0; font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px; text-transform: uppercase; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+        .erro-box { background: #fdecea; border: 2px solid #f5b7b1; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .erro-box h4 { color: #c0392b; margin-bottom: 12px; }
+        .erro-item { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid #f5c6c1; }
+        .erro-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .erro-item .tag { display: inline-block; background: #c0392b; color: #fff; font-size: 0.75em; font-weight: 700; padding: 2px 9px; border-radius: 10px; margin-bottom: 6px; }
+        .certo-box { background: #eafaf1; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #00758f; color: #fff; text-align: center; font-weight: 600; }
+        table.sheet td.num { text-align: right; }
+        table.sheet td.center { text-align: center; }
+
+        .checklist { list-style: none; margin-left: 0; }
+        .checklist li { padding-left: 30px; position: relative; }
+        .checklist li::before { content: "☐"; position: absolute; left: 0; top: 0; color: #00758f; font-size: 1.2em; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #00758f; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🗄️ Cadastrando Dados no SQL</h1>
+        <p>Banco de Dados | SQL</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=banco-dados-sql">← Voltar para Banco de Dados / SQL</a>
+
+    <div class="content">
+
+        <h2>📋 O cenário: a lojinha de eletrônicos</h2>
+        <p>Uma <strong>loja de produtos eletrônicos</strong> decidiu organizar o estoque usando um banco de dados. Em vez de anotar tudo numa planilha solta, ela quer guardar cada produto numa tabela chamada <strong>produtos</strong>, com estas informações:</p>
+        <ul>
+            <li><strong>id</strong> — um número único que identifica o produto</li>
+            <li><strong>nome</strong> — o nome do produto</li>
+            <li><strong>preco</strong> — o preço de venda</li>
+            <li><strong>quantidade</strong> — quantas unidades tem em estoque</li>
+        </ul>
+        <div class="box">
+            <h4>Objetivo da atividade</h4>
+            <p style="margin-bottom: 0;">Criar a tabela <strong>produtos</strong>, cadastrar 5 produtos reais da loja e praticar as consultas mais usadas no dia a dia: <strong>SELECT, WHERE, ORDER BY, UPDATE e DELETE</strong>.</p>
+        </div>
+
+        <h2>1️⃣ Criando a tabela</h2>
+        <p>Para criar a tabela usamos <strong>CREATE TABLE</strong>, indicando o nome de cada coluna e o tipo de dado que ela guarda:</p>
+
+        <span class="code-label">SQL correto</span>
+        <div class="code-block"><span class="kw">CREATE TABLE</span> produtos (
+   id <span class="kw">INT</span> <span class="kw">PRIMARY KEY</span>,
+   nome <span class="kw">VARCHAR</span>(<span class="val">100</span>),
+   preco <span class="kw">FLOAT</span>,
+   quantidade <span class="kw">INT</span>
+);</div>
+
+        <div class="erro-box">
+            <h4>⚠️ Atenção: erros comuns (e por que eles acontecem)</h4>
+            <p>Se você já viu uma versão desta atividade com erro, vale entender exatamente o que estava errado — porque são erros que <strong>todo mundo comete</strong> quando está aprendendo SQL.</p>
+
+            <div class="erro-item">
+                <span class="tag">ERRO 1 — vírgula faltando</span>
+                <p>Uma versão errada da tabela ficava assim:</p>
+                <div class="code-block"><span class="kw">CREATE TABLE</span> produtos(
+ id <span class="kw">INT</span> <span class="kw">PRIMARY KEY</span>,
+ nome <span class="kw">VARCHAR</span>(<span class="val">100</span>),
+ preço <span class="kw">FLOAT</span><span class="err">
+ quantidade INT</span>
+);</div>
+                <p>Repare que depois de <code>preço FLOAT</code> não tem vírgula antes de <code>quantidade INT</code>. No SQL, <strong>toda coluna dentro do CREATE TABLE precisa terminar com vírgula</strong>, exceto a última. Sem a vírgula, o banco de dados não sabe onde termina uma coluna e começa a próxima — e o comando dá erro de sintaxe.</p>
+            </div>
+
+            <div class="erro-item">
+                <span class="tag">ERRO 2 — nome de coluna com acento</span>
+                <p>A coluna estava escrita como <code>preço</code>, com cedilha. O problema é que <strong>nomes de coluna com acentos e caracteres especiais podem dar problema</strong> em vários bancos de dados (MySQL, SQLite e outros), principalmente se o servidor não estiver configurado para aceitar acentuação (charset UTF-8 correto). Isso pode gerar erro na hora de criar a tabela ou, pior, funcionar em um computador e dar erro em outro.</p>
+                <p><strong>A solução mais segura é evitar acentos nos nomes de coluna:</strong> usamos <code>preco</code> em vez de <code>preço</code>. Se quiser mesmo manter o acento, é possível colocar o nome entre crases no MySQL (<code>`preço`</code>) ou aspas duplas em outros bancos, mas isso deixa toda consulta mais chata de escrever — por isso a prática recomendada é simplesmente não usar acento em nomes de tabela e coluna.</p>
+            </div>
+
+            <div class="erro-item">
+                <span class="tag">ERRO 3 — INSERT incompleto e com valor errado</span>
+                <p>Uma versão errada do cadastro do Mouse ficava assim:</p>
+                <div class="code-block"><span class="kw">INSERT INTO</span> produtos(id, nome, preco, quantidade) <span class="kw">VALUES</span>
+(<span class="val">1</span>, <span class="str">'Mouse'</span>, <span class="val">50</span>, <span class="err">'Quantidade'</span>),</div>
+                <p>Dois problemas aqui: primeiro, no lugar da <strong>quantidade em estoque</strong> (que deveria ser o número <code>10</code>), foi colocado o texto <code>'Quantidade'</code> — ou seja, a palavra em vez do valor. Segundo, o comando termina com <strong>vírgula</strong>, como se fosse continuar com mais produtos, mas não continua — e sem um <code>;</code> no final, o SQL fica esperando mais linhas e o comando nunca é considerado completo.</p>
+                <p>Toda vez que o INSERT tiver várias linhas, cada linha termina em vírgula <strong>menos a última</strong>, que termina em <code>;</code> — é esse ponto e vírgula que avisa "acabou o comando".</p>
+            </div>
+        </div>
+
+        <div class="certo-box">✅ A tabela correta usa vírgula entre todas as colunas, o nome <strong>preco</strong> sem acento, e no INSERT cada produto tem seus 4 valores certos, terminando em <code>;</code>.</div>
+
+        <h2>2️⃣ Cadastrando os produtos</h2>
+        <p>Agora vamos inserir os 5 produtos da loja usando <strong>INSERT INTO</strong>. Repare que aqui colocamos <strong>todas as linhas de uma vez</strong>, separadas por vírgula, e só a última termina em <code>;</code>:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">1</td><td>Mouse</td><td class="num">50</td><td class="num">10</td></tr>
+                <tr><td class="center">2</td><td>Teclado</td><td class="num">120</td><td class="num">5</td></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+                <tr><td class="center">5</td><td>Webcam</td><td class="num">150</td><td class="num">6</td></tr>
+            </table>
+        </div>
+
+        <span class="code-label">SQL correto</span>
+        <div class="code-block"><span class="kw">INSERT INTO</span> produtos (id, nome, preco, quantidade) <span class="kw">VALUES</span>
+(<span class="val">1</span>, <span class="str">'Mouse'</span>, <span class="val">50</span>, <span class="val">10</span>),
+(<span class="val">2</span>, <span class="str">'Teclado'</span>, <span class="val">120</span>, <span class="val">5</span>),
+(<span class="val">3</span>, <span class="str">'Monitor'</span>, <span class="val">900</span>, <span class="val">3</span>),
+(<span class="val">4</span>, <span class="str">'Headset'</span>, <span class="val">200</span>, <span class="val">8</span>),
+(<span class="val">5</span>, <span class="str">'Webcam'</span>, <span class="val">150</span>, <span class="val">6</span>);</div>
+
+        <div class="aviso">⚠️ Textos (como o nome do produto) sempre entre <strong>aspas simples</strong> <code>' '</code>. Números (como preço e quantidade) <strong>não</strong> levam aspas.</div>
+
+        <h2>3️⃣ Consultando os produtos (SELECT)</h2>
+
+        <h3>Mostrar todos os produtos</h3>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> produtos;</div>
+        <p><strong>Resultado esperado:</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">1</td><td>Mouse</td><td class="num">50</td><td class="num">10</td></tr>
+                <tr><td class="center">2</td><td>Teclado</td><td class="num">120</td><td class="num">5</td></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+                <tr><td class="center">5</td><td>Webcam</td><td class="num">150</td><td class="num">6</td></tr>
+            </table>
+        </div>
+
+        <h3>Mostrar apenas nome e preço</h3>
+        <div class="code-block"><span class="kw">SELECT</span> nome, preco <span class="kw">FROM</span> produtos;</div>
+        <p><strong>Resultado esperado:</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>nome</th><th>preco</th></tr>
+                <tr><td>Mouse</td><td class="num">50</td></tr>
+                <tr><td>Teclado</td><td class="num">120</td></tr>
+                <tr><td>Monitor</td><td class="num">900</td></tr>
+                <tr><td>Headset</td><td class="num">200</td></tr>
+                <tr><td>Webcam</td><td class="num">150</td></tr>
+            </table>
+        </div>
+
+        <h3>WHERE — filtrando por preço</h3>
+        <p>Quando queremos ver só os produtos <strong>acima de um certo preço</strong>, usamos <code>WHERE</code>. Aqui, produtos com preço maior que <strong>R$ 150</strong>:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> produtos
+<span class="kw">WHERE</span> preco > <span class="val">150</span>;</div>
+        <p><strong>Resultado esperado</strong> (só Monitor e Headset têm preço maior que 150):</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+            </table>
+        </div>
+
+        <h3>ORDER BY — ordenando por preço</h3>
+        <p>Para organizar a lista do mais barato para o mais caro, usamos <code>ORDER BY</code>:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> produtos
+<span class="kw">ORDER BY</span> preco <span class="kw">ASC</span>;</div>
+        <p><strong>Resultado esperado:</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">1</td><td>Mouse</td><td class="num">50</td><td class="num">10</td></tr>
+                <tr><td class="center">2</td><td>Teclado</td><td class="num">120</td><td class="num">5</td></tr>
+                <tr><td class="center">5</td><td>Webcam</td><td class="num">150</td><td class="num">6</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+            </table>
+        </div>
+        <p>Use <code>DESC</code> no lugar de <code>ASC</code> para inverter, do mais caro para o mais barato.</p>
+
+        <h2>4️⃣ Atualizando dados (UPDATE)</h2>
+        <p>Imagine que o preço do Teclado mudou para <strong>R$ 135</strong>. Para atualizar um registro já existente, usamos <code>UPDATE</code> junto com <code>WHERE</code> — <strong>sem o WHERE, o comando atualizaria a coluna em todas as linhas da tabela!</strong></p>
+        <div class="code-block"><span class="kw">UPDATE</span> produtos
+<span class="kw">SET</span> preco = <span class="val">135</span>
+<span class="kw">WHERE</span> nome = <span class="str">'Teclado'</span>;</div>
+        <p><strong>Resultado esperado</strong> (consultando novamente com <code>SELECT * FROM produtos;</code>):</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">1</td><td>Mouse</td><td class="num">50</td><td class="num">10</td></tr>
+                <tr><td class="center">2</td><td>Teclado</td><td class="num">135</td><td class="num">5</td></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+                <tr><td class="center">5</td><td>Webcam</td><td class="num">150</td><td class="num">6</td></tr>
+            </table>
+        </div>
+
+        <h2>5️⃣ Removendo dados (DELETE)</h2>
+        <p>Se a loja parou de vender a Webcam, removemos o registro com <code>DELETE</code> — também sempre com <code>WHERE</code>, para apagar só o produto certo:</p>
+        <div class="code-block"><span class="kw">DELETE FROM</span> produtos
+<span class="kw">WHERE</span> nome = <span class="str">'Webcam'</span>;</div>
+        <p><strong>Resultado esperado</strong> (a Webcam sai da tabela):</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>id</th><th>nome</th><th>preco</th><th>quantidade</th></tr>
+                <tr><td class="center">1</td><td>Mouse</td><td class="num">50</td><td class="num">10</td></tr>
+                <tr><td class="center">2</td><td>Teclado</td><td class="num">135</td><td class="num">5</td></tr>
+                <tr><td class="center">3</td><td>Monitor</td><td class="num">900</td><td class="num">3</td></tr>
+                <tr><td class="center">4</td><td>Headset</td><td class="num">200</td><td class="num">8</td></tr>
+            </table>
+        </div>
+        <div class="aviso">⚠️ <strong>Cuidado:</strong> tanto o <code>UPDATE</code> quanto o <code>DELETE</code> sem <code>WHERE</code> afetam <strong>a tabela inteira</strong>. É um dos erros mais perigosos em SQL — sempre confira a condição antes de rodar o comando.</div>
+
+        <h2>✅ Checklist da atividade</h2>
+        <ul class="checklist">
+            <li>Criei a tabela <strong>produtos</strong> com id, nome, preco e quantidade, usando vírgula entre todas as colunas.</li>
+            <li>Usei <strong>preco</strong> sem acento no nome da coluna.</li>
+            <li>Inseri os 5 produtos (Mouse, Teclado, Monitor, Headset, Webcam) com um único INSERT terminando em <code>;</code>.</li>
+            <li>Consultei todos os produtos e depois só nome e preço.</li>
+            <li>Filtrei produtos com <code>WHERE</code> por preço.</li>
+            <li>Ordenei os produtos com <code>ORDER BY</code>.</li>
+            <li>Atualizei um preço com <code>UPDATE ... WHERE</code>.</li>
+            <li>Removi um produto com <code>DELETE ... WHERE</code>.</li>
+        </ul>
+
+    </div>
+
+    <footer>Microlins São José — Atividade de Banco de Dados | SQL</footer>
+</div>
+</body>
+</html>

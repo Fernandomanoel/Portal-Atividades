@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Avançado I — PROCV</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        /* PROCV formula breakdown */
+        .formula-breakdown { background: #1e1e1e; border-radius: 8px; padding: 20px; margin: 14px 0; }
+        .formula-breakdown .f { font-family: 'Courier New', monospace; font-size: 1.4em; font-weight: 700; color: #fff; text-align: center; margin-bottom: 18px; }
+        .formula-breakdown .f .v1 { color: #ef4444; text-decoration: underline; }
+        .formula-breakdown .f .v2 { color: #22c55e; text-decoration: underline; }
+        .formula-breakdown .f .v3 { color: #f472b6; text-decoration: underline; }
+        .formula-breakdown .f .v4 { color: #facc15; text-decoration: underline; }
+        .legend { list-style: none; margin: 0; }
+        .legend li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; color: #e5e5e5; font-size: 0.95em; }
+        .legend .dot { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; margin-top: 2px; }
+        .legend .dot.red { background: #ef4444; }
+        .legend .dot.green { background: #22c55e; }
+        .legend .dot.pink { background: #f472b6; }
+        .legend .dot.yellow { background: #facc15; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            .formula-breakdown .f { font-size: 1em; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔍 Atividade de Excel Avançado I — PROCV</h1>
+        <p>Excel Avançado</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel-avancado">← Voltar para Excel Avançado</a>
+
+    <div class="content">
+        <h2>🎯 O que é o PROCV</h2>
+        <p>O <strong>PROCV</strong> (ou <strong>VLOOKUP</strong>) é uma função do Excel usada para <strong>procurar um valor em uma tabela</strong> e <strong>trazer uma informação relacionada</strong>.</p>
+
+        <div class="box">
+            <p>👉 Ele procura <strong>na primeira coluna da tabela</strong>, de cima para baixo, e retorna um dado da <strong>mesma linha</strong>.</p>
+        </div>
+
+        <p>Faça a planilha abaixo da mesma forma que esta feita:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">1</td><td colspan="3" class="merged">TABELA DE DADOS</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">CODIGO</td><td class="headcell">PRODUTO</td><td class="headcell">PREÇO</td></tr>
+                <tr><td class="rownum">4</td><td class="money">101</td><td>Caneta</td><td class="money">R$ 2,50</td></tr>
+                <tr><td class="rownum">5</td><td class="money">102</td><td>Lápis</td><td class="money">R$ 1,50</td></tr>
+                <tr><td class="rownum">6</td><td class="money">103</td><td>Borracha</td><td class="money">R$ 1,00</td></tr>
+                <tr><td class="rownum">7</td><td class="money">104</td><td>Caderno</td><td class="money">R$ 12,00</td></tr>
+                <tr><td class="rownum">8</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td colspan="3" class="merged">PROCURA DE DADOS</td></tr>
+                <tr><td class="rownum">10</td><td>103</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td>101</td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <p>Após terminar quero que entenda o que é <strong>PROCV</strong>.</p>
+
+        <h2>🧩 Estrutura da Fórmula</h2>
+        <div class="code-block">=PROCV(valor_procurado; tabela; núm_coluna; [procurar_intervalo])</div>
+
+        <p>Na fórmula do PROCV, <strong>"valor_procurado"</strong>, é o que você quer buscar.</p>
+        <p>Ou seja quero nesta tabela, eu estou atrás do número <strong>103</strong>, vou colocar:</p>
+        <div class="code-block">=PROCV(A CÉLULA ONDE ESTÁ O VALOR;)</div>
+
+        <h3>Tabela</h3>
+        <div class="code-block">=PROCV(103;A TABELA DE A ATÉ O C)</div>
+        <p>É onde o Excel vai procurar.</p>
+        <p>👉 Exemplo: <strong>A2:C4</strong></p>
+        <div class="aviso">⚠️ <strong>Importante:</strong> o valor procurado tem que estar na primeira coluna da tabela.</div>
+
+        <h3>Núm_coluna</h3>
+        <div class="code-block">=PROCV(103;A2:C4;NÚMERO DA COLUNA)</div>
+        <p>É o número da coluna que você quer trazer.</p>
+        <ul>
+            <li>1 = Código</li>
+            <li>2 = Produto</li>
+            <li>3 = Preço</li>
+        </ul>
+        <p>👉 Exemplo: 2 (para trazer o produto)</p>
+
+        <h3>procurar_intervalo</h3>
+        <ul>
+            <li>FALSO → busca <strong>exata</strong> (mais usada)</li>
+            <li>VERDADEIRO → busca aproximada</li>
+        </ul>
+        <p>👉 Normalmente use <strong>FALSO</strong>.</p>
+
+        <p>A fórmula ficará desta forma:</p>
+        <div class="code-block">=PROCV(103;A2:C4;2;FALSO)</div>
+
+        <p>Ou seja como está abaixo:</p>
+
+        <div class="formula-breakdown">
+            <div class="f">=PROCV(<span class="v1">103</span>;<span class="v2">A3:C7</span>;<span class="v3">3</span>;<span class="v4">FALSO</span>)</div>
+            <ul class="legend">
+                <li><span class="dot red"></span> A cor vermelha na fórmula é o valor procurado</li>
+                <li><span class="dot green"></span> A cor verde é toda a tabela separada na primeira linha e coluna e na última linha e coluna.</li>
+                <li><span class="dot pink"></span> A cor rosa na fórmula é a coluna da tabela, ou seja é a contagem da tabela</li>
+                <li><span class="dot yellow"></span> A cor amarela na fórmula é basicamente o verdadeiro e falso, sempre coloque FALSO.</li>
+            </ul>
+        </div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel Avançado</footer>
+</div>
+</body>
+</html>

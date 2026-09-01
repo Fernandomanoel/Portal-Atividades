@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atividade 1 — Site SaaS</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+    .container { width: 100%; min-height: 100vh; background: #fff; display: flex; flex-direction: column; }
+
+    header { background: linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%); color: #fff; padding: 40px 50px; text-align: center; }
+    header h1 { font-size: 2.2em; margin-bottom: 10px; }
+    header p { font-size: 1.05em; opacity: 0.95; }
+    .duracao-badge {
+        display: inline-block; margin-top: 14px;
+        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+        padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+    }
+
+    .voltar-topo { display: block; padding: 10px 50px; color: #7c3aed; text-decoration: none; font-weight: 600; }
+
+    /* Layout principal em flex: colunas lado a lado, cada uma ocupando
+       espaço proporcional — nada de coluna única estreitinha no meio da tela. */
+    .layout { display: flex; flex-wrap: wrap; gap: 0; flex: 1; width: 100%; min-width: 0; }
+    .col-principal { flex: 3 1 560px; padding: 40px 50px; min-width: 0; }
+    .col-lateral { flex: 1 1 300px; padding: 40px 40px; background: #faf5ff; border-left: 2px solid #ede9fe; }
+
+    h2 { color: #4c1d95; margin: 34px 0 16px; border-bottom: 3px solid #7c3aed; padding-bottom: 8px; font-size: 1.6em; }
+    h2:first-child { margin-top: 0; }
+    h3 { color: #7c3aed; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+    p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.75; }
+    ul, ol { margin-left: 25px; margin-bottom: 14px; }
+    li { margin-bottom: 8px; }
+    code { background: #f0f0f0; padding: 2px 7px; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 0.92em; color: #4c1d95; }
+
+    .box { background: #faf5ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 20px 24px; margin: 18px 0; }
+    .box h4 { color: #4c1d95; margin-bottom: 10px; }
+
+    .code-block {
+        background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+        overflow-x: auto; margin: 14px 0; border-left: 4px solid #7c3aed;
+        font-family: 'Courier New', monospace; font-size: 0.88em; line-height: 1.65;
+        white-space: pre;
+    }
+    .code-block .tag { color: #569cd6; }
+    .code-block .attr { color: #9cdcfe; }
+    .code-block .str { color: #ce9178; }
+    .code-block .cm { color: #6a9955; }
+    .code-block .prop { color: #9cdcfe; }
+    .code-block .val { color: #ce9178; }
+    .code-label {
+        background: #7c3aed; color: #fff; padding: 4px 12px; border-radius: 4px 4px 0 0;
+        font-size: 0.78em; font-weight: 700; letter-spacing: 0.03em; display: inline-block; margin-bottom: -4px;
+        text-transform: uppercase;
+    }
+
+    /* Caixa de "modelo": mostra UM exemplo e deixa claro que é ponto de
+       partida para o aluno duplicar/adaptar à vontade, não um número
+       fixo de itens obrigatórios. */
+    .modelo { border: 2px dashed #7c3aed; border-radius: 10px; padding: 20px 22px; margin: 18px 0; background: #fff; }
+    .modelo-tag {
+        display: inline-block; background: #ede9fe; color: #4c1d95; font-size: 0.78em; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.03em; padding: 4px 12px; border-radius: 14px; margin-bottom: 12px;
+    }
+    .modelo p:last-child { margin-bottom: 0; }
+
+    .arvore-pastas { font-family: 'Courier New', monospace; }
+
+    .success { background: #d4edda; border-left: 4px solid #28a745; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #155724; }
+    .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 16px 20px; border-radius: 6px; margin: 18px 0; }
+    .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 16px 20px; border-radius: 6px; margin: 18px 0; color: #721c24; }
+
+    .checklist { list-style: none; margin-left: 0; }
+    .checklist li { padding-left: 30px; position: relative; }
+    .checklist li::before {
+        content: "☐"; position: absolute; left: 0; top: 0; color: #7c3aed; font-size: 1.2em;
+    }
+
+    .sidebar-bloco { margin-bottom: 30px; }
+    .sidebar-bloco h3 { color: #4c1d95; font-size: 1em; text-transform: uppercase; border-bottom: 2px solid #7c3aed; padding-bottom: 8px; margin-top: 0; margin-bottom: 14px; }
+    .sidebar-bloco ul { margin-left: 20px; font-size: 0.92em; }
+    .sidebar-bloco li { margin-bottom: 8px; }
+
+    .tema-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tema-tag { background: #ede9fe; color: #4c1d95; padding: 5px 12px; border-radius: 16px; font-size: 0.82em; font-weight: 600; }
+
+    footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 24px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+    @media (max-width: 900px) {
+        .layout { flex-direction: column; }
+        .col-principal, .col-lateral { width: 100%; max-width: 100%; }
+        .col-lateral { border-left: none; border-top: 2px solid #ede9fe; }
+    }
+    @media (max-width: 600px) {
+        header { padding: 28px 22px; }
+        .voltar-topo { padding: 10px 22px; }
+        .col-principal, .col-lateral { padding: 26px 22px; }
+        h1 { font-size: 1.5em; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🚀 Atividade 1 — Site SaaS</h1>
+        <p>Seu primeiro projeto completo: a página de um produto SaaS (Software as a Serviço) fictício</p>
+        <span class="duracao-badge">Sem prazo fixo — salve seu progresso no Git a cada etapa</span>
+    </header>
+
+    <a class="voltar-topo" href="../../atividade.html?curso=criar-seu-site">← Voltar para Criando seu Site</a>
+
+    <div class="layout">
+        <main class="col-principal">
+            <h2>🎯 O que você vai construir</h2>
+            <p>Você vai criar, do zero, o site de apresentação (a "landing page") de uma empresa <strong>SaaS</strong> — ou seja, uma empresa que vende um software por assinatura (pense em ferramentas como Spotify, Netflix, Canva: você não compra o programa, paga uma mensalidade para usar).</p>
+            <p>A empresa e o produto são <strong>inventados por você</strong> — pode ser um app de estudos, uma ferramenta de organização de tarefas, um editor de imagens, o que você quiser.</p>
+
+            <div class="box">
+                <h4>🎨 Tema totalmente livre</h4>
+                <p>Escolha a ideia do produto, o nome da empresa, as cores e o estilo visual. As imagens você mesmo vai buscar (bancos de imagem gratuitos, como Unsplash ou Pexels, ou ícones de sites como Flaticon) — este é um exercício de montar um site real, então a pesquisa de material faz parte do processo.</p>
+            </div>
+
+            <h2>📂 Planejamento de pastas</h2>
+            <p>Antes de codar, organize os arquivos. Para este projeto, mantenha simples — <strong>no máximo 3 páginas HTML</strong>:</p>
+
+            <div class="code-block arvore-pastas"><span class="code-label">estrutura simples (recomendada)</span>
+meu-site-saas/
+├── index.html      <span class="cm"># sua página principal — obrigatória</span>
+├── style.css        <span class="cm"># todo o CSS num arquivo só</span>
+├── script.js         <span class="cm"># todo o JavaScript num arquivo só</span>
+└── imagens/
+    ├── logo.png
+    ├── icone-1.svg
+    └── foto-hero.jpg</div>
+
+            <p>Tudo cabe numa <code>index.html</code> só, com seções (<code>hero</code>, <code>recursos</code>, <code>preços</code>...) uma embaixo da outra — é o jeito mais simples de começar, e totalmente válido para esta atividade.</p>
+
+            <p>Se preferir separar em mais de uma página, pode — só não passe de 3 páginas HTML no total:</p>
+
+            <div class="code-block arvore-pastas"><span class="code-label">variação com 3 páginas</span>
+meu-site-saas/
+├── index.html      <span class="cm"># página inicial (hero + recursos)</span>
+├── precos.html      <span class="cm"># página de planos</span>
+├── contato.html      <span class="cm"># página de contato</span>
+├── style.css         <span class="cm"># o mesmo CSS vale para as 3 páginas</span>
+├── script.js
+└── imagens/</div>
+
+            <div class="highlight">
+                <strong>Por que um <code>style.css</code> e um <code>script.js</code> só, mesmo com várias páginas?</strong> Cada página HTML linka os dois mesmos arquivos (<code>&lt;link rel="stylesheet" href="style.css"&gt;</code> e <code>&lt;script src="script.js"&gt;&lt;/script&gt;</code>) — assim você escreve um estilo uma vez só e ele vale pro site inteiro, sem repetir código.
+            </div>
+
+            <h2>🧩 Seções do site</h2>
+            <p>Um site SaaS costuma ter: cabeçalho, um destaque inicial (hero), recursos do produto, planos e preços, e contato/rodapé. A ordem, as cores, os espaçamentos e quantos itens cada seção tem são <strong>decisão sua</strong> — abaixo tem um exemplo de código pra cada parte, pra você usar como ponto de partida e modificar à vontade.</p>
+
+            <h3>Estrutura base da página</h3>
+            <div class="code-block"><span class="code-label">index.html</span><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang=</span><span class="str">"pt-BR"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">charset=</span><span class="str">"UTF-8"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;meta</span> <span class="attr">name=</span><span class="str">"viewport"</span> <span class="attr">content=</span><span class="str">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>NomeDoSeuProduto<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"style.css"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"inicio"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"recursos"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"precos"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+  <span class="tag">&lt;footer</span> <span class="attr">id=</span><span class="str">"contato"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/footer&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"script.js"</span><span class="tag">&gt;&lt;/script&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></div>
+            <p>O <code>&lt;nav&gt;</code>, o conteúdo do hero, etc. entram dentro de cada tag — o esqueleto acima é só o ponto de partida. Agora vamos seção por seção: cada bloco abaixo traz o HTML <strong>e</strong> o CSS completo, pronto pra você copiar, colar e modificar.</p>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: CABEÇALHO + NAVEGAÇÃO                -->
+            <!-- ============================================= -->
+            <h3>Modelo — Cabeçalho com navegação</h3>
+            <p>O <code>&lt;header&gt;</code> fica no topo de todas as páginas. Dentro dele, um <code>&lt;nav&gt;</code> alinha o logo à esquerda e os links à direita, usando <strong>Flexbox</strong>.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · adapte cores, links e logo</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;header&gt;</span>
+  <span class="tag">&lt;nav</span> <span class="attr">class=</span><span class="str">"navbar"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"index.html"</span> <span class="attr">class=</span><span class="str">"logo"</span><span class="tag">&gt;</span>SeuProduto<span class="tag">&lt;/a&gt;</span>
+
+    <span class="tag">&lt;ul</span> <span class="attr">class=</span><span class="str">"menu"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"#inicio"</span><span class="tag">&gt;</span>Início<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"#recursos"</span><span class="tag">&gt;</span>Recursos<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"#precos"</span><span class="tag">&gt;</span>Preços<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+      <span class="tag">&lt;li&gt;&lt;a</span> <span class="attr">href=</span><span class="str">"#contato"</span><span class="tag">&gt;</span>Contato<span class="tag">&lt;/a&gt;&lt;/li&gt;</span>
+    <span class="tag">&lt;/ul&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="attr">class=</span><span class="str">"botao-menu"</span><span class="tag">&gt;</span>☰<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;/header&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Cabeçalho ── */</span>
+<span class="prop">header</span> {
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 2px 8px rgba(0,0,0,0.08)</span>;
+  <span class="prop">position</span>: <span class="val">sticky</span>;   <span class="cm">/* gruda no topo ao rolar */</span>
+  <span class="prop">top</span>: <span class="val">0</span>;
+  <span class="prop">z-index</span>: <span class="val">100</span>;
+}
+
+<span class="prop">.navbar</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">align-items</span>: <span class="val">center</span>;
+  <span class="prop">justify-content</span>: <span class="val">space-between</span>;
+  <span class="prop">padding</span>: <span class="val">16px 40px</span>;
+  <span class="prop">max-width</span>: <span class="val">1200px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.logo</span> {
+  <span class="prop">font-size</span>: <span class="val">1.5em</span>;
+  <span class="prop">font-weight</span>: <span class="val">800</span>;
+  <span class="prop">color</span>: <span class="val">#7c3aed</span>;     <span class="cm">/* troque pela cor do seu produto */</span>
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+}
+
+<span class="prop">.menu</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">list-style</span>: <span class="val">none</span>;
+  <span class="prop">gap</span>: <span class="val">28px</span>;
+}
+
+<span class="prop">.menu a</span> {
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">font-weight</span>: <span class="val">500</span>;
+  <span class="prop">transition</span>: <span class="val">color 0.2s</span>;
+}
+<span class="prop">.menu a:hover</span> {
+  <span class="prop">color</span>: <span class="val">#7c3aed</span>;
+}
+
+<span class="cm">/* O botão ☰ começa escondido — só aparece no celular */</span>
+<span class="prop">.botao-menu</span> {
+  <span class="prop">display</span>: <span class="val">none</span>;
+  <span class="prop">background</span>: <span class="val">none</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">font-size</span>: <span class="val">1.6em</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+}</div>
+                <p>O <code>position: sticky</code> faz o cabeçalho grudar no topo quando o usuário rola — isso é bem comum em sites SaaS. Se preferir que ele não grude, é só remover as linhas <code>position</code>, <code>top</code> e <code>z-index</code>.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: HERO                                  -->
+            <!-- ============================================= -->
+            <h3>Modelo — Seção Hero (destaque inicial)</h3>
+            <p>O hero é o primeiro bloco que o visitante vê — geralmente uma frase de impacto, um subtítulo e um botão chamativo. Aqui usamos <code>background: linear-gradient(...)</code> para criar um fundo degradê sem precisar de imagem.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · mude textos, cores e fundo</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"inicio"</span> <span class="attr">class=</span><span class="str">"hero"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"hero-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Organize sua vida com o <span class="tag">&lt;span&gt;</span>SeuProduto<span class="tag">&lt;/span&gt;&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>A ferramenta que simplifica o que parece complicado.<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#precos"</span> <span class="attr">class=</span><span class="str">"botao-cta"</span><span class="tag">&gt;</span>Comece grátis<span class="tag">&lt;/a&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Hero ── */</span>
+<span class="prop">.hero</span> {
+  <span class="prop">background</span>: <span class="val">linear-gradient(135deg, #7c3aed 0%, #4c1d95 100%)</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">padding</span>: <span class="val">100px 40px</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="prop">.hero-conteudo</span> {
+  <span class="prop">max-width</span>: <span class="val">700px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.hero h1</span> {
+  <span class="prop">font-size</span>: <span class="val">2.8em</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">18px</span>;
+  <span class="prop">line-height</span>: <span class="val">1.2</span>;
+}
+
+<span class="cm">/* Destaque no nome do produto */</span>
+<span class="prop">.hero h1 span</span> {
+  <span class="prop">color</span>: <span class="val">#a78bfa</span>;
+}
+
+<span class="prop">.hero p</span> {
+  <span class="prop">font-size</span>: <span class="val">1.2em</span>;
+  <span class="prop">opacity</span>: <span class="val">0.9</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">30px</span>;
+}
+
+<span class="cm">/* Botão de ação (CTA = Call To Action) */</span>
+<span class="prop">.botao-cta</span> {
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">color</span>: <span class="val">#4c1d95</span>;
+  <span class="prop">padding</span>: <span class="val">14px 36px</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">font-size</span>: <span class="val">1.1em</span>;
+  <span class="prop">font-weight</span>: <span class="val">700</span>;
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+  <span class="prop">transition</span>: <span class="val">transform 0.2s, box-shadow 0.2s</span>;
+}
+<span class="prop">.botao-cta:hover</span> {
+  <span class="prop">transform</span>: <span class="val">translateY(-3px)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 8px 20px rgba(0,0,0,0.25)</span>;
+}</div>
+                <p>O <code>linear-gradient</code> mistura duas cores — troque pelos tons do seu produto. Se preferir uma imagem de fundo em vez do degradê, use <code>background: url('imagens/foto-hero.jpg') center/cover;</code> no lugar.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: CARDS DE RECURSO                      -->
+            <!-- ============================================= -->
+            <h3>Modelo — Cards de recursos (com grid em Flex)</h3>
+            <p>A seção de recursos mostra o que o produto faz. Cada recurso fica dentro de um "card" — e os cards ficam lado a lado usando <strong>Flexbox com <code>flex-wrap</code></strong>, que automaticamente quebra a linha quando não cabe mais.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · duplique o card quantas vezes quiser</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"recursos"</span> <span class="attr">class=</span><span class="str">"secao-recursos"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>O que o SeuProduto faz por você<span class="tag">&lt;/h2&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"grade-recursos"</span><span class="tag">&gt;</span>
+    <span class="cm">&lt;!-- Copie este card quantas vezes quiser --&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"card-recurso"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;img</span> <span class="attr">src=</span><span class="str">"imagens/icone-1.svg"</span> <span class="attr">alt=</span><span class="str">""</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Nome do recurso<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Uma frase curta explicando o que esse recurso faz.<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Seção de recursos ── */</span>
+<span class="prop">.secao-recursos</span> {
+  <span class="prop">padding</span>: <span class="val">80px 40px</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="prop">.secao-recursos h2</span> {
+  <span class="prop">font-size</span>: <span class="val">2em</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">40px</span>;
+  <span class="prop">color</span>: <span class="val">#1a1a2e</span>;
+}
+
+<span class="cm">/* O container flexível: itens lado a lado, quebrando
+   linha automaticamente quando não cabem mais */</span>
+<span class="prop">.grade-recursos</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="val">24px</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">max-width</span>: <span class="val">1100px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.card-recurso</span> {
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">padding</span>: <span class="val">30px 24px</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 4px 15px rgba(0,0,0,0.08)</span>;
+  <span class="prop">flex</span>: <span class="val">1 1 280px</span>;     <span class="cm">/* cresce, encolhe, base de 280px */</span>
+  <span class="prop">max-width</span>: <span class="val">340px</span>;     <span class="cm">/* não fica largo demais */</span>
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+  <span class="prop">transition</span>: <span class="val">transform 0.2s, box-shadow 0.2s</span>;
+}
+
+<span class="prop">.card-recurso:hover</span> {
+  <span class="prop">transform</span>: <span class="val">translateY(-6px)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 12px 30px rgba(0,0,0,0.12)</span>;
+}
+
+<span class="prop">.card-recurso img</span> {
+  <span class="prop">width</span>: <span class="val">48px</span>;
+  <span class="prop">height</span>: <span class="val">48px</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">16px</span>;
+}
+
+<span class="prop">.card-recurso h3</span> {
+  <span class="prop">font-size</span>: <span class="val">1.15em</span>;
+  <span class="prop">color</span>: <span class="val">#1a1a2e</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">8px</span>;
+}
+
+<span class="prop">.card-recurso p</span> {
+  <span class="prop">color</span>: <span class="val">#666</span>;
+  <span class="prop">font-size</span>: <span class="val">0.95em</span>;
+}</div>
+                <p>O segredo é <code>flex: 1 1 280px</code> — cada card tenta ter pelo menos 280px, mas cresce pra preencher o espaço. Com 3 cards, ficam lado a lado; com 6, ficam em duas linhas; no celular, cada um ocupa a tela inteira. Copie o <code>&lt;div class="card-recurso"&gt;</code> quantas vezes quiser — 2, 5, 8, o número é seu.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: PLANOS E PREÇOS                       -->
+            <!-- ============================================= -->
+            <h3>Modelo — Planos e preços</h3>
+            <p>A tabela de preços é uma das seções mais importantes de um site SaaS. Aqui vai o HTML com os planos e o CSS que faz o plano "popular" se destacar dos outros.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · duplique o .plano quantas vezes quiser</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"precos"</span> <span class="attr">class=</span><span class="str">"secao-precos"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Escolha seu plano<span class="tag">&lt;/h2&gt;</span>
+
+  <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"grade-planos"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"plano"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Gratuito<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">class=</span><span class="str">"preco"</span><span class="tag">&gt;</span>R$ 0<span class="tag">&lt;span&gt;</span>/mês<span class="tag">&lt;/span&gt;&lt;/p&gt;</span>
+      <span class="tag">&lt;ul&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Funcionalidade básica<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>1 projeto<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Suporte por e-mail<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;/ul&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#"</span> <span class="attr">class=</span><span class="str">"botao-plano"</span><span class="tag">&gt;</span>Começar<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="cm">&lt;!-- Adicione class="destaque" no plano que quer destacar --&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"plano destaque"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;span</span> <span class="attr">class=</span><span class="str">"selo-popular"</span><span class="tag">&gt;</span>Mais popular<span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>Profissional<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">class=</span><span class="str">"preco"</span><span class="tag">&gt;</span>R$ 29<span class="tag">&lt;span&gt;</span>/mês<span class="tag">&lt;/span&gt;&lt;/p&gt;</span>
+      <span class="tag">&lt;ul&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Tudo do Gratuito<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Projetos ilimitados<span class="tag">&lt;/li&gt;</span>
+        <span class="tag">&lt;li&gt;</span>Suporte prioritário<span class="tag">&lt;/li&gt;</span>
+      <span class="tag">&lt;/ul&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#"</span> <span class="attr">class=</span><span class="str">"botao-plano"</span><span class="tag">&gt;</span>Assinar<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/section&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Planos e preços ── */</span>
+<span class="prop">.secao-precos</span> {
+  <span class="prop">padding</span>: <span class="val">80px 40px</span>;
+  <span class="prop">background</span>: <span class="val">#f8f5ff</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="prop">.secao-precos h2</span> {
+  <span class="prop">font-size</span>: <span class="val">2em</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">40px</span>;
+}
+
+<span class="prop">.grade-planos</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="val">24px</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;
+  <span class="prop">max-width</span>: <span class="val">900px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.plano</span> {
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">padding</span>: <span class="val">36px 28px</span>;
+  <span class="prop">flex</span>: <span class="val">1 1 260px</span>;
+  <span class="prop">max-width</span>: <span class="val">320px</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 4px 12px rgba(0,0,0,0.06)</span>;
+  <span class="prop">border</span>: <span class="val">2px solid transparent</span>;
+  <span class="prop">transition</span>: <span class="val">transform 0.2s, border-color 0.2s</span>;
+  <span class="prop">position</span>: <span class="val">relative</span>;
+}
+
+<span class="prop">.plano:hover</span> {
+  <span class="prop">transform</span>: <span class="val">translateY(-4px)</span>;
+  <span class="prop">border-color</span>: <span class="val">#7c3aed</span>;
+}
+
+<span class="cm">/* Plano em destaque: borda roxa e um pouco maior */</span>
+<span class="prop">.plano.destaque</span> {
+  <span class="prop">border-color</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">transform</span>: <span class="val">scale(1.05)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 8px 30px rgba(124,58,237,0.15)</span>;
+}
+
+<span class="cm">/* Selo "Mais popular" */</span>
+<span class="prop">.selo-popular</span> {
+  <span class="prop">position</span>: <span class="val">absolute</span>;
+  <span class="prop">top</span>: <span class="val">-14px</span>;
+  <span class="prop">left</span>: <span class="val">50%</span>;
+  <span class="prop">transform</span>: <span class="val">translateX(-50%)</span>;
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">padding</span>: <span class="val">4px 16px</span>;
+  <span class="prop">border-radius</span>: <span class="val">16px</span>;
+  <span class="prop">font-size</span>: <span class="val">0.8em</span>;
+  <span class="prop">font-weight</span>: <span class="val">700</span>;
+}
+
+<span class="prop">.preco</span> {
+  <span class="prop">font-size</span>: <span class="val">2.5em</span>;
+  <span class="prop">font-weight</span>: <span class="val">800</span>;
+  <span class="prop">color</span>: <span class="val">#1a1a2e</span>;
+  <span class="prop">margin</span>: <span class="val">16px 0</span>;
+}
+<span class="prop">.preco span</span> {
+  <span class="prop">font-size</span>: <span class="val">0.4em</span>;
+  <span class="prop">font-weight</span>: <span class="val">400</span>;
+  <span class="prop">color</span>: <span class="val">#999</span>;
+}
+
+<span class="prop">.plano ul</span> {
+  <span class="prop">list-style</span>: <span class="val">none</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">margin</span>: <span class="val">20px 0</span>;
+  <span class="prop">text-align</span>: <span class="val">left</span>;
+}
+<span class="prop">.plano li</span> {
+  <span class="prop">padding</span>: <span class="val">8px 0</span>;
+  <span class="prop">border-bottom</span>: <span class="val">1px solid #eee</span>;
+  <span class="prop">color</span>: <span class="val">#555</span>;
+}
+<span class="prop">.plano li::before</span> {
+  <span class="prop">content</span>: <span class="val">"✓ "</span>;
+  <span class="prop">color</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">font-weight</span>: <span class="val">700</span>;
+}
+
+<span class="prop">.botao-plano</span> {
+  <span class="prop">display</span>: <span class="val">inline-block</span>;
+  <span class="prop">margin-top</span>: <span class="val">20px</span>;
+  <span class="prop">padding</span>: <span class="val">12px 28px</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.2s</span>;
+}
+<span class="prop">.botao-plano:hover</span> {
+  <span class="prop">background</span>: <span class="val">#6d28d9</span>;
+}</div>
+                <p>Duplique o <code>&lt;div class="plano"&gt;</code> quantas vezes quiser. Adicione <code>class="plano destaque"</code> no que quiser destacar — pode ser nenhum, pode ser um. Os itens da <code>&lt;ul&gt;</code> também são livres — bote quantas vantagens fizerem sentido.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: FORMULÁRIO DE CONTATO                 -->
+            <!-- ============================================= -->
+            <h3>Modelo — Formulário de contato</h3>
+            <p>Um formulário simples de contato, com os campos estilizados. Ele não vai enviar dados de verdade (isso precisa de back-end), mas serve para praticar HTML de formulário e CSS de inputs — e mais adiante a gente faz a validação com JavaScript.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · adicione ou remova campos</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;section</span> <span class="attr">id=</span><span class="str">"contato"</span> <span class="attr">class=</span><span class="str">"secao-contato"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;h2&gt;</span>Fale com a gente<span class="tag">&lt;/h2&gt;</span>
+
+  <span class="tag">&lt;form</span> <span class="attr">class=</span><span class="str">"formulario"</span> <span class="attr">id=</span><span class="str">"form-contato"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"campo"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;label</span> <span class="attr">for=</span><span class="str">"nome"</span><span class="tag">&gt;</span>Seu nome<span class="tag">&lt;/label&gt;</span>
+      <span class="tag">&lt;input</span> <span class="attr">type=</span><span class="str">"text"</span> <span class="attr">id=</span><span class="str">"nome"</span> <span class="attr">placeholder=</span><span class="str">"Fulano de Tal"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"campo"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;label</span> <span class="attr">for=</span><span class="str">"email"</span><span class="tag">&gt;</span>E-mail<span class="tag">&lt;/label&gt;</span>
+      <span class="tag">&lt;input</span> <span class="attr">type=</span><span class="str">"email"</span> <span class="attr">id=</span><span class="str">"email"</span> <span class="attr">placeholder=</span><span class="str">"fulano@email.com"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"campo"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;label</span> <span class="attr">for=</span><span class="str">"mensagem"</span><span class="tag">&gt;</span>Mensagem<span class="tag">&lt;/label&gt;</span>
+      <span class="tag">&lt;textarea</span> <span class="attr">id=</span><span class="str">"mensagem"</span> <span class="attr">rows=</span><span class="str">"5"</span> <span class="attr">placeholder=</span><span class="str">"Escreva sua mensagem..."</span> <span class="attr">required</span><span class="tag">&gt;&lt;/textarea&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="attr">type=</span><span class="str">"submit"</span> <span class="attr">class=</span><span class="str">"botao-enviar"</span><span class="tag">&gt;</span>Enviar mensagem<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/form&gt;</span>
+<span class="tag">&lt;/section&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Formulário de contato ── */</span>
+<span class="prop">.secao-contato</span> {
+  <span class="prop">padding</span>: <span class="val">80px 40px</span>;
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+}
+
+<span class="prop">.formulario</span> {
+  <span class="prop">max-width</span>: <span class="val">500px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+  <span class="prop">text-align</span>: <span class="val">left</span>;
+}
+
+<span class="prop">.campo</span> {
+  <span class="prop">margin-bottom</span>: <span class="val">20px</span>;
+}
+
+<span class="prop">.campo label</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">6px</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">color</span>: <span class="val">#333</span>;
+}
+
+<span class="prop">.campo input,
+.campo textarea</span> {
+  <span class="prop">width</span>: <span class="val">100%</span>;
+  <span class="prop">padding</span>: <span class="val">12px 16px</span>;
+  <span class="prop">border</span>: <span class="val">2px solid #ddd</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">font-size</span>: <span class="val">1em</span>;
+  <span class="prop">font-family</span>: <span class="val">inherit</span>;
+  <span class="prop">transition</span>: <span class="val">border-color 0.2s</span>;
+}
+
+<span class="cm">/* Muda a borda quando o campo está selecionado */</span>
+<span class="prop">.campo input:focus,
+.campo textarea:focus</span> {
+  <span class="prop">outline</span>: <span class="val">none</span>;
+  <span class="prop">border-color</span>: <span class="val">#7c3aed</span>;
+}
+
+<span class="prop">.botao-enviar</span> {
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">padding</span>: <span class="val">14px 32px</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">font-size</span>: <span class="val">1em</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.2s</span>;
+  <span class="prop">width</span>: <span class="val">100%</span>;
+}
+<span class="prop">.botao-enviar:hover</span> {
+  <span class="prop">background</span>: <span class="val">#6d28d9</span>;
+}</div>
+                <p>Adicione mais campos se fizer sentido (telefone, assunto, etc.) ou remova o que não precisar. O <code>:focus</code> é o estado de quando o usuário clica no campo — a borda muda de cor pra indicar onde ele está digitando.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  SEÇÃO: RODAPÉ                                -->
+            <!-- ============================================= -->
+            <h3>Modelo — Rodapé</h3>
+            <p>O rodapé fecha o site. Aqui um modelo com colunas usando Flexbox — uma pro logo/texto, outra pra links rápidos, outra pra informações.</p>
+            <div class="modelo">
+                <span class="modelo-tag">Modelo · adapte as colunas</span>
+                <div class="code-block"><span class="code-label">html</span><span class="tag">&lt;footer</span> <span class="attr">class=</span><span class="str">"rodape"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"rodape-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"rodape-col"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>SeuProduto<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p&gt;</span>Simplificando a vida desde 2026.<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"rodape-col"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h4&gt;</span>Links<span class="tag">&lt;/h4&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#inicio"</span><span class="tag">&gt;</span>Início<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#recursos"</span><span class="tag">&gt;</span>Recursos<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;a</span> <span class="attr">href=</span><span class="str">"#precos"</span><span class="tag">&gt;</span>Preços<span class="tag">&lt;/a&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"rodape-col"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;h4&gt;</span>Contato<span class="tag">&lt;/h4&gt;</span>
+      <span class="tag">&lt;p&gt;</span>contato@seuproduto.com<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;p</span> <span class="attr">class=</span><span class="str">"rodape-copy"</span><span class="tag">&gt;</span>&amp;copy; 2026 SeuProduto. Todos os direitos reservados.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/footer&gt;</span></div>
+                <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* ── Rodapé ── */</span>
+<span class="prop">.rodape</span> {
+  <span class="prop">background</span>: <span class="val">#1a1a2e</span>;
+  <span class="prop">color</span>: <span class="val">#ccc</span>;
+  <span class="prop">padding</span>: <span class="val">50px 40px 24px</span>;
+}
+
+<span class="prop">.rodape-conteudo</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">flex-wrap</span>: <span class="val">wrap</span>;
+  <span class="prop">gap</span>: <span class="val">40px</span>;
+  <span class="prop">max-width</span>: <span class="val">1100px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;
+}
+
+<span class="prop">.rodape-col</span> {
+  <span class="prop">flex</span>: <span class="val">1 1 200px</span>;
+}
+
+<span class="prop">.rodape-col h3</span> {
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">12px</span>;
+}
+<span class="prop">.rodape-col h4</span> {
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">12px</span>;
+}
+
+<span class="prop">.rodape-col a</span> {
+  <span class="prop">display</span>: <span class="val">block</span>;
+  <span class="prop">color</span>: <span class="val">#aaa</span>;
+  <span class="prop">text-decoration</span>: <span class="val">none</span>;
+  <span class="prop">margin-bottom</span>: <span class="val">8px</span>;
+  <span class="prop">transition</span>: <span class="val">color 0.2s</span>;
+}
+<span class="prop">.rodape-col a:hover</span> {
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+}
+
+<span class="prop">.rodape-copy</span> {
+  <span class="prop">text-align</span>: <span class="val">center</span>;
+  <span class="prop">margin-top</span>: <span class="val">30px</span>;
+  <span class="prop">padding-top</span>: <span class="val">20px</span>;
+  <span class="prop">border-top</span>: <span class="val">1px solid #333</span>;
+  <span class="prop">font-size</span>: <span class="val">0.85em</span>;
+  <span class="prop">color</span>: <span class="val">#888</span>;
+}</div>
+                <p>Cada <code>.rodape-col</code> é uma coluna. Adicione ou remova quantas quiser. No celular, por causa do <code>flex-wrap</code>, elas empilham automaticamente.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  CSS: ESTILOS GLOBAIS E RESET                 -->
+            <!-- ============================================= -->
+            <h2>🎨 CSS — Estilos globais e reset</h2>
+            <p>No começo do <code>style.css</code>, coloque um <strong>reset</strong> e as configurações gerais do site. Isso garante que todos os navegadores exibam igual e define a fonte, as cores e o comportamento de rolagem do site inteiro.</p>
+
+            <div class="code-block"><span class="code-label">style.css (começo do arquivo)</span><span class="cm">/* ── Reset e base ──
+   Tira margens e paddings padrão de todos os elementos
+   e faz box-sizing funcionar de forma intuitiva. */</span>
+
+<span class="prop">*</span> {
+  <span class="prop">margin</span>: <span class="val">0</span>;
+  <span class="prop">padding</span>: <span class="val">0</span>;
+  <span class="prop">box-sizing</span>: <span class="val">border-box</span>;
+}
+
+<span class="prop">html</span> {
+  <span class="prop">scroll-behavior</span>: <span class="val">smooth</span>;  <span class="cm">/* rolagem suave ao clicar nos links #ancora */</span>
+}
+
+<span class="prop">body</span> {
+  <span class="prop">font-family</span>: <span class="val">'Segoe UI', Tahoma, Geneva, Verdana, sans-serif</span>;
+  <span class="prop">color</span>: <span class="val">#333</span>;
+  <span class="prop">line-height</span>: <span class="val">1.6</span>;
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+}
+
+<span class="prop">img</span> {
+  <span class="prop">max-width</span>: <span class="val">100%</span>;   <span class="cm">/* imagens nunca furam o container */</span>
+  <span class="prop">display</span>: <span class="val">block</span>;
+}
+
+<span class="prop">a</span> {
+  <span class="prop">color</span>: <span class="val">#7c3aed</span>;
+}
+
+<span class="prop">h1, h2, h3</span> {
+  <span class="prop">line-height</span>: <span class="val">1.2</span>;
+}</div>
+
+            <div class="highlight">
+                <strong>O que é <code>box-sizing: border-box</code>?</strong> Sem ele, <code>padding</code> e <code>border</code> são somados à largura — um elemento com <code>width: 100%</code> e <code>padding: 20px</code> ficaria <em>maior</em> que 100%. Com <code>border-box</code>, tudo conta dentro dos 100%. Sempre use no reset.
+            </div>
+
+            <!-- ============================================= -->
+            <!--  CSS: BOTÕES, CORES E EFEITOS                 -->
+            <!-- ============================================= -->
+            <h2>🎨 CSS — Botões, cores e efeitos hover</h2>
+            <p>Efeitos visuais fazem o site parecer profissional. A propriedade <code>transition</code> cria animações suaves entre estados (normal → hover, por exemplo), e <code>transform</code> move/escala o elemento sem mexer no layout.</p>
+
+            <h3>Transition — o segredo dos efeitos suaves</h3>
+            <p>Quando você define <code>transition</code>, qualquer mudança naquela propriedade acontece suavemente, em vez de trocar de repente:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* Sem transition: ao passar o mouse, a cor muda instantaneamente.
+   Com transition: a cor muda em 0.3 segundos, suavemente. */</span>
+
+<span class="prop">.botao</span> {
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">padding</span>: <span class="val">12px 28px</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+  <span class="prop">font-size</span>: <span class="val">1em</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+
+  <span class="cm">/* Quais propriedades animar e por quanto tempo */</span>
+  <span class="prop">transition</span>: <span class="val">background 0.3s, transform 0.2s, box-shadow 0.2s</span>;
+}
+
+<span class="prop">.botao:hover</span> {
+  <span class="prop">background</span>: <span class="val">#6d28d9</span>;        <span class="cm">/* cor mais escura */</span>
+  <span class="prop">transform</span>: <span class="val">translateY(-2px)</span>; <span class="cm">/* sobe 2px */</span>
+  <span class="prop">box-shadow</span>: <span class="val">0 6px 16px rgba(0,0,0,0.15)</span>;
+}</div>
+
+            <h3>Variações de botão</h3>
+            <p>Um site normalmente tem mais de um estilo de botão — por exemplo, um primário (preenchido) e um secundário (só contorno):</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* Botão secundário — fundo transparente, só a borda */</span>
+<span class="prop">.botao-secundario</span> {
+  <span class="prop">background</span>: <span class="val">transparent</span>;
+  <span class="prop">color</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">border</span>: <span class="val">2px solid #7c3aed</span>;
+  <span class="prop">padding</span>: <span class="val">12px 28px</span>;
+  <span class="prop">border-radius</span>: <span class="val">8px</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+  <span class="prop">font-weight</span>: <span class="val">600</span>;
+  <span class="prop">transition</span>: <span class="val">background 0.2s, color 0.2s</span>;
+}
+
+<span class="prop">.botao-secundario:hover</span> {
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+}</div>
+
+            <h3>Efeitos em cards (hover + sombra)</h3>
+            <p>Cards que "levantam" ao passar o mouse dão sensação de interatividade. Basta combinar <code>transform</code> com <code>box-shadow</code>:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.card</span> {
+  <span class="prop">background</span>: <span class="val">#fff</span>;
+  <span class="prop">border-radius</span>: <span class="val">12px</span>;
+  <span class="prop">padding</span>: <span class="val">24px</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 2px 8px rgba(0,0,0,0.06)</span>;
+  <span class="prop">transition</span>: <span class="val">transform 0.25s, box-shadow 0.25s</span>;
+}
+
+<span class="prop">.card:hover</span> {
+  <span class="prop">transform</span>: <span class="val">translateY(-8px)</span>;
+  <span class="prop">box-shadow</span>: <span class="val">0 16px 40px rgba(0,0,0,0.12)</span>;
+}</div>
+
+            <!-- ============================================= -->
+            <!--  CSS: RESPONSIVO COM @media                   -->
+            <!-- ============================================= -->
+            <h2>📱 CSS — Tornando responsivo com @media</h2>
+            <p>O site precisa funcionar bem no computador <strong>e</strong> no celular. Para isso, usamos <strong><code>@media</code> queries</strong> — blocos de CSS que só valem quando a tela tem um certo tamanho. Coloque estes blocos <strong>no final do <code>style.css</code></strong>, depois de todos os outros estilos.</p>
+
+            <div class="highlight">
+                <strong>Regra de ouro:</strong> no CSS principal (sem <code>@media</code>), escreva o layout para tela grande. Depois, nos <code>@media</code>, ajuste o que precisa mudar para telas menores. Essa abordagem se chama <strong>"desktop first"</strong>.
+            </div>
+
+            <div class="code-block"><span class="code-label">style.css (final do arquivo)</span><span class="cm">/* ════════════════════════════════════════════════
+   TABLET — telas de até 900px
+   ════════════════════════════════════════════════ */</span>
+<span class="prop">@media</span> (<span class="prop">max-width</span>: <span class="val">900px</span>) {
+
+  <span class="cm">/* Navbar empilha: logo em cima, menu embaixo */</span>
+  <span class="prop">.navbar</span> {
+    <span class="prop">flex-direction</span>: <span class="val">column</span>;
+    <span class="prop">gap</span>: <span class="val">12px</span>;
+  }
+
+  <span class="cm">/* Hero com menos espaço */</span>
+  <span class="prop">.hero</span> {
+    <span class="prop">padding</span>: <span class="val">60px 24px</span>;
+  }
+  <span class="prop">.hero h1</span> {
+    <span class="prop">font-size</span>: <span class="val">2em</span>;
+  }
+
+  <span class="cm">/* Cards: 2 por linha em vez de 3 */</span>
+  <span class="prop">.card-recurso</span> {
+    <span class="prop">flex</span>: <span class="val">1 1 45%</span>;
+    <span class="prop">max-width</span>: <span class="val">none</span>;
+  }
+
+  <span class="cm">/* Planos empilham verticalmente */</span>
+  <span class="prop">.plano.destaque</span> {
+    <span class="prop">transform</span>: <span class="val">none</span>;  <span class="cm">/* tira o scale(1.05) */</span>
+  }
+}
+
+<span class="cm">/* ════════════════════════════════════════════════
+   CELULAR — telas de até 600px
+   ════════════════════════════════════════════════ */</span>
+<span class="prop">@media</span> (<span class="prop">max-width</span>: <span class="val">600px</span>) {
+
+  <span class="cm">/* Menu escondido por padrão — aparece quando o JS
+     adiciona a classe "aberto" */</span>
+  <span class="prop">.menu</span> {
+    <span class="prop">display</span>: <span class="val">none</span>;
+    <span class="prop">flex-direction</span>: <span class="val">column</span>;
+    <span class="prop">gap</span>: <span class="val">0</span>;
+    <span class="prop">width</span>: <span class="val">100%</span>;
+    <span class="prop">text-align</span>: <span class="val">center</span>;
+  }
+  <span class="prop">.menu.aberto</span> {
+    <span class="prop">display</span>: <span class="val">flex</span>;
+  }
+  <span class="prop">.menu a</span> {
+    <span class="prop">padding</span>: <span class="val">12px 0</span>;
+    <span class="prop">border-bottom</span>: <span class="val">1px solid #eee</span>;
+  }
+
+  <span class="cm">/* Mostra o botão ☰ */</span>
+  <span class="prop">.botao-menu</span> {
+    <span class="prop">display</span>: <span class="val">block</span>;
+  }
+
+  <span class="cm">/* Hero mais compacto */</span>
+  <span class="prop">.hero</span> {
+    <span class="prop">padding</span>: <span class="val">50px 20px</span>;
+  }
+  <span class="prop">.hero h1</span> {
+    <span class="prop">font-size</span>: <span class="val">1.6em</span>;
+  }
+
+  <span class="cm">/* Cards: 1 por linha */</span>
+  <span class="prop">.card-recurso</span> {
+    <span class="prop">flex</span>: <span class="val">1 1 100%</span>;
+  }
+
+  <span class="cm">/* Seções com menos padding lateral */</span>
+  <span class="prop">.secao-recursos,
+  .secao-precos,
+  .secao-contato</span> {
+    <span class="prop">padding</span>: <span class="val">50px 20px</span>;
+  }
+
+  <span class="cm">/* Rodapé empilhado */</span>
+  <span class="prop">.rodape-conteudo</span> {
+    <span class="prop">flex-direction</span>: <span class="val">column</span>;
+    <span class="prop">text-align</span>: <span class="val">center</span>;
+  }
+}</div>
+
+            <div class="box">
+                <h4>Como testar no celular sem ter celular?</h4>
+                <p>No navegador (Chrome, Edge, Firefox), aperte <code>F12</code> para abrir as Ferramentas do Desenvolvedor. Clique no ícone de celular/tablet no canto superior — isso simula a tela de diferentes dispositivos. Arraste a largura para ver seu site se adaptar.</p>
+            </div>
+
+            <!-- ============================================= -->
+            <!--  JAVASCRIPT                                   -->
+            <!-- ============================================= -->
+            <h2>⚡ JavaScript — Interatividade</h2>
+            <p>A atividade pede pelo menos <strong>uma interação real em JavaScript</strong>. Abaixo tem quatro exemplos prontos — escolha uma ou mais, ou invente a sua. Tudo vai no <code>script.js</code>.</p>
+
+            <h3>JS 1 — Menu mobile (abre/fecha)</h3>
+            <p>O botão <code>☰</code> que você colocou no <code>&lt;header&gt;</code> precisa de JavaScript para funcionar. Ao clicar, ele adiciona/remove a classe <code>aberto</code> no menu — e o CSS que você escreveu no <code>@media (max-width: 600px)</code> cuida do resto:</p>
+            <div class="code-block"><span class="code-label">script.js</span><span class="cm">// ── Menu mobile ──</span>
+<span class="prop">const</span> botaoMenu = document.querySelector(<span class="str">'.botao-menu'</span>);
+<span class="prop">const</span> menu = document.querySelector(<span class="str">'.menu'</span>);
+
+botaoMenu.addEventListener(<span class="str">'click'</span>, () => {
+  menu.classList.toggle(<span class="str">'aberto'</span>);
+});
+
+<span class="cm">// Fecha o menu quando um link é clicado</span>
+menu.querySelectorAll(<span class="str">'a'</span>).forEach(link => {
+  link.addEventListener(<span class="str">'click'</span>, () => {
+    menu.classList.remove(<span class="str">'aberto'</span>);
+  });
+});</div>
+            <p>O <code>classList.toggle</code> funciona assim: se a classe <code>aberto</code> existe, ele tira; se não existe, ele coloca. É um interruptor.</p>
+
+            <h3>JS 2 — Scroll suave ao clicar nos links</h3>
+            <p>Se você já colocou <code>scroll-behavior: smooth</code> no CSS, o scroll suave já funciona para links com <code>#ancora</code>. Mas se quiser controlar pelo JavaScript (por exemplo, para fechar o menu mobile ao mesmo tempo), use isto:</p>
+            <div class="code-block"><span class="code-label">script.js</span><span class="cm">// ── Scroll suave nos links de navegação ──</span>
+document.querySelectorAll(<span class="str">'a[href^="#"]'</span>).forEach(link => {
+  link.addEventListener(<span class="str">'click'</span>, (e) => {
+    <span class="prop">const</span> destino = document.querySelector(link.getAttribute(<span class="str">'href'</span>));
+    <span class="prop">if</span> (destino) {
+      e.preventDefault();
+      destino.scrollIntoView({ <span class="prop">behavior</span>: <span class="str">'smooth'</span> });
+    }
+  });
+});</div>
+            <p>O <code>querySelectorAll('a[href^="#"]')</code> pega <strong>todos</strong> os links que começam com <code>#</code> — ou seja, links internos da página. Ao clicar, rola suavemente até o elemento com aquele <code>id</code>.</p>
+
+            <h3>JS 3 — Botão "Voltar ao topo"</h3>
+            <p>Um botão flutuante que aparece quando o usuário rola para baixo, e leva de volta ao topo ao clicar:</p>
+            <div class="code-block"><span class="code-label">html (antes de fechar o &lt;/body&gt;)</span><span class="tag">&lt;button</span> <span class="attr">class=</span><span class="str">"btn-topo"</span> <span class="attr">id=</span><span class="str">"btn-topo"</span><span class="tag">&gt;</span>↑<span class="tag">&lt;/button&gt;</span></div>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.btn-topo</span> {
+  <span class="prop">position</span>: <span class="val">fixed</span>;     <span class="cm">/* fica fixo na tela, não rola junto */</span>
+  <span class="prop">bottom</span>: <span class="val">30px</span>;
+  <span class="prop">right</span>: <span class="val">30px</span>;
+  <span class="prop">background</span>: <span class="val">#7c3aed</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+  <span class="prop">border</span>: <span class="val">none</span>;
+  <span class="prop">width</span>: <span class="val">48px</span>;
+  <span class="prop">height</span>: <span class="val">48px</span>;
+  <span class="prop">border-radius</span>: <span class="val">50%</span>;
+  <span class="prop">font-size</span>: <span class="val">1.4em</span>;
+  <span class="prop">cursor</span>: <span class="val">pointer</span>;
+  <span class="prop">opacity</span>: <span class="val">0</span>;         <span class="cm">/* começa invisível */</span>
+  <span class="prop">transition</span>: <span class="val">opacity 0.3s</span>;
+  <span class="prop">pointer-events</span>: <span class="val">none</span>; <span class="cm">/* não clicável enquanto invisível */</span>
+}
+
+<span class="prop">.btn-topo.visivel</span> {
+  <span class="prop">opacity</span>: <span class="val">1</span>;
+  <span class="prop">pointer-events</span>: <span class="val">auto</span>;
+}</div>
+            <div class="code-block"><span class="code-label">script.js</span><span class="cm">// ── Botão voltar ao topo ──</span>
+<span class="prop">const</span> btnTopo = document.getElementById(<span class="str">'btn-topo'</span>);
+
+window.addEventListener(<span class="str">'scroll'</span>, () => {
+  <span class="prop">if</span> (window.scrollY > <span class="val">400</span>) {
+    btnTopo.classList.add(<span class="str">'visivel'</span>);
+  } <span class="prop">else</span> {
+    btnTopo.classList.remove(<span class="str">'visivel'</span>);
+  }
+});
+
+btnTopo.addEventListener(<span class="str">'click'</span>, () => {
+  window.scrollTo({ <span class="prop">top</span>: <span class="val">0</span>, <span class="prop">behavior</span>: <span class="str">'smooth'</span> });
+});</div>
+            <p>O <code>window.scrollY</code> retorna quantos pixels a página já rolou. Se rolou mais de 400px, mostra o botão; se rolou menos, esconde. O <code>position: fixed</code> no CSS garante que ele fica no canto da tela mesmo enquanto rola.</p>
+
+            <h3>JS 4 — Validação do formulário de contato</h3>
+            <p>Quando o usuário clicar em "Enviar", conferimos se os campos foram preenchidos corretamente antes de "enviar" (neste caso, mostrar uma mensagem de sucesso):</p>
+            <div class="code-block"><span class="code-label">script.js</span><span class="cm">// ── Validação do formulário ──</span>
+<span class="prop">const</span> form = document.getElementById(<span class="str">'form-contato'</span>);
+
+form.addEventListener(<span class="str">'submit'</span>, (e) => {
+  e.preventDefault();  <span class="cm">// impede o envio real (não temos back-end)</span>
+
+  <span class="prop">const</span> nome = document.getElementById(<span class="str">'nome'</span>).value.trim();
+  <span class="prop">const</span> email = document.getElementById(<span class="str">'email'</span>).value.trim();
+  <span class="prop">const</span> mensagem = document.getElementById(<span class="str">'mensagem'</span>).value.trim();
+
+  <span class="cm">// Verifica se algum campo ficou vazio</span>
+  <span class="prop">if</span> (!nome || !email || !mensagem) {
+    alert(<span class="str">'Por favor, preencha todos os campos.'</span>);
+    <span class="prop">return</span>;
+  }
+
+  <span class="cm">// Verifica se o e-mail tem formato válido</span>
+  <span class="prop">if</span> (!email.includes(<span class="str">'@'</span>) || !email.includes(<span class="str">'.'</span>)) {
+    alert(<span class="str">'Por favor, insira um e-mail válido.'</span>);
+    <span class="prop">return</span>;
+  }
+
+  <span class="cm">// Tudo certo — mostra mensagem de sucesso</span>
+  alert(<span class="str">'Mensagem enviada com sucesso! (simulação)'</span>);
+  form.reset();  <span class="cm">// limpa os campos</span>
+});</div>
+            <p>O <code>e.preventDefault()</code> impede o formulário de recarregar a página. O <code>.trim()</code> remove espaços em branco no início e fim do texto — sem ele, alguém que digitasse só espaços passaria na validação. O <code>form.reset()</code> limpa todos os campos do formulário.</p>
+
+            <div class="highlight">
+                <strong>Não precisa usar estes quatro.</strong> A atividade pede <em>pelo menos uma</em> interação. Escolha a(s) que fizerem sentido pro seu site, ou invente as suas — um contador animado, uma galeria de imagens, um FAQ que abre/fecha, o que quiser. O importante é que seja <strong>algo funcional</strong>, não só decoração.
+            </div>
+
+            <!-- ============================================= -->
+            <!--  DICAS EXTRAS DE CSS                          -->
+            <!-- ============================================= -->
+            <h2>💡 Dicas extras de CSS</h2>
+
+            <h3>Centralizar qualquer coisa com Flexbox</h3>
+            <p>Se precisar centralizar algo (horizontal e verticalmente), use:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.centralizado</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">justify-content</span>: <span class="val">center</span>;  <span class="cm">/* centraliza no eixo horizontal */</span>
+  <span class="prop">align-items</span>: <span class="val">center</span>;      <span class="cm">/* centraliza no eixo vertical */</span>
+}</div>
+
+            <h3>Espaçamento com gap (em vez de margin)</h3>
+            <p>Dentro de um container <code>flex</code>, use <code>gap</code> em vez de <code>margin</code> nos filhos — é mais limpo:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* Em vez de dar margin-right em cada card... */</span>
+<span class="prop">.container-cards</span> {
+  <span class="prop">display</span>: <span class="val">flex</span>;
+  <span class="prop">gap</span>: <span class="val">24px</span>;   <span class="cm">/* espaço entre os itens, sem margin */</span>
+}</div>
+
+            <h3>Limitar a largura do conteúdo sem perder o fundo</h3>
+            <p>Quando uma seção tem fundo colorido de ponta a ponta, mas o texto precisa ficar centralizado e limitado:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="cm">/* A section ocupa toda a largura (fundo colorido).
+   O conteúdo dentro fica limitado a 1100px e centralizado. */</span>
+<span class="prop">.secao</span> {
+  <span class="prop">background</span>: <span class="val">#f8f5ff</span>;
+  <span class="prop">padding</span>: <span class="val">80px 40px</span>;
+}
+
+<span class="prop">.secao .conteudo</span> {
+  <span class="prop">max-width</span>: <span class="val">1100px</span>;
+  <span class="prop">margin</span>: <span class="val">0 auto</span>;  <span class="cm">/* auto nas laterais = centralizado */</span>
+}</div>
+
+            <h3>Sombra de texto para legibilidade em imagens</h3>
+            <p>Se colocar texto sobre uma imagem de fundo, uma sombra sutil ajuda a ler:</p>
+            <div class="code-block"><span class="code-label">style.css</span><span class="prop">.hero-com-foto</span> {
+  <span class="prop">background</span>: <span class="val">url('imagens/foto-hero.jpg') center/cover</span>;
+  <span class="prop">color</span>: <span class="val">#fff</span>;
+}
+
+<span class="prop">.hero-com-foto h1</span> {
+  <span class="prop">text-shadow</span>: <span class="val">0 2px 10px rgba(0,0,0,0.5)</span>;
+}</div>
+
+            <!-- ============================================= -->
+            <!--  REQUISITOS + ENTREGA + CHECKLIST             -->
+            <!-- ============================================= -->
+            <h2>⚙️ Requisitos técnicos</h2>
+            <p>A criatividade é livre — mas estes pontos valem para qualquer versão do seu site:</p>
+            <ul>
+                <li><strong>HTML semântico</strong> — use as tags certas para cada parte (<code>&lt;header&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>, <code>&lt;nav&gt;</code>), não tudo em <code>&lt;div&gt;</code>;</li>
+                <li><strong>CSS todo seu</strong> — sem frameworks prontos tipo Bootstrap; o objetivo é praticar CSS de verdade;</li>
+                <li><strong>Responsivo</strong> — o site precisa funcionar bem tanto no computador quanto no celular (use <code>@media</code>);</li>
+                <li><strong>Pelo menos 1 interação em JavaScript</strong> — menu mobile, validação de formulário, efeito de scroll, etc.;</li>
+                <li><strong>Imagens leves</strong> — comprima as imagens antes de usar, para o site carregar rápido.</li>
+            </ul>
+
+            <h2>📦 Entrega — como salvar seu progresso</h2>
+            <p>Esta atividade <strong>não tem data de entrega marcada</strong> — ela é grande de propósito, para você desenvolver com calma ao longo de várias aulas. A forma de "entregar" é simples:</p>
+
+            <div class="success">
+                Sempre que terminar uma parte (uma seção, um efeito, uma correção), faça um commit descrevendo o que fez, e dê <code>git push</code>. Não sabe como? Veja o guia <a href="site-git-repositorio.html" style="color:#0a5c2e;font-weight:700;">Git e GitHub — Criando seu Repositório</a> antes de começar.
+            </div>
+
+            <h3>Sugestão de commits ao longo do projeto</h3>
+            <p>Não espere o site ficar pronto para commitar. Cada etapa merece um commit separado:</p>
+            <div class="code-block"><span class="code-label">terminal</span><span class="cm"># Primeiro commit — só a estrutura HTML</span>
+git add .
+git commit -m <span class="str">"Criar estrutura HTML com header, hero e sections"</span>
+git push
+
+<span class="cm"># Segundo commit — CSS do cabeçalho e hero</span>
+git add .
+git commit -m <span class="str">"Estilizar header com navbar sticky e hero com gradiente"</span>
+git push
+
+<span class="cm"># Terceiro commit — seção de recursos</span>
+git add .
+git commit -m <span class="str">"Adicionar cards de recursos com hover e flex grid"</span>
+git push
+
+<span class="cm"># E assim por diante...</span></div>
+            <p>Seu instrutor vai acompanhar o histórico de commits do seu repositório no GitHub — múltiplos commits ao longo do tempo mostram seu processo de trabalho e sua evolução.</p>
+
+            <h2>✅ Checklist antes de considerar concluído</h2>
+            <ul class="checklist">
+                <li>Cabeçalho com navegação (logo + links), hero, recursos, preços e contato/rodapé estão presentes;</li>
+                <li>O CSS tem estilos para todas as seções: header, hero, cards, planos, formulário e rodapé;</li>
+                <li>Os botões e cards têm efeito hover com <code>transition</code>;</li>
+                <li>O site fica legível e utilizável tanto no celular quanto no computador (<code>@media</code> funcionando);</li>
+                <li>Existe pelo menos uma interação em JavaScript funcionando (menu mobile, validação, scroll, etc.);</li>
+                <li>As imagens usadas têm crédito/fonte anotado (mesmo que num comentário no HTML);</li>
+                <li>O repositório no GitHub tem vários commits, não só um único commit final;</li>
+                <li>Os arquivos estão organizados: <code>index.html</code>, <code>style.css</code>, <code>script.js</code> (e no máximo mais 2 páginas HTML, se dividiu).</li>
+            </ul>
+        </main>
+
+        <aside class="col-lateral">
+            <div class="sidebar-bloco">
+                <h3>Nesta atividade</h3>
+                <ul>
+                    <li><strong>Nível:</strong> Iniciante</li>
+                    <li><strong>Pré-requisito:</strong> concluir o guia de Git</li>
+                    <li><strong>Prazo:</strong> sem prazo fixo</li>
+                    <li><strong>Entrega:</strong> commits no seu repositório</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Ideias de produto SaaS</h3>
+                <div class="tema-tags">
+                    <span class="tema-tag">App de estudos</span>
+                    <span class="tema-tag">Gestor de tarefas</span>
+                    <span class="tema-tag">Editor de imagens</span>
+                    <span class="tema-tag">Controle financeiro</span>
+                    <span class="tema-tag">Agenda de treinos</span>
+                    <span class="tema-tag">Assistente de receitas</span>
+                    <span class="tema-tag">Plataforma de cursos</span>
+                    <span class="tema-tag">Gestor de redes sociais</span>
+                </div>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Onde buscar imagens</h3>
+                <ul>
+                    <li>Unsplash (fotos)</li>
+                    <li>Pexels (fotos)</li>
+                    <li>unDraw (ilustrações)</li>
+                    <li>Flaticon / Font Awesome (ícones)</li>
+                </ul>
+            </div>
+
+            <div class="sidebar-bloco">
+                <h3>Lembrete</h3>
+                <p style="font-size:0.9em;color:#555;">Commit cedo, commit sempre. Não espere o site "ficar pronto" para dar o primeiro commit — o primeiro commit pode ser só a estrutura HTML vazia.</p>
+            </div>
+        </aside>
+    </div>
+
+    <footer>
+        <p><strong>Criando seu Site</strong> — Atividade 1 de 5</p>
+        <p>Microlins São José — HTML, CSS e JavaScript aplicados a um projeto real</p>
+    </footer>
+</div>
+</body>
+</html>

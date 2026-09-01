@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contas a Pagar usando o Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #1d6f42; color: #fff; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📋 Contas a Pagar usando o Excel</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>1️⃣ Contas a Pagar</h2>
+        <p>Elaborar a planilha abaixo, fazendo-se o que se pede:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th></tr>
+                <tr><td class="rownum">1</td><td colspan="7" class="merged">CONTAS A PAGAR</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="headcell">JANEIRO</td><td class="headcell">FEVEREIRO</td><td class="headcell">MARÇO</td><td class="headcell">ABRIL</td><td class="headcell">MAIO</td><td class="headcell">JUNHO</td></tr>
+                <tr><td class="rownum">4</td><td class="headcell">SALÁRIO</td><td class="money">R$ 500,00</td><td class="money">R$ 750,00</td><td class="money">R$ 800,00</td><td class="money">R$ 700,00</td><td class="money">R$ 654,00</td><td class="money">R$ 700,00</td></tr>
+                <tr><td class="rownum">5</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td class="headcell">CONTAS</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>ÁGUA</td><td class="money">R$ 10,00</td><td class="money">R$ 15,00</td><td class="money">R$ 15,00</td><td class="money">R$ 12,00</td><td class="money">R$ 12,00</td><td class="money">R$ 11,00</td></tr>
+                <tr><td class="rownum">8</td><td>LUZ</td><td class="money">R$ 50,00</td><td class="money">R$ 60,00</td><td class="money">R$ 54,00</td><td class="money">R$ 55,00</td><td class="money">R$ 54,00</td><td class="money">R$ 56,00</td></tr>
+                <tr><td class="rownum">9</td><td>ESCOLA</td><td class="money">R$ 300,00</td><td class="money">R$ 250,00</td><td class="money">R$ 300,00</td><td class="money">R$ 300,00</td><td class="money">R$ 200,00</td><td class="money">R$ 200,00</td></tr>
+                <tr><td class="rownum">10</td><td>IPTU</td><td class="money">R$ 40,00</td><td class="money">R$ 40,00</td><td class="money">R$ 40,00</td><td class="money">R$ 40,00</td><td class="money">R$ 40,00</td><td class="money">R$ 40,00</td></tr>
+                <tr><td class="rownum">11</td><td>IPVA</td><td class="money">R$ 10,00</td><td class="money">R$ 15,00</td><td class="money">R$ 14,00</td><td class="money">R$ 15,00</td><td class="money">R$ 20,00</td><td class="money">R$ 31,00</td></tr>
+                <tr><td class="rownum">12</td><td>SHOPPING</td><td class="money">R$ 120,00</td><td class="money">R$ 150,00</td><td class="money">R$ 130,00</td><td class="money">R$ 200,00</td><td class="money">R$ 150,00</td><td class="money">R$ 190,00</td></tr>
+                <tr><td class="rownum">13</td><td>COMBUSTÍVEL</td><td class="money">R$ 50,00</td><td class="money">R$ 60,00</td><td class="money">R$ 65,00</td><td class="money">R$ 70,00</td><td class="money">R$ 65,00</td><td class="money">R$ 85,00</td></tr>
+                <tr><td class="rownum">14</td><td>ACADEMIA</td><td class="money">R$ 145,00</td><td class="money">R$ 145,00</td><td class="money">R$ 145,00</td><td class="money">R$ 145,00</td><td class="money">R$ 100,00</td><td class="money">R$ 145,00</td></tr>
+                <tr><td class="rownum">15</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td class="headcell">TOTAL DE CONTAS</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">17</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">18</td><td class="headcell">SALDO</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Fórmulas:</h3>
+        <ul>
+            <li><strong>Total de Contas:</strong> soma das contas de cada mês.</li>
+            <li><strong>Saldo:</strong> Salário menos Total de Contas.</li>
+        </ul>
+
+        <h2>2️⃣ Folha da Araras Informática</h2>
+        <p>Elaborar as planilhas abaixo, fazendo-se o que se pede:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th></tr>
+                <tr><td class="rownum">1</td><td colspan="8" class="merged">Araras Informática - Hardware e Software</td></tr>
+                <tr><td class="rownum">2</td><td colspan="8" class="merged">Rua São Francisco de Assis, 123 - Araras SP</td></tr>
+                <tr><td class="rownum">3</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td class="headcell">Nº</td><td class="headcell">NOME</td><td class="headcell">Salário Bruto</td><td class="headcell">INSS</td><td class="headcell">Gratificação</td><td class="headcell">INSS R$</td><td class="headcell">Gratificação R$</td><td class="headcell">Salário Líquido</td></tr>
+                <tr><td class="rownum">5</td><td>1</td><td>Eduardo</td><td class="money">R$ 853,00</td><td class="money">10,00%</td><td class="money">9,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>2</td><td>Maria</td><td class="money">R$ 951,00</td><td class="money">9,99%</td><td class="money">8,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>3</td><td>Helena</td><td class="money">R$ 456,00</td><td class="money">8,64%</td><td class="money">6,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>4</td><td>Gabriela</td><td class="money">R$ 500,00</td><td class="money">8,50%</td><td class="money">6,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>5</td><td>Edson</td><td class="money">R$ 850,00</td><td class="money">8,99%</td><td class="money">7,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td>6</td><td>Elisangela</td><td class="money">R$ 459,00</td><td class="money">6,25%</td><td class="money">5,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">11</td><td>7</td><td>Regina</td><td class="money">R$ 478,00</td><td class="money">7,12%</td><td class="money">5,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td>8</td><td>Paulo</td><td class="money">R$ 658,00</td><td class="money">5,99%</td><td class="money">4,00%</td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Fórmulas</h3>
+        <ul>
+            <li><strong>INSS R$:</strong> multiplicar Salário Bruto por INSS.</li>
+            <li><strong>Gratificação R$:</strong> multiplicar Salário Bruto por Gratificação.</li>
+            <li><strong>Salário Líquido:</strong> Salário Bruto mais Gratificação R$ menos INSS R$.</li>
+        </ul>
+
+        <div class="aviso">⚠️ <strong>Atenção:</strong> Formatar os números para que eles apareçam de acordo com a planilha dada.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

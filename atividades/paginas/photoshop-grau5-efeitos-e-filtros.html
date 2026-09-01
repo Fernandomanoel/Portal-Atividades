@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 5 (Efeitos e Filtros Criativos)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; }
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1e3a8a; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6;
+        }
+        .code-label {
+            background: #2563eb; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla { background: #2d2d2d; border: 1px solid #555; border-radius: 4px; padding: 1px 7px; color: #dcdcaa; font-size: 0.92em; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Objeto Inteligente */
+        .smart-diagram { display: flex; align-items: center; justify-content: center; gap: 16px; margin: 20px 0; flex-wrap: wrap; }
+        .smart-box { width: 130px; height: 130px; border-radius: 8px; border: 3px solid #2563eb; position: relative; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #93c5fd, #1e3a8a); }
+        .smart-box::after { content: '🔗'; position: absolute; bottom: 6px; right: 6px; font-size: 1.3em; background: #fff; border-radius: 4px; padding: 1px 4px; }
+        .smart-label { text-align: center; margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.85em; }
+        .smart-op { font-size: 1.8em; color: #2563eb; font-weight: 700; }
+
+        /* Filtros CSS ao vivo */
+        .filtro-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 18px 0; }
+        .filtro-card { text-align: center; }
+        .filtro-swatch { height: 110px; border-radius: 8px; background: linear-gradient(135deg, #f97316 0%, #eab308 35%, #16a34a 65%, #2563eb 100%); }
+        .f-desfoque { filter: blur(4px); }
+        .f-nitidez { filter: contrast(1.5) saturate(1.3); }
+        .f-ruido { position: relative; overflow: hidden; }
+        .f-ruido::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.5) 1px, transparent 1px);
+            background-size: 3px 3px; mix-blend-mode: overlay; opacity: 0.6;
+        }
+        .f-pixelizar { filter: blur(0px); image-rendering: pixelated; transform: scale(1); }
+        .filtro-nome { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.88em; }
+
+        /* Dupla exposição */
+        .de-diagram { display: flex; align-items: center; justify-content: center; gap: 14px; margin: 20px 0; flex-wrap: wrap; }
+        .de-box { width: 130px; height: 160px; border-radius: 8px; border: 2px solid #2563eb; }
+        .de-silhueta { background: #111827; clip-path: polygon(50% 0%, 65% 15%, 62% 45%, 80% 60%, 70% 100%, 30% 100%, 20% 60%, 38% 45%, 35% 15%); }
+        .de-paisagem { background: linear-gradient(180deg, #1e3a8a 0%, #7c3aed 40%, #f97316 70%, #fde047 100%); }
+        .de-resultado { background: #111827; position: relative; overflow: hidden; }
+        .de-resultado::before {
+            content: '';
+            position: absolute; inset: 0;
+            clip-path: polygon(50% 0%, 65% 15%, 62% 45%, 80% 60%, 70% 100%, 30% 100%, 20% 60%, 38% 45%, 35% 15%);
+            background: linear-gradient(180deg, #1e3a8a 0%, #7c3aed 40%, #f97316 70%, #fde047 100%);
+            mix-blend-mode: screen;
+        }
+        .de-legenda { text-align: center; margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.85em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 5</h1>
+            <p>Efeitos e filtros criativos: Objetos Inteligentes, filtros e o efeito de dupla exposição</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 15 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Já concluiu os Graus 1 a 4<br>
+                        <strong>Tempo:</strong> ~1h15<br>
+                        <strong>Requisitos:</strong> Photoshop instalado, um retrato e uma foto de paisagem/textura para a dupla exposição
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 5</h2>
+                    <p>Você já domina forma, cor e composição. Este grau ensina a trabalhar de forma
+                    <strong>não destrutiva com filtros</strong> — para poder experimentar à vontade sem medo de
+                    estragar a imagem original — e fecha com um efeito artístico clássico: a dupla exposição.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Converter uma camada em Objeto Inteligente</li>
+                            <li>Aplicar Filtros Inteligentes (não destrutivos)</li>
+                            <li>Usar desfoque, nitidez e ruído com intenção</li>
+                            <li>Montar um efeito de dupla exposição</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Objetos Inteligentes — o Conceito</h2>
+                    <p>Um <strong>Objeto Inteligente</strong> guarda os dados originais da imagem "dentro" da
+                    camada, mesmo depois de redimensionar ou aplicar filtros. É o "modo seguro" de editar.</p>
+
+                    <div class="smart-diagram">
+                        <div class="smart-box"></div>
+                        <div class="smart-op">≠</div>
+                        <div class="smart-box" style="border-style: dashed; opacity: 0.5;"></div>
+                    </div>
+                    <div class="smart-label" style="display:flex; justify-content:center; gap:70px;">
+                        <span>Objeto Inteligente<br>(ícone 🔗 na miniatura)</span>
+                        <span>Camada normal<br>(sem proteção)</span>
+                    </div>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo">Clique com o botão direito na camada → <b>Converter para Objeto Inteligente</b></span></div>
+
+                    <div class="success">
+                        ✅ Redimensionar um Objeto Inteligente várias vezes nunca perde qualidade — o Photoshop
+                        sempre recalcula a partir dos dados originais guardados.
+                    </div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Filtros Inteligentes</h2>
+                    <p>Aplicar um filtro em um Objeto Inteligente cria um <strong>Filtro Inteligente</strong> —
+                    aparece como uma linha própria abaixo da camada, com sua própria máscara, e pode ser
+                    reaberto e ajustado a qualquer momento.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Converta a camada em Objeto Inteligente (capítulo anterior)</span><br>
+<span class="passo"><b>2.</b> Menu <b>Filtro</b> → escolha qualquer filtro</span><br>
+<span class="passo"><b>3.</b> O filtro aparece como uma linha extra na camada — duplo clique nele para reabrir e ajustar</span></div>
+
+                    <div class="highlight">
+                        💡 A máscara do Filtro Inteligente funciona exatamente como a máscara de camada do
+                        Grau 2 — pinte de preto para remover o efeito só de uma área.
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Desfoque, Nitidez e Ruído</h2>
+                    <div class="filtro-grid">
+                        <div class="filtro-card"><div class="filtro-swatch"></div><div class="filtro-nome">Original</div></div>
+                        <div class="filtro-card"><div class="filtro-swatch f-desfoque"></div><div class="filtro-nome">Desfoque Gaussiano</div></div>
+                        <div class="filtro-card"><div class="filtro-swatch f-nitidez"></div><div class="filtro-nome">Nitidez (Sharpen)</div></div>
+                        <div class="filtro-card"><div class="filtro-swatch f-ruido"></div><div class="filtro-nome">Adicionar Ruído</div></div>
+                    </div>
+                    <p class="diagrama-titulo">Renderizado ao vivo pelo navegador para dar a ideia do efeito de cada filtro.</p>
+
+                    <table>
+                        <tr><th>Filtro</th><th>Caminho</th><th>Uso comum</th></tr>
+                        <tr><td>Desfoque Gaussiano</td><td>Filtro → Desfocar → Desfoque Gaussiano</td><td>Suavizar fundo, simular profundidade de campo</td></tr>
+                        <tr><td>Máscara de Nitidez</td><td>Filtro → Nitidez → Máscara de Nitidez</td><td>Realçar detalhes antes de exportar</td></tr>
+                        <tr><td>Adicionar Ruído</td><td>Filtro → Ruído → Adicionar Ruído</td><td>Disfarçar transições de retoque, dar textura de filme</td></tr>
+                    </table>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Galeria de Filtros</h2>
+                    <p>Menu <strong>Filtro → Galeria de Filtros</strong> reúne dezenas de efeitos artísticos
+                    (aquarela, giz de cera, textura de tela) em uma janela de pré-visualização única, todos
+                    combináveis entre si em camadas de efeito.</p>
+
+                    <div class="highlight">
+                        💡 Use sempre em um Objeto Inteligente — a Galeria de Filtros é pesada para desfazer e
+                        refazer sem essa proteção.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ Filtros artísticos datam facilmente uma peça gráfica (lembram o visual dos anos 2000).
+                        Use com moderação, geralmente em uma camada separada com opacidade reduzida.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Dupla Exposição — o Conceito</h2>
+                    <p>A técnica combina a <strong>silhueta</strong> de um retrato com uma segunda imagem
+                    (paisagem, textura, fumaça) usando um modo de mesclagem — o resultado parece uma exposição
+                    dupla de câmera analógica.</p>
+
+                    <div class="de-diagram">
+                        <div class="de-box de-silhueta"></div>
+                        <div style="font-size:1.8em; color:#2563eb; font-weight:700;">+</div>
+                        <div class="de-box de-paisagem"></div>
+                        <div style="font-size:1.8em; color:#2563eb; font-weight:700;">=</div>
+                        <div class="de-box de-resultado"></div>
+                    </div>
+                    <div class="de-legenda" style="display:flex; justify-content:center; gap:56px;">
+                        <span>Silhueta</span><span></span><span>Paisagem</span><span></span><span>Resultado (Tela)</span>
+                    </div>
+                    <p class="diagrama-titulo">O modo de mesclagem "Tela", que você já viu no Grau 2, é a base desse efeito.</p>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Preparando a Silhueta</h2>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Abra o retrato e selecione a pessoa (Seleção Rápida do Grau 1, ou Selecionar e Máscara do Grau 2)</span><br>
+<span class="passo"><b>2.</b> Camada de ajuste <b>Preto e Branco</b> ou <b>Níveis</b> (Grau 3) para escurecer bastante a figura, quase silhueta</span><br>
+<span class="passo"><b>3.</b> Adicione uma máscara de camada baseada na seleção (botão "Adicionar Máscara" com a seleção ativa)</span></div>
+
+                    <div class="warning">
+                        ⚠️ Quanto mais escura e "chapada" a silhueta, mais nítido fica o efeito de dupla
+                        exposição depois. Uma silhueta cinza-clara deixa o resultado fraco.
+                    </div>
+                </section>
+
+                <!-- 8 (Prática) -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Prática — Montando a Dupla Exposição</h2>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Com a silhueta pronta (capítulo anterior), arraste a foto de paisagem para o mesmo documento, por cima</span><br>
+<span class="passo"><b>2.</b> No painel de Camadas, defina o Modo de Mesclagem da paisagem para <b>Tela</b> (Grau 2)</span><br>
+<span class="passo"><b>3.</b> <span class="tecla">Alt</span> + clique entre as duas camadas para "cortar" (clipping mask) a paisagem só dentro da silhueta</span><br>
+<span class="passo"><b>4.</b> Ajuste posição e escala da paisagem (<span class="tecla">Ctrl</span>+<span class="tecla">T</span>) até a composição ficar interessante</span></div>
+
+                    <div class="success">
+                        ✅ Clipping mask (máscara de recorte) é diferente de máscara de camada: em vez de pintar
+                        preto/branco, ela usa a forma da camada de baixo como limite automático.
+                    </div>
+                </section>
+
+                <!-- 9 (desafio/inovação) -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Desafio Bônus — Camada de Textura</h2>
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> adicione uma terceira camada com uma textura (papel
+                        amassado, grão de filme, respingos de tinta) por cima de tudo, em modo de mesclagem
+                        "Multiplicar" ou "Sobrepor" (Grau 2), com opacidade baixa (15-25%). Isso costuma dar o
+                        toque final que separa um efeito "bom" de um "profissional".
+                    </div>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Atalhos do Grau 5 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Ação</th><th>Caminho</th></tr>
+                        <tr><td>Converter em Objeto Inteligente</td><td>Botão direito na camada → Converter para Objeto Inteligente</td></tr>
+                        <tr><td>Desfoque Gaussiano</td><td>Filtro → Desfocar → Desfoque Gaussiano</td></tr>
+                        <tr><td>Adicionar Ruído</td><td>Filtro → Ruído → Adicionar Ruído</td></tr>
+                        <tr><td>Criar clipping mask</td><td><span class="tecla">Alt</span> + clique entre duas camadas</td></tr>
+                        <tr><td>Transformação livre</td><td><span class="tecla">Ctrl</span>+<span class="tecla">T</span></td></tr>
+                    </table>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Erros Comuns do Grau 5</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Apliquei um filtro e não consigo mais desfazer sem perder tudo."</strong><br>
+                        Sinal de que a camada não era um Objeto Inteligente. A partir de agora, converta antes de
+                        filtrar — é o hábito mais importante deste grau.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A dupla exposição não aparece, só fica preto."</strong><br>
+                        Confira o Modo de Mesclagem da camada de paisagem — se estiver em "Normal" em vez de
+                        "Tela", o efeito de mistura de luz não acontece.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A paisagem vaza para fora da silhueta."</strong><br>
+                        Falta o clipping mask (<span class="tecla">Alt</span> + clique entre as camadas) — sem
+                        ele, a paisagem cobre a imagem inteira, não só a forma da silhueta.
+                    </div>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Checklist Final e Prévia do Grau 6</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 5, confirme:</h4>
+                        <ul>
+                            <li>✅ Converti uma camada em Objeto Inteligente</li>
+                            <li>✅ Apliquei um Filtro Inteligente e reabri para ajustar</li>
+                            <li>✅ Testei Desfoque Gaussiano, Nitidez e Ruído</li>
+                            <li>✅ Preparei uma silhueta escura de um retrato</li>
+                            <li>✅ Montei uma dupla exposição com modo de mesclagem "Tela" + clipping mask</li>
+                            <li>✅ Adicionei uma camada de textura para o acabamento final</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 5. No <strong>Grau 6</strong>, o mais avançado até
+                        aqui, você vai aprender <strong>composição fantástica</strong>: combinar fotos de fontes
+                        completamente diferentes de forma realista — correção de perspectiva, harmonização de
+                        cor e luz entre os elementos, e um desafio final criativo e livre.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 5</strong> | 12 capítulos | ~1h15 de aprendizado</p>
+            <p>Efeitos e filtros criativos: do não destrutivo à dupla exposição</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 12;
+
+        const chapters = [
+            "Bem-vindo ao Grau 5",
+            "Objetos Inteligentes",
+            "Filtros Inteligentes",
+            "Desfoque, Nitidez e Ruído",
+            "Galeria de Filtros",
+            "Dupla Exposição — Conceito",
+            "Preparando a Silhueta",
+            "Prática — Montando a Dupla Exposição",
+            "Desafio Bônus — Camada de Textura",
+            "Atalhos do Grau 5",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

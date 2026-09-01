@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 1 (Guia Completo)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .duracao-badge {
+            display: inline-block;
+            margin-top: 14px;
+            background: rgba(255,255,255,0.18);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 300px;
+            background: #f5f5f5;
+            border-right: 2px solid #e0e0e0;
+            overflow-y: auto;
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1em;
+            text-transform: uppercase;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 8px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin: 8px 0;
+        }
+
+        .sidebar a {
+            color: #555;
+            text-decoration: none;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.3s;
+            font-size: 0.88em;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background: #2563eb;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 50px;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+
+        .chapter {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .chapter.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+            font-size: 2em;
+        }
+
+        h3 {
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        p, li {
+            margin-bottom: 12px;
+            font-size: 1em;
+            line-height: 1.8;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace;
+            font-size: 0.92em;
+            line-height: 1.6;
+        }
+
+        .code-label {
+            background: #2563eb;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px 4px 0 0;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: -5px;
+        }
+
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla {
+            background: #2d2d2d;
+            border: 1px solid #555;
+            border-radius: 4px;
+            padding: 1px 7px;
+            color: #dcdcaa;
+            font-size: 0.92em;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #721c24;
+        }
+
+        .success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+            color: #155724;
+        }
+
+        .box {
+            background: #f0f7ff;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .box h4 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            border: 1px solid #ddd;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #1e40af;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #2563eb;
+            transition: width 0.3s;
+        }
+
+        footer {
+            background: #f5f5f5;
+            border-top: 2px solid #e0e0e0;
+            padding: 30px 50px;
+            text-align: center;
+            color: #666;
+        }
+
+        @media (max-width: 1024px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                max-height: none;
+                position: static;
+                border-right: none;
+                border-bottom: 2px solid #e0e0e0;
+            }
+
+            .content {
+                padding: 30px;
+                max-height: none;
+            }
+        }
+
+        /* Material de apoio (imagens reais) */
+        .material-frame { max-width: 320px; margin: 18px auto; border: 2px solid #2563eb; border-radius: 8px; overflow: hidden; }
+        .material-frame img { display: block; width: 100%; height: auto; }
+        .material-download { display: inline-block; margin-top: 6px; padding: 4px 10px; background: #2563eb; color: #fff; border-radius: 4px; font-size: 0.78em; text-decoration: none; }
+
+        /* ===== Diagramas ilustrativos (CSS puro) ===== */
+        .diagrama-titulo {
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Mapa da tela */
+        .ws-map {
+            display: grid;
+            grid-template-columns: 74px 1fr 150px;
+            grid-template-rows: 36px 30px 1fr;
+            gap: 4px;
+            height: 320px;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #2563eb;
+        }
+        .ws-map > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.85em;
+            padding: 4px;
+        }
+        .ws-menu   { grid-column: 1 / 4; grid-row: 1; background: #1e3a8a; color: #fff; font-weight: 600; }
+        .ws-opts   { grid-column: 1 / 4; grid-row: 2; background: #3b5fc4; color: #fff; font-size: 0.78em !important; }
+        .ws-tools  { grid-column: 1; grid-row: 3; background: #dbeafe; color: #1e3a8a; flex-direction: column; gap: 4px; }
+        .ws-canvas { grid-column: 2; grid-row: 3; background: repeating-conic-gradient(#f8fafc 0% 25%, #e2e8f0 0% 50%) 0 0/22px 22px; color: #64748b; }
+        .ws-panels { grid-column: 3; grid-row: 3; background: #eef2ff; color: #3730a3; flex-direction: column !important; gap: 8px; }
+        .ws-num {
+            display: inline-flex;
+            width: 20px; height: 20px;
+            background: #2563eb; color: #fff;
+            border-radius: 50%;
+            align-items: center; justify-content: center;
+            font-size: 0.8em; font-weight: 700;
+            margin-right: 4px;
+        }
+        .ws-legenda {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+            margin-top: 14px;
+            font-size: 0.9em;
+        }
+        .ws-legenda div { display: flex; align-items: flex-start; gap: 6px; }
+
+        /* Caixa de ferramentas com ícones */
+        .toolbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .tool-card {
+            background: #f0f7ff;
+            border: 2px solid #bcd4f5;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+        }
+        .tool-icone {
+            width: 44px; height: 44px;
+            border-radius: 8px;
+            background: #2563eb;
+            color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4em;
+            margin: 0 auto 8px;
+        }
+        .tool-nome { font-weight: 700; color: #1e3a8a; font-size: 0.92em; }
+        .tool-tecla { color: #666; font-size: 0.8em; margin-top: 2px; }
+
+        /* Painel de camadas */
+        .layers-panel {
+            max-width: 360px;
+            border: 2px solid #2563eb;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 16px 0;
+        }
+        .layers-head {
+            background: #1e3a8a; color: #fff;
+            padding: 8px 12px; font-weight: 600; font-size: 0.9em;
+            display: flex; justify-content: space-between;
+        }
+        .layer-row {
+            display: flex; align-items: center; gap: 10px;
+            padding: 8px 12px;
+            border-top: 1px solid #dbeafe;
+            background: #f8fafc;
+            font-size: 0.88em;
+        }
+        .layer-row.selecionada { background: #dbeafe; }
+        .layer-olho { width: 18px; text-align: center; color: #2563eb; }
+        .layer-thumb {
+            width: 30px; height: 30px;
+            border-radius: 4px;
+            background: repeating-conic-gradient(#e2e8f0 0% 25%, #f1f5f9 0% 50%) 0 0/10px 10px;
+            border: 1px solid #cbd5e1;
+        }
+        .layers-foot {
+            display: flex; justify-content: flex-end; gap: 8px;
+            padding: 6px 12px;
+            background: #eef2ff;
+        }
+        .layers-foot span {
+            width: 22px; height: 22px;
+            border-radius: 4px;
+            background: #2563eb; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.85em; font-weight: 700;
+        }
+
+        /* Recorte (crop) */
+        .crop-demo {
+            max-width: 380px;
+            margin: 16px auto;
+            position: relative;
+            height: 220px;
+            background: repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 0 0/20px 20px;
+            border-radius: 6px;
+        }
+        .crop-foto {
+            position: absolute;
+            top: 10%; left: 10%; right: 10%; bottom: 10%;
+            background: linear-gradient(135deg, #93c5fd, #1e3a8a);
+            border-radius: 4px;
+        }
+        .crop-area {
+            position: absolute;
+            top: 22%; left: 22%; right: 30%; bottom: 18%;
+            border: 2px dashed #fff;
+            box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);
+        }
+        .crop-alca {
+            position: absolute;
+            width: 10px; height: 10px;
+            background: #fff;
+            border: 2px solid #2563eb;
+        }
+        .crop-alca.tl { top: -6px; left: -6px; }
+        .crop-alca.tr { top: -6px; right: -6px; }
+        .crop-alca.bl { bottom: -6px; left: -6px; }
+        .crop-alca.br { bottom: -6px; right: -6px; }
+
+        /* Antes / depois - remoção de fundo */
+        .antes-depois {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .ad-card { text-align: center; }
+        .ad-caixa {
+            height: 160px;
+            border-radius: 8px;
+            border: 2px solid #bcd4f5;
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .ad-caixa.antes { background: linear-gradient(160deg, #93c5fd 0%, #93c5fd 55%, #4ade80 55%, #16a34a 100%); }
+        .ad-caixa.depois { background: repeating-conic-gradient(#e2e8f0 0% 25%, #f8fafc 0% 50%) 0 0/18px 18px; }
+        .ad-sujeito {
+            width: 60px; height: 100px;
+            background: #fde68a;
+            border-radius: 30px 30px 8px 8px;
+        }
+        .ad-legenda { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.9em; }
+
+        .syntax-js { color: #9cdcfe; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 1</h1>
+            <p>Conhecendo a ferramenta: do zero até a sua primeira imagem editada</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 15 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Iniciante absoluto<br>
+                        <strong>Tempo:</strong> ~1h15<br>
+                        <strong>Requisitos:</strong> Photoshop instalado e uma foto sua (qualquer uma)
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+                </div>
+
+                <!-- CAPÍTULO 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Boas-vindas e a Trilha do Photoshop</h2>
+                    <p>Este curso de Adobe Photoshop foi dividido em <strong>8 graus</strong>, do
+                    iniciante absoluto até o uso avançado da ferramenta. Você está começando pelo
+                    <strong>Grau 1</strong>: conhecer a tela, entender onde fica cada coisa, e fazer
+                    três exercícios práticos de verdade.</p>
+
+                    <table>
+                        <tr><th>Grau</th><th>Tema</th><th>Situação</th></tr>
+                        <tr><td><strong>1</strong></td><td>Conhecendo a ferramenta</td><td>✅ Você está aqui</td></tr>
+                        <tr><td>2</td><td>Seleções e camadas avançadas</td><td>🔒 Em breve</td></tr>
+                        <tr><td>3</td><td>Ajustes de cor e retoque</td><td>🔒 Em breve</td></tr>
+                        <tr><td>4</td><td>Texto, formas e composição</td><td>🔒 Em breve</td></tr>
+                        <tr><td>5</td><td>Efeitos e filtros criativos</td><td>🔒 Em breve</td></tr>
+                        <tr><td>6</td><td>Composição avançada</td><td>🔒 Em breve</td></tr>
+                        <tr><td>7</td><td>Projeto final integrador</td><td>🔒 Em breve</td></tr>
+                        <tr><td>8</td><td>Auras e efeitos de invocação</td><td>🔒 Em breve</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 Esta é uma <strong>versão alternativa</strong> da mesma atividade do Grau 1,
+                        no formato de guia com índice lateral (em vez de slides), para você comparar
+                        os dois estilos lado a lado e escolher o que preferir para o portal.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Objetivo do Grau 1</h2>
+                    <p>Ao final deste guia você vai ser capaz de:</p>
+                    <ul>
+                        <li>Abrir o Photoshop e criar um documento novo</li>
+                        <li>Reconhecer as áreas principais da tela: menus, opções, ferramentas,
+                        painéis e a área de trabalho</li>
+                        <li>Inserir uma imagem sua no documento</li>
+                        <li>Recortar (cortar) a imagem do jeito que você quiser</li>
+                        <li>Remover o fundo de uma foto, por dois caminhos diferentes</li>
+                        <li>Salvar o resultado no formato certo</li>
+                    </ul>
+
+                    <div class="box">
+                        <h4>📷 Sobre a imagem que você vai usar</h4>
+                        <p>Não existe uma imagem "oficial" do exercício — use qualquer foto sua,
+                        de um objeto, de um animal de estimação, o que preferir. O importante é
+                        praticar o caminho, não o resultado final.</p>
+                    </div>
+
+                    <div class="success">
+                        ✅ Não é preciso saber nada de design antes de começar. Cada passo diz
+                        exatamente onde clicar.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. O que é o Photoshop?</h2>
+                    <p>O <strong>Adobe Photoshop</strong> é o programa de edição de imagens mais usado
+                    do mundo, feito pela Adobe. Ele trabalha com <strong>imagens raster</strong> (formadas
+                    por pixels, como fotografias) e permite editar, retocar, montar e criar artes
+                    do zero.</p>
+
+                    <h3>Para que ele é usado no dia a dia</h3>
+                    <table>
+                        <tr><th>Uso</th><th>Exemplo</th></tr>
+                        <tr><td>Tratamento de fotos</td><td>Ajustar cor, brilho, remover imperfeições</td></tr>
+                        <tr><td>Design gráfico</td><td>Artes para redes sociais, banners, cartazes</td></tr>
+                        <tr><td>Montagens</td><td>Combinar várias imagens em uma só composição</td></tr>
+                        <tr><td>Remoção de fundo</td><td>Preparar produtos para catálogos e e-commerce</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 Photoshop edita <strong>pixels</strong> (fotos). Illustrator e CorelDraw
+                        editam <strong>vetores</strong> (formas). São ferramentas complementares, não
+                        concorrentes — por isso ambas aparecem na grade de cursos do curso.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Um Documento Novo</h2>
+                    <p>Tudo começa com um documento em branco (ou com a sua foto já aberta).</p>
+
+                    <h3>Criando do zero</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Menu <b>Arquivo</b> (canto superior esquerdo) → <b>Novo...</b></span><br>
+<span class="passo"><b>2.</b> Ou o atalho <span class="tecla">Ctrl</span> + <span class="tecla">N</span></span><br>
+<span class="passo"><b>3.</b> Escolha um tamanho (ex: 1000 x 1000 px) e clique em <b>Criar</b></span></div>
+
+                    <h3>Abrindo uma foto existente</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Menu <b>Arquivo</b> → <b>Abrir...</b></span><br>
+<span class="passo"><b>2.</b> Ou o atalho <span class="tecla">Ctrl</span> + <span class="tecla">O</span></span><br>
+<span class="passo"><b>3.</b> Selecione o arquivo da sua foto e clique em <b>Abrir</b></span></div>
+
+                    <div class="warning">
+                        ⚠️ Se a tela inicial do Photoshop mostrar só um botão "Novo arquivo" no meio,
+                        é a <strong>tela de boas-vindas</strong> — normal em versões recentes. Os
+                        atalhos acima funcionam do mesmo jeito.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Panorama da Tela</h2>
+                    <p>Antes de clicar em qualquer coisa, vale reconhecer as 5 áreas fixas da tela do
+                    Photoshop. O diagrama abaixo é um mapa simplificado — ele não é uma captura real
+                    do programa, mas mostra exatamente onde cada área fica.</p>
+
+                    <div class="ws-map">
+                        <div class="ws-menu"><span class="ws-num">1</span> Barra de Menus</div>
+                        <div class="ws-opts"><span class="ws-num">2</span> Barra de Opções (muda com a ferramenta)</div>
+                        <div class="ws-tools"><span class="ws-num">3</span> Caixa de<br>Ferramentas</div>
+                        <div class="ws-canvas"><span class="ws-num">4</span> Área de Trabalho (tela/canvas)</div>
+                        <div class="ws-panels"><span class="ws-num">5</span> Painéis<br>(Camadas, Cor...)</div>
+                    </div>
+                    <div class="ws-legenda">
+                        <div><span class="ws-num">1</span> Onde ficam Arquivo, Editar, Imagem, Camada...</div>
+                        <div><span class="ws-num">2</span> Opções da ferramenta selecionada no momento</div>
+                        <div><span class="ws-num">3</span> Coluna vertical à esquerda, com os ícones das ferramentas</div>
+                        <div><span class="ws-num">4</span> Onde a imagem/documento aparece de verdade</div>
+                        <div><span class="ws-num">5</span> Coluna à direita — Camadas é o mais usado</div>
+                    </div>
+                    <p class="diagrama-titulo">Diagrama ilustrativo do layout — as cores e proporções reais variam por versão do Photoshop.</p>
+                </section>
+
+                <!-- CAPÍTULO 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. A Barra de Menus <span class="ws-num" style="background:#2563eb">1</span></h2>
+                    <p>Fica na linha mais alta da janela. É onde ficam os comandos organizados por
+                    categoria.</p>
+
+                    <table>
+                        <tr><th>Menu</th><th>Para que serve</th></tr>
+                        <tr><td><strong>Arquivo</strong></td><td>Novo, Abrir, Salvar, Exportar, Colocar Incorporado</td></tr>
+                        <tr><td><strong>Editar</strong></td><td>Desfazer, Copiar, Colar, Preferências</td></tr>
+                        <tr><td><strong>Imagem</strong></td><td>Tamanho da imagem, Tamanho da tela, Ajustes de cor</td></tr>
+                        <tr><td><strong>Camada</strong></td><td>Nova camada, Máscara de camada, Mesclar</td></tr>
+                        <tr><td><strong>Selecionar</strong></td><td>Selecionar tudo, Inverter seleção, Desmarcar</td></tr>
+                        <tr><td><strong>Janela</strong></td><td>Mostrar ou esconder qualquer painel (Camadas, Histórico...)</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 O menu <strong>Janela</strong> é o "resgate" para quando um painel some sem
+                        querer — basta marcar o nome dele de novo na lista.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Caixa de Ferramentas — Seleção e Movimento <span class="ws-num" style="background:#2563eb">3</span></h2>
+                    <p>É a coluna de ícones à esquerda da tela. Passar o mouse sobre qualquer ícone
+                    mostra o nome da ferramenta e o atalho de teclado.</p>
+
+                    <div class="toolbox-grid">
+                        <div class="tool-card">
+                            <div class="tool-icone">✥</div>
+                            <div class="tool-nome">Mover</div>
+                            <div class="tool-tecla">Tecla V</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">▭</div>
+                            <div class="tool-nome">Seleção Retangular</div>
+                            <div class="tool-tecla">Tecla M</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">🪢</div>
+                            <div class="tool-nome">Laço</div>
+                            <div class="tool-tecla">Tecla L</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">✨</div>
+                            <div class="tool-nome">Seleção Rápida</div>
+                            <div class="tool-tecla">Tecla W</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Ícones ilustrativos — o desenho real de cada ícone varia por versão, mas a posição e o atalho são estáveis.</p>
+
+                    <div class="box">
+                        <h4>🖱️ Como usar a Seleção Rápida</h4>
+                        <p>Clique e arraste sobre a área que você quer selecionar — o Photoshop
+                        detecta bordas automaticamente e "gruda" na forma do objeto. É a base da
+                        remoção de fundo manual, que você vai praticar mais adiante.</p>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Caixa de Ferramentas — Corte, Pintura e Zoom</h2>
+
+                    <div class="toolbox-grid">
+                        <div class="tool-card">
+                            <div class="tool-icone">⛶</div>
+                            <div class="tool-nome">Corte (Crop)</div>
+                            <div class="tool-tecla">Tecla C</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">🖌️</div>
+                            <div class="tool-nome">Pincel</div>
+                            <div class="tool-tecla">Tecla B</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">🧹</div>
+                            <div class="tool-nome">Borracha</div>
+                            <div class="tool-tecla">Tecla E</div>
+                        </div>
+                        <div class="tool-card">
+                            <div class="tool-icone">🔍</div>
+                            <div class="tool-nome">Zoom</div>
+                            <div class="tool-tecla">Tecla Z</div>
+                        </div>
+                    </div>
+
+                    <h3>Cores de frente e fundo</h3>
+                    <p>Bem embaixo da caixa de ferramentas ficam dois quadradinhos sobrepostos: o de
+                    cima é a <strong>cor de frente</strong> (o que o Pincel pinta) e o de baixo é a
+                    <strong>cor de fundo</strong>. Clicar na setinha pequena troca as duas de lugar
+                    — atalho <span class="tecla">X</span>.</p>
+                </section>
+
+                <!-- CAPÍTULO 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. A Barra de Opções <span class="ws-num" style="background:#2563eb">2</span></h2>
+                    <p>Fica logo abaixo da Barra de Menus, e é <strong>contextual</strong>: o conteúdo
+                    dela muda de acordo com a ferramenta selecionada na Caixa de Ferramentas.</p>
+
+                    <table>
+                        <tr><th>Ferramenta ativa</th><th>O que aparece na Barra de Opções</th></tr>
+                        <tr><td>Seleção Retangular</td><td>Modo de seleção, suavização de borda (feather)</td></tr>
+                        <tr><td>Corte</td><td>Proporção (livre, quadrado, 16:9...), sobreposição de grade</td></tr>
+                        <tr><td>Pincel</td><td>Tamanho, dureza, opacidade do traço</td></tr>
+                    </table>
+
+                    <div class="warning">
+                        ⚠️ Erro comum de quem está começando: tentar mudar a proporção do corte em
+                        outro lugar da tela. Ela só aparece ali, na Barra de Opções, e apenas quando
+                        a ferramenta Corte está selecionada.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. O Painel de Camadas <span class="ws-num" style="background:#2563eb">5</span></h2>
+                    <p>Pense em camadas como <strong>folhas de papel vegetal empilhadas</strong>: cada
+                    imagem, texto ou forma fica em sua própria folha, e você pode mostrar, esconder
+                    ou reorganizar cada uma sem afetar as outras.</p>
+
+                    <div class="layers-panel">
+                        <div class="layers-head"><span>Camadas</span><span>⚙️</span></div>
+                        <div class="layer-row selecionada">
+                            <span class="layer-olho">👁️</span>
+                            <span class="layer-thumb"></span>
+                            <span>Minha Foto</span>
+                        </div>
+                        <div class="layer-row">
+                            <span class="layer-olho">👁️</span>
+                            <span class="layer-thumb"></span>
+                            <span>Fundo</span>
+                        </div>
+                        <div class="layers-foot">
+                            <span>+</span>
+                            <span>🗑️</span>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Painel ilustrativo — clicar no ícone do olho 👁️ esconde/mostra a camada; o "+" cria uma camada nova; a lixeira apaga a selecionada.</p>
+
+                    <div class="highlight">
+                        💡 Se o painel de Camadas sumiu da tela: <strong>Janela → Camadas</strong>, ou
+                        atalho <span class="tecla">F7</span>.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Zoom e Navegação</h2>
+                    <table>
+                        <tr><th>Ação</th><th>Atalho</th></tr>
+                        <tr><td>Aumentar zoom</td><td><span class="tecla">Ctrl</span> + <span class="tecla">+</span></td></tr>
+                        <tr><td>Diminuir zoom</td><td><span class="tecla">Ctrl</span> + <span class="tecla">-</span></td></tr>
+                        <tr><td>Ajustar imagem à tela</td><td><span class="tecla">Ctrl</span> + <span class="tecla">0</span></td></tr>
+                        <tr><td>Mover a imagem na tela</td><td>Segurar <span class="tecla">Espaço</span> e arrastar</td></tr>
+                        <tr><td>Zoom rápido</td><td>Rodar a roda do mouse com <span class="tecla">Alt</span> pressionado</td></tr>
+                    </table>
+                </section>
+
+                <!-- CAPÍTULO 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Prática 1 — Inserindo e Ajustando uma Imagem</h2>
+
+                    <div class="highlight">
+                        💡 As três práticas deste grau (inserir, recortar e remover fundo) usam a mesma imagem.
+                        Se você não tiver uma foto sua à mão, baixe este material de apoio:
+                    </div>
+                    <div class="material-frame">
+                        <img src="assets/photoshop/grau1-material-objeto.jpg" alt="Esfera laranja sobre fundo cinza liso">
+                    </div>
+                    <p class="diagrama-titulo"><a class="material-download" href="assets/photoshop/grau1-material-objeto.jpg" download>⬇ Baixar imagem de prática</a> — fundo liso, ótima para praticar recorte e remoção de fundo sem complicação.</p>
+
+                    <h3>Passo 1 — Inserir a imagem</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Menu <b>Arquivo</b> → <b>Colocar Incorporado...</b></span><br>
+<span class="passo"><b>2.</b> Escolha a sua foto e clique em <b>Colocar</b></span><br>
+<span class="passo">Alternativa: arraste o arquivo da foto direto para dentro da janela do Photoshop</span></div>
+
+                    <h3>Passo 2 — Ajustar o tamanho</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Com a imagem selecionada, atalho <span class="tecla">Ctrl</span> + <span class="tecla">T</span> (Transformação Livre)</span><br>
+<span class="passo"><b>2.</b> Segure <span class="tecla">Shift</span> e arraste um dos cantos para manter a proporção</span><br>
+<span class="passo"><b>3.</b> Pressione <span class="tecla">Enter</span> para confirmar</span></div>
+
+                    <div class="warning">
+                        ⚠️ Arrastar pela lateral (não pelo canto) distorce a imagem. Sempre puxe pelos
+                        cantos para redimensionar de forma proporcional.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Prática 2 — Recortando a Imagem</h2>
+                    <p>A ferramenta <strong>Corte</strong> (tecla <span class="tecla">C</span>) recorta
+                    a imagem para o tamanho que você quiser.</p>
+
+                    <div class="crop-demo">
+                        <div class="crop-foto"></div>
+                        <div class="crop-area">
+                            <div class="crop-alca tl"></div>
+                            <div class="crop-alca tr"></div>
+                            <div class="crop-alca bl"></div>
+                            <div class="crop-alca br"></div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">A área escurecida some do resultado final; a área clara dentro das alças brancas é o que fica.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Selecione a ferramenta <b>Corte</b> (tecla <span class="tecla">C</span>)</span><br>
+<span class="passo"><b>2.</b> Arraste as bordas/cantos que aparecem sobre a imagem</span><br>
+<span class="passo"><b>3.</b> Na Barra de Opções, escolha uma proporção fixa se quiser (ex: 1:1, 16:9)</span><br>
+<span class="passo"><b>4.</b> Pressione <span class="tecla">Enter</span> para aplicar o corte</span></div>
+                </section>
+
+                <!-- CAPÍTULO 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Prática 3 — Removendo o Fundo</h2>
+
+                    <div class="antes-depois">
+                        <div class="ad-card">
+                            <div class="ad-caixa antes"><div class="ad-sujeito"></div></div>
+                            <div class="ad-legenda">Antes</div>
+                        </div>
+                        <div class="ad-card">
+                            <div class="ad-caixa depois"><div class="ad-sujeito"></div></div>
+                            <div class="ad-legenda">Depois</div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">O quadriculado cinza/branco é o símbolo universal de transparência (fundo removido).</p>
+
+                    <h3>Caminho rápido (versões recentes)</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Selecione a camada da sua foto no painel de Camadas</span><br>
+<span class="passo"><b>2.</b> Abra o painel <b>Propriedades</b> (<b>Janela → Propriedades</b>)</span><br>
+<span class="passo"><b>3.</b> Clique no botão <b>Remover Plano de Fundo</b></span></div>
+
+                    <h3>Caminho manual (todas as versões)</h3>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta <b>Seleção Rápida</b> (tecla <span class="tecla">W</span>) → clique e arraste sobre o objeto que você quer manter</span><br>
+<span class="passo"><b>2.</b> Menu <b>Selecionar → Inverter</b> (para selecionar o fundo em vez do objeto)</span><br>
+<span class="passo"><b>3.</b> Tecla <span class="tecla">Delete</span> para apagar o fundo selecionado</span><br>
+<span class="passo"><b>4.</b> <span class="tecla">Ctrl</span> + <span class="tecla">D</span> para desmarcar a seleção</span></div>
+
+                    <div class="success">
+                        ✅ Se o botão "Remover Plano de Fundo" não existir na sua versão, o caminho
+                        manual chega no mesmo resultado.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Salvando o Trabalho</h2>
+                    <table>
+                        <tr><th>Formato</th><th>Quando usar</th></tr>
+                        <tr><td><strong>.PSD</strong></td><td>Arquivo de trabalho do Photoshop — mantém as camadas separadas e editáveis. Use para continuar editando depois.</td></tr>
+                        <tr><td><strong>.PNG</strong></td><td>Suporta transparência. Ideal para a foto sem fundo do exercício 3.</td></tr>
+                        <tr><td><strong>.JPG</strong></td><td>Não suporta transparência, mas gera arquivos menores. Bom para fotos comuns, com fundo.</td></tr>
+                    </table>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo">Para manter camadas: <b>Arquivo → Salvar como... → Photoshop (.psd)</b></span><br>
+<span class="passo">Para exportar a imagem final: <b>Arquivo → Exportar → Exportar Como... → PNG ou JPG</b></span></div>
+
+                    <div class="highlight">
+                        💡 Salve sempre um <strong>.PSD</strong> primeiro (seu "original editável") e só
+                        depois exporte o <strong>.PNG</strong>/<strong>.JPG</strong> final — assim você
+                        nunca perde as camadas se precisar ajustar algo depois.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 16 (conteúdo estendido) -->
+                <section class="chapter" data-chapter="16">
+                    <h2>16. Atalhos Essenciais — Cola Rápida</h2>
+                    <p>Uma referência rápida com todos os atalhos usados neste guia, para consultar
+                    depois sem precisar reabrir cada capítulo.</p>
+                    <table>
+                        <tr><th>Atalho</th><th>Ação</th></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">N</span></td><td>Novo documento</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">O</span></td><td>Abrir arquivo</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">T</span></td><td>Transformação livre (redimensionar/girar)</td></tr>
+                        <tr><td><span class="tecla">V</span></td><td>Ferramenta Mover</td></tr>
+                        <tr><td><span class="tecla">M</span></td><td>Seleção Retangular</td></tr>
+                        <tr><td><span class="tecla">L</span></td><td>Laço</td></tr>
+                        <tr><td><span class="tecla">W</span></td><td>Seleção Rápida</td></tr>
+                        <tr><td><span class="tecla">C</span></td><td>Corte (Crop)</td></tr>
+                        <tr><td><span class="tecla">B</span></td><td>Pincel</td></tr>
+                        <tr><td><span class="tecla">E</span></td><td>Borracha</td></tr>
+                        <tr><td><span class="tecla">Z</span></td><td>Zoom</td></tr>
+                        <tr><td><span class="tecla">X</span></td><td>Trocar cor de frente/fundo</td></tr>
+                        <tr><td><span class="tecla">F7</span></td><td>Mostrar/esconder painel de Camadas</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">D</span></td><td>Desmarcar seleção</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">0</span></td><td>Ajustar imagem à tela</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">Z</span></td><td>Desfazer</td></tr>
+                    </table>
+                </section>
+
+                <!-- CAPÍTULO 17 (conteúdo estendido) -->
+                <section class="chapter" data-chapter="17">
+                    <h2>17. Erros Comuns de Quem Está Começando</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Apaguei parte da imagem e não sei desfazer."</strong><br>
+                        Use <span class="tecla">Ctrl</span> + <span class="tecla">Z</span> quantas vezes
+                        precisar. Cada aperto volta uma ação.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A ferramenta Pincel está pintando a imagem inteira de uma cor."</strong><br>
+                        Provavelmente a ferramenta ativa é o <strong>Balde de Tinta</strong>, não o
+                        Pincel — ou o tamanho do pincel está gigante. Confira o nome da ferramenta na
+                        Barra de Opções antes de clicar.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Fiz a seleção certa, mas o Delete não fez nada."</strong><br>
+                        Confira se a camada certa está selecionada no painel de Camadas — o Delete
+                        só afeta a camada ativa (destacada em azul).
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Exportei em JPG e o fundo transparente virou branco."</strong><br>
+                        Esperado: JPG não suporta transparência. Exporte em <strong>PNG</strong> quando
+                        precisar manter o fundo removido.
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO 18 -->
+                <section class="chapter" data-chapter="18">
+                    <h2>18. Checklist Final e Próximos Passos</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 1, confirme:</h4>
+                        <ul>
+                            <li>✅ Criei um documento novo (ou abri uma foto existente)</li>
+                            <li>✅ Reconheço as 5 áreas da tela do Photoshop</li>
+                            <li>✅ Inseri e redimensionei uma imagem</li>
+                            <li>✅ Recortei a imagem com a ferramenta Corte</li>
+                            <li>✅ Removi o fundo de uma foto (rápido ou manual)</li>
+                            <li>✅ Salvei um .PSD e exportei um .PNG/.JPG</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 1. Os graus 2 a 5 vão aprofundar seleções
+                        avançadas, ajustes de cor, texto/formas e um projeto final — assim que
+                        estiverem disponíveis.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 1</strong> | 18 capítulos | ~1h15 de aprendizado</p>
+            <p>Versão em formato de guia (índice lateral) para comparação com a versão em slides</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 18;
+
+        const chapters = [
+            "Boas-vindas e a Trilha",
+            "Objetivo do Grau 1",
+            "O que é o Photoshop?",
+            "Um Documento Novo",
+            "Panorama da Tela",
+            "A Barra de Menus",
+            "Ferramentas — Seleção e Movimento",
+            "Ferramentas — Corte, Pintura e Zoom",
+            "A Barra de Opções",
+            "O Painel de Camadas",
+            "Zoom e Navegação",
+            "Prática 1 — Inserir Imagem",
+            "Prática 2 — Recortar",
+            "Prática 3 — Remover Fundo",
+            "Salvando o Trabalho",
+            "Atalhos Essenciais",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+
+            updateTOC();
+            updateButtons();
+            updateProgress();
+
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() {
+            if (currentChapter < totalChapters) {
+                currentChapter++;
+                showChapter(currentChapter);
+            }
+        }
+
+        function previousChapter() {
+            if (currentChapter > 1) {
+                currentChapter--;
+                showChapter(currentChapter);
+            }
+        }
+
+        function goToChapter(n) {
+            currentChapter = n;
+            showChapter(currentChapter);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

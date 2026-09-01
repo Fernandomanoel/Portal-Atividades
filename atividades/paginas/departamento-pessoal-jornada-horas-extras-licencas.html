@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Departamento Pessoal III — Jornada Noturna, Horas Extras, Licenças e CAT</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #2563eb;
+            --brand-light: #dbeafe;
+            --accent-color: #1d4ed8;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bfdbfe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .kpi-card-calc {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 13.5px;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Departamento Pessoal III — Jornada Noturna, Horas Extras, Licenças e CAT</h1>
+        <p>Aprofunde seus conhecimentos em rotinas avançadas de DP com diferentes formatos de questões: Múltipla Escolha sobre Jornada e Adicional Noturno, Tabela de Associação de Licenças de Afastamento, Cálculo de Salário-Hora e Hora Extra (50%), Checkboxes de CAT e Estabilidade Acidentária, e Redação sobre Doenças Ocupacionais.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=departamento-pessoal">← Voltar para Departamento Pessoal</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: MÚLTIPLA ESCOLHA — JORNADA NOTURNA E HORA REDUZIDA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Múltipla Escolha] Regras do Trabalho Noturno Urbano (Art. 73 da CLT)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Um funcionário do setor logístico de uma empresa urbana trabalha no turno da madrugada. De acordo com a CLT, qual é o horário considerado **Trabalho Noturno**, qual a duração da **hora noturna reduzida** e a porcentagem mínima do adicional?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="dp3_1" value="errado1">
+                a) Das 20h às 6h do dia seguinte; hora de 60 minutos; adicional noturno mínimo de 15%.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="dp3_1" value="correto">
+                b) Das 22h às 5h do dia seguinte; hora computada em 52 minutos e 30 segundos; adicional mínimo de 20% sobre a hora diurna.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="dp3_1" value="errado2">
+                c) Das 00h às 6h; hora computada em 50 minutos; adicional fixo obrigatoriamente de 50%.
+            </label>
+        </div>
+        <div id="feedback-dp3-1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: ASSOCIAÇÃO EM TABELA / DROPDOWN — LICENÇAS REMUNERADAS (CLT ART. 473) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Associação em Tabela] Licenças Trabalhistas Remuneradas (CLT)</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o motivo do afastamento do colaborador à respectiva quantidade de dias de licença remunerada garantidos pela legislação trabalhista:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Motivo do Afastamento (Art. 473 da CLT)</th>
+                    <th style="width: 50%;">Duração da Licença Remunerada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>**Licença Gala (Casamento do Empregado)**</td>
+                    <td>
+                        <select id="dp3-m1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="gala">Até 3 dias consecutivos de afastamento sem prejuízo do salário.</option>
+                            <option value="maternidade">120 dias de afastamento pago (podendo ampliar em empresas do Programa Empresa Cidadã).</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>**Licença Maternidade (Gestante / Adotante)**</td>
+                    <td>
+                        <select id="dp3-m2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="gala">Até 3 dias consecutivos de afastamento sem prejuízo do salário.</option>
+                            <option value="maternidade">120 dias de afastamento pago (podendo ampliar em empresas do Programa Empresa Cidadã).</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-dp3-2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO NUMÉRICO EXATO — SALÁRIO-HORA E HORAS EXTRAS (50%) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Cálculo Numérico com Validação de Valor] Cálculos de Folha: Salário-Hora e Horas Extras</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Apuração:</strong> O colaborador Marcos possui salário base mensal de <strong>R$ 2.200,00</strong> para uma jornada padrão de <strong>220 horas mensais</strong>. No mês trabalhado, ele realizou exatamente <strong>10 horas extras com adicional de 50%</strong>.
+        </div>
+        <div class="kpi-card-calc">
+            📌 <strong>Fórmulas Rápidas:</strong><br>
+            • <strong>Salário-Hora Normal</strong> = Salário Base / 220 horas.<br>
+            • <strong>Valor da Hora Extra (50%)</strong> = Salário-Hora Normal × 1,5.<br>
+            • <strong>Total de Horas Extras</strong> = Valor da Hora Extra × Quantidade de Horas Realizadas.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Valor do Salário-Hora Normal em R$ [Ex: 10]:</label>
+                <input type="text" id="dp3-3-shora" class="input-box" placeholder="Digite apenas o valor numérico em R$...">
+                <div id="feedback-dp3-3-shora" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Valor TOTAL a receber pelas 10 Horas Extras (50%) em R$ [Ex: 150]:</label>
+                <input type="text" id="dp3-3-hextra" class="input-box" placeholder="Digite apenas o valor numérico em R$...">
+                <div id="feedback-dp3-3-hextra" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: MULTI-SELEÇÃO / CHECKBOXES — CAT E ESTABILIDADE PROVISÓRIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Seleção Múltipla / Checkboxes] CAT (Comunicação de Acidente) e Estabilidade Acidentária</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Acidente de Trabalho:</strong> Marque <strong>APENAS as afirmativas VERDADEIRAS</strong> sobre a emissão de CAT e a estabilidade provisória do trabalhador acidentado:
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="checkbox" id="dp3-4-opt1" value="prazo_cat">
+                a) A CAT deve ser emitida pela empresa até o primeiro dia útil seguinte ao do acidente (ou imediatamente em caso de morte).
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="dp3-4-opt2" value="demissao_imediata">
+                b) A empresa pode demitir sem justa causa o empregado acidentado no mesmo dia em que ele retorna do afastamento do INSS.
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="dp3-4-opt3" value="estabilidade_12m">
+                c) O segurado que sofreu acidente de trabalho e recebeu auxílio-doença acidentário (B91) tem garantida a estabilidade no emprego por pelo menos 12 meses após a alta do INSS.
+            </label>
+        </div>
+        <div id="feedback-dp3-4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ANÁLISE DISSERTATIVA INTELIGENTE — DOENÇA OCUPACIONAL E ERGONOMIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Dissertativa Inteligente] Doenças Ocupacionais e Função Estratégica do DP</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso:</strong> Doenças profissionais ou do trabalho (como LER/DORT decorrentes de esforço repetitivo) são equiparadas por lei a acidentes de trabalho. Explique a importância da atuação conjunta do **Departamento Pessoal com a área de Segurança e Saúde no Trabalho (SST)** para emissão da CAT e prevenção de doenças ocupacionais.
+        </div>
+        <textarea id="dp3-5-sst" class="input-box" placeholder="Explique a necessidade de manter o eSocial atualizado (eventos S-2210 e S-2240), gerenciar laudos de SST (PGR/PCMSO) e emitir a CAT para garantir os direitos do trabalhador e evitar penalidades..."></textarea>
+        <div id="feedback-dp3-5-sst" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${palavras.length} de no mínimo ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Mód 1: Radio Button
+        const dp3_1Selected = document.querySelector('input[name="dp3_1"]:checked');
+        if (dp3_1Selected && dp3_1Selected.value === 'correto') {
+            aplicarFeedback('feedback-dp3-1', { valido: true, motivo: "Correto! O trabalho noturno urbano é das 22h às 5h, com hora de 52m30s e adicional mínimo de 20%." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-dp3-1', { valido: false, motivo: "Incorreto. O período noturno urbano é das 22h às 5h com hora reduzida de 52min30s e adicional de 20%." });
+        }
+
+        // Mód 2: Dropdowns em Tabela
+        const m1 = document.getElementById('dp3-m1').value;
+        const m2 = document.getElementById('dp3-m2').value;
+        if (m1 === 'gala' && m2 === 'maternidade') {
+            aplicarFeedback('feedback-dp3-2', { valido: true, motivo: "Perfeito! Licença Gala concede 3 dias por casamento e Licença Maternidade concede 120 dias." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-dp3-2', { valido: false, motivo: "Incorreto. Verifique os prazos de afastamento remunerado para Gala (3 dias) e Maternidade (120 dias)." });
+        }
+
+        // Mód 3: Entrada Numérica Exata
+        const shoraRaw = document.getElementById('dp3-3-shora').value.replace(',', '.').replace(/[^0-9.]/g, '');
+        const hextraRaw = document.getElementById('dp3-3-hextra').value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+        let shoraOk = parseFloat(shoraRaw) === 10;
+        let hextraOk = parseFloat(hextraRaw) === 150;
+
+        if (shoraOk) {
+            aplicarFeedback('feedback-dp3-3-shora', { valido: true, motivo: "Salário-Hora correto: R$ 2.200 / 220 = R$ 10,00." });
+        } else {
+            aplicarFeedback('feedback-dp3-3-shora', { valido: false, motivo: "Incorreto. Divida R$ 2.200 por 220 horas (Resultado: 10)." });
+        }
+
+        if (hextraOk) {
+            aplicarFeedback('feedback-dp3-3-hextra', { valido: true, motivo: "Total de Horas Extras correto: (R$ 10 × 1,5) × 10 horas = R$ 150,00." });
+        } else {
+            aplicarFeedback('feedback-dp3-3-hextra', { valido: false, motivo: "Incorreto. A hora extra com 50% vale R$ 15,00. Multiplique por 10 (Resultado: 150)." });
+        }
+
+        if (shoraOk && hextraOk) acertos++;
+
+        // Mód 4: Checkboxes
+        const opt1Checked = document.getElementById('dp3-4-opt1').checked; // Verdadeiro (Prazo da CAT)
+        const opt2Checked = document.getElementById('dp3-4-opt2').checked; // Falso (Demissão imediata é proibida)
+        const opt3Checked = document.getElementById('dp3-4-opt3').checked; // Verdadeiro (Estabilidade 12 meses)
+
+        if (opt1Checked && !opt2Checked && opt3Checked) {
+            aplicarFeedback('feedback-dp3-4', { valido: true, motivo: "Excelente! Emissão de CAT no 1º dia útil e estabilidade de 12 meses pós-INSS são garantias legais." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-dp3-4', { valido: false, motivo: "Atenção: Apenas (a) e (c) estão corretas. O empregado possui estabilidade de 12 meses após a alta do INSS." });
+        }
+
+        // Mód 5: Texto Dissertativo Inteligente
+        const sstVal = document.getElementById('dp3-5-sst').value;
+        const resSst = validarTextoInteligente(sstVal, 4, 15);
+        if (resSst.valido) {
+            const termosSst = /cat|esocial|sst|saúde|segurança|doença|laudo|pcmso|pgr|prevenç/i;
+            if (!termosSst.test(sstVal)) {
+                resSst.valido = false;
+                resSst.motivo = "Mencione a emissão de CAT, integração com eSocial/SST ou laudos preventivos de saúde ocupacional.";
+            }
+        }
+        aplicarFeedback('feedback-dp3-5-sst', resSst);
+        if (resSst.valido) acertos++;
+
+        // Status Geral
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos com diferentes tipos de questões.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('dp3-5-sst').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosSst = /cat|esocial|sst|saúde|segurança|doença|laudo|pcmso|pgr|prevenç/i;
+                if (!termosSst.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre a emissão da CAT, atualização dos eventos de SST no eSocial ou medidas preventivas.";
+                }
+            }
+            aplicarFeedback('feedback-dp3-5-sst', res);
+        });
+    });
+</script>
+
+</body>
+</html>

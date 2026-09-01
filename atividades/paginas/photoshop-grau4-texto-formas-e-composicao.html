@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 4 (Texto, Formas e Composição)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; }
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1e3a8a; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6;
+        }
+        .code-label {
+            background: #2563eb; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla { background: #2d2d2d; border: 1px solid #555; border-radius: 4px; padding: 1px 7px; color: #dcdcaa; font-size: 0.92em; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Estilos de camada */
+        .estilo-demo { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin: 20px 0; background: #111827; border-radius: 8px; padding: 30px; }
+        .estilo-item { text-align: center; }
+        .estilo-texto { font-size: 2.2em; font-weight: 800; color: #f8fafc; font-family: Arial, sans-serif; }
+        .et-sombra { text-shadow: 4px 4px 6px rgba(0,0,0,0.6); }
+        .et-contorno { -webkit-text-stroke: 2px #2563eb; color: #111827; }
+        .et-brilho { color: #fff; text-shadow: 0 0 12px #60a5fa, 0 0 24px #2563eb; }
+        .et-gradiente { background: linear-gradient(90deg, #fbbf24, #ef4444, #a855f7); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .estilo-legenda { color: #cbd5e1; font-size: 0.8em; margin-top: 10px; }
+
+        /* Regra dos terços */
+        .terços-box { max-width: 340px; margin: 18px auto; aspect-ratio: 4/3; background: linear-gradient(160deg, #93c5fd, #1e3a8a); position: relative; border-radius: 8px; overflow: hidden; }
+        .terços-linha { position: absolute; background: rgba(255,255,255,0.7); }
+        .tl-v1 { left: 33.33%; top: 0; bottom: 0; width: 1px; }
+        .tl-v2 { left: 66.66%; top: 0; bottom: 0; width: 1px; }
+        .tl-h1 { top: 33.33%; left: 0; right: 0; height: 1px; }
+        .tl-h2 { top: 66.66%; left: 0; right: 0; height: 1px; }
+        .terços-ponto { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: #fde047; border: 2px solid #78350f; transform: translate(-50%, -50%); }
+
+        /* Alinhamento de camadas */
+        .align-demo { display: flex; gap: 10px; justify-content: center; margin: 18px 0; }
+        .align-caixa { width: 200px; height: 120px; background: #111827; border-radius: 8px; position: relative; }
+        .align-caixa span { position: absolute; width: 22px; height: 22px; background: #2563eb; border-radius: 4px; }
+        .align-a1 { top: 10px; left: 10px; }
+        .align-a2 { top: 10px; left: 89px; }
+        .align-a3 { top: 10px; right: 10px; }
+
+        /* Post de rede social — mockup */
+        .post-mock { width: 260px; margin: 18px auto; border-radius: 10px; overflow: hidden; border: 2px solid #2563eb; }
+        .post-mock-img { height: 260px; background: linear-gradient(145deg, #fca5a5, #7c3aed); position: relative; display: flex; align-items: flex-end; padding: 16px; }
+        .post-mock-titulo { color: #fff; font-weight: 800; font-size: 1.3em; text-shadow: 2px 2px 6px rgba(0,0,0,0.5); }
+        .post-mock-bar { background: #1e3a8a; color: #fff; font-size: 0.8em; padding: 6px 12px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 4</h1>
+            <p>Texto, formas e composição: transforme o que você já sabe em uma peça gráfica pronta</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 20 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Já concluiu os Graus 1 a 3<br>
+                        <strong>Tempo:</strong> ~1h20<br>
+                        <strong>Requisitos:</strong> Photoshop instalado e uma foto para usar como base do post
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 4</h2>
+                    <p>Você já sabe montar imagens (Grau 2) e ajustar cor (Grau 3). Agora entra a peça que
+                    transforma uma foto editada em uma <strong>peça de design</strong> de verdade: texto, formas
+                    e as regras de composição que fazem o olho ir para onde você quer.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Usar a ferramenta Texto e seus principais controles</li>
+                            <li>Aplicar estilos de camada (sombra, contorno, brilho, gradiente)</li>
+                            <li>Desenhar formas vetoriais e usar caminhos (paths)</li>
+                            <li>Usar guias, grade e a Regra dos Terços para organizar a composição</li>
+                            <li>Alinhar e distribuir camadas com precisão</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        💡 A prática final deste grau é criar um <strong>post para redes sociais</strong> — o
+                        primeiro projeto do curso pensado para ser publicado, não só praticado.
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. A Ferramenta Texto</h2>
+                    <p>A ferramenta Texto (tecla <span class="tecla">T</span>) cria uma camada própria — de
+                    texto — que continua editável a qualquer momento, mesmo depois de salva em .PSD.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta <b>Texto</b> (tecla <span class="tecla">T</span>)</span><br>
+<span class="passo"><b>2.</b> Clique no documento e digite — ou clique e arraste para criar uma caixa de texto com quebra automática de linha</span><br>
+<span class="passo"><b>3.</b> Na Barra de Opções: escolha fonte, tamanho, cor e alinhamento</span><br>
+<span class="passo"><b>4.</b> <span class="tecla">Esc</span> ou clique em outra camada para confirmar</span></div>
+
+                    <table>
+                        <tr><th>Tipo de texto</th><th>Quando usar</th></tr>
+                        <tr><td><strong>Ponto</strong> (clique simples)</td><td>Títulos curtos, uma linha só</td></tr>
+                        <tr><td><strong>Parágrafo</strong> (clique e arraste)</td><td>Blocos de texto longos, com quebra automática</td></tr>
+                    </table>
+
+                    <div class="warning">
+                        ⚠️ Duplo clique no ícone "T" da miniatura da camada seleciona todo o texto para editar —
+                        clique simples na camada só a move de lugar, não entra no modo de edição.
+                    </div>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Estilos de Camada</h2>
+                    <p>Estilos de camada aplicam efeitos (sombra, contorno, brilho...) de forma não destrutiva —
+                    ficam "grudados" na camada e podem ser editados ou removidos a qualquer momento.</p>
+
+                    <div class="estilo-demo">
+                        <div class="estilo-item"><div class="estilo-texto et-sombra">Sombra</div><div class="estilo-legenda">Drop Shadow</div></div>
+                        <div class="estilo-item"><div class="estilo-texto et-contorno">Contorno</div><div class="estilo-legenda">Stroke</div></div>
+                        <div class="estilo-item"><div class="estilo-texto et-brilho">Brilho</div><div class="estilo-legenda">Outer Glow</div></div>
+                        <div class="estilo-item"><div class="estilo-texto et-gradiente">Gradiente</div><div class="estilo-legenda">Gradient Overlay</div></div>
+                    </div>
+                    <p class="diagrama-titulo">Renderizado ao vivo pelo navegador — os quatro efeitos mais usados em títulos e logotipos.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Duplo clique na camada (fora da miniatura) → abre <b>Estilo de Camada</b></span><br>
+<span class="passo"><b>2.</b> Marque as caixas à esquerda (Sombra Projetada, Contorno, Brilho Externo...)</span><br>
+<span class="passo"><b>3.</b> Ajuste cor, tamanho e opacidade de cada efeito</span></div>
+
+                    <div class="highlight">
+                        💡 O ícone <strong>"fx"</strong> no rodapé do painel de Camadas também abre esse menu —
+                        e uma vez aplicado, um pequeno ícone de engrenagem aparece na camada, mostrando que ela
+                        tem estilos ativos.
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Formas Vetoriais</h2>
+                    <p>Diferente de uma foto (pixels), uma forma vetorial pode ser redimensionada infinitamente
+                    sem perder qualidade — ideal para botões, ícones e elementos gráficos de um post.</p>
+
+                    <table>
+                        <tr><th>Ferramenta</th><th>Atalho</th><th>Uso</th></tr>
+                        <tr><td>Retângulo</td><td><span class="tecla">U</span></td><td>Faixas, botões, fundos de texto</td></tr>
+                        <tr><td>Elipse</td><td><span class="tecla">U</span> (variação)</td><td>Selos, badges, avatares</td></tr>
+                        <tr><td>Caneta (Pen)</td><td><span class="tecla">P</span></td><td>Formas livres e contornos precisos</td></tr>
+                    </table>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta <b>Retângulo</b> (tecla <span class="tecla">U</span>)</span><br>
+<span class="passo"><b>2.</b> Clique e arraste no documento</span><br>
+<span class="passo"><b>3.</b> Na Barra de Opções, defina o <b>Raio</b> para cantos arredondados</span></div>
+
+                    <div class="success">
+                        ✅ Formas criam uma camada própria (com miniatura quadrada) e podem receber os mesmos
+                        estilos de camada do capítulo anterior.
+                    </div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Caminhos (Paths) com a Caneta</h2>
+                    <p>A ferramenta Caneta desenha contornos precisos ponto a ponto — a base de qualquer
+                    ilustração vetorial e de recortes de altíssima precisão.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta <b>Caneta</b> (tecla <span class="tecla">P</span>)</span><br>
+<span class="passo"><b>2.</b> Clique para criar pontos de âncora em linha reta</span><br>
+<span class="passo"><b>3.</b> Clique e <b>arraste</b> para criar uma curva suave no ponto</span><br>
+<span class="passo"><b>4.</b> Feche o caminho clicando de volta no primeiro ponto</span></div>
+
+                    <div class="highlight">
+                        💡 Com <span class="tecla">Ctrl</span> pressionado, a Caneta vira temporariamente a
+                        ferramenta <strong>Seleção de Caminho</strong> — útil para ajustar um ponto sem trocar de
+                        ferramenta.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ A Caneta tem fama de difícil porque exige prática de mão — não tem problema gastar
+                        alguns minutos só clicando e arrastando em uma folha em branco antes de usar em um
+                        projeto real.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Guias e Grade</h2>
+                    <p>Linhas de referência que não aparecem na imagem exportada — só ajudam a alinhar
+                    elementos enquanto você trabalha.</p>
+
+                    <table>
+                        <tr><th>Recurso</th><th>Caminho</th></tr>
+                        <tr><td><strong>Nova Guia</strong></td><td>Arraste a partir da régua (<span class="tecla">Ctrl</span>+<span class="tecla">R</span> mostra a régua) ou <b>Visualizar → Nova Guia</b></td></tr>
+                        <tr><td><strong>Grade</strong></td><td><b>Visualizar → Mostrar → Grade</b> (<span class="tecla">Ctrl</span>+<span class="tecla">'</span>)</td></tr>
+                        <tr><td><strong>Encaixar</strong> (snap)</td><td><b>Visualizar → Encaixar</b> — faz elementos "grudarem" nas guias ao arrastar</td></tr>
+                    </table>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Regra dos Terços</h2>
+                    <p>Divida a imagem em 3 partes iguais na horizontal e na vertical. Posicionar o elemento
+                    principal em uma das <strong>interseções</strong> das linhas costuma ficar mais equilibrado
+                    do que centralizar tudo.</p>
+
+                    <div class="terços-box">
+                        <div class="terços-linha tl-v1"></div>
+                        <div class="terços-linha tl-v2"></div>
+                        <div class="terços-linha tl-h1"></div>
+                        <div class="terços-linha tl-h2"></div>
+                        <div class="terços-ponto" style="left:33.33%; top:33.33%;"></div>
+                        <div class="terços-ponto" style="left:66.66%; top:33.33%;"></div>
+                        <div class="terços-ponto" style="left:33.33%; top:66.66%;"></div>
+                        <div class="terços-ponto" style="left:66.66%; top:66.66%;"></div>
+                    </div>
+                    <p class="diagrama-titulo">Os 4 pontos amarelos são os locais de maior equilíbrio visual — bons lugares para o rosto ou o título principal.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo">Visualizar → Mostrar → Linhas de Grade Retangulares</span><br>
+<span class="passo">Ou simplesmente crie 2 guias verticais e 2 horizontais a 33% e 66% do documento</span></div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Alinhando e Distribuindo Camadas</h2>
+                    <p>Com duas ou mais camadas selecionadas (<span class="tecla">Ctrl</span> + clique em cada
+                    uma no painel), a Barra de Opções da ferramenta <strong>Mover</strong> mostra ícones de
+                    alinhamento.</p>
+
+                    <div class="align-demo">
+                        <div class="align-caixa">
+                            <span class="align-a1"></span>
+                            <span class="align-a2"></span>
+                            <span class="align-a3"></span>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">Alinhar à esquerda, ao centro e à direita — o mesmo conceito vale para topo/meio/base.</p>
+
+                    <table>
+                        <tr><th>Ícone</th><th>Ação</th></tr>
+                        <tr><td>Alinhar Esquerda/Centro/Direita</td><td>Alinha na horizontal</td></tr>
+                        <tr><td>Alinhar Topo/Meio/Base</td><td>Alinha na vertical</td></tr>
+                        <tr><td>Distribuir</td><td>Espaça 3 ou mais camadas igualmente entre si</td></tr>
+                    </table>
+                </section>
+
+                <!-- 9 (desafio/inovação) -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Desafio Bônus — Hierarquia Visual</h2>
+                    <p>"Hierarquia visual" é a ordem em que o olho lê os elementos: primeiro o maior/mais
+                    contrastante, depois o resto.</p>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> monte um texto com 3 linhas (título, subtítulo, rodapé) e
+                        varie <strong>só o tamanho e o peso da fonte</strong> (sem trocar cor nem posição) até que
+                        fique óbvio, em menos de 1 segundo de olhar, qual linha é a mais importante. Depois,
+                        inverta as prioridades e veja como a leitura muda.
+                    </div>
+
+                    <div class="highlight">
+                        💡 Regra prática: nunca mais de 3 tamanhos de fonte diferentes em uma mesma peça —
+                        excesso de variação cansa o olho em vez de guiar.
+                    </div>
+                </section>
+
+                <!-- 10 (Prática) -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Prática — Montando o Post</h2>
+                    <p>Formato sugerido: quadrado (1080 x 1080 px), o padrão de feed do Instagram.</p>
+
+                    <div class="post-mock">
+                        <div class="post-mock-img"><div class="post-mock-titulo">Seu Título Aqui</div></div>
+                        <div class="post-mock-bar">preview — 1080 × 1080</div>
+                    </div>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Novo documento 1080 x 1080 px (<span class="tecla">Ctrl</span>+<span class="tecla">N</span>)</span><br>
+<span class="passo"><b>2.</b> Insira sua foto como fundo e ajuste cor (Grau 3)</span><br>
+<span class="passo"><b>3.</b> Crie o título com a ferramenta Texto, posicionado em um dos pontos da Regra dos Terços</span><br>
+<span class="passo"><b>4.</b> Aplique um estilo de camada no título (Sombra ou Contorno) para garantir legibilidade sobre a foto</span><br>
+<span class="passo"><b>5.</b> Adicione uma forma retangular como faixa de destaque, se quiser</span></div>
+                </section>
+
+                <!-- 11 (Prática) -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Prática — Exportando para Redes Sociais</h2>
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Menu <b>Arquivo → Exportar → Salvar para Web (Legado)</b></span><br>
+<span class="passo"><b>2.</b> Formato <b>JPG</b>, qualidade 80-90%</span><br>
+<span class="passo"><b>3.</b> Confira o tamanho final do arquivo — poste com no máximo alguns MB para não perder qualidade na compressão da rede social</span></div>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio extra:</strong> exporte a mesma arte também em formato de Stories
+                        (1080 x 1920) — redimensione o documento com <b>Imagem → Tamanho da Tela</b> e reorganize
+                        o texto para o novo formato vertical, sem esticar nada.
+                    </div>
+                </section>
+
+                <!-- 12 -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Atalhos do Grau 4 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Atalho</th><th>Ação</th></tr>
+                        <tr><td><span class="tecla">T</span></td><td>Ferramenta Texto</td></tr>
+                        <tr><td><span class="tecla">U</span></td><td>Formas (Retângulo/Elipse)</td></tr>
+                        <tr><td><span class="tecla">P</span></td><td>Caneta</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">R</span></td><td>Mostrar/esconder réguas</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">'</span></td><td>Mostrar/esconder grade</td></tr>
+                        <tr><td><span class="tecla">Esc</span></td><td>Confirmar texto/forma em edição</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+clique (várias camadas)</td><td>Selecionar para alinhar/distribuir</td></tr>
+                    </table>
+                </section>
+
+                <!-- 13 -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Erros Comuns do Grau 4</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"O texto sumiu quando redimensionei a caixa."</strong><br>
+                        Em texto do tipo Parágrafo, redimensionar a caixa pelo canto pode escondê-lo fora da
+                        área visível — use <span class="tecla">Ctrl</span>+<span class="tecla">T</span> na
+                        camada de texto, não arraste os cantos da caixa de digitação.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"O título ficou ilegível em cima da foto."</strong><br>
+                        Falta de contraste. Adicione uma Sombra Projetada ou Contorno no texto (capítulo 3), ou
+                        escureça a área da foto atrás dele com uma camada de ajuste mascarada (Grau 3).
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"A forma ficou pixelizada ao aumentar."</strong><br>
+                        Provavelmente ela foi rasterizada (convertida de vetor para pixel) antes de redimensionar.
+                        Formas vetoriais (miniatura quadrada, sem xadrez) redimensionam sem perda; camadas
+                        rasterizadas, não.
+                    </div>
+                </section>
+
+                <!-- 14 -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Checklist Final e Prévia do Grau 5</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 4, confirme:</h4>
+                        <ul>
+                            <li>✅ Criei um título com a ferramenta Texto</li>
+                            <li>✅ Apliquei pelo menos 2 estilos de camada diferentes</li>
+                            <li>✅ Desenhei uma forma vetorial (Retângulo, Elipse ou Caneta)</li>
+                            <li>✅ Usei guias ou grade para alinhar os elementos</li>
+                            <li>✅ Posicionei o elemento principal usando a Regra dos Terços</li>
+                            <li>✅ Montei e exportei um post completo em 1080×1080</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 4. No <strong>Grau 5</strong> o assunto é
+                        <strong>efeitos e filtros criativos</strong>: Objetos Inteligentes e dupla exposição —
+                        o primeiro passo para montagens mais artísticas.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 4</strong> | 14 capítulos | ~1h20 de aprendizado</p>
+            <p>Texto, formas e composição: da edição ao design pronto para publicar</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 14;
+
+        const chapters = [
+            "Bem-vindo ao Grau 4",
+            "A Ferramenta Texto",
+            "Estilos de Camada",
+            "Formas Vetoriais",
+            "Caminhos com a Caneta",
+            "Guias e Grade",
+            "Regra dos Terços",
+            "Alinhando e Distribuindo",
+            "Desafio Bônus — Hierarquia Visual",
+            "Prática — Montando o Post",
+            "Prática — Exportando",
+            "Atalhos do Grau 4",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

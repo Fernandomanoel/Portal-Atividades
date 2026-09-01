@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Empréstimo — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #1d6f42; color: #fff; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💰 Atividade Excel Básico — Cálculo de Empréstimo</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>🎯 O objetivo</h2>
+        <p>Você recebeu uma lista de pessoas que possuem dívidas com diferentes taxas de juros e prazos de pagamento. Seu objetivo é <strong>calcular os juros simples</strong> e descobrir <strong>o valor total que cada pessoa deverá pagar</strong>, usando Excel.</p>
+
+        <p>Para isso, você deverá:</p>
+        <ol>
+            <li>Calcular o valor dos <strong>juros</strong> usando a fórmula: <strong>Juros = Dívida × Taxa × Meses</strong></li>
+            <li>Calcular o <strong>valor total</strong>, somando a dívida inicial com os juros calculados.</li>
+        </ol>
+
+        <p>Preencha a tabela no Excel usando fórmulas e obtenha o valor final para cada pessoa.</p>
+
+        <h2>1️⃣ Crie esta tabela abaixo</h2>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+                <tr><td class="rownum">1</td><td colspan="6" class="merged">CALCULO DE DÍVIDA</td></tr>
+                <tr><td class="rownum">2</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td class="headcell">NOME</td><td class="headcell">DÍVIDA INICIAL (R$)</td><td class="headcell">JUROS AO MÊS (%)</td><td class="headcell">MESES</td><td class="headcell">JUROS CALCULADOS</td><td class="headcell">VALOR TOTAL</td></tr>
+                <tr><td class="rownum">4</td><td>Davi de Paula</td><td class="money">500</td><td class="money">7,96%</td><td class="money">4</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>Vanessa Garcia</td><td class="money">750</td><td class="money">8,16%</td><td class="money">2</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>Marco de Sousa</td><td class="money">1900</td><td class="money">7,96%</td><td class="money">1</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>Laura Maria</td><td class="money">650</td><td class="money">8,16%</td><td class="money">3</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td>Laura Maria</td><td class="money">600</td><td class="money">7,96%</td><td class="money">8</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">9</td><td>Paulo Mota</td><td class="money">1200</td><td class="money">8,16%</td><td class="money">5</td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">10</td><td>Priscila Morais</td><td class="money">2122</td><td class="money">7,96%</td><td class="money">2</td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h2>2️⃣ Deixe a tabela bonita</h2>
+        <p>Ao terminar a tabela inteira, primeiro escreva e logo após faça o design desta tabela, colocando as suas bordas da coluna <strong>"NOME"</strong>, até o <strong>"VALOR TOTAL"</strong>. Para colocar as bordas aperte em:</p>
+        <ul>
+            <li>Aperte em <strong>Página Inicial</strong></li>
+            <li>Logo após aperte em <strong>Fonte</strong></li>
+            <li>Procure o ícone de bordas</li>
+            <li>Aperte na setinha para baixo e selecione <strong>Todas as bordas</strong></li>
+        </ul>
+
+        <h2>3️⃣ Fazendo as fórmulas</h2>
+        <p>A primeira parte que você colocará as fórmulas é em <strong>JUROS CALCULADOS</strong>, por conta que será feito o cálculo do Valor do Juros:</p>
+
+        <p>A fórmula é:</p>
+        <div class="code-block">=B2 (DIVIDA INICIAL OU VALOR EMPRESTADO) * (MULTIPLICADO) PELO C2 (TAXA DE JUROS) * (MULTIPLICADO) PELOS MESES</div>
+        <p>Ou seja:</p>
+        <div class="code-block">=B2*C2*D2</div>
+
+        <p>Desta forma, na linha 4 do exemplo:</p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th></tr>
+                <tr><td class="rownum">3</td><td class="headcell">NOME</td><td class="headcell">DÍVIDA INICIAL (R$)</td><td class="headcell">JUROS AO MÊS (%)</td><td class="headcell">MESES</td><td class="headcell">JUROS CALCULADOS</td></tr>
+                <tr><td class="rownum">4</td><td>Davi de Paula</td><td class="money">500</td><td class="money">7,96%</td><td class="money">4</td><td>=B4*C4*D4</td></tr>
+            </table>
+        </div>
+
+        <p>Logo após terminar de fazer a fórmula na coluna <strong>JUROS CALCULADOS</strong>, você fará na coluna <strong>VALOR TOTAL</strong>, a soma da <strong>DIVIDA INICIAL</strong> com o <strong>JUROS CALCULADOS</strong>, ou seja:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+                <tr><td class="rownum">3</td><td class="headcell">NOME</td><td class="headcell">DÍVIDA INICIAL (R$)</td><td class="headcell">JUROS AO MÊS (%)</td><td class="headcell">MESES</td><td class="headcell">JUROS CALCULADOS</td><td class="headcell">VALOR TOTAL</td></tr>
+                <tr><td class="rownum">4</td><td>Davi de Paula</td><td class="money">500</td><td class="money">7,96%</td><td class="money">4</td><td class="money">R$ 159,20</td><td>=B4+E4</td></tr>
+            </table>
+        </div>
+
+        <div class="aviso">⚠️ <strong>Atenção:</strong> não esqueça de colocar a DÍVIDA INICIAL, JUROS CALCULADOS e VALOR TOTAL em (R$)! Para isso, selecione as colunas citadas acima, aperte no menu <strong>Número</strong>, na caixa onde está escrito "Geral" e selecione <strong>Contábil</strong>.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

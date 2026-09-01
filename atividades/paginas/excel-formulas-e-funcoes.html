@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fórmulas e Funções — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        table.ops { border-collapse: collapse; width: 100%; max-width: 460px; margin: 14px 0; }
+        table.ops th, table.ops td { border: 1px solid #d0d0d0; padding: 10px 16px; text-align: center; }
+        table.ops th { background: #eefaf2; color: #14502f; }
+
+        /* Mock spreadsheet table */
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 250px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🧮 Atividades Extras — Trabalhando com Fórmulas e Funções</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>📖 Introdução (leitura obrigatória)</h2>
+        <p>Antes de aprender a usar fórmulas no Excel, é importante entender que <strong>o Excel não pensa sozinho</strong>.</p>
+        <p>Quem decide <strong>o que será calculado</strong> é o usuário. O Excel apenas <strong>executa os cálculos</strong> seguindo regras da matemática.</p>
+
+        <p>A matemática está presente em várias situações do nosso dia a dia, como:</p>
+        <ul>
+            <li>Compras no mercado</li>
+            <li>Cálculo de salário</li>
+            <li>Parcelas de um produto</li>
+            <li>Controle de gastos</li>
+        </ul>
+
+        <p>Por isso, entender matemática ajuda muito a usar corretamente o Excel e outros programas.</p>
+
+        <h2>🧩 O que são Fórmulas e Funções?</h2>
+        <h3>Fórmulas</h3>
+        <p><strong>Fórmulas</strong> são cálculos criados pelo próprio usuário, utilizando números e operadores matemáticos.</p>
+        <div class="code-block">10 + 5</div>
+        <p>No Excel, toda fórmula <strong>começa com o sinal de igual (=)</strong>.</p>
+        <div class="code-block">=10+5</div>
+
+        <h3>Funções</h3>
+        <p><strong>Funções</strong> são fórmulas <strong>prontas</strong>, que já existem dentro do Excel.</p>
+        <p>Elas facilitam os cálculos e evitam erros.</p>
+        <p>Exemplo de função:</p>
+        <div class="code-block">=SOMA(5;10;15)</div>
+
+        <h2>➗ Operadores Matemáticos</h2>
+        <p>Os operadores indicam qual cálculo será feito com os números.</p>
+
+        <table class="ops">
+            <tr><th>Operador</th><th>Significado</th></tr>
+            <tr><td>+</td><td>Adição</td></tr>
+            <tr><td>-</td><td>Subtração</td></tr>
+            <tr><td>*</td><td>Multiplicação</td></tr>
+            <tr><td>/</td><td>Divisão</td></tr>
+        </table>
+
+        <h2>✏️ Atividade — Criando fórmulas simples</h2>
+        <ul>
+            <li>Abra o Microsoft Excel.</li>
+            <li>Em uma planilha em branco, preencha os dados abaixo:</li>
+        </ul>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th></tr>
+                <tr><td class="rownum">1</td><td class="money">10</td></tr>
+                <tr><td class="rownum">2</td><td class="money">5</td></tr>
+            </table>
+        </div>
+
+        <p>Agora, faça os cálculos:</p>
+
+        <h3>a) Na célula A3, some os valores de A1 e A2</h3>
+        <div class="code-block">=A1+A2</div>
+
+        <h3>b) Na célula A4, subtraia A2 de A1</h3>
+        <div class="code-block">=A1-A2</div>
+
+        <h3>c) Na célula A5, multiplique A1 por A2</h3>
+        <div class="code-block">=A1*A2</div>
+
+        <h3>d) Na célula A6, divida A1 por A2</h3>
+        <div class="code-block">=A1/A2</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

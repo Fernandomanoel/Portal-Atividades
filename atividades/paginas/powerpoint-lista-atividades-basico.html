@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Atividades — PowerPoint</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Sem max-width: ocupa a largura toda da tela, sem sobra nas laterais. */
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #a3341a 0%, #d24726 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #a3341a; margin: 34px 0 16px; border-bottom: 3px solid #d24726; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #d24726; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #d24726;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #fdece6; border: 2px solid #d24726; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #a3341a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .destaque { background: #fdeaea; border: 2px solid #d24726; border-radius: 6px; padding: 14px 18px; margin: 18px 0; color: #a3341a; font-weight: 700; text-align: center; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #d24726; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #d24726; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎞️ Lista de Atividades</h1>
+        <p>PowerPoint</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=powerpoint">← Voltar para PowerPoint</a>
+
+    <div class="content">
+        <h2>1️⃣ Primeira apresentação — "Recursos Humanos"</h2>
+        <p>Criar uma apresentação, cujo tema é <strong>"Recursos Humanos"</strong>, com as seguintes características:</p>
+
+        <h3>Característica da apresentação:</h3>
+        <ol type="A">
+            <li>No mínimo 8 slides;</li>
+            <li>No Máximo 10 slides;</li>
+            <li>Todas as transições dos slides deverão estar animadas;</li>
+            <li>Deverá conter pelo menos algumas animações;</li>
+            <li>Adicionar figuras da Internet;</li>
+            <li>Adicione gráfico</li>
+            <li>Adicione organograma</li>
+            <li>Insira o número de slide, criando um rodapé onde conste o seu nome e o número</li>
+        </ol>
+
+        <h3>Detalhes da apresentação</h3>
+        <ul>
+            <li>No primeiro slide deve aparecer o título <strong>"CURIOSIDADES DO OFFICE"</strong>, com fonte Arial grande, em negrito, posicionado no centro. Abaixo inserir o texto <strong>"Word, Excel e PowerPoint"</strong>, com fonte Times New Roman menor que o título, centralizado.</li>
+            <li>O segundo e o terceiro slide deve conter <strong>"curiosidades do Word"</strong></li>
+            <li>Quarto e o quinto slide fale sobre <strong>curiosidades do Excel</strong></li>
+            <li>No sexto e o sétimo fale sobre <strong>curiosidades do PowerPoint</strong></li>
+            <li>Nos últimos slides, escreva no título <strong>A Internet</strong>, nas marcas, <strong>Introdução</strong>, <strong>O que a Internet oferece</strong>, <strong>como se transfere a informação</strong> e <strong>ligar-se à Internet</strong>. Insira uma imagem do ClipArt e fale sobre curiosidade da internet.</li>
+        </ul>
+
+        <h2>2️⃣ Segunda apresentação — "Curiosidades"</h2>
+        <p>Faça a segunda apresentação:</p>
+        <ol class="passos">
+            <li>Abra o Microsoft Office Power Point 2021 (Clique no botão Iniciar do Windows. Escolha a opção Todos os programas. Escolha a opção Microsoft Office; Escolha a opção Microsoft Office PowerPoint 2021)</li>
+            <li>Defina um <strong>Tema</strong> para a sua apresentação. Na guia <strong>Design</strong>, no grupo <strong>Temas</strong>, escolha um dos temas disponíveis.</li>
+            <li>Salve a sua apresentação com o nome <strong>Curiosidades</strong> (Clique no ícone do disquete no canto superior esquerdo da tela, na caixa Nome do Arquivo, digite Curiosidades. Clique no botão Salvar).</li>
+        </ol>
+
+        <h3>Crie os slides de acordo com o modelo descrito abaixo:</h3>
+
+        <p><strong>a)</strong> No Slide 1, o título vai ser <strong>CURIOSIDADES</strong> e o subtítulo vai ser seu nome completo;</p>
+
+        <p><strong>b)</strong> No Slide 2, escolha o layout <strong>Título e Conteúdo</strong> (Para inserir novos slides, clique na guia Início, grupo Slides, Opção Novo Slide). Para o título digite <strong>Curiosidades (parte 1)</strong> e para o conteúdo, digite:</p>
+        <ul>
+            <li>A Monalisa não tinha sobrancelhas</li>
+            <li>Existem mais estrelas no espaço do que grãos de areia na Terra</li>
+            <li>O cérebro tem a mesma consistência de tofu</li>
+            <li>Hipopótamos matam mais humanos que qualquer animal africano.</li>
+        </ul>
+
+        <p><strong>c)</strong> No Slide 3, para o título, digite <strong>Curiosidades (parte 2)</strong> e para o conteúdo, digite:</p>
+        <ul>
+            <li>A luta mais longa de boxe durou 110 rounds</li>
+            <li>Homens tem mais chances de ser atingidos por um raio do que mulheres</li>
+            <li>Alexander Graham Bell, o inventor do telefone, não podia ligar para sua mulher. Ela era surda</li>
+            <li>A torre Eiffel fica 15cm maior do que seu tamanho original no verão</li>
+        </ul>
+
+        <p><strong>d)</strong> No Slide 4, para título, digite <strong>Curiosidades (parte 3)</strong> e para conteúdo, digite:</p>
+        <ul>
+            <li>Mageirocofobia é o medo de cozinhar</li>
+            <li>O io-io foi criado para ser usado como arma</li>
+            <li>Porcos não suam</li>
+            <li>Você enxerga melhor quando está assustado</li>
+            <li>Vacas suam através do nariz</li>
+            <li>O fusca foi ideia de Hitler</li>
+        </ul>
+
+        <p>No Slide 5, para título, digite <strong>Curiosidades (parte 4)</strong> e para conteúdo, digite:</p>
+        <ul>
+            <li>Se os tubarões ficarem de cabeça para baixo, eles entram em coma</li>
+            <li>As tartarugas podem respirar através dos seus rabos</li>
+            <li>Um lápis pode escrever uma linha reta de até 56km</li>
+            <li>Todos os cisnes da Inglaterra são propriedade da rainha</li>
+        </ul>
+
+        <div class="destaque">Em cada slide, insira uma Imagem que tenha a ver com alguma das curiosidades.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de PowerPoint</footer>
+</div>
+</body>
+</html>

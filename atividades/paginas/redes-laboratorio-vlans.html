@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratório de VLANs — Redes</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #0b544e 0%, #0f766e 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #0b544e; margin: 34px 0 16px; border-bottom: 3px solid #0f766e; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #0f766e; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #0f766e;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre;
+        }
+
+        .box { background: #f0fdfa; border: 2px solid #0f766e; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #0b544e; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #0f766e; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #0f766e; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 500px; font-size: 0.9em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 8px 12px; text-align: left; }
+        table.sheet th { background: #0f766e; color: #fff; font-weight: 600; }
+        table.sheet td { font-family: 'Courier New', monospace; }
+
+        .topologia { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 30px; margin: 20px 0; padding: 24px; background: #f0fdfa; border-radius: 10px; border: 1px solid #99e6d9; }
+        .dispositivos { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+        .dispositivo { display: flex; flex-direction: column; align-items: center; gap: 4px; background: #fff; border: 2px solid #0f766e; border-radius: 8px; padding: 12px 16px; min-width: 110px; text-align: center; }
+        .dispositivo span { font-weight: 700; color: #0f766e; }
+        .dispositivo small { color: #555; font-size: 0.78em; line-height: 1.4; }
+        .linha-conexao { width: 40px; height: 2px; background: #0f766e; }
+
+        .subtitulo-inst { text-align: center; color: #777; font-size: 0.85em; font-style: italic; margin: -8px 0 20px; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.8em; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔀 Laboratório de VLANs</h1>
+        <p>Redes de Computadores — Wireless &amp; Cabos e Infraestrutura</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=redes">← Voltar para Redes de Computadores</a>
+
+    <div class="content">
+        <p class="subtitulo-inst">Livro: Aula 01 – 03 · Atividade: 03 · "A felicidade da sua vida depende da qualidade dos seus pensamentos." — Marco Aurélio</p>
+
+        <h2>01) Faça no Cisco Packet Tracer o diagrama de topologia abaixo</h2>
+
+        <div class="topologia">
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC1</span><small>172.17.10.21<br>VLAN 10</small></div>
+                <div class="dispositivo pc">💻<span>PC2</span><small>172.17.20.22<br>VLAN 20</small></div>
+                <div class="dispositivo pc">💻<span>PC3</span><small>172.17.30.23<br>VLAN 30</small></div>
+            </div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>S2</span><small>F0/1 tronco → S1<br>F0/11 → PC1<br>F0/18 → PC2<br>F0/6 → PC3<br>VLAN 99: 172.17.99.12</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>S1</span><small>VLAN 99: 172.17.99.11<br>F0/1 tronco → S2<br>F0/2 tronco → S3</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivo switch">🔀<span>S3</span><small>F0/2 tronco → S1<br>F0/11 → PC4<br>F0/18 → PC5<br>F0/6 → PC6<br>VLAN 99: 172.17.99.13</small></div>
+            <div class="linha-conexao"></div>
+            <div class="dispositivos">
+                <div class="dispositivo pc">💻<span>PC4</span><small>172.17.10.24<br>VLAN 10</small></div>
+                <div class="dispositivo pc">💻<span>PC5</span><small>172.17.20.25<br>VLAN 20</small></div>
+                <div class="dispositivo pc">💻<span>PC6</span><small>172.17.30.26<br>VLAN 30</small></div>
+            </div>
+        </div>
+
+        <h3>Tabela de endereçamento</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Dispositivo (Nome do host)</th><th>Interface</th><th>Endereço IP</th><th>Máscara de Sub-Rede</th><th>Gateway Padrão</th></tr>
+                <tr><td>S1</td><td>VLAN 99</td><td>172.17.99.11</td><td>255.255.255.0</td><td>N/A</td></tr>
+                <tr><td>S2</td><td>VLAN 99</td><td>172.17.99.12</td><td>255.255.255.0</td><td>N/A</td></tr>
+                <tr><td>S3</td><td>VLAN 99</td><td>172.17.99.13</td><td>255.255.255.0</td><td>N/A</td></tr>
+                <tr><td>PC1</td><td>Placa de Rede</td><td>172.17.10.21</td><td>255.255.255.0</td><td>172.17.10.1</td></tr>
+                <tr><td>PC2</td><td>Placa de Rede</td><td>172.17.20.22</td><td>255.255.255.0</td><td>172.17.20.1</td></tr>
+                <tr><td>PC3</td><td>Placa de Rede</td><td>172.17.30.23</td><td>255.255.255.0</td><td>172.17.30.1</td></tr>
+                <tr><td>PC4</td><td>Placa de Rede</td><td>172.17.10.24</td><td>255.255.255.0</td><td>172.17.10.1</td></tr>
+                <tr><td>PC5</td><td>Placa de Rede</td><td>172.17.20.25</td><td>255.255.255.0</td><td>172.17.20.1</td></tr>
+                <tr><td>PC6</td><td>Placa de Rede</td><td>172.17.30.26</td><td>255.255.255.0</td><td>172.17.30.1</td></tr>
+            </table>
+        </div>
+
+        <h3>Designações de porta iniciais (Switches 2 e 3)</h3>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th>Portas</th><th>Atribuição</th><th>Rede</th></tr>
+                <tr><td>Fa0/1 - 0/5</td><td>802.1q Troncos (VLAN 99 nativa)</td><td>172.17.99.0/24</td></tr>
+                <tr><td>Fa0/6 - 0/10</td><td>VLAN 30 – Convidado Padrão</td><td>172.17.30.0/24</td></tr>
+                <tr><td>Fa0/11 - 0/17</td><td>VLAN 10 – Corpo Docente/Administração</td><td>172.17.10.0/24</td></tr>
+                <tr><td>Fa0/18 - 0/24</td><td>VLAN 20 - Alunos</td><td>172.17.20.0/24</td></tr>
+            </table>
+        </div>
+
+        <h2>02) Montar a topologia</h2>
+        <div class="aviso">⚠️ Esta segunda parte do material propõe um exercício introdutório de bancada com um único switch, separado da topologia principal (S1/S2/S3) mostrada acima. Mantivemos exatamente como está no PDF original — pratique primeiro este exercício simples, depois aplique os mesmos comandos na topologia completa dos três switches.</div>
+
+        <p>Crie:</p>
+        <div class="code-block">PC0 --------\
+             \
+PC1 ---------- SW1
+             /
+PC2 --------/</div>
+
+        <p>Arraste um <strong>2960 Switch</strong>.</p>
+        <ul>
+            <li>Adicione 3 PCs.</li>
+            <li>Conecte usando <strong>Copper Straight Through</strong>:</li>
+            <li>PC0 → Fa0/1</li>
+            <li>PC1 → Fa0/2</li>
+            <li>PC2 → Fa0/3</li>
+        </ul>
+
+        <h3>Abra a configuração do switch</h3>
+        <ul>
+            <li>Clique duas vezes no switch.</li>
+            <li>Abrirá uma janela.</li>
+            <li>Clique na aba <strong>CLI</strong>.</li>
+        </ul>
+
+        <h3>Entrar no modo privilegiado</h3>
+        <p>Digite após aparecer <strong>Switch&gt;</strong></p>
+        <div class="code-block">enable</div>
+        <p>E pressione o <strong>ENTER</strong></p>
+        <p>Agora aparecerá:</p>
+        <div class="code-block">Switch#</div>
+
+        <h3>Entrar no modo de configuração</h3>
+        <p>Digite:</p>
+        <div class="code-block">Configure terminal</div>
+        <p>Ou</p>
+        <div class="code-block">Conf t</div>
+
+        <h3>Criar uma VLAN</h3>
+        <p>Digite uma linha por vez:</p>
+        <div class="code-block">Vlan 10</div>
+        <p>E dê o ENTER</p>
+        <p>Resultado:</p>
+        <div class="code-block">Switch(config-vlan)#</div>
+
+        <h2>Criar as VLANs no S1</h2>
+        <div class="code-block">vlan 10
+name DOCENTES
+exit
+
+vlan 20
+name ALUNOS
+exit
+
+vlan 30
+name CONVIDADOS
+exit
+
+vlan 99
+name NATIVA
+exit</div>
+        <ul>
+            <li>Repita os mesmos comandos no <strong>S2</strong></li>
+            <li>E repita os mesmos comandos no <strong>S3</strong></li>
+        </ul>
+
+        <h2>🔗 Configurar os troncos</h2>
+        <p>As portas Fa0/1 até Fa0/5 serão troncos.</p>
+        <p>Digite:</p>
+        <div class="code-block">interface range fa0/1-5
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,99
+exit</div>
+        <ul>
+            <li><strong>interface range fa0/1-5</strong> → seleciona Fa0/1, Fa0/2, Fa0/3, Fa0/4 e Fa0/5.</li>
+            <li><strong>switchport mode trunk</strong> → transforma as portas em troncos.</li>
+            <li><strong>switchport trunk native vlan 99</strong> → define VLAN 99 como nativa</li>
+        </ul>
+
+        <h2>👤 Configurar VLAN 30 (Convidados)</h2>
+        <p>Portas Fa0/6 até Fa0/10:</p>
+        <div class="code-block">interface range fa0/6-10
+switchport mode access
+switchport access vlan 30
+exit</div>
+
+        <h2>🧑‍🏫 Configurar VLAN 10 (Docentes)</h2>
+        <p>Portas Fa0/11 até Fa0/17:</p>
+        <div class="code-block">interface range fa0/11-17
+switchport mode access
+switchport access vlan 10
+exit</div>
+
+        <h2>🎓 Configurar VLAN 20 (Alunos)</h2>
+        <p>Portas Fa0/18 até Fa0/24:</p>
+        <div class="code-block">interface range fa0/18-24
+switchport mode access
+switchport access vlan 20
+exit</div>
+
+        <h2>🔎 Verifique</h2>
+        <div class="code-block">show vlan brief</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Redes de Computadores</footer>
+</div>
+</body>
+</html>

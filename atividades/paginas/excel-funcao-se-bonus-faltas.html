@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Função SE — Bônus por Faltas — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5b800; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        .formula-breakdown { background: #1e1e1e; border-radius: 8px; padding: 20px; margin: 14px 0; }
+        .formula-breakdown .f { font-family: 'Courier New', monospace; font-size: 1.3em; font-weight: 700; color: #fff; text-align: center; margin-bottom: 18px; }
+        .formula-breakdown .f .v1 { color: #ef4444; text-decoration: underline; }
+        .formula-breakdown .f .v2 { color: #22c55e; text-decoration: underline; }
+        .formula-breakdown .f .v3 { color: #f472b6; text-decoration: underline; }
+        .legend { list-style: none; margin: 0; }
+        .legend li { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; color: #e5e5e5; font-size: 0.95em; }
+        .legend .dot { flex: 0 0 18px; width: 18px; height: 18px; border-radius: 50%; margin-top: 2px; }
+        .legend .dot.red { background: #ef4444; }
+        .legend .dot.green { background: #22c55e; }
+        .legend .dot.pink { background: #f472b6; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            .formula-breakdown .f { font-size: 1em; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎯 Função SE — Bônus por Faltas</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Função SE</h2>
+        <p>Aprender a utilizar a função <strong>SE</strong> no Excel para calcular bônus salarial de acordo com a quantidade de faltas do funcionário.</p>
+
+        <h3>O que é a fórmula SE?</h3>
+        <p>A função SE é utilizada no Excel para realizar <strong>testes lógicos</strong>, ou seja, verificar se uma condição é verdadeira ou falsa e, a partir disso, mostrar um resultado.</p>
+
+        <p>A estrutura da função SE é:</p>
+        <div class="code-block">SE(teste_lógico; valor_se_verdadeiro; valor_se_falso)</div>
+
+        <h3>Entendendo cada parte da fórmula</h3>
+        <ul>
+            <li><strong>Teste_lógico:</strong> é a condição que será analisada pelo Excel.<br>Exemplo: verificar se o número de faltas é igual a zero.</li>
+            <li><strong>Valor_se_verdadeiro:</strong> é o resultado que aparecerá caso a condição seja verdadeira.<br>Exemplo: se o funcionário não tiver faltas, ele recebe o bônus de R$ 200,00.</li>
+            <li><strong>Valor_se_falso:</strong> é o resultado que aparecerá caso a condição seja falsa.<br>Exemplo: se o funcionário tiver uma ou mais faltas, ele não recebe bônus.</li>
+        </ul>
+
+        <h3>O que essa fórmula faz?</h3>
+        <div class="box">
+            <ul>
+                <li>O Excel verifica se o valor da célula <strong>B2</strong> é igual a <strong>0</strong></li>
+                <li>Se for <strong>verdadeiro</strong>, retorna <strong>200</strong></li>
+                <li>Se for <strong>falso</strong>, retorna <strong>0</strong></li>
+            </ul>
+        </div>
+
+        <h2>Atividade</h2>
+        <p>Uma empresa concede um bônus de <strong>R$ 200,00</strong> para os funcionários que <strong>não tiveram nenhuma falta</strong> no mês. Caso o funcionário tenha <strong>uma ou mais faltas</strong>, ele <strong>não receberá o bônus</strong>.</p>
+        <p>Você deverá usar a função SE para calcular automaticamente o valor do bônus.</p>
+        <p>Abra o Excel e faça esta tabela abaixo:</p>
+
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th></tr>
+                <tr><td class="rownum">1</td><td colspan="3" class="merged">BÔNUS SALARIAL</td></tr>
+                <tr><td class="rownum">2</td><td class="headcell">Funcionário</td><td class="headcell">Faltas no Mês</td><td class="headcell">Bônus (R$)</td></tr>
+                <tr><td class="rownum">3</td><td>João</td><td class="money">0</td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>Pedrinho</td><td class="money">2</td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>Maria</td><td class="money">0</td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>Carlos</td><td class="money">1</td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>Ana</td><td class="money">2</td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Instruções</h3>
+        <ul>
+            <li>Observe a quantidade de faltas de cada funcionário.</li>
+            <li>Na coluna <strong>Bônus (R$)</strong>, crie uma fórmula usando a função SE.</li>
+            <li>Se o número de faltas for <strong>igual a 0</strong>, o bônus será <strong>R$ 200,00</strong>.</li>
+            <li>Caso contrário, o bônus será <strong>R$ 0,00</strong>.</li>
+            <li>Copie a fórmula para as demais linhas.</li>
+        </ul>
+
+        <p>O resultado tem que ser:</p>
+        <ul>
+            <li>Funcionários sem faltas recebem <strong>R$ 200,00</strong></li>
+            <li>Funcionários com faltas recebem <strong>R$ 0,00</strong></li>
+        </ul>
+
+        <p>Aplicando a fórmula na linha do João (linha 3):</p>
+
+        <div class="formula-breakdown">
+            <div class="f">=SE(<span class="v1">B3=0</span>;<span class="v2">200</span>;<span class="v3">0</span>)</div>
+            <ul class="legend">
+                <li><span class="dot red"></span> O teste lógico: verifica se as Faltas no Mês (B3) são iguais a 0.</li>
+                <li><span class="dot green"></span> Valor se verdadeiro: se não teve faltas, o bônus é 200.</li>
+                <li><span class="dot pink"></span> Valor se falso: se teve alguma falta, o bônus é 0.</li>
+            </ul>
+        </div>
+
+        <div class="aviso">⚠️ <strong>Importante:</strong> depois de digitar a fórmula na célula C3, arraste (copie) para as células C4, C5, C6 e C7, para todos os funcionários receberem o cálculo automático do bônus.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

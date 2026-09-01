@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilha com Máximo, Mínimo e Soma — Excel</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #14502f 0%, #1d6f42 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #14502f; margin: 34px 0 16px; border-bottom: 3px solid #1d6f42; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #1d6f42; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #1d6f42;
+            font-family: 'Courier New', monospace; font-size: 0.95em; line-height: 1.6;
+            white-space: pre; text-align: center;
+        }
+
+        .box { background: #eefaf2; border: 2px solid #1d6f42; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #14502f; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #1d6f42; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        .sheet-wrap { overflow-x: auto; margin: 16px 0; border: 1px solid #d0d0d0; border-radius: 6px; }
+        table.sheet { border-collapse: collapse; width: 100%; min-width: 400px; font-size: 0.92em; }
+        table.sheet th, table.sheet td { border: 1px solid #d0d0d0; padding: 6px 12px; text-align: left; }
+        table.sheet th { background: #eef1f4; color: #5f6368; text-align: center; font-weight: 600; width: 40px; }
+        table.sheet td.rownum { background: #f1f3f4; color: #5f6368; text-align: center; font-weight: 600; }
+        table.sheet td.merged { text-align: center; font-weight: 700; background: #fff59d; }
+        table.sheet td.headcell { font-weight: 700; background: #f5f5f5; }
+        table.sheet td.money { text-align: right; }
+        table.sheet td.empty { background: #fff; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+            table.sheet { font-size: 0.82em; }
+            table.sheet th, table.sheet td { padding: 5px 8px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📈 Planilha com Máximo, Mínimo e Soma</h1>
+        <p>Excel Básico</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=excel">← Voltar para Excel Básico</a>
+
+    <div class="content">
+        <h2>Lista de Exercícios de Excel</h2>
+        <p>01) Elaborar a planilha abaixo, fazendo-se o que se pede:</p>
+
+        <h3>Empresa Nacional S/A</h3>
+
+        <p><strong>1ª Tabela — 1º Trimestre</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th></tr>
+                <tr><td class="rownum">1</td><td class="headcell">Código</td><td class="headcell">Produto</td><td class="headcell">Jan</td><td class="headcell">Fev</td><td class="headcell">Mar</td><td class="headcell">Total 1º Trim.</td><td class="headcell">Máximo</td><td class="headcell">Mínimo</td><td class="headcell">Média</td></tr>
+                <tr><td class="rownum">2</td><td>1</td><td>Porca</td><td class="money">4.500,00</td><td class="money">5.040,00</td><td class="money">5.696,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">3</td><td>2</td><td>Parafuso</td><td class="money">6.250,00</td><td class="money">7.000,00</td><td class="money">7.910,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">4</td><td>3</td><td>Arruela</td><td class="money">3.300,00</td><td class="money">3.696,00</td><td class="money">4.176,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">5</td><td>4</td><td>Prego</td><td class="money">8.000,00</td><td class="money">8.690,00</td><td class="money">10.125,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">6</td><td>5</td><td>Alicate</td><td class="money">4.557,00</td><td class="money">5.104,00</td><td class="money">5.676,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">7</td><td>6</td><td>Martelo</td><td class="money">3.260,00</td><td class="money">3.640,00</td><td class="money">4.113,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">8</td><td colspan="2" class="headcell">Totais</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <p><strong>2ª Tabela — 2º Trimestre</strong></p>
+        <div class="sheet-wrap">
+            <table class="sheet">
+                <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th><th>G</th><th>H</th><th>I</th></tr>
+                <tr><td class="rownum">10</td><td class="headcell">Código</td><td class="headcell">Produto</td><td class="headcell">Abr</td><td class="headcell">Mai</td><td class="headcell">Jun</td><td class="headcell">Total 2º Trim.</td><td class="headcell">Máximo</td><td class="headcell">Mínimo</td><td class="headcell">Média</td></tr>
+                <tr><td class="rownum">11</td><td>1</td><td>Porca</td><td class="money">6.265,00</td><td class="money">6.954,00</td><td class="money">7.858,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">12</td><td>2</td><td>Parafuso</td><td class="money">8.701,00</td><td class="money">9.658,00</td><td class="money">10.197,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">13</td><td>3</td><td>Arruela</td><td class="money">4.569,00</td><td class="money">5.099,00</td><td class="money">5.769,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">14</td><td>4</td><td>Prego</td><td class="money">12.341,00</td><td class="money">12.365,00</td><td class="money">13.969,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">15</td><td>5</td><td>Alicate</td><td class="money">6.344,00</td><td class="money">7.042,00</td><td class="money">7.957,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">16</td><td>6</td><td>Martelo</td><td class="money">4.525,00</td><td class="money">5.022,00</td><td class="money">5.671,00</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">17</td><td colspan="2" class="headcell">Totais</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+                <tr><td class="rownum">19</td><td colspan="2" class="headcell">Total do Semestre</td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td><td class="empty"></td></tr>
+            </table>
+        </div>
+
+        <h3>Fórmulas</h3>
+
+        <div class="box">
+            <h4>1ª Tabela</h4>
+            <ul>
+                <li><strong>Total 1º Trimestre:</strong> soma das vendas dos meses de Jan / Fev / Mar.</li>
+                <li><strong>Máximo:</strong> calcular o maior valor entre os meses de Jan / Fev / Mar.</li>
+                <li><strong>Mínimo:</strong> calcular o menor valor entre os meses de Jan / Fev / Mar.</li>
+                <li><strong>Média:</strong> calcular a média dos valores entre os meses de Jan / Fev / Mar.</li>
+            </ul>
+        </div>
+
+        <div class="box">
+            <h4>2ª Tabela</h4>
+            <ul>
+                <li><strong>Total 2º Trimestre:</strong> soma das vendas dos meses de Abr / Mai / Jun.</li>
+                <li><strong>Máximo:</strong> calcular o maior valor entre os meses de Abr / Mai / Jun.</li>
+                <li><strong>Mínimo:</strong> calcular o menor valor entre os meses de Abr / Mai / Jun.</li>
+                <li><strong>Média:</strong> calcular a média dos valores entre os meses de Abr / Mai / Jun.</li>
+            </ul>
+            <p><strong>Totais:</strong> soma das colunas de cada mês (1ª e 2ª tabela).</p>
+            <p><strong>Total do Semestre:</strong> soma dos totais de cada trimestre.</p>
+        </div>
+
+        <p>Usando a linha da Porca (linha 2) como exemplo, as fórmulas ficam assim:</p>
+
+        <div class="code-block">Total 1º Trim. (F2):  =SOMA(C2:E2)
+Máximo (G2):        =MÁXIMO(C2:E2)
+Mínimo (H2):        =MÍNIMO(C2:E2)
+Média (I2):         =MÉDIA(C2:E2)</div>
+
+        <p>O mesmo padrão vale para a segunda tabela, trocando o intervalo Jan/Fev/Mar (colunas C:E) pelo intervalo Abr/Mai/Jun. Para os Totais de cada coluna, some as 6 linhas de produtos (ex.: <code>=SOMA(C2:C7)</code>). Para o Total do Semestre, some o Total 1º Trim. com o Total 2º Trim. de cada produto.</p>
+    </div>
+
+    <footer>Microlins São José — Atividade de Excel</footer>
+</div>
+</body>
+</html>

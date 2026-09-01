@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Avançado: Growth Marketing, Analytics & CRO</title>
+    <style>
+        :root {
+            --primary-dark: #090d16;
+            --brand-color: #0284c7;
+            --brand-dark: #0369a1;
+            --brand-light: #e0f2fe;
+            --accent-color: #0d9488;
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --input-bg: #0f172a;
+            --success-color: #22c55e;
+            --success-bg: #052e16;
+            --error-color: #ef4444;
+            --error-bg: #450a0a;
+            --warning-color: #f59e0b;
+            --warning-bg: #451a03;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1040px;
+            margin: 0 auto;
+        }
+
+        /* Banner Principal Estilo Tech/Dark */
+        .main-header {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #0284c7 100%);
+            color: white;
+            padding: 45px 35px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.2);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .main-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .main-header p {
+            font-size: 15.5px;
+            color: #94a3b8;
+            max-width: 860px;
+        }
+
+        /* Painel de Dashboard */
+        .dashboard-status {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+        }
+
+        .status-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+
+        .status-sub {
+            font-size: 13.5px;
+            color: var(--text-muted);
+        }
+
+        .btn-validate {
+            background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+
+        .btn-validate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(2, 132, 199, 0.6);
+        }
+
+        /* Card do Módulo */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 32px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .module-title-group h2 {
+            font-size: 20px;
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .module-title-group span {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .scenario-box {
+            background-color: #0f172a;
+            border-left: 4px solid var(--brand-color);
+            border-radius: 8px;
+            padding: 20px;
+            font-size: 14px;
+            color: #cbd5e1;
+            margin-bottom: 22px;
+            line-height: 1.7;
+        }
+
+        .scenario-box strong {
+            color: #38bdf8;
+        }
+
+        .task-instruction {
+            font-weight: 600;
+            font-size: 14px;
+            color: #f1f5f9;
+            margin: 18px 0 10px 0;
+        }
+
+        /* Inputs */
+        .input-box {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            color: #ffffff;
+            background-color: var(--input-bg);
+            transition: all 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.25);
+        }
+
+        textarea.input-box {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        select.input-box {
+            cursor: pointer;
+        }
+
+        /* Badges de Feedback */
+        .feedback-badge {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+            line-height: 1.5;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: #4ade80;
+            border: 1px solid #166534;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: #fca5a5;
+            border: 1px solid #991b1b;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-top: 14px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 14px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #94a3b8;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin: 18px 0;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13.5px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 14px;
+            font-weight: 700;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        td {
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 14px;
+            vertical-align: middle;
+            color: #e2e8f0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .metric-card {
+            background-color: #0f172a;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .metric-card .val {
+            font-size: 22px;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+
+        .metric-card .lbl {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+    
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- CABEÇALHO -->
+    <header class="main-header">
+        <span class="badge-tag">Nível Avançado / Executivo</span>
+        <h1>Desafio de Growth Marketing, Unit Economics & CRO</h1>
+        <p>Esta simulação exige conhecimentos avançados em análise métrica, otimização de taxa de conversão (CRO), modelos de atribuição e inteligência de cópia. Todas as respostas possuem validação numérica, semântica e anti-spam em tempo real.</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=marketing">← Voltar para Marketing</a>
+
+    <!-- PAINEL DE STATUS -->
+    <div class="dashboard-status">
+        <div>
+            <div class="status-title">Status do Desafio: <span id="status-tag" style="color: var(--warning-color);">Em Análise</span></div>
+            <div class="status-sub" id="status-desc">Preencha todos os cálculos e diagnósticos para rodar a validação do sistema.</div>
+        </div>
+        <button class="btn-validate" onclick="validarAtividadeAvançada()">⚡ Executar Validação Completa</button>
+    </div>
+
+    <!-- MÓDULO 1: CÁLCULOS DE UNIT ECONOMICS & METRICAS DE GROWTH -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <div class="module-title-group">
+                <span>Engenharia de Growth</span>
+                <h2>Unit Economics & Análise de Eficiência Financeira</h2>
+            </div>
+        </div>
+
+        <div class="scenario-box">
+            <strong>📊 Dados da Operação (Último Trimestre):</strong><br>
+            • Investimento total em Mídia Pago (Google + Meta Ads): <strong>R$ 120.000,00</strong><br>
+            • Novos Clientes Adquiridos: <strong>400 clientes</strong><br>
+            • Ticket Médio Mensal (MRR por cliente): <strong>R$ 150,00</strong><br>
+            • Taxa de Churn Mensal (Cancelamento): <strong>5% ao mês</strong>
+        </div>
+
+        <div class="grid-3" style="margin-bottom: 20px;">
+            <div class="metric-card">
+                <div class="lbl">Investimento Total</div>
+                <div class="val">R$ 120 mil</div>
+            </div>
+            <div class="metric-card">
+                <div class="lbl">Novos Clientes</div>
+                <div class="val">400</div>
+            </div>
+            <div class="metric-card">
+                <div class="lbl">MRR / Cliente</div>
+                <div class="val">R$ 150/mês</div>
+            </div>
+        </div>
+
+        <div class="grid-3">
+            <div class="field-group">
+                <label>1. CAC (Custo de Aquisição em R$):</label>
+                <input type="number" id="m1-cac" class="input-box" placeholder="Ex: 300">
+                <div id="fb-m1-cac" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>2. LTV (Lifetime Value em R$):</label>
+                <input type="number" id="m1-ltv" class="input-box" placeholder="Ex: 3000">
+                <div id="fb-m1-ltv" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>3. Relação LTV / CAC (Ex: 10 para 10:1):</label>
+                <input type="number" id="m1-ltvcac" class="input-box" placeholder="Ex: 10">
+                <div id="fb-m1-ltvcac" class="feedback-badge"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+            <label style="font-size: 13px; font-weight: 600; color: #94a3b8;">4. Análise de Viabilidade Econômica (Justifique se esta operação é saudável e escalável):</label>
+            <textarea id="m1-analise" class="input-box" placeholder="Avalie o Payback (em quantos meses se paga) e se a relação LTV/CAC atinge os padrões do mercado SaaS..."></textarea>
+            <div id="fb-m1-analise" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 2: CRO (CONVERSION RATE OPTIMIZATION) E FUNIL DE VENDAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <div class="module-title-group">
+                <span>Otimização de Conversão</span>
+                <h2>Diagnóstico de Gargalos no Funil & Hipótese de Teste A/B</h2>
+            </div>
+        </div>
+
+        <div class="scenario-box">
+            <strong>🔻 Dados do Funil de E-commerce:</strong><br>
+            1. Visitantes da Landing Page: <strong>100.000 usuários</strong><br>
+            2. Adicionaram ao Carrinho: <strong>10.000 usuários</strong> (10% de conversão)<br>
+            3. Iniciaram o Checkout: <strong>2.000 usuários</strong> (20% dos que adicionaram)<br>
+            4. Finalizaram a Compra: <strong>300 usuários</strong> (Apenas 15% dos que iniciaram o checkout)
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Qual a etapa crítica com MAIOR perda/gargalo do funil?</label>
+                <select id="m2-gargalo" class="input-box">
+                    <option value="">Selecione a etapa crítica...</option>
+                    <option value="visita_carrinho">Visitante -> Adicionar ao Carrinho (10%)</option>
+                    <option value="carrinho_checkout">Carrinho -> Iniciar Checkout (20%)</option>
+                    <option value="checkout_compra">Checkout -> Finalizar Compra (15% - Maior abandono proporcional)</option>
+                </select>
+                <div id="fb-m2-gargalo" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Gatilho principal associado a esse abandono:</label>
+                <select id="m2-gatilho" class="input-box">
+                    <option value="">Selecione o problema estrutural...</option>
+                    <option value="friccao">Alta fricção no checkout (frete surpresa, cadastro longo, ausência de PIX)</option>
+                    <option value="copy">Falta de botão de compra na home</option>
+                    <option value="cor">A cor do botão não tem contraste suficiente</option>
+                </select>
+                <div id="fb-m2-gatilho" class="feedback-badge"></div>
+            </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+            <label style="font-size: 13px; font-weight: 600; color: #94a3b8;">Formulação de Hipótese de Teste A/B para solucionar o gargalo:</label>
+            <textarea id="m2-hipotese" class="input-box" placeholder="Estrutura esperada: 'Se implementarmos [X - ex: Checkout transparente em 1 etapa com calculadora de frete], então aumentaremos [Y - taxa de finalização de compra], porque [Z - reduzirá a fricção e ansiedade do cliente]'..."></textarea>
+            <div id="fb-m2-hipotese" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 3: ATTRIBUTION MODELS & ALOCAÇÃO DE ORÇAMENTO DE MÍDIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <div class="module-title-group">
+                <span>Estratégia de Mídia</span>
+                <h2>Modelos de Atribuição (Attribution Modeling)</h2>
+            </div>
+        </div>
+
+        <div class="scenario-box">
+            <strong>🔗 Jornada Multi-Touch do Consumidor (Venda de R$ 1.000,00):</strong><br>
+            • Touchpoint 1: Anúncio de Vídeo no Meta Ads (Conscientização / Topo)<br>
+            • Touchpoint 2: Clique em Blog Post via Busca Orgânica (Pesquisa / Meio)<br>
+            • Touchpoint 3: Clique em E-mail de Remarketing de Abandono de Carrinho (Conversão / Fundo)
+        </div>
+
+        <div class="grid-2">
+            <div class="field-group">
+                <label>No Modelo 'Last Touch' (Último Clique), qual canal recebe 100% da atribuição?</label>
+                <select id="m3-last" class="input-box">
+                    <option value="">Selecione...</option>
+                    <option value="meta">Meta Ads (Vídeo)</option>
+                    <option value="seo">Busca Orgânica (Blog)</option>
+                    <option value="email">E-mail de Remarketing</option>
+                </select>
+                <div id="fb-m3-last" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Qual o risco de otimizar a mídia baseado APENAS no 'Last Touch'?</label>
+                <input type="text" id="m3-risco" class="input-box" placeholder="Ex: Cortar verba do topo do funil (Meta Ads) e zerar a entrada de novos clientes futuros">
+                <div id="fb-m3-risco" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: COPYWRITING AVANÇADO (FRAMEWORK BAB - BEFORE/AFTER/BRIDGE) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <div class="module-title-group">
+                <span>Persuasão Executiva</span>
+                <h2>Copywriting de Alta Conversão no Framework BAB</h2>
+            </div>
+        </div>
+
+        <div class="scenario-box">
+            <strong>🎯 Desafio de Redação Publicitária:</strong><br>
+            Escreva uma copy para um <strong>Software B2B de Inteligência Financeira e Gestão de Fluxo de Caixa</strong> utilizando obrigatoriamente a estrutura <strong>BAB (Before / After / Bridge)</strong>.
+        </div>
+
+        <div style="margin-top: 10px;">
+            <label style="font-size: 13px; font-weight: 600; color: #94a3b8;">Redija a Copy Completa (O sistema exige presença de Before, After e Bridge com sentido):</label>
+            <textarea id="m4-copy" class="input-box" style="min-height: 140px;" placeholder="• BEFORE: Descreva o caos financeiro atual do gestor (planilhas travadas, falta de previsibilidade)...&#10;• AFTER: Descreva o estado ideal desejado (clareza total, decisões em 1 clique, lucro sob controle)...&#10;• BRIDGE: Apresente o seu software como a ponte exata para alcançar essa transformação..."></textarea>
+            <div id="fb-m4-copy" class="feedback-badge"></div>
+        </div>
+    </article>
+
+</div>
+
+<script>
+    // ALGORITMO DE VALIDAÇÃO AVANÇADO ANTI-SPAM, ANTI-GIBBERISH E SEMÂNTICO
+    function validarTextoAvançado(texto, minPalavras = 5, minComprimento = 20) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+
+        const limpo = texto.trim();
+
+        // 1. Comprimento Mínimo
+        if (limpo.length < minComprimento) {
+            return { valido: false, motivo: `Resposta insuficiente. Escreva no mínimo ${minComprimento} caracteres argumentativos.` };
+        }
+
+        // 2. Filtro Anti-Numérico Puro (ex: "12124128471568596983056908")
+        if (/^\d+$/.test(limpo)) {
+            return { valido: false, motivo: "Entrada inválida: Você digitou apenas números. Explique a resposta em português." };
+        }
+
+        // 3. Filtro de Palavras Contínuas sem Espaço (ex: "hikhdfisfjsa~fp~pfpoasfj")
+        if (!limpo.includes(' ') && limpo.length > 16) {
+            return { valido: false, motivo: "Resposta inválida: Sequência contínua de caracteres sem espaços detectada." };
+        }
+
+        // 4. Mínimo de Palavras Reais
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) {
+            return { valido: false, motivo: `Elabore sua resposta com pelo menos ${minPalavras} palavras completas.` };
+        }
+
+        // 5. Proporção de Vogais vs. Consoantes (Filtro Teclado Aleatório)
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) {
+            return { valido: false, motivo: "Texto ilegível ou digitação incoerente. Escreva frases gramaticalmente válidas." };
+        }
+
+        // 6. Detecção de Padrões de Repetição
+        if (/(.)\1{3,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) {
+            return { valido: false, motivo: "Padrão repetitivo ou teste de teclado detectado. Digite uma análise profissional." };
+        }
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarAtividadeAvançada() {
+        let acertos = 0;
+        let totalMetricas = 9;
+
+        // MÓDULO 1: CÁLCULOS
+        const cacInput = parseFloat(document.getElementById('m1-cac').value);
+        const ltvInput = parseFloat(document.getElementById('m1-ltv').value);
+        const ltvcacInput = parseFloat(document.getElementById('m1-ltvcac').value);
+
+        // CAC correto: 120000 / 400 = 300
+        if (cacInput === 300) {
+            aplicarFeedback('fb-m1-cac', { valido: true, motivo: "Correto! CAC = R$ 120.000 / 400 clientes = R$ 300,00." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m1-cac', { valido: false, motivo: "Incorreto. O CAC é o Investimento Total dividido pelo número de clientes (R$ 120.000 / 400 = 300)." });
+        }
+
+        // LTV correto: MRR (150) / Churn (0.05) = 3000
+        if (ltvInput === 3000) {
+            aplicarFeedback('fb-m1-ltv', { valido: true, motivo: "Correto! LTV = Ticket Mensal R$ 150 / 0.05 (Churn) = R$ 3.000,00 (Vida útil de 20 meses)." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m1-ltv', { valido: false, motivo: "Incorreto. LTV em SaaS = MRR / Taxa de Churn (150 / 0,05 = 3000)." });
+        }
+
+        // LTV/CAC correto: 3000 / 300 = 10
+        if (ltvcacInput === 10) {
+            aplicarFeedback('fb-m1-ltvcac', { valido: true, motivo: "Correto! LTV/CAC = 3000 / 300 = 10x (Excelente eficiência!)." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m1-ltvcac', { valido: false, motivo: "Incorreto. A razão LTV/CAC é 3000 / 300 = 10." });
+        }
+
+        // Análise M1
+        const analiseM1 = document.getElementById('m1-analise').value;
+        const resAnaliseM1 = validarTextoAvançado(analiseM1, 6, 25);
+        if (resAnaliseM1.valido) {
+            const termosSaaS = /payback|meses|saudáv|excelent|escalá|retorno|lucro|churn|2 meses|tempo/i;
+            if (!termosSaaS.test(analiseM1)) {
+                resAnaliseM1.valido = false;
+                resAnaliseM1.motivo = "Texto coerente, mas falta mencionar o tempo de Payback (2 meses) ou a escalabilidade da relação 10x.";
+            }
+        }
+        aplicarFeedback('fb-m1-analise', resAnaliseM1);
+        if (resAnaliseM1.valido) acertos++;
+
+        // MÓDULO 2: CRO
+        const gargaloVal = document.getElementById('m2-gargalo').value;
+        if (gargaloVal === 'checkout_compra') {
+            aplicarFeedback('fb-m2-gargalo', { valido: true, motivo: "Correto! Apenas 15% dos que chegam ao checkout finalizam (perda de 85%)." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m2-gargalo', { valido: false, motivo: "Incorreto. A maior queda proporcional ocorre do Checkout para a Compra (85% de abandono)." });
+        }
+
+        const gatilhoVal = document.getElementById('m2-gatilho').value;
+        if (gatilhoVal === 'friccao') {
+            aplicarFeedback('fb-m2-gatilho', { valido: true, motivo: "Correto! Fricção e surpresas no frete/cadastro são as maiores causas de abandono de checkout." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m2-gatilho', { valido: false, motivo: "Incorreto. Selecione a opção relacionada à alta fricção e surpresas no checkout." });
+        }
+
+        const hipoteseVal = document.getElementById('m2-hipotese').value;
+        const resHipotese = validarTextoAvançado(hipoteseVal, 8, 30);
+        if (resHipotese.valido) {
+            const termosCRO = /se|então|porque|checkout|conversão|fricção|frete|pix|passos|reduz/i;
+            if (!termosCRO.test(hipoteseVal)) {
+                resHipotese.valido = false;
+                resHipotese.motivo = "Formule no padrão de hipótese de Teste A/B: 'Se [Ação], então [Métrica], porque [Razão]'.";
+            }
+        }
+        aplicarFeedback('fb-m2-hipotese', resHipotese);
+        if (resHipotese.valido) acertos++;
+
+        // MÓDULO 3: ATTRIBUTION
+        const lastVal = document.getElementById('m3-last').value;
+        if (lastVal === 'email') {
+            aplicarFeedback('fb-m3-last', { valido: true, motivo: "Correto! O E-mail de Remarketing foi o último ponto de contato antes da compra." });
+            acertos++;
+        } else {
+            aplicarFeedback('fb-m3-last', { valido: false, motivo: "Incorreto. No modelo Last Touch, o E-mail de Remarketing (último clique) leva 100% do crédito." });
+        }
+
+        const riscoVal = document.getElementById('m3-risco').value;
+        const resRisco = validarTextoAvançado(riscoVal, 5, 20);
+        if (resRisco.valido) {
+            const termosMidia = /topo|conscient|meta|anúncio|atração|novos|funil|verba|cortar|zerar/i;
+            if (!termosMidia.test(riscoVal)) {
+                resRisco.valido = false;
+                resRisco.motivo = "Explique o risco de desinvestir no Topo de Funil (Meta Ads) ao olhar apenas o último clique.";
+            }
+        }
+        aplicarFeedback('fb-m3-risco', resRisco);
+        if (resRisco.valido) acertos++;
+
+        // MÓDULO 4: COPYWRITING BAB
+        const copyVal = document.getElementById('m4-copy').value;
+        const resCopy = validarTextoAvançado(copyVal, 10, 45);
+        if (resCopy.valido) {
+            const termosSoftware = /planilha|caos|lucro|gestão|previsib|automaç|sistema|controle|financeir|decis/i;
+            if (!termosSoftware.test(copyVal)) {
+                resCopy.valido = false;
+                resCopy.motivo = "A copy precisa incluir a dor do caos financeiro (Before), o resultado desejado (After) e a solução (Bridge).";
+            }
+        }
+        aplicarFeedback('fb-m4-copy', resCopy);
+
+        // DASHBOARD STATUS FINAL
+        const statusTag = document.getElementById('status-tag');
+        const statusDesc = document.getElementById('status-desc');
+
+        if (acertos >= 7) {
+            statusTag.innerText = "Aprovado com Excelência!";
+            statusTag.style.color = "var(--success-color)";
+            statusDesc.innerText = `Sensacional! Você validou ${acertos} de ${totalMetricas} blocos do desafio avançado.`;
+        } else {
+            statusTag.innerText = "Ajustes Estratégicos Necessários";
+            statusTag.style.color = "var(--error-color)";
+            statusDesc.innerText = `Atenção: Apenas ${acertos} de ${totalMetricas} blocos foram validados. Corrija os itens destacados em vermelho.`;
+        }
+    }
+
+    // EVENTOS EM TEMPO REAL NOS INPUTS E TEXTAREAS
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('m1-analise').addEventListener('blur', function() {
+            const res = validarTextoAvançado(this.value, 6, 25);
+            if (res.valido) {
+                const termosSaaS = /payback|meses|saudáv|excelent|escalá|retorno|lucro|churn|2 meses|tempo/i;
+                if (!termosSaaS.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione o tempo de Payback (2 meses) ou a escalabilidade da relação LTV/CAC de 10x.";
+                }
+            }
+            aplicarFeedback('fb-m1-analise', res);
+        });
+
+        document.getElementById('m2-hipotese').addEventListener('blur', function() {
+            const res = validarTextoAvançado(this.value, 8, 30);
+            if (res.valido) {
+                const termosCRO = /se|então|porque|checkout|conversão|fricção|frete|pix|passos|reduz/i;
+                if (!termosCRO.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Utilize o formato padrão de hipótese: 'Se [Ação], então [Métrica], porque [Razão]'.";
+                }
+            }
+            aplicarFeedback('fb-m2-hipotese', res);
+        });
+
+        document.getElementById('m3-risco').addEventListener('blur', function() {
+            const res = validarTextoAvançado(this.value, 5, 20);
+            if (res.valido) {
+                const termosMidia = /topo|conscient|meta|anúncio|atração|novos|funil|verba|cortar|zerar/i;
+                if (!termosMidia.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Explique o risco de cortar investimento no topo do funil ao utilizar apenas a atribuição de último clique.";
+                }
+            }
+            aplicarFeedback('fb-m3-risco', res);
+        });
+
+        document.getElementById('m4-copy').addEventListener('blur', function() {
+            const res = validarTextoAvançado(this.value, 10, 45);
+            if (res.valido) {
+                const termosSoftware = /planilha|caos|lucro|gestão|previsib|automaç|sistema|controle|financeir|decis/i;
+                if (!termosSoftware.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Sua copy deve conter os 3 estágios: Before (Dor), After (Estado desejado) e Bridge (A solução).";
+                }
+            }
+            aplicarFeedback('fb-m4-copy', res.valido ? res : res);
+        });
+    });
+</script>
+
+</body>
+</html>

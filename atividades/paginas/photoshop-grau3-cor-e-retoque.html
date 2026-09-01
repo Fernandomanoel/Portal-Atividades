@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Photoshop - Grau 3 (Ajustes de Cor e Retoque)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1400px; margin: 0 auto; background: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; padding: 40px; text-align: center; }
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.1em; opacity: 0.9; }
+
+        .duracao-badge {
+            display: inline-block; margin-top: 14px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.4);
+            padding: 6px 16px; border-radius: 20px; font-size: 0.9em;
+        }
+
+        .main-content { display: flex; flex: 1; }
+
+        .sidebar {
+            width: 300px; background: #f5f5f5; border-right: 2px solid #e0e0e0;
+            overflow-y: auto; padding: 20px; position: sticky; top: 0; max-height: 100vh;
+        }
+
+        .sidebar h3 {
+            color: #1e3a8a; margin-top: 25px; margin-bottom: 15px; font-size: 1em;
+            text-transform: uppercase; border-bottom: 2px solid #2563eb; padding-bottom: 8px;
+        }
+
+        .sidebar ul { list-style: none; }
+        .sidebar li { margin: 8px 0; }
+        .sidebar a {
+            color: #555; text-decoration: none; display: block; padding: 8px 12px;
+            border-radius: 6px; transition: all 0.3s; font-size: 0.88em;
+        }
+        .sidebar a:hover, .sidebar a.active { background: #2563eb; color: white; }
+
+        .content { flex: 1; padding: 50px; overflow-y: auto; max-height: 100vh; }
+        .chapter { display: none; animation: fadeIn 0.5s; }
+        .chapter.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        h2 { color: #1e3a8a; margin-bottom: 25px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; font-size: 2em; }
+        h3 { color: #2563eb; margin-top: 30px; margin-bottom: 15px; font-size: 1.3em; }
+        p, li { margin-bottom: 12px; font-size: 1em; line-height: 1.8; }
+        ul, ol { margin-left: 25px; margin-bottom: 15px; }
+        li { margin-bottom: 8px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px;
+            overflow-x: auto; margin: 20px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.92em; line-height: 1.6;
+        }
+        .code-label {
+            background: #2563eb; color: white; padding: 5px 10px; border-radius: 4px 4px 0 0;
+            font-size: 0.85em; font-weight: 600; display: inline-block; margin-bottom: -5px;
+        }
+        .passo { color: #9cdcfe; }
+        .passo b { color: #ffffff; }
+        .tecla { background: #2d2d2d; border: 1px solid #555; border-radius: 4px; padding: 1px 7px; color: #dcdcaa; font-size: 0.92em; }
+
+        .highlight { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 6px; margin: 20px 0; }
+        .warning { background: #f8d7da; border-left: 4px solid #dc3545; padding: 15px; border-radius: 6px; margin: 20px 0; color: #721c24; }
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 15px; border-radius: 6px; margin: 20px 0; color: #155724; }
+        .desafio { background: #ede9fe; border-left: 4px solid #7c3aed; padding: 15px; border-radius: 6px; margin: 20px 0; color: #4c1d95; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+
+        table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        th { background: #2563eb; color: white; padding: 12px; text-align: left; font-weight: 600; }
+        td { border: 1px solid #ddd; padding: 12px; }
+        tr:nth-child(even) { background: #f9f9f9; }
+
+        .nav-buttons { display: flex; gap: 15px; margin-top: 50px; padding-top: 30px; border-top: 2px solid #e0e0e0; }
+        button {
+            background: #2563eb; color: white; border: none; padding: 12px 24px; border-radius: 6px;
+            cursor: pointer; font-size: 0.95em; font-weight: 600; transition: all 0.3s;
+        }
+        button:hover { background: #1e40af; transform: translateY(-2px); box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3); }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+        .progress-bar { height: 6px; background: #e0e0e0; border-radius: 3px; overflow: hidden; margin: 20px 0; }
+        .progress-fill { height: 100%; background: #2563eb; transition: width 0.3s; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 30px 50px; text-align: center; color: #666; }
+
+        @media (max-width: 1024px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; max-height: none; position: static; border-right: none; border-bottom: 2px solid #e0e0e0; }
+            .content { padding: 30px; max-height: none; }
+        }
+
+        .diagrama-titulo { font-size: 0.85em; color: #666; text-align: center; margin-top: 10px; font-style: italic; }
+
+        /* Histograma */
+        .histogram-box { background: #111827; border-radius: 8px; padding: 20px; margin: 18px 0; }
+        .histogram-bars { display: flex; align-items: flex-end; gap: 2px; height: 120px; }
+        .histogram-bars span { flex: 1; background: linear-gradient(180deg, #93c5fd, #2563eb); border-radius: 1px 1px 0 0; }
+        .histogram-labels { display: flex; justify-content: space-between; color: #cbd5e1; font-size: 0.8em; margin-top: 8px; }
+        .histogram-marker { display: flex; justify-content: space-between; margin-top: 4px; }
+        .histogram-marker span { font-size: 0.75em; padding: 2px 8px; border-radius: 4px; }
+        .hm-preto { background: #000; color: #fff; }
+        .hm-cinza { background: #9ca3af; color: #111; }
+        .hm-branco { background: #fff; color: #111; border: 1px solid #ccc; }
+
+        /* Curva */
+        .curve-box { background: #111827; border-radius: 8px; padding: 20px; margin: 18px 0; display: flex; justify-content: center; }
+        .curve-legenda { text-align: center; color: #cbd5e1; font-size: 0.85em; margin-top: 8px; }
+
+        /* Carimbo / clone */
+        .clone-diagram { display: flex; justify-content: center; align-items: center; gap: 40px; margin: 20px 0; position: relative; height: 160px; }
+        .clone-foto { width: 220px; height: 140px; border-radius: 8px; background: linear-gradient(120deg, #86efac 0%, #86efac 60%, #fca5a5 60%, #fca5a5 100%); position: relative; border: 2px solid #bcd4f5; }
+        .clone-origem, .clone-destino {
+            position: absolute; width: 26px; height: 26px; border-radius: 50%;
+            border: 3px dashed #2563eb; top: 40px;
+        }
+        .clone-origem { left: 40px; }
+        .clone-destino { left: 140px; border-style: solid; background: rgba(37,99,235,0.15); }
+        .clone-seta { position: absolute; top: 50px; left: 66px; width: 74px; height: 2px; background: #2563eb; }
+        .clone-seta::after { content: '▶'; position: absolute; right: -8px; top: -8px; color: #2563eb; font-size: 0.8em; }
+
+        /* Dodge / Burn */
+        .db-diagram { display: flex; gap: 30px; justify-content: center; margin: 20px 0; }
+        .db-card { text-align: center; }
+        .db-esfera { width: 130px; height: 130px; border-radius: 50%; margin: 0 auto; }
+        .db-antes { background: radial-gradient(circle at 45% 45%, #fcd34d, #b45309); }
+        .db-depois { background: radial-gradient(circle at 35% 30%, #fff7cc 0%, #fcd34d 35%, #92400e 75%, #451a03 100%); }
+        .db-legenda { margin-top: 8px; font-weight: 700; color: #1e3a8a; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎨 Adobe Photoshop — Grau 3</h1>
+            <p>Ajustes de cor e retoque: Níveis, Curvas e as ferramentas que limpam uma foto sem deixar rastro</p>
+            <div class="duracao-badge">⏱️ Duração estimada: 1 hora e 25 minutos</div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Índice</h3>
+                <ul id="tocList"></ul>
+
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
+                    <p style="font-size: 0.85em; color: #666;">
+                        <strong>Nível:</strong> Já concluiu os Graus 1 e 2<br>
+                        <strong>Tempo:</strong> ~1h25<br>
+                        <strong>Requisitos:</strong> Photoshop instalado e uma foto de retrato (rosto visível) para a prática de retoque
+                    </p>
+                </div>
+            </aside>
+
+            <main class="content">
+                <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+
+                <!-- 1 -->
+                <section class="chapter active" data-chapter="1">
+                    <h2>1. Bem-vindo ao Grau 3</h2>
+                    <p>Nos Graus 1 e 2 você aprendeu a mexer na <strong>forma</strong> da imagem (recortar,
+                    remover fundo, montar com máscaras). Agora o foco é a <strong>cor e a luz</strong>: como
+                    corrigir uma foto mal exposta, equilibrar tons e apagar imperfeições sem que ninguém perceba
+                    que houve edição.</p>
+
+                    <div class="box">
+                        <h4>🎯 Ao final deste guia você vai saber:</h4>
+                        <ul>
+                            <li>Ler um histograma e usar Níveis para corrigir preto/branco</li>
+                            <li>Usar Curvas para ajustar contraste com precisão</li>
+                            <li>Corrigir matiz, saturação e balanço de cor</li>
+                            <li>Remover imperfeições com Carimbo e Pincel de Recuperação</li>
+                            <li>Esculpir luz e sombra com Subexposição e Superexposição</li>
+                        </ul>
+                    </div>
+
+                    <div class="highlight">
+                        💡 Tudo aqui pode (e deve) ser feito em <strong>camadas de ajuste</strong> — a versão não
+                        destrutiva do que você já viu no Grau 2. Isso é o primeiro capítulo de verdade.
+                    </div>
+                </section>
+
+                <!-- 2 -->
+                <section class="chapter" data-chapter="2">
+                    <h2>2. Por que Ajustar Cor é Importante</h2>
+                    <p>Toda foto tirada por uma câmera real tem imperfeições de luz: um pouco escura, um pouco
+                    amarelada, sem contraste. Ajustar cor não é "photoshopar a realidade" — é aproximar a imagem
+                    do que o olho humano realmente viu na hora.</p>
+
+                    <table>
+                        <tr><th>Problema comum</th><th>Ferramenta deste grau</th></tr>
+                        <tr><td>Foto sem contraste, "lavada"</td><td>Níveis ou Curvas</td></tr>
+                        <tr><td>Cor com tom estranho (amarelado, azulado)</td><td>Balanço de Cor</td></tr>
+                        <tr><td>Cores fracas, sem vida</td><td>Vibração/Saturação</td></tr>
+                        <tr><td>Espinha, poeira no sensor, fio de cabelo solto</td><td>Pincel de Recuperação / Carimbo</td></tr>
+                    </table>
+                </section>
+
+                <!-- 3 -->
+                <section class="chapter" data-chapter="3">
+                    <h2>3. Camadas de Ajuste — o Conceito</h2>
+                    <p>Uma <strong>Camada de Ajuste</strong> aplica um efeito de cor (Níveis, Curvas...) para
+                    todas as camadas abaixo dela, sem alterar os pixels originais — exatamente como a máscara de
+                    camada do Grau 2, mas para cor em vez de forma.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo">Painel de Camadas → ícone de círculo meio preto/meio branco no rodapé → escolha o tipo de ajuste</span><br>
+<span class="passo">Ou: Menu <b>Camada → Nova Camada de Ajuste</b></span></div>
+
+                    <div class="success">
+                        ✅ Camadas de ajuste já vêm com uma máscara de camada em branco por padrão — pinte de
+                        preto nela (do jeito que você aprendeu no Grau 2) para aplicar o ajuste só em uma parte da
+                        foto, não na imagem inteira.
+                    </div>
+                </section>
+
+                <!-- 4 -->
+                <section class="chapter" data-chapter="4">
+                    <h2>4. Níveis (Levels)</h2>
+                    <p>O histograma mostra quantos pixels existem em cada tom, do preto (esquerda) ao branco
+                    (direita). A ferramenta Níveis usa três controles deslizantes sobre esse gráfico.</p>
+
+                    <div class="histogram-box">
+                        <div class="histogram-bars">
+                            <span style="height:8%"></span><span style="height:15%"></span><span style="height:28%"></span>
+                            <span style="height:45%"></span><span style="height:65%"></span><span style="height:85%"></span>
+                            <span style="height:95%"></span><span style="height:80%"></span><span style="height:55%"></span>
+                            <span style="height:35%"></span><span style="height:20%"></span><span style="height:10%"></span>
+                        </div>
+                        <div class="histogram-marker">
+                            <span class="hm-preto">Ponto preto ⯆</span>
+                            <span class="hm-cinza">Meio-tom (gama) ⯆</span>
+                            <span class="hm-branco">Ponto branco ⯆</span>
+                        </div>
+                        <div class="histogram-labels"><span>Sombras</span><span>Meios-tons</span><span>Realces</span></div>
+                    </div>
+
+                    <table>
+                        <tr><th>Controle</th><th>O que faz</th></tr>
+                        <tr><td><strong>Ponto preto</strong></td><td>Tudo à esquerda dele vira preto puro — aumenta o contraste nas sombras</td></tr>
+                        <tr><td><strong>Ponto branco</strong></td><td>Tudo à direita dele vira branco puro — recupera realces "lavados"</td></tr>
+                        <tr><td><strong>Gama (meio-tom)</strong></td><td>Clareia ou escurece os tons médios sem afetar preto/branco</td></tr>
+                    </table>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> <span class="tecla">Ctrl</span> + <span class="tecla">L</span> (ou camada de ajuste "Níveis")</span><br>
+<span class="passo"><b>2.</b> Arraste o controle preto até onde o histograma começa a subir</span><br>
+<span class="passo"><b>3.</b> Arraste o controle branco até onde o histograma termina de descer</span></div>
+                </section>
+
+                <!-- 5 -->
+                <section class="chapter" data-chapter="5">
+                    <h2>5. Curvas (Curves)</h2>
+                    <p>Curvas fazem a mesma coisa que Níveis, mas com controle total: qualquer ponto da curva
+                    pode ser puxado para cima (clareia) ou para baixo (escurece).</p>
+
+                    <div class="curve-box">
+                        <div>
+                            <svg width="220" height="220" viewBox="0 0 220 220">
+                                <rect x="0" y="0" width="220" height="220" fill="#1e1e1e" />
+                                <line x1="20" y1="20" x2="20" y2="200" stroke="#374151" stroke-width="1"/>
+                                <line x1="20" y1="200" x2="200" y2="200" stroke="#374151" stroke-width="1"/>
+                                <line x1="20" y1="200" x2="200" y2="20" stroke="#4b5563" stroke-width="1" stroke-dasharray="4,4"/>
+                                <path d="M 20 200 C 70 190, 90 130, 110 110 S 170 30, 200 20" stroke="#60a5fa" stroke-width="3" fill="none"/>
+                                <circle cx="65" cy="185" r="4" fill="#93c5fd"/>
+                                <circle cx="110" cy="110" r="4" fill="#93c5fd"/>
+                                <circle cx="160" cy="45" r="4" fill="#93c5fd"/>
+                            </svg>
+                        </div>
+                        <div class="curve-legenda">Curva em "S": escurece sombras e clareia realces ao mesmo tempo — aumenta o contraste de forma suave.</div>
+                    </div>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> <span class="tecla">Ctrl</span> + <span class="tecla">M</span> (ou camada de ajuste "Curvas")</span><br>
+<span class="passo"><b>2.</b> Clique no meio da linha reta para criar um ponto e arraste</span><br>
+<span class="passo"><b>3.</b> Para o efeito clássico de contraste, crie um "S": puxe as sombras para baixo e os realces para cima</span></div>
+
+                    <div class="highlight">
+                        💡 A diagonal pontilhada é a "curva neutra" — sem nenhuma mudança. Quanto mais a curva se
+                        afasta dela, mais forte é o efeito.
+                    </div>
+                </section>
+
+                <!-- 6 -->
+                <section class="chapter" data-chapter="6">
+                    <h2>6. Matiz/Saturação (Hue/Saturation)</h2>
+                    <table>
+                        <tr><th>Controle</th><th>O que faz</th></tr>
+                        <tr><td><strong>Matiz (Hue)</strong></td><td>Gira todas as cores da imagem na roda de cores — vermelho pode virar laranja, azul pode virar roxo</td></tr>
+                        <tr><td><strong>Saturação</strong></td><td>Intensidade da cor: 0 = preto e branco, valores altos = cores "gritantes"</td></tr>
+                        <tr><td><strong>Luminosidade</strong></td><td>Clareia ou escurece a imagem mantendo a cor</td></tr>
+                    </table>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><span class="tecla">Ctrl</span> + <span class="tecla">U</span> (ou camada de ajuste "Matiz/Saturação")</span></div>
+
+                    <div class="warning">
+                        ⚠️ O menu "Todas" no topo do painel pode ser trocado para uma cor específica (ex:
+                        "Vermelhos") — assim você ajusta só uma cor da foto sem afetar as outras.
+                    </div>
+                </section>
+
+                <!-- 7 -->
+                <section class="chapter" data-chapter="7">
+                    <h2>7. Balanço de Cor (Color Balance)</h2>
+                    <p>Corrige um tom de cor indesejado separando o ajuste em três faixas: Sombras, Meios-tons e
+                    Realces — cada uma com seus próprios controles Ciano↔Vermelho, Magenta↔Verde, Amarelo↔Azul.</p>
+
+                    <div class="box">
+                        <h4>🌡️ Exemplo prático</h4>
+                        <p>Uma foto tirada sob luz de lâmpada incandescente costuma ficar amarelada. Na faixa de
+                        <strong>Meios-tons</strong>, arraste o controle Amarelo↔Azul um pouco em direção ao Azul
+                        para neutralizar.</p>
+                    </div>
+
+                    <div class="highlight">
+                        💡 Ajustar separadamente sombra/meio-tom/realce é o que diferencia uma correção de cor
+                        profissional de simplesmente "jogar saturação" na imagem inteira.
+                    </div>
+                </section>
+
+                <!-- 8 -->
+                <section class="chapter" data-chapter="8">
+                    <h2>8. Vibração vs. Saturação</h2>
+                    <p>Os dois controles ficam na mesma caixa de diálogo (<strong>Imagem → Ajustes → Vibração</strong>),
+                    mas se comportam de forma diferente.</p>
+
+                    <table>
+                        <tr><th>Controle</th><th>Comportamento</th></tr>
+                        <tr><td><strong>Saturação</strong></td><td>Aumenta todas as cores igualmente — fácil de exagerar e "estourar" a pele</td></tr>
+                        <tr><td><strong>Vibração</strong></td><td>Aumenta mais as cores fracas e preserva tons de pele — mais seguro para retratos</td></tr>
+                    </table>
+
+                    <div class="success">
+                        ✅ Regra prática: em fotos com pessoas, prefira Vibração. Em paisagens ou ilustrações
+                        gráficas, Saturação direta costuma funcionar bem.
+                    </div>
+                </section>
+
+                <!-- 9 -->
+                <section class="chapter" data-chapter="9">
+                    <h2>9. Carimbo (Clone Stamp)</h2>
+                    <p>Copia pixels de um ponto de <strong>origem</strong> para onde você pintar — ótimo para
+                    remover objetos indesejados clonando uma área parecida por cima.</p>
+
+                    <div class="clone-diagram">
+                        <div class="clone-foto">
+                            <div class="clone-origem"></div>
+                            <div class="clone-seta"></div>
+                            <div class="clone-destino"></div>
+                        </div>
+                    </div>
+                    <p class="diagrama-titulo">O círculo tracejado é a origem (de onde copia); o círculo cheio é o destino (onde você pinta).</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Ferramenta <b>Carimbo</b> (tecla <span class="tecla">S</span>)</span><br>
+<span class="passo"><b>2.</b> Segure <span class="tecla">Alt</span> e clique no ponto de origem (área limpa e parecida)</span><br>
+<span class="passo"><b>3.</b> Solte <span class="tecla">Alt</span> e pinte sobre a área que quer esconder</span></div>
+
+                    <div class="warning">
+                        ⚠️ O ponto de origem se move junto com o pincel, na mesma direção e distância do primeiro
+                        clique — se aparecer um padrão repetido, escolha uma nova origem com <span class="tecla">Alt</span> + clique de novo.
+                    </div>
+                </section>
+
+                <!-- 10 -->
+                <section class="chapter" data-chapter="10">
+                    <h2>10. Pincel de Recuperação vs. Correção Pontual</h2>
+                    <table>
+                        <tr><th>Ferramenta</th><th>Como funciona</th><th>Quando usar</th></tr>
+                        <tr><td><strong>Correção Pontual</strong><br>(tecla <span class="tecla">J</span>)</td><td>Não pede origem — analisa a área ao redor sozinha</td><td>Espinhas, poeira, pequenas manchas isoladas</td></tr>
+                        <tr><td><strong>Pincel de Recuperação</strong></td><td>Pede uma origem (<span class="tecla">Alt</span> + clique), igual o Carimbo, mas mistura a textura com a área de destino</td><td>Manchas maiores, rugas, em áreas com textura de pele</td></tr>
+                    </table>
+
+                    <div class="highlight">
+                        💡 A diferença chave para o Carimbo: o Pincel de Recuperação <strong>funde</strong> a
+                        textura copiada com a luz e cor do destino. O Carimbo cola a cópia exatamente como está.
+                    </div>
+                </section>
+
+                <!-- 11 -->
+                <section class="chapter" data-chapter="11">
+                    <h2>11. Subexposição e Superexposição (Dodge &amp; Burn)</h2>
+                    <p>Essas ferramentas "pintam" luz e sombra diretamente, esculpindo o volume de um rosto ou
+                    objeto — a técnica clássica usada em capas de revista para dar profundidade.</p>
+
+                    <div class="db-diagram">
+                        <div class="db-card"><div class="db-esfera db-antes"></div><div class="db-legenda">Antes (chapada)</div></div>
+                        <div class="db-card"><div class="db-esfera db-depois"></div><div class="db-legenda">Depois (Dodge &amp; Burn)</div></div>
+                    </div>
+
+                    <table>
+                        <tr><th>Ferramenta</th><th>Atalho</th><th>Efeito</th></tr>
+                        <tr><td><strong>Subexposição (Dodge)</strong></td><td><span class="tecla">O</span></td><td>Clareia — realça onde a luz bateria mais forte</td></tr>
+                        <tr><td><strong>Superexposição (Burn)</strong></td><td><span class="tecla">O</span> (variação)</td><td>Escurece — aprofunda sombras e contornos</td></tr>
+                    </table>
+
+                    <div class="warning">
+                        ⚠️ Na Barra de Opções, o menu <strong>Faixa</strong> deixa escolher Sombras, Meios-tons ou
+                        Realces — escurecer só as "Sombras" evita estourar o resto da foto.
+                    </div>
+                </section>
+
+                <!-- 12 (desafio/inovação) -->
+                <section class="chapter" data-chapter="12">
+                    <h2>12. Desafio Bônus — Correção Local com Máscara</h2>
+                    <p>Combine o que você aprendeu no Grau 2 (máscaras) com o que aprendeu agora (camadas de
+                    ajuste) para corrigir <strong>só uma parte</strong> da imagem.</p>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio:</strong> em uma foto com céu e chão (ou fundo e primeiro plano),
+                        crie uma camada de ajuste de Curvas, escureça o céu, depois pinte de preto na máscara
+                        dessa camada sobre o chão — assim só o céu escurece, como um filtro degradê de
+                        fotógrafo profissional.
+                    </div>
+
+                    <div class="success">
+                        ✅ Esse é o tipo de edição "invisível": ninguém percebe que houve ajuste, só sente que a
+                        foto ficou melhor.
+                    </div>
+                </section>
+
+                <!-- 13 (Prática) -->
+                <section class="chapter" data-chapter="13">
+                    <h2>13. Prática — Retocando um Retrato</h2>
+                    <p>Use a foto de retrato que você separou para este grau.</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Duplique a camada da foto (<span class="tecla">Ctrl</span> + <span class="tecla">J</span>) — sempre retoque em uma cópia</span><br>
+<span class="passo"><b>2.</b> Ferramenta <b>Correção Pontual</b> (tecla <span class="tecla">J</span>) sobre pequenas manchas e espinhas</span><br>
+<span class="passo"><b>3.</b> Ferramenta <b>Pincel de Recuperação</b> para rugas ou olheiras mais marcadas</span><br>
+<span class="passo"><b>4.</b> Ferramenta <b>Carimbo</b> para qualquer objeto solto no fundo atrás da pessoa</span></div>
+
+                    <div class="warning">
+                        ⚠️ Retoque com moderação: o objetivo é uma pele saudável, não "plástica". Zoom
+                        <span class="tecla">Ctrl</span>+<span class="tecla">0</span> de vez em quando para ver o
+                        resultado no tamanho real, não só ampliado.
+                    </div>
+                </section>
+
+                <!-- 14 (Prática) -->
+                <section class="chapter" data-chapter="14">
+                    <h2>14. Prática — Ajuste de Cor Completo</h2>
+                    <p>Na mesma foto, agora em camadas de ajuste (não destrutivas):</p>
+
+                    <div class="code-label">Caminho</div>
+                    <div class="code-block"><span class="passo"><b>1.</b> Camada de ajuste <b>Níveis</b> — corrija ponto preto e branco pelo histograma</span><br>
+<span class="passo"><b>2.</b> Camada de ajuste <b>Curvas</b> — leve "S" para contraste</span><br>
+<span class="passo"><b>3.</b> Camada de ajuste <b>Balanço de Cor</b> — neutralize qualquer tom estranho nos meios-tons</span><br>
+<span class="passo"><b>4.</b> Camada de ajuste <b>Vibração</b> — +10 a +20 para dar vida sem exagerar</span></div>
+
+                    <div class="desafio">
+                        🧩 <strong>Desafio extra:</strong> agrupe as 4 camadas de ajuste (<span class="tecla">Ctrl</span>+<span class="tecla">G</span>,
+                        do Grau 2) e nomeie o grupo "Ajuste de Cor Final" — reduza a Opacidade do grupo para 80%
+                        e compare o antes/depois ligando e desligando o olho 👁️ do grupo.
+                    </div>
+                </section>
+
+                <!-- 15 -->
+                <section class="chapter" data-chapter="15">
+                    <h2>15. Atalhos do Grau 3 — Cola Rápida</h2>
+                    <table>
+                        <tr><th>Atalho</th><th>Ação</th></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">L</span></td><td>Níveis</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">M</span></td><td>Curvas</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">U</span></td><td>Matiz/Saturação</td></tr>
+                        <tr><td><span class="tecla">S</span></td><td>Carimbo</td></tr>
+                        <tr><td><span class="tecla">J</span></td><td>Correção Pontual / Pincel de Recuperação</td></tr>
+                        <tr><td><span class="tecla">O</span></td><td>Subexposição / Superexposição</td></tr>
+                        <tr><td><span class="tecla">Alt</span> + clique</td><td>Definir ponto de origem (Carimbo/Recuperação)</td></tr>
+                        <tr><td><span class="tecla">Ctrl</span>+<span class="tecla">J</span></td><td>Duplicar camada</td></tr>
+                    </table>
+                </section>
+
+                <!-- 16 -->
+                <section class="chapter" data-chapter="16">
+                    <h2>16. Erros Comuns do Grau 3</h2>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Retoquei e a pele ficou borrada, sem textura."</strong><br>
+                        O Pincel de Recuperação com um pincel grande demais borra tudo. Use um pincel só um pouco
+                        maior que a mancha, e retoque em vários cliques pequenos em vez de um traço longo.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"O Carimbo criou um padrão repetido esquisito."</strong><br>
+                        A origem estava perto demais ou você pintou uma área grande demais sem trocar de origem —
+                        redefina com <span class="tecla">Alt</span> + clique com mais frequência.
+                    </div>
+
+                    <div class="warning">
+                        ⚠️ <strong>"Os ajustes de cor sumiram quando salvei em JPG."</strong><br>
+                        Não sumiram — foram "achatados" (mesclados) no arquivo final, porque JPG não suporta
+                        camadas. Guarde sempre o .PSD com as camadas de ajuste separadas antes de exportar.
+                    </div>
+                </section>
+
+                <!-- 17 -->
+                <section class="chapter" data-chapter="17">
+                    <h2>17. Checklist Final e Prévia do Grau 4</h2>
+                    <div class="box">
+                        <h4>✓ Antes de encerrar o Grau 3, confirme:</h4>
+                        <ul>
+                            <li>✅ Ajustei o ponto preto e branco com Níveis, olhando o histograma</li>
+                            <li>✅ Apliquei uma curva em "S" para contraste</li>
+                            <li>✅ Corrigi um tom de cor indesejado com Balanço de Cor</li>
+                            <li>✅ Retoquei uma foto com Correção Pontual, Pincel de Recuperação e Carimbo</li>
+                            <li>✅ Usei Subexposição/Superexposição para esculpir luz</li>
+                            <li>✅ Fiz o ajuste de cor completo em camadas de ajuste agrupadas</li>
+                        </ul>
+                    </div>
+
+                    <div class="success">
+                        🎉 Muito bem! Você concluiu o Grau 3. No <strong>Grau 4</strong> o foco vai para
+                        <strong>texto, formas e composição</strong> — transformar tudo que você já sabe em uma
+                        peça gráfica pronta para redes sociais.
+                    </div>
+                </section>
+
+                <div class="nav-buttons">
+                    <button id="prevChapter" onclick="previousChapter()" disabled>← Capítulo Anterior</button>
+                    <button id="nextChapter" onclick="nextChapter()">Próximo Capítulo →</button>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p><strong>Adobe Photoshop — Grau 3</strong> | 17 capítulos | ~1h25 de aprendizado</p>
+            <p>Ajustes de cor e retoque: Níveis, Curvas e ferramentas de limpeza não destrutiva</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentChapter = 1;
+        const totalChapters = 17;
+
+        const chapters = [
+            "Bem-vindo ao Grau 3",
+            "Por que Ajustar Cor Importa",
+            "Camadas de Ajuste — Conceito",
+            "Níveis",
+            "Curvas",
+            "Matiz/Saturação",
+            "Balanço de Cor",
+            "Vibração vs. Saturação",
+            "Carimbo",
+            "Pincel de Recuperação",
+            "Subexposição e Superexposição",
+            "Desafio Bônus — Correção Local",
+            "Prática — Retocando um Retrato",
+            "Prática — Ajuste de Cor Completo",
+            "Atalhos do Grau 3",
+            "Erros Comuns",
+            "Checklist Final"
+        ];
+
+        function initTOC() {
+            const tocList = document.getElementById('tocList');
+            chapters.forEach((chapter, index) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.textContent = `${index + 1}. ${chapter}`;
+                a.href = '#';
+                a.onclick = () => goToChapter(index + 1);
+                a.className = index + 1 === currentChapter ? 'active' : '';
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        }
+
+        function showChapter(n) {
+            const chapterEls = document.querySelectorAll('.chapter');
+            chapterEls.forEach(ch => ch.classList.remove('active'));
+            chapterEls[n - 1].classList.add('active');
+            updateTOC();
+            updateButtons();
+            updateProgress();
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        function updateTOC() {
+            document.querySelectorAll('.sidebar a').forEach((link, index) => {
+                link.classList.remove('active');
+                if (index + 1 === currentChapter) link.classList.add('active');
+            });
+        }
+
+        function updateButtons() {
+            document.getElementById('prevChapter').disabled = currentChapter === 1;
+            document.getElementById('nextChapter').disabled = currentChapter === totalChapters;
+        }
+
+        function updateProgress() {
+            const progress = (currentChapter / totalChapters) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function nextChapter() { if (currentChapter < totalChapters) { currentChapter++; showChapter(currentChapter); } }
+        function previousChapter() { if (currentChapter > 1) { currentChapter--; showChapter(currentChapter); } }
+        function goToChapter(n) { currentChapter = n; showChapter(currentChapter); }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextChapter();
+            if (e.key === 'ArrowLeft') previousChapter();
+        });
+
+        initTOC();
+        showChapter(currentChapter);
+    </script>
+</body>
+</html>

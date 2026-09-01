@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Primeiro Banco de Dados</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 900px; margin: 0 auto; background: #fff; min-height: 100vh; }
+
+        header { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { padding: 40px 50px 60px; }
+
+        h2 { color: #1e3a8a; margin: 34px 0 16px; border-bottom: 3px solid #2563eb; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2563eb; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .code-block {
+            background: #1e1e1e; color: #d4d4d4; padding: 16px 20px; border-radius: 8px;
+            overflow-x: auto; margin: 14px 0; border-left: 4px solid #2563eb;
+            font-family: 'Courier New', monospace; font-size: 0.9em; line-height: 1.6;
+            white-space: pre;
+        }
+        .code-block .kw { color: #c586c0; }
+        .code-block .fn { color: #dcdcaa; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm { color: #6a9955; }
+        .code-block .num { color: #b5cea8; }
+        .code-block .var { color: #9cdcfe; }
+
+        .box { background: #f0f7ff; border: 2px solid #2563eb; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3a8a; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+
+        .success { background: #d4edda; border-left: 4px solid #28a745; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #155724; }
+
+        table { border-collapse: collapse; width: 100%; margin: 14px 0; }
+        table th, table td { text-align: left; padding: 8px 14px; border-bottom: 1px solid #e0e0e0; }
+        table th { color: #1e3a8a; font-size: 0.95em; }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2563eb; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+            .code-block { font-size: 0.8em; padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🗄️ Atividade Básica de Banco de Dados</h1>
+        <p>Meu Primeiro Banco de Dados</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=banco-dados-sql">← Voltar para Banco de Dados / SQL</a>
+
+    <div class="content">
+        <h2>📋 Meu Primeiro Banco de Dados</h2>
+        <p>Uma escola decidiu criar um pequeno banco de dados para armazenar informações sobre seus alunos. Para isso, será criada uma tabela chamada <strong>alunos</strong>, que guardará alguns dados importantes.</p>
+        <p>A tabela deve conter as seguintes informações:</p>
+        <ul>
+            <li><strong>id</strong> (do aluno)</li>
+            <li><strong>nome</strong> (do aluno)</li>
+            <li><strong>idade</strong></li>
+            <li><strong>cidade</strong> (onde mora)</li>
+        </ul>
+        <p>Depois de criar a tabela, alguns registros de alunos deverão ser inseridos no banco de dados.</p>
+        <p>Com os dados cadastrados, responda às seguintes perguntas utilizando <strong>consultas SQL</strong>:</p>
+        <ol>
+            <li>Mostre <strong>todos os dados</strong> da tabela alunos.</li>
+            <li>Mostre apenas <strong>o nome e a idade</strong> dos alunos.</li>
+            <li>Mostre <strong>os alunos que moram em Manaus</strong>.</li>
+            <li>Mostre <strong>os alunos que têm idade maior que 20 anos</strong>.</li>
+            <li>Liste <strong>todos os alunos ordenados pela idade do maior para o menor</strong>.</li>
+        </ol>
+
+        <div class="box">
+            <h4>Objetivo da atividade</h4>
+            <p style="margin-bottom: 0;">Praticar comandos básicos de SQL como <strong>CREATE TABLE, INSERT INTO, SELECT, WHERE e ORDER BY</strong>.</p>
+        </div>
+
+        <h2>1️⃣ Parte 1: Criar a tabela</h2>
+        <p>Crie uma tabela chamada <strong>alunos</strong> com as seguintes colunas:</p>
+        <ul>
+            <li>id (inteiro, chave primária)</li>
+            <li>nome (texto)</li>
+            <li>idade (inteiro)</li>
+            <li>cidade (texto)</li>
+        </ul>
+        <p>Escreva o código abaixo:</p>
+        <div class="code-block"><span class="kw">CREATE TABLE</span> alunos (
+   id <span class="kw">INT</span> <span class="kw">PRIMARY KEY</span>,
+   nome <span class="kw">VARCHAR</span>(<span class="num">100</span>),
+   idade <span class="kw">INT</span>,
+   cidade <span class="kw">VARCHAR</span>(<span class="num">100</span>)
+);</div>
+
+        <h2>2️⃣ Parte 2: Inserir dados</h2>
+        <p>Insira alguns alunos na tabela:</p>
+        <div class="code-block"><span class="kw">INSERT INTO</span> alunos (id, nome, idade, cidade) <span class="kw">VALUES</span>
+(<span class="num">1</span>, <span class="str">'Ana'</span>, <span class="num">20</span>, <span class="str">'Manaus'</span>),
+(<span class="num">2</span>, <span class="str">'Carlos'</span>, <span class="num">22</span>, <span class="str">'São Paulo'</span>),
+(<span class="num">3</span>, <span class="str">'Marina'</span>, <span class="num">19</span>, <span class="str">'Rio de Janeiro'</span>),
+(<span class="num">4</span>, <span class="str">'João'</span>, <span class="num">21</span>, <span class="str">'Manaus'</span>);</div>
+
+        <h2>3️⃣ Parte 3: Consultas básicas</h2>
+        <p>Mostrar todos os alunos:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos;</div>
+
+        <p>Mostrar apenas nome e idade:</p>
+        <div class="code-block"><span class="kw">SELECT</span> nome, idade <span class="kw">FROM</span> alunos;</div>
+
+        <p>Mostrar alunos que moram em Manaus:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">WHERE</span> cidade = <span class="str">'Manaus'</span>;</div>
+
+        <p>Mostrar alunos com idade maior que 20:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">WHERE</span> idade > <span class="num">20</span>;</div>
+
+        <h2>📖 Explicação dos comandos</h2>
+
+        <h3>1. CREATE TABLE</h3>
+        <p><strong>O que faz?</strong></p>
+        <p>O comando <strong>CREATE TABLE</strong> serve para <strong>criar uma tabela dentro do banco de dados</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">CREATE TABLE</span> alunos (
+   id <span class="kw">INT</span> <span class="kw">PRIMARY KEY</span>,
+   nome <span class="kw">VARCHAR</span>(<span class="num">100</span>),
+   idade <span class="kw">INT</span>,
+   cidade <span class="kw">VARCHAR</span>(<span class="num">100</span>)
+);</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>CREATE TABLE alunos</strong> → cria uma tabela chamada alunos.</li>
+            <li>Dentro dos parênteses ficam as <strong>colunas da tabela</strong>.</li>
+        </ul>
+        <p>Explicação das colunas:</p>
+        <table>
+            <tr><th>Coluna</th><th>Tipo</th><th>Significado</th></tr>
+            <tr><td>Id</td><td>INT</td><td>Numero Inteiro e também o principal do banco de dados a Primary Key ou Chave Primária.</td></tr>
+            <tr><td>Nome</td><td>VARCHAR(100)</td><td>Cria um texto com até 100 caracteres</td></tr>
+            <tr><td>Idade</td><td>INT</td><td>Idade sendo um número Inteiro</td></tr>
+            <tr><td>Cidade</td><td>VARCHAR(100)</td><td>Nome da Cidade com até 100 caracteres</td></tr>
+        </table>
+
+        <h3>2. INSERT INTO</h3>
+        <p><strong>O que faz</strong></p>
+        <p>O comando <strong>INSERT INTO</strong> serve para <strong>inserir dados dentro da tabela</strong>.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">INSERT INTO</span> alunos (id, nome, idade, cidade) <span class="kw">VALUES</span>
+(<span class="num">1</span>, <span class="str">'Ana'</span>, <span class="num">20</span>, <span class="str">'Manaus'</span>),
+(<span class="num">2</span>, <span class="str">'Carlos'</span>, <span class="num">22</span>, <span class="str">'São Paulo'</span>);</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>INSERT INTO alunos</strong> → diz em qual tabela vamos inserir dados.</li>
+            <li><strong>(id, nome, idade, cidade)</strong> → indica as colunas que receberão valores.</li>
+            <li><strong>VALUES</strong> → indica os valores que serão inseridos.</li>
+        </ul>
+        <p>Cada linha representa um registro (um aluno).</p>
+
+        <h3>3. SELECT</h3>
+        <p><strong>O que faz</strong></p>
+        <p>O comando <strong>SELECT</strong> é usado para consultar dados da tabela.</p>
+        <p>Exemplo</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos;</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>SELECT</strong> → seleciona dados.</li>
+            <li><strong>*</strong> → significa todas as colunas.</li>
+            <li><strong>FROM alunos</strong> → indica de qual tabela os dados serão buscados.</li>
+        </ul>
+        <p><strong>Resultado:</strong> mostra todas as informações dos alunos.</p>
+
+        <h3>4. SELECT com colunas específicas</h3>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> nome, idade <span class="kw">FROM</span> alunos;</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>SELECT nome, idade</strong> → mostra apenas essas duas colunas.</li>
+            <li><strong>FROM alunos</strong> → busca os dados na tabela alunos.</li>
+        </ul>
+        <p><strong>Resultado:</strong> mostra apenas nome e idade, não todas as colunas.</p>
+
+        <h3>5. WHERE</h3>
+        <p><strong>O que faz</strong></p>
+        <p>O comando <strong>WHERE</strong> serve para filtrar dados, ou seja, mostrar apenas registros que atendem uma condição.</p>
+        <p>Exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">WHERE</span> idade > <span class="num">20</span>;</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>WHERE cidade = 'Manaus'</strong> → mostra apenas alunos que moram em Manaus.</li>
+        </ul>
+        <p>Outro exemplo:</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">WHERE</span> idade > <span class="num">20</span>;</div>
+        <p>Operadores comuns:</p>
+        <table>
+            <tr><th>Operadores</th><th>Significados</th></tr>
+            <tr><td>=</td><td>IGUAL</td></tr>
+            <tr><td>&gt;</td><td>MAIOR</td></tr>
+            <tr><td>&lt;</td><td>MENOR</td></tr>
+            <tr><td>&gt;=</td><td>MAIOR OU IGUAL</td></tr>
+            <tr><td>=&lt;</td><td>MENOR OU IGUAL</td></tr>
+        </table>
+
+        <h3>6. ORDER BY</h3>
+        <p><strong>O que faz</strong></p>
+        <p>O comando <strong>ORDER BY</strong> serve para ordenar os resultados.</p>
+        <p>Exemplo</p>
+        <div class="code-block"><span class="kw">SELECT</span> * <span class="kw">FROM</span> alunos
+<span class="kw">ORDER BY</span> idade <span class="kw">DESC</span>;</div>
+        <p><strong>Como funciona</strong></p>
+        <ul>
+            <li><strong>ORDER BY idade</strong> → ordena pela coluna idade.</li>
+            <li><strong>DESC</strong> → do maior para o menor.</li>
+        </ul>
+        <p>Tipos de ordenação:</p>
+        <table>
+            <tr><th>Comando</th><th>Resultado</th></tr>
+            <tr><td>ORDER BY idade ASC</td><td>Maior &gt; Maior</td></tr>
+            <tr><td>ORDER BY idade DESC</td><td>Maior &gt; Menor</td></tr>
+        </table>
+    </div>
+
+    <footer>Microlins — Atividade Básica de Banco de Dados</footer>
+</div>
+</body>
+</html>

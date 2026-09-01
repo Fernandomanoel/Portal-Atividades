@@ -96,9 +96,9 @@ const PROVAS_MANIFEST = {
     },
     {
       "type": "file",
-      "label": "Prova prática - Adobe Photoshop - Modulo III.pdf",
-      "path": "provas/Adobe Photoshop III/Prova prática - Adobe Photoshop - Modulo III.pdf",
-      "size": "3.9 MB"
+      "label": "prova-modulo-3.html",
+      "path": "provas/Adobe Photoshop III/prova-modulo-3.html",
+      "size": "7.8 KB"
     }
   ],
   "Adobe Premiere": [
@@ -989,9 +989,9 @@ const PROVAS_MANIFEST = {
     },
     {
       "type": "file",
-      "label": "ProvaSecretariado.pdf",
-      "path": "provas/Secretariado/ProvaSecretariado.pdf",
-      "size": "3.7 MB"
+      "label": "prova-secretariado.html",
+      "path": "provas/Secretariado/prova-secretariado.html",
+      "size": "5.5 KB"
     }
   ],
   "Segurança da Era Digital": [

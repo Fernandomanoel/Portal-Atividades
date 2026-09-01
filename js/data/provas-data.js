@@ -426,15 +426,9 @@ const PROVAS_MANIFEST = {
     },
     {
       "type": "quiz_html",
-      "label": "Prova custos fixos variaveis custo total",
-      "path": "provas/Custos/prova-custos-fixos-variaveis-custo-total.prova.html",
-      "size": "21.1 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Prova custos margem contribuicao precificacao",
-      "path": "provas/Custos/prova-custos-margem-contribuicao-precificacao.prova.html",
-      "size": "16.4 KB"
+      "label": "Prova custos",
+      "path": "provas/Custos/prova-custos.prova.html",
+      "size": "32.7 KB"
     }
   ],
   "Desenvolvimento de Games": [
@@ -909,21 +903,9 @@ const PROVAS_MANIFEST = {
     },
     {
       "type": "quiz_html",
-      "label": "Prova telemarketing atendimento profissional",
-      "path": "provas/Operador de Telemarketing/prova-telemarketing-atendimento-profissional.prova.html",
-      "size": "18.4 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Prova telemarketing persuasao tecnicas vendas",
-      "path": "provas/Operador de Telemarketing/prova-telemarketing-persuasao-tecnicas-vendas.prova.html",
-      "size": "18.9 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Prova telemarketing simulacao atendimento",
-      "path": "provas/Operador de Telemarketing/prova-telemarketing-simulacao-atendimento.prova.html",
-      "size": "19.3 KB"
+      "label": "Prova operador de telemarketing",
+      "path": "provas/Operador de Telemarketing/prova-operador-de-telemarketing.prova.html",
+      "size": "33.2 KB"
     }
   ],
   "Power B.I": [

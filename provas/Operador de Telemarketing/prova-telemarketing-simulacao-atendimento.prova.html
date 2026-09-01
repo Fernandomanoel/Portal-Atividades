@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Prática de Telemarketing III — Simulação de Atendimento Estruturado</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #db2777;
+            --brand-light: #fce7f3;
+            --accent-color: #be185d;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #db2777 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fbcfe8; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .scenario-description strong { color: var(--accent-color); }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.15);
+        }
+
+        textarea.input-box { min-height: 90px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .cliente-fala {
+            background: #fdf2f8;
+            border-left: 4px solid var(--brand-color);
+            padding: 14px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 16px;
+        }
+
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Prova Prática de Telemarketing — Parte 3 de 3</span>
+        <h1>Simulação de Atendimento Estruturado</h1>
+        <p>Avalie sua capacidade de realizar um atendimento eficiente e profissional, seguindo um roteiro estruturado de 5 passos, com clareza na comunicação.</p>
+    </header>
+
+    <a class="voltar" href="../../index.html">← Voltar para o início</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Prova".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Prova</button>
+    </div>
+
+    <div class="scenario-description" style="margin-bottom: 30px;">
+        <strong>Situação:</strong> O cliente liga para solicitar informações sobre uma compra realizada no site de uma loja. Ele deseja saber o status do pedido e os prazos de entrega. Seu papel é responder como um operador de telemarketing, com profissionalismo e clareza.
+    </div>
+
+    <div class="cliente-fala">
+        "Olá, comprei um produto pelo site da loja há 5 dias e ainda não recebi nenhuma atualização sobre a entrega. Poderia verificar para mim?"
+    </div>
+
+    <!-- MÓDULO 1: SAUDAÇÃO E COLETA DE DADOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Passo 1 — Saudação e Coleta de Dados</h2>
+        </div>
+        <div class="scenario-description">
+            Escreva como você <strong>cumprimenta o cliente educadamente</strong> e <strong>solicita as informações</strong> necessárias para localizar o pedido dele (ex: número do pedido, nome ou CPF).
+        </div>
+        <textarea id="s1-saudacao" class="input-box" placeholder="Ex: Bom dia! Meu nome é [seu nome], vou te ajudar com isso. Poderia me informar o número do pedido ou o CPF usado na compra, por favor?"></textarea>
+        <div id="feedback-s1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: CONSULTA E STATUS DO PEDIDO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Passo 2 — Consultar e Informar o Status do Pedido</h2>
+        </div>
+        <div class="scenario-description">
+            Ao consultar o sistema, você vê que o pedido está com status <strong>"Em transporte"</strong>, previsão de chegada em <strong>2 dias</strong>. Escreva como você repassaria essa informação ao cliente de forma clara.
+        </div>
+        <textarea id="s2-status" class="input-box" placeholder="Ex: Verifiquei aqui e seu pedido já saiu para entrega, está a caminho e a previsão é que chegue em até 2 dias..."></textarea>
+        <div id="feedback-s2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: PRAZO DE ENTREGA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Passo 3 — Explicar o Prazo de Entrega de Forma Objetiva</h2>
+        </div>
+        <div class="scenario-description">
+            Qual das opções abaixo explica o prazo de entrega da forma <strong>mais objetiva e profissional</strong>?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="s3" value="objetivo">
+                a) "Seu pedido tem previsão de chegada em até 2 dias úteis. Qualquer atraso, você será notificado por e-mail."
+            </label>
+            <label class="option-label">
+                <input type="radio" name="s3" value="vago">
+                b) "Não sei dizer exatamente, esses prazos de transportadora sempre atrasam mesmo, vamos ver."
+            </label>
+            <label class="option-label">
+                <input type="radio" name="s3" value="evasivo">
+                c) "Isso não depende de mim, o senhor(a) vai ter que aguardar e torcer para chegar logo."
+            </label>
+        </div>
+        <div id="feedback-s3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: OFERECER MAIS AJUDA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Passo 4 — Perguntar se Precisa de Mais Alguma Ajuda</h2>
+        </div>
+        <div class="scenario-description">
+            Escreva a pergunta que você faria ao cliente para saber se ele precisa de mais alguma ajuda antes de encerrar o atendimento.
+        </div>
+        <textarea id="s4-ajuda" class="input-box" placeholder="Ex: Posso te ajudar com mais alguma coisa hoje?"></textarea>
+        <div id="feedback-s4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ENCERRAMENTO E REGISTRO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Passo 5 — Encerramento Cortês e Registro do Atendimento</h2>
+        </div>
+        <div class="scenario-description">
+            Escreva como você <strong>encerraria a ligação de forma cortês</strong> e explique como você <strong>registraria esse atendimento</strong> (ex: um resumo com data, motivo do contato e solução dada).
+        </div>
+        <textarea id="s5-encerramento" class="input-box" placeholder="Ex: Agradeço o contato, [nome]! Tenha um ótimo dia. Vou registrar o atendimento com a data de hoje, o motivo (status do pedido) e a solução informada (previsão de 2 dias)..."></textarea>
+        <div id="feedback-s5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Passo 1 — saudação e coleta de dados
+        const val1 = document.getElementById('s1-saudacao').value;
+        const res1 = validarTextoInteligente(val1, 5, 20);
+        if (res1.valido) {
+            const termos1 = /bom dia|boa tarde|boa noite|olá|pedido|cpf|nome|número/i;
+            if (!termos1.test(val1)) {
+                res1.valido = false;
+                res1.motivo = "Cumprimente o cliente e peça um dado para localizar o pedido (nome, CPF ou número do pedido).";
+            }
+        }
+        aplicarFeedback('feedback-s1', res1);
+        if (res1.valido) acertos++;
+
+        // Passo 2 — status do pedido
+        const val2 = document.getElementById('s2-status').value;
+        const res2 = validarTextoInteligente(val2, 5, 20);
+        if (res2.valido) {
+            const termos2 = /transport|caminho|entrega|previs|dia|chegar|saiu/i;
+            if (!termos2.test(val2)) {
+                res2.valido = false;
+                res2.motivo = "Informe que o pedido está em transporte e a previsão de chegada (2 dias).";
+            }
+        }
+        aplicarFeedback('feedback-s2', res2);
+        if (res2.valido) acertos++;
+
+        // Passo 3 — prazo objetivo
+        const s3Selected = document.querySelector('input[name="s3"]:checked');
+        if (s3Selected && s3Selected.value === 'objetivo') {
+            aplicarFeedback('feedback-s3', { valido: true, motivo: "Correto! A resposta objetiva e profissional dá um prazo claro e explica o próximo passo em caso de atraso." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-s3', { valido: false, motivo: "Incorreto. Escolha a resposta mais objetiva e profissional." });
+        }
+
+        // Passo 4 — oferecer mais ajuda
+        const val4 = document.getElementById('s4-ajuda').value;
+        const res4 = validarTextoInteligente(val4, 3, 12);
+        if (res4.valido) {
+            const termos4 = /ajuda|algo mais|mais alguma|posso|precisa/i;
+            if (!termos4.test(val4)) {
+                res4.valido = false;
+                res4.motivo = "Escreva uma pergunta oferecendo mais ajuda ao cliente.";
+            }
+        }
+        aplicarFeedback('feedback-s4', res4);
+        if (res4.valido) acertos++;
+
+        // Passo 5 — encerramento e registro
+        const val5 = document.getElementById('s5-encerramento').value;
+        const res5 = validarTextoInteligente(val5, 6, 25);
+        if (res5.valido) {
+            const termos5 = /obrigad|agradeç|ótimo dia|registr|resumo|anot|document/i;
+            if (!termos5.test(val5)) {
+                res5.valido = false;
+                res5.motivo = "Encerre educadamente e explique como registraria o atendimento (resumo com data, motivo e solução).";
+            }
+        }
+        aplicarFeedback('feedback-s5', res5);
+        if (res5.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 4) {
+            completionText.innerText = "Prova Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('s1-saudacao').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termos1 = /bom dia|boa tarde|boa noite|olá|pedido|cpf|nome|número/i;
+                if (!termos1.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Cumprimente o cliente e peça um dado para localizar o pedido.";
+                }
+            }
+            aplicarFeedback('feedback-s1', res);
+        });
+        document.getElementById('s2-status').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termos2 = /transport|caminho|entrega|previs|dia|chegar|saiu/i;
+                if (!termos2.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Informe o status do pedido e a previsão de entrega.";
+                }
+            }
+            aplicarFeedback('feedback-s2', res);
+        });
+        document.getElementById('s4-ajuda').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 3, 12);
+            if (res.valido) {
+                const termos4 = /ajuda|algo mais|mais alguma|posso|precisa/i;
+                if (!termos4.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Ofereça mais ajuda ao cliente.";
+                }
+            }
+            aplicarFeedback('feedback-s4', res);
+        });
+        document.getElementById('s5-encerramento').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 6, 25);
+            if (res.valido) {
+                const termos5 = /obrigad|agradeç|ótimo dia|registr|resumo|anot|document/i;
+                if (!termos5.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Encerre educadamente e explique o registro do atendimento.";
+                }
+            }
+            aplicarFeedback('feedback-s5', res);
+        });
+    });
+</script>
+
+</body>
+</html>

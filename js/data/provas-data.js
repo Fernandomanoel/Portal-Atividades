@@ -423,6 +423,18 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Prática - Custos.docx",
       "path": "provas/Custos/Avaliação Prática - Custos.docx",
       "size": "55.5 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova custos fixos variaveis custo total",
+      "path": "provas/Custos/prova-custos-fixos-variaveis-custo-total.prova.html",
+      "size": "21.1 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova custos margem contribuicao precificacao",
+      "path": "provas/Custos/prova-custos-margem-contribuicao-precificacao.prova.html",
+      "size": "16.4 KB"
     }
   ],
   "Desenvolvimento de Games": [
@@ -894,6 +906,24 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Prática - Operador de Telemarketing.pdf",
       "path": "provas/Operador de Telemarketing/Avaliação Prática - Operador de Telemarketing.pdf",
       "size": "335.3 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova telemarketing atendimento profissional",
+      "path": "provas/Operador de Telemarketing/prova-telemarketing-atendimento-profissional.prova.html",
+      "size": "18.4 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova telemarketing persuasao tecnicas vendas",
+      "path": "provas/Operador de Telemarketing/prova-telemarketing-persuasao-tecnicas-vendas.prova.html",
+      "size": "18.9 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova telemarketing simulacao atendimento",
+      "path": "provas/Operador de Telemarketing/prova-telemarketing-simulacao-atendimento.prova.html",
+      "size": "19.3 KB"
     }
   ],
   "Power B.I": [

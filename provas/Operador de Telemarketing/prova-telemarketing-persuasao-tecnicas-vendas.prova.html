@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Prática de Telemarketing II — Persuasão e Técnicas de Vendas</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #7c3aed;
+            --brand-light: #ede9fe;
+            --accent-color: #6d28d9;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #7c3aed 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #ddd6fe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        textarea.input-box { min-height: 100px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .table-responsive { overflow-x: auto; margin: 15px 0; }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; vertical-align: middle; }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Prova Prática de Telemarketing — Parte 2 de 3</span>
+        <h1>Persuasão e Técnicas de Vendas</h1>
+        <p>Simulação de diálogo com técnica de persuasão e identificação das principais técnicas para conquistar o cliente durante uma ligação de vendas.</p>
+    </header>
+
+    <a class="voltar" href="../../index.html">← Voltar para o início</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Prova".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Prova</button>
+    </div>
+
+    <!-- MÓDULO 1: SIMULAÇÃO DE DIÁLOGO COM PERSUASÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Simulação de Diálogo com Técnica de Persuasão</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Situação:</strong> Você é operador(a) de telemarketing e está oferecendo uma promoção de um kit de beleza por telefone.<br><br>
+            "Bom dia! Meu nome é Maria e represento a Loja da Maquiagem. Estou ligando porque temos uma condição especial em um kit de beleza hoje..."
+        </div>
+        <div class="scenario-description">
+            Continue o diálogo: escreva o que você diria em seguida para <strong>despertar o interesse</strong> do cliente e <strong>conduzir a conversa</strong> de forma persuasiva.
+        </div>
+        <textarea id="p1-dialogo" class="input-box" placeholder="Ex: destaque um benefício do kit, faça uma pergunta para entender se o cliente se interessa por produtos de beleza, e proponha uma condição especial (desconto, brinde, parcelamento)..."></textarea>
+        <div id="feedback-p1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: TÉCNICAS DE VENDAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Técnicas para Conquistar o Cliente</h2>
+        </div>
+        <div class="scenario-description">
+            Associe cada descrição à técnica de vendas correspondente.
+        </div>
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr><th style="width: 60%;">Descrição</th><th style="width: 40%;">Técnica</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fazer perguntas abertas, escutar atentamente e mostrar que entende e se importa com o cliente.</td>
+                        <td>
+                            <select id="p2-a" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="necessidades">Identificar Necessidades</option>
+                                <option value="beneficios">Destacar os Benefícios</option>
+                                <option value="confianca">Construir Confiança</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Explicar como o produto resolve o problema do cliente, usando exemplos e casos de sucesso.</td>
+                        <td>
+                            <select id="p2-b" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="necessidades">Identificar Necessidades</option>
+                                <option value="beneficios">Destacar os Benefícios</option>
+                                <option value="confianca">Construir Confiança</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Ser transparente e honesto sobre o produto, mostrando conhecimento e oferecendo garantias.</td>
+                        <td>
+                            <select id="p2-c" class="input-box">
+                                <option value="">Selecione...</option>
+                                <option value="necessidades">Identificar Necessidades</option>
+                                <option value="beneficios">Destacar os Benefícios</option>
+                                <option value="confianca">Construir Confiança</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="feedback-p2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: APLICANDO A TÉCNICA CERTA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Qual Técnica Usar?</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Situação:</strong> No meio da ligação, o cliente diz: <em>"Não sei se eu preciso disso agora..."</em>. Qual técnica é mais adequada nesse momento?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="p3" value="necessidades">
+                a) Fazer perguntas abertas para entender melhor a real necessidade do cliente antes de insistir na venda.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="p3" value="ignorar">
+                b) Ignorar o comentário e repetir o preço do produto várias vezes até ele aceitar.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="p3" value="desligar">
+                c) Encerrar a ligação imediatamente, já que o cliente demonstrou dúvida.
+            </label>
+        </div>
+        <div id="feedback-p3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: REFLEXÃO SOBRE ESCUTA ATIVA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>A Importância de Ouvir Antes de Oferecer</h2>
+        </div>
+        <div class="scenario-description">
+            Explique, com suas palavras, por que <strong>ouvir atentamente</strong> o cliente antes de oferecer o produto é importante para o sucesso da venda.
+        </div>
+        <textarea id="p4-escuta" class="input-box" placeholder="Explique que ouvir o cliente permite entender a real necessidade dele e oferecer o produto certo, aumentando as chances de fechar a venda..."></textarea>
+        <div id="feedback-p4" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 4;
+
+        // Mód 1 — diálogo persuasivo
+        const val1 = document.getElementById('p1-dialogo').value;
+        const res1 = validarTextoInteligente(val1, 6, 25);
+        if (res1.valido) {
+            const termos1 = /benefíci|desconto|promoç|pergunt|interess|oferec|precisa|gostaria/i;
+            if (!termos1.test(val1)) {
+                res1.valido = false;
+                res1.motivo = "Continue o diálogo destacando um benefício, fazendo uma pergunta ou propondo a condição especial.";
+            }
+        }
+        aplicarFeedback('feedback-p1', res1);
+        if (res1.valido) acertos++;
+
+        // Mód 2 — técnicas de vendas
+        const p2 = {
+            a: document.getElementById('p2-a').value,
+            b: document.getElementById('p2-b').value,
+            c: document.getElementById('p2-c').value,
+        };
+        if (p2.a === 'necessidades' && p2.b === 'beneficios' && p2.c === 'confianca') {
+            aplicarFeedback('feedback-p2', { valido: true, motivo: "Correto! Identificar necessidades, destacar benefícios e construir confiança são as três técnicas centrais." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-p2', { valido: false, motivo: "Incorreto. Releia cada descrição e associe à técnica certa." });
+        }
+
+        // Mód 3 — técnica certa no momento certo
+        const p3Selected = document.querySelector('input[name="p3"]:checked');
+        if (p3Selected && p3Selected.value === 'necessidades') {
+            aplicarFeedback('feedback-p3', { valido: true, motivo: "Correto! Diante da dúvida do cliente, o melhor é entender melhor a real necessidade dele antes de insistir." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-p3', { valido: false, motivo: "Incorreto. Pense em qual atitude ajuda a entender o cliente em vez de afastá-lo." });
+        }
+
+        // Mód 4 — escuta ativa
+        const val4 = document.getElementById('p4-escuta').value;
+        const res4 = validarTextoInteligente(val4, 6, 25);
+        if (res4.valido) {
+            const termos4 = /entend|necessidad|ouvir|escut|certo|adequ|venda|atenç/i;
+            if (!termos4.test(val4)) {
+                res4.valido = false;
+                res4.motivo = "Explique como ouvir o cliente ajuda a oferecer o produto certo e fechar a venda.";
+            }
+        }
+        aplicarFeedback('feedback-p4', res4);
+        if (res4.valido) acertos++;
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 3) {
+            completionText.innerText = "Prova Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('p1-dialogo').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 6, 25);
+            if (res.valido) {
+                const termos1 = /benefíci|desconto|promoç|pergunt|interess|oferec|precisa|gostaria/i;
+                if (!termos1.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Continue o diálogo de forma persuasiva.";
+                }
+            }
+            aplicarFeedback('feedback-p1', res);
+        });
+        document.getElementById('p4-escuta').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 6, 25);
+            if (res.valido) {
+                const termos4 = /entend|necessidad|ouvir|escut|certo|adequ|venda|atenç/i;
+                if (!termos4.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Explique a importância de ouvir o cliente antes de oferecer o produto.";
+                }
+            }
+            aplicarFeedback('feedback-p4', res);
+        });
+    });
+</script>
+
+</body>
+</html>

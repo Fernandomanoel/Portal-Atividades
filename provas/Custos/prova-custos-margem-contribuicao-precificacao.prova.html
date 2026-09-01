@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Prática de Custos II — Margem de Contribuição e Precificação</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #b45309;
+            --brand-light: #fef3c7;
+            --accent-color: #92400e;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #b45309 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fde68a; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(180, 83, 9, 0.15);
+        }
+
+        textarea.input-box { min-height: 100px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .voltar { display: inline-block; margin: 18px 0 0 4px; color: var(--brand-color, #2563eb); text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Prova Prática de Custos — Parte 2 de 2</span>
+        <h1>Margem de Contribuição e Precificação</h1>
+        <p>Simule a venda de um produto, calcule a Margem de Contribuição Unitária e Percentual, e avalie o impacto de uma variação de custo na precificação.</p>
+    </header>
+
+    <a class="voltar" href="../../index.html">← Voltar para o início</a>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Prova".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Prova</button>
+    </div>
+
+    <!-- MÓDULO 1: FICHA DO PRODUTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Ficha do Produto Simulado</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Você vai simular a venda de um produto pela Lanchonete da Ana: um <strong>combo de lanche + suco</strong>. Descreva o produto e seus custos de produção.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Nome do produto/serviço:</label>
+                <input type="text" id="m1-nome" class="input-box" placeholder="Ex: Combo Lanche + Suco Natural">
+            </div>
+            <div class="field-group">
+                <label>Custo de produção (matéria-prima, mão de obra direta etc.):</label>
+                <textarea id="m1-custo" class="input-box" style="min-height: 60px;" placeholder="Ex: pão, carne, queijo, fruta para o suco e o tempo de preparo..."></textarea>
+            </div>
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MARGEM DE CONTRIBUIÇÃO UNITÁRIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Margem de Contribuição Unitária</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Exemplo Prático:</strong> Você vende esse combo por <strong>R$ 50,00</strong> a unidade. O custo variável (matéria-prima, embalagem, comissão etc.) por unidade é de <strong>R$ 30,00</strong>.<br><br>
+            <strong>Fórmula:</strong> Margem de Contribuição = Preço de Venda − Custo Variável por Unidade
+        </div>
+        <div class="field-group">
+            <label>Margem de Contribuição Unitária (em R$):</label>
+            <input type="text" id="m2-margem" class="input-box" placeholder="R$ 0,00">
+        </div>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: MARGEM DE CONTRIBUIÇÃO PERCENTUAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Margem de Contribuição Percentual</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Fórmula:</strong> Margem (%) = (Margem de Contribuição ÷ Preço de Venda) × 100
+        </div>
+        <div class="field-group">
+            <label>Margem de Contribuição Percentual (usando os mesmos valores: preço R$ 50,00, custo variável R$ 30,00):</label>
+            <input type="text" id="m3-percentual" class="input-box" placeholder="Ex: 40%">
+        </div>
+        <div id="feedback-m3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: IMPACTO DO AUMENTO DE CUSTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>O que Fazer se o Custo Variável Subir?</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Novo cenário:</strong> O fornecedor de ingredientes aumentou os preços. Agora o custo variável do combo subiu de R$ 30,00 para <strong>R$ 38,00</strong>, mas o preço de venda continua R$ 50,00 (Margem de Contribuição cai de R$ 20,00 para R$ 12,00). Qual dessas ações <strong>não</strong> ajudaria a recuperar a margem de contribuição perdida?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="m4" value="reajustar_preco">
+                a) Reajustar o preço de venda do combo para cobrir o aumento do custo.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="m4" value="negociar_fornecedor">
+                b) Negociar com o fornecedor ou buscar outro fornecedor com preço melhor.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="m4" value="ignorar">
+                c) Manter o preço de venda igual e ignorar o aumento de custo, pois não afeta o negócio.
+            </label>
+        </div>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function numeroDoTexto(texto) {
+        if (!texto) return NaN;
+        const limpo = texto.replace(/[^\d.,]/g, '').trim();
+        if (!limpo) return NaN;
+        const normalizado = limpo.includes(',') ? limpo.replace(/\./g, '').replace(',', '.') : limpo;
+        return parseFloat(normalizado);
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 4;
+
+        // Mód 1 — ficha do produto
+        const nome1 = document.getElementById('m1-nome').value;
+        const custo1 = document.getElementById('m1-custo').value;
+        const resNome = validarTextoInteligente(nome1, 2, 6);
+        const resCusto = validarTextoInteligente(custo1, 3, 12);
+        if (resNome.valido && resCusto.valido) {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Ficha do produto preenchida corretamente." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Preencha o nome do produto e descreva os custos de produção com mais detalhes." });
+        }
+
+        // Mód 2 — margem unitária (50 - 30 = 20)
+        const margem = numeroDoTexto(document.getElementById('m2-margem').value);
+        if (!isNaN(margem) && Math.abs(margem - 20) < 0.01) {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Correto! R$ 50,00 − R$ 30,00 = R$ 20,00 de Margem de Contribuição Unitária." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. Margem = Preço de Venda − Custo Variável por Unidade." });
+        }
+
+        // Mód 3 — margem percentual (20/50*100 = 40%)
+        const percentual = numeroDoTexto(document.getElementById('m3-percentual').value);
+        if (!isNaN(percentual) && Math.abs(percentual - 40) < 0.5) {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Correto! (R$ 20,00 ÷ R$ 50,00) × 100 = 40%." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Margem (%) = (Margem de Contribuição ÷ Preço de Venda) × 100." });
+        }
+
+        // Mód 4 — impacto do aumento de custo
+        const m4Selected = document.querySelector('input[name="m4"]:checked');
+        if (m4Selected && m4Selected.value === 'ignorar') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Correto! Ignorar o aumento de custo reduz a margem de contribuição e prejudica o resultado do negócio." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. Pense em qual das opções NÃO ajuda a recuperar a margem perdida." });
+        }
+
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos >= 3) {
+            completionText.innerText = "Prova Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou com êxito ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique as áreas destacadas.`;
+        }
+    }
+</script>
+
+</body>
+</html>

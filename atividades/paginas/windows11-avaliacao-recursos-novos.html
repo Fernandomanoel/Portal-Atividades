@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática: Recursos do Windows 11</title>
+    <style>
+        :root {
+            --win-blue: #0078D4;
+            --win-bg: #f3f3f3;
+            --card-bg: #ffffff;
+            --text-main: #202020;
+            --text-muted: #404040;
+            --success: #107C10;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--win-bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            max-width: 900px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 40px;
+            border-top: 6px solid var(--win-blue);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--win-blue);
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            height: 22px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background-color: var(--win-blue);
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease, background-color 0.4s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 0;
+            line-height: 22px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #333;
+            mix-blend-mode: difference;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            transition: background-color 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background-color: #f0f8ff;
+            border-color: #cce3f6;
+        }
+
+        .task-item.completed {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .task-item.completed h3 {
+            color: var(--success);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            width: 26px;
+            height: 26px;
+            border: 2px solid var(--text-muted);
+            border-radius: 4px;
+            margin-top: 2px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .task-checkbox:checked {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox:checked::after {
+            content: '✔';
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .task-content h3 {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .task-content p {
+            margin: 0 0 8px 0;
+            font-size: 15px;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+        
+        .task-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: var(--border-radius);
+            color: var(--success);
+            animation: fadeIn 0.5s;
+        }
+
+        .success-message h2 {
+            margin: 0 0 10px 0;
+        }
+
+        .btn-print {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 24px;
+            background-color: var(--win-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+
+        .btn-print:hover {
+            background-color: #005a9e;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            .btn-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Avaliação Prática: Recursos do Windows 11</h1>
+            <p>Siga o roteiro descritivo abaixo para demonstrar o domínio sobre as novas funcionalidades exclusivas de organização e interface do sistema.</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0% Concluído</div>
+        </div>
+
+        <div class="task-list" id="taskList">
+            
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>1. Pasta de Recebimento</h3>
+                    <p>Inicie indo até a <strong>Área de Trabalho (Desktop)</strong>. Clique com o botão direito em qualquer espaço vazio, vá em <strong>"Novo" > "Pasta"</strong>.</p>
+                    <p>Dê a esta pasta o nome de <strong>Avaliacao_Win11_2</strong>. Todos os arquivos e prints gerados nos próximos passos deverão ser salvos diretamente dentro dela.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>2. Painel de Configurações Rápidas</h3>
+                    <p>O Windows 11 possui um menu unificado para Wi-Fi, Volume e Bateria. Pressione simultaneamente as teclas <strong>Windows + A</strong> para abrir o menu de Configurações Rápidas no canto inferior direito.</p>
+                    <p>Com o menu aberto, tire um <strong>Print Screen (PrtScn)</strong>, cole no <strong>Paint</strong> e salve a imagem dentro da pasta criada no passo 1, com o nome <strong>Config_Rapidas</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>3. Alinhamento da Barra de Tarefas</h3>
+                    <p>Por padrão, o Windows 11 centraliza os ícones. Vamos mudar isso. Clique com o botão direito sobre a Barra de Tarefas e escolha <strong>"Configurações da barra de tarefas"</strong>.</p>
+                    <p>Role a tela para baixo, expanda a opção <strong>"Comportamentos da barra de tarefas"</strong> e altere o "Alinhamento da barra de tarefas" de Centro para <strong>Esquerda</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>4. Captura da Nova Barra de Tarefas</h3>
+                    <p>Observe que o botão Iniciar e os ícones voltaram para o lado esquerdo (como era no Windows 10). Feche a janela de configurações.</p>
+                    <p>Tire um <strong>Print Screen</strong> focando na parte inferior da tela, cole no <strong>Paint</strong> e salve a imagem na sua pasta principal com o nome <strong>Barra_Esquerda</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>5. Áreas de Trabalho Virtuais</h3>
+                    <p>Pressione o atalho <strong>Windows + Tab</strong> para abrir a tela de Visão de Tarefas (Task View).</p>
+                    <p>Na parte inferior da tela, clique no sinal de mais <strong>(+) "Nova área de trabalho"</strong>. Isso criará um ambiente secundário limpo para você organizar diferentes tipos de aplicativos.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>6. Captura de Múltiplos Desktops</h3>
+                    <p>Ainda na tela de Visão de Tarefas (com a "Área de Trabalho 1" e "Área de Trabalho 2" visíveis), tire um novo <strong>Print Screen</strong>.</p>
+                    <p>Cole no Paint e salve o arquivo dentro da sua pasta principal com o nome <strong>Desktops_Virtuais</strong>. Volte para a Área de Trabalho 1 após salvar.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>7. Organização com Snap Layouts</h3>
+                    <p>O Snap Layouts é uma das maiores novidades do sistema. Abra dois aplicativos simples (por exemplo: <strong>Calculadora</strong> e <strong>Bloco de Notas</strong>).</p>
+                    <p>Passe o mouse por cima do botão de <strong>Maximizar</strong> (o quadrado no canto superior direito) do Bloco de Notas. Um menu com opções de divisão de tela vai aparecer. Escolha a divisão "Meio a Meio" e posicione a Calculadora do outro lado.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>8. Uso da Ferramenta de Captura Avançada</h3>
+                    <p>Com a tela perfeitamente dividida ao meio, use o atalho avançado de captura: <strong>Windows + Shift + S</strong>.</p>
+                    <p>A tela vai escurecer. Clique e arraste para desenhar um quadrado que pegue apenas os dois aplicativos. Uma notificação aparecerá no canto direito, clique nela e clique no botão do <strong>Disquete</strong> para salvar a imagem direto na sua pasta com o nome <strong>Snap_Layout</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>9. Bloco de Notas com Abas</h3>
+                    <p>No Bloco de Notas que já está aberto, digite "Avaliação do Windows 11 Concluída". Em seguida, pressione <strong>Ctrl + T</strong> ou clique no ícone de <strong>(+)</strong> no topo para abrir uma nova Aba (recurso exclusivo do Windows 11).</p>
+                    <p>Vá em Arquivo > Salvar, e salve esse documento de texto dentro da sua pasta de entrega, nomeando-o como <strong>Anotacoes.txt</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>10. Entrega Final (Compactação ZIP)</h3>
+                    <p>Feche todas as janelas. Navegue até sua Área de Trabalho e verifique se a pasta "Avaliacao_Win11_2" contém os 4 prints e o arquivo de texto.</p>
+                    <p>Clique com o botão direito do mouse sobre a pasta e selecione <strong>"Compactar para arquivo ZIP"</strong>. Entregue este único arquivo comprimido para finalização da prova.</p>
+                </div>
+            </label>
+
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h2>🎉 Avaliação Finalizada com Sucesso!</h2>
+            <p>Você demonstrou excelente domínio sobre os recursos de produtividade do Windows 11.</p>
+            <p>Envie o arquivo <strong>.zip</strong> gerado para a plataforma ou pen-drive do instrutor.</p>
+            <button class="btn-print" onclick="window.print()">🖨️ Imprimir Resumo / Salvar em PDF</button>
+        </div>
+
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const taskItems = document.querySelectorAll('.task-item');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const successMessage = document.getElementById('successMessage');
+
+            let checkedCount = 0;
+            const total = checkboxes.length;
+
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) {
+                    checkedCount++;
+                    taskItems[index].classList.add('completed');
+                } else {
+                    taskItems[index].classList.remove('completed');
+                }
+            });
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = percentage + '% Concluído';
+
+            if (percentage === 100) {
+                progressBar.style.backgroundColor = 'var(--success)';
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                progressBar.style.backgroundColor = 'var(--win-blue)';
+                successMessage.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

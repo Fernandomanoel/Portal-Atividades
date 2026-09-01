@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática: PowerPoint</title>
+    <style>
+        :root {
+            --ppt-brand: #C43E1C; 
+            --ppt-light: #fbece9;
+            --bg-page: #f3f3f3;
+            --card-bg: #ffffff;
+            --text-main: #202020;
+            --text-muted: #404040;
+            --success: #107C10;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            max-width: 900px;
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            padding: 40px;
+            border-top: 6px solid var(--ppt-brand);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: var(--ppt-brand);
+            margin: 0 0 10px 0;
+            font-size: 32px;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            height: 24px;
+            margin-bottom: 35px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            background-color: var(--ppt-brand);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease, background-color 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 0;
+            line-height: 24px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #ffffff;
+            mix-blend-mode: difference;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px;
+            background-color: #fafafa;
+            border: 1px solid #eaeaea;
+            border-radius: var(--border-radius);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .task-item:hover {
+            background-color: var(--ppt-light);
+            border-color: #f3c2b8;
+        }
+
+        .task-item.completed {
+            background-color: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .task-item.completed h3 {
+            color: var(--success);
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+
+        .task-checkbox {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            margin-top: 2px;
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            transition: all 0.2s;
+            background-color: white;
+        }
+
+        .task-checkbox:checked {
+            background-color: var(--success);
+            border-color: var(--success);
+        }
+
+        .task-checkbox:checked::after {
+            content: '✔';
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .task-content {
+            width: 100%;
+        }
+
+        .task-content h3 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+            color: var(--text-main);
+            transition: color 0.2s;
+        }
+
+        .task-content p {
+            margin: 0 0 10px 0;
+            font-size: 15px;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+        
+        .task-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .highlight-tab {
+            background-color: #eeeeee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--ppt-brand);
+            border: 1px solid #dddddd;
+        }
+
+        /* ESTILO PARA O TEXTO FORNECIDO PARA CÓPIA */
+        .copy-box {
+            background-color: #ffffff;
+            border-left: 4px solid var(--ppt-brand);
+            border-top: 1px solid #e0e0e0;
+            border-right: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 15px;
+            margin: 10px 0 15px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 14px;
+            color: #333;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            user-select: all; /* Facilita a seleção com um clique */
+            cursor: copy;
+        }
+        
+        .copy-box::before {
+            content: '📄 Texto para copiar:';
+            display: block;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 11px;
+            color: var(--ppt-brand);
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            margin-top: 35px;
+            padding: 30px;
+            background-color: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            border-radius: var(--border-radius);
+            color: var(--success);
+            animation: fadeIn 0.6s;
+        }
+
+        .success-message h2 {
+            margin: 0 0 15px 0;
+            font-size: 24px;
+        }
+
+        .btn-print {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background-color: var(--ppt-brand);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 6px rgba(196, 62, 28, 0.2);
+        }
+
+        .btn-print:hover {
+            background-color: #9c3116;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; border-top: none; }
+            .btn-print { display: none; }
+            .task-item { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Avaliação Prática: Criação de Slides</h1>
+            <p>Nesta avaliação, você não precisa inventar o conteúdo. Copie os textos fornecidos nas caixas e foque totalmente em utilizar as ferramentas e formatar a apresentação corretamente.</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-text" id="progressText">0% Concluído</div>
+        </div>
+
+        <div class="task-list" id="taskList">
+            
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>1. Design e Tema Inicial</h3>
+                    <p>Abra o PowerPoint e crie uma "Apresentação em Branco". Salve o arquivo na Área de Trabalho com o nome <strong>Avaliacao_PPT_SeuNome</strong>.</p>
+                    <p>Vá até a guia <span class="highlight-tab">Design</span>. Escolha um <strong>Tema</strong> verde ou azul relacionado à natureza, e altere a <strong>Variante</strong> (cores do tema) se necessário.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>2. Configuração do Slide Mestre (Logotipo)</h3>
+                    <p>Vá na guia <span class="highlight-tab">Exibir</span> e clique em <strong>Slide Mestre</strong>. No painel à esquerda, suba tudo e selecione o <strong>primeiro slide da lista</strong> (o maior de todos).</p>
+                    <p>Vá na guia <span class="highlight-tab">Inserir</span> > <strong>Formas</strong>, escolha a forma de um "Sol" e desenhe no canto superior direito. Pinte o sol de amarelo e tire o contorno. Quando terminar, volte à guia <em>Slide Mestre</em> e clique em <strong>"Fechar Modo de Exibição Mestre"</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>3. Formatação da Capa (Slide 1)</h3>
+                    <p>Selecione e copie (Ctrl+C) o texto abaixo e cole (Ctrl+V) na caixa de <strong>Título</strong> do slide:</p>
+                    <div class="copy-box">Energias Renováveis: O Futuro do Planeta</div>
+                    <p>Agora copie o texto abaixo e cole na caixa de <strong>Subtítulo</strong>:</p>
+                    <div class="copy-box">Impactos, Soluções e Sustentabilidade</div>
+                    <p>Selecione o Título, vá na guia <span class="highlight-tab">Página Inicial</span>, mude a fonte para <strong>Arial Black</strong>, tamanho <strong>54</strong>, e aplique o botão de <strong>Sombra de Texto (S)</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>4. Inserção de SmartArt (Slide 2)</h3>
+                    <p>Na guia <span class="highlight-tab">Página Inicial</span>, clique em <strong>Novo Slide</strong> e escolha o layout <strong>"Título e Conteúdo"</strong>.</p>
+                    <p>Copie o título abaixo e cole no topo do slide:</p>
+                    <div class="copy-box">Principais Fontes Limpas</div>
+                    <p>Na caixa de baixo, clique no ícone verde de <strong>Inserir SmartArt</strong>. Escolha a categoria "Lista" e selecione "Lista de Blocos Básica". Cole os três textos abaixo, um em cada bloco do SmartArt:</p>
+                    <div class="copy-box">Energia Solar<br>Energia Eólica<br>Energia Hidrelétrica</div>
+                    <p>Mude as cores do SmartArt na guia "Design de SmartArt".</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>5. Textos e Imagens (Slide 3)</h3>
+                    <p>Insira um Novo Slide com o layout <strong>"Duas Partes"</strong>. Copie o título:</p>
+                    <div class="copy-box">A Importância da Transição</div>
+                    <p>Na caixa da <strong>esquerda</strong>, cole o parágrafo explicativo abaixo:</p>
+                    <div class="copy-box">A mudança para fontes de energia limpa é fundamental para reduzir a emissão de gases poluentes e combater as mudanças climáticas globais, garantindo recursos para as próximas gerações.</div>
+                    <p>Na caixa da <strong>direita</strong>, vá em <span class="highlight-tab">Inserir</span> > <strong>Imagens Online</strong>, pesquise por <em>"Painel Solar"</em> e insira uma imagem que represente o tema.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>6. Criação de Gráfico (Slide 4)</h3>
+                    <p>Insira um Novo Slide do tipo <strong>"Título e Conteúdo"</strong>. Copie o título:</p>
+                    <div class="copy-box">Crescimento da Adoção (%)</div>
+                    <p>Na caixa do meio, clique no ícone de <strong>Inserir Gráfico</strong>. Escolha o tipo <strong>"Coluna Agrupada"</strong>. Uma pequena planilha do Excel vai abrir. Substitua os dados pelas informações abaixo e feche a planilha:</p>
+                    <div class="copy-box">Categorias: 2020 | 2022 | 2024<br>Valores (Série 1): 30 | 45 | 60</div>
+                    <p><em>Apague as Séries 2 e 3 da planilha, deixando apenas uma coluna para cada ano.</em></p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>7. Hiperlink (Botão de Voltar)</h3>
+                    <p>Ainda no Slide 4, vá em <span class="highlight-tab">Inserir</span> > <strong>Formas</strong>, escolha um "Retângulo" e desenhe-o no canto inferior do slide. Digite a palavra "Voltar" dentro dele.</p>
+                    <p>Clique na borda desse retângulo, vá em <span class="highlight-tab">Inserir</span> > <strong>Link</strong>. Clique em "Colocar neste documento", escolha o <strong>Slide 1</strong> e dê OK. Esse botão agora leva o usuário de volta à capa.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>8. Numeração de Slides (Rodapé)</h3>
+                    <p>Vá na guia <span class="highlight-tab">Inserir</span> e clique em <strong>Cabeçalho e Rodapé</strong>. Marque as opções: <strong>"Número do slide"</strong> e <strong>"Rodapé"</strong>.</p>
+                    <p>Na caixa do Rodapé, cole o texto abaixo:</p>
+                    <div class="copy-box">Aula Prática de Informática</div>
+                    <p>Marque também a caixa <strong>"Não mostrar no slide de título"</strong> e clique em <strong>"Aplicar a Todos"</strong>.</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>9. Transições e Animações</h3>
+                    <p>Vá na guia <span class="highlight-tab">Transições</span>. Escolha a transição <strong>"Esmaecer"</strong> (Fade) e clique no botão <strong>"Aplicar a Todos"</strong> no canto direito.</p>
+                    <p>Agora, vá no <strong>Slide 3</strong>, selecione o parágrafo de texto da esquerda. Vá na guia <span class="highlight-tab">Animações</span> e aplique a animação de Entrada verde <strong>"Surgir"</strong> (Fly in).</p>
+                </div>
+            </label>
+
+            <label class="task-item">
+                <input type="checkbox" class="task-checkbox" onchange="updateProgress()">
+                <div class="task-content">
+                    <h3>10. Salvar e Exportar (PDF)</h3>
+                    <p>Clique em <strong>Arquivo > Salvar</strong> (ou pressione Ctrl+B) para salvar a versão final do seu PPTX.</p>
+                    <p>Para concluir, vá em <strong>Arquivo > Exportar > Criar Documento PDF/XPS</strong>. Salve o PDF na sua Área de Trabalho com o mesmo nome. Verifique se os dois arquivos estão salvos para finalizar a prova.</p>
+                </div>
+            </label>
+
+        </div>
+
+        <div class="success-message" id="successMessage">
+            <h2>🏆 Avaliação Concluída!</h2>
+            <p>Excelente trabalho! Você formatou toda a apresentação utilizando textos fornecidos e ferramentas avançadas.</p>
+            <p>Certifique-se de que os arquivos <strong>.pptx</strong> e <strong>.pdf</strong> estão salvos na Área de Trabalho.</p>
+            <button class="btn-print" onclick="window.print()">🖨️ Imprimir Checklist / Salvar PDF</button>
+        </div>
+
+    </div>
+
+    <script>
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('.task-checkbox');
+            const taskItems = document.querySelectorAll('.task-item');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const successMessage = document.getElementById('successMessage');
+
+            let checkedCount = 0;
+            const total = checkboxes.length;
+
+            checkboxes.forEach((cb, index) => {
+                if (cb.checked) {
+                    checkedCount++;
+                    taskItems[index].classList.add('completed');
+                } else {
+                    taskItems[index].classList.remove('completed');
+                }
+            });
+
+            const percentage = Math.round((checkedCount / total) * 100);
+            
+            progressBar.style.width = percentage + '%';
+            progressText.innerText = percentage + '% Concluído';
+
+            if (percentage === 100) {
+                progressBar.style.backgroundColor = 'var(--success)';
+                successMessage.style.display = 'block';
+                successMessage.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            } else {
+                progressBar.style.backgroundColor = 'var(--ppt-brand)';
+                successMessage.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

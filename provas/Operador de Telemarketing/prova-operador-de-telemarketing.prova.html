@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Operador de Telemarketing - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #881337 0%, #4c0519 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #be123c 0%, #fb7185 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #be123c;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #fff1f2;
+        border: 2px solid #fecdd3;
+        border-left: 6px solid #be123c;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #0f766e;
+    }
+
+    .question-card h3 {
+        color: #881337;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #134e4a; }
+
+    .tema {
+        display: inline-block;
+        background: #ffe4e6;
+        color: #9f1239;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #ccfbf1; color: #115e59; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #fb7185;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #be123c; }
+    .question-card.pratica .caso { border-color: #2dd4bf; }
+    .question-card.pratica .caso strong { color: #0f766e; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #ecfdf5;
+        border: 2px solid #10b981;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #065f46;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #047857;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #be123c; background: #fff1f2; }
+    .question-card.pratica .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+
+    .option-item input[type="radio"] {
+        accent-color: #be123c;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #0f766e; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #be123c;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #9f1239;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(190, 18, 60, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #be123c; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #fff1f2;
+        border: 2px solid #be123c;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #881337; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #fb7185; background: #fff1f2; color: #9f1239; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>📞 Prova de Operador de Telemarketing</h1>
+        <p>Atendimento profissional, marketing pessoal, técnicas de vendas e simulações de atendimento</p>
+        <div class="aviso-tempo">10 questões · 7 objetivas + 3 práticas · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaTelemarketing">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Empatia</span>
+                <p class="enunciado">Qual das opções abaixo melhor representa a atitude de <strong>empatia</strong> no atendimento por telefone?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Repetir o script exatamente como decorado, sem se importar com o tom do cliente.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Demonstrar compreensão e interesse genuíno pela necessidade e preocupação do cliente.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Falar o mais rápido possível para atender mais ligações no dia.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) Evitar fazer perguntas para não parecer que está duvidando do cliente.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Comunicação Clara</span>
+                <p class="enunciado">Sobre a comunicação com o cliente, é correto afirmar que o operador deve:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) Usar o máximo de termos técnicos possível para parecer mais especializado.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) Falar apenas o necessário, mesmo que o cliente fique com dúvidas.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) Manter uma comunicação clara e respeitosa, evitando jargões técnicos desnecessários.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) Repetir a mesma frase várias vezes até o cliente concordar.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Marketing Pessoal</span>
+                <p class="enunciado">Marketing pessoal, no contexto do trabalho do operador de telemarketing, está relacionado a:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) Fazer propaganda de produtos da empresa nas redes sociais pessoais.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) Construir e cuidar da própria imagem e reputação profissional, valorizando suas competências.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) Vender produtos pessoais para os colegas de trabalho.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Criar um currículo chamativo, mesmo sem experiência real.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Identificar Necessidades</span>
+                <p class="enunciado">Fazer perguntas abertas, escutar atentamente e mostrar que entende o cliente é uma técnica de vendas conhecida como:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) Construir Confiança.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) Identificar Necessidades.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) Fechamento Agressivo.</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) Quebra de Objeção.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">Destacar Benefícios</span>
+                <p class="enunciado">Explicar como o produto resolve o problema do cliente, usando exemplos e casos de sucesso, é a técnica de:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Construir Confiança.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) Identificar Necessidades.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) Destacar os Benefícios.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) Ignorar Objeções.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Construir Confiança</span>
+                <p class="enunciado">Ser transparente sobre o produto, mostrar conhecimento e oferecer garantias são atitudes que ajudam a:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) Encerrar a ligação mais rápido.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) Construir confiança com o cliente.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) Aumentar o valor da venda, independente do interesse do cliente.</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) Evitar que o cliente faça perguntas.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Lidar com Objeção</span>
+                <p class="enunciado">Quando o cliente diz "não sei se preciso disso agora", a atitude mais adequada é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) Insistir repetindo o preço da oferta várias vezes.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) Encerrar a ligação, já que o cliente demonstrou desinteresse.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) Fazer perguntas abertas para entender melhor a real necessidade do cliente antes de continuar.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) Ignorar o comentário e seguir o script do início ao fim.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 — PRÁTICA: DIÁLOGO DE PERSUASÃO -->
+        <div class="chapter" id="q8">
+            <div class="question-card pratica">
+                <h3>Questão 8 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">📞 Diálogo de persuasão</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Leia a situação e responda às <strong>duas etapas</strong> do diálogo, na ordem.
+                    <ul>
+                        <li>Cada etapa vale <strong>1/2 do ponto</strong> da questão.</li>
+                    </ul>
+                </div>
+
+                <div class="caso">
+                    <strong>Situação.</strong> Você é operador(a) de telemarketing e liga oferecendo uma promoção de um
+                    kit de beleza. "Bom dia! Meu nome é Maria e represento a Loja da Maquiagem. Estou ligando porque
+                    temos uma condição especial em um kit de beleza hoje..." A cliente responde: <strong>"Ah, eu não
+                    uso muita maquiagem não..."</strong>
+                </div>
+
+                <p class="enunciado"><strong>a)</strong> Qual é a melhor forma de continuar a ligação nesse momento?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8a" value="A"> A) Encerrar a ligação, já que a cliente não usa maquiagem.</label>
+                    <label class="option-item"><input type="radio" name="p8a" value="B"> B) Perguntar se ela conhece alguém que possa se interessar e insistir para que ela compre mesmo assim.</label>
+                    <label class="option-item"><input type="radio" name="p8a" value="C"> C) Fazer uma pergunta aberta para entender o que ela realmente usa e valoriza, e adaptar a oferta a partir disso.</label>
+                    <label class="option-item"><input type="radio" name="p8a" value="D"> D) Repetir a oferta do kit de maquiagem em voz mais alta, sem mudar a abordagem.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>b)</strong> A cliente comenta que se interessa por produtos de cuidados com a pele (skincare). Qual a melhor atitude agora?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8b" value="A"> A) Insistir na venda do kit de maquiagem original, sem mudar a oferta.</label>
+                    <label class="option-item"><input type="radio" name="p8b" value="B"> B) Apresentar produtos de skincare da loja que se encaixem no que ela comentou, destacando os benefícios.</label>
+                    <label class="option-item"><input type="radio" name="p8b" value="C"> C) Agradecer e encerrar a ligação, já que ela não quer maquiagem.</label>
+                    <label class="option-item"><input type="radio" name="p8b" value="D"> D) Pedir para ela ligar de volta se mudar de ideia sobre maquiagem.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 — PRÁTICA: TÉCNICAS DE VENDAS APLICADAS -->
+        <div class="chapter" id="q9">
+            <div class="question-card pratica">
+                <h3>Questão 9 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🎯 Técnicas de vendas aplicadas</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Durante uma mesma ligação de vendas, você usa técnicas diferentes em momentos diferentes.
+                    Identifique qual técnica está sendo usada em cada etapa.
+                    <ul>
+                        <li>Cada etapa vale <strong>1/3 do ponto</strong> da questão.</li>
+                    </ul>
+                </div>
+
+                <p class="enunciado"><strong>a)</strong> No início da ligação, você pergunta sobre a rotina do cliente para entender o que ele precisa. Isso é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9a" value="A"> A) Identificar Necessidades.</label>
+                    <label class="option-item"><input type="radio" name="p9a" value="B"> B) Destacar os Benefícios.</label>
+                    <label class="option-item"><input type="radio" name="p9a" value="C"> C) Construir Confiança.</label>
+                    <label class="option-item"><input type="radio" name="p9a" value="D"> D) Fechamento Agressivo.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>b)</strong> Depois, você explica como o produto resolveria o problema dele, citando um caso de outro cliente satisfeito. Isso é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9b" value="A"> A) Identificar Necessidades.</label>
+                    <label class="option-item"><input type="radio" name="p9b" value="B"> B) Destacar os Benefícios.</label>
+                    <label class="option-item"><input type="radio" name="p9b" value="C"> C) Construir Confiança.</label>
+                    <label class="option-item"><input type="radio" name="p9b" value="D"> D) Fechamento Agressivo.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Por fim, você garante o prazo de troca e devolução caso ele não goste do produto. Isso é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9c" value="A"> A) Identificar Necessidades.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="B"> B) Destacar os Benefícios.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="C"> C) Construir Confiança.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="D"> D) Fechamento Agressivo.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 — PRÁTICA: SIMULAÇÃO DE ATENDIMENTO ESTRUTURADO -->
+        <div class="chapter" id="q10">
+            <div class="question-card pratica">
+                <h3>Questão 10 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">☎️ Simulação de atendimento estruturado</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Leia a situação e responda às <strong>três etapas</strong> do atendimento, na ordem.
+                    <ul>
+                        <li>Cada etapa vale <strong>1/3 do ponto</strong> da questão.</li>
+                    </ul>
+                </div>
+
+                <div class="caso">
+                    <strong>Situação.</strong> O cliente liga para solicitar informações sobre uma compra realizada
+                    no site de uma loja: "Olá, comprei um produto pelo site da loja há 5 dias e ainda não recebi
+                    nenhuma atualização sobre a entrega. Poderia verificar para mim?"
+                </div>
+
+                <p class="enunciado"><strong>a)</strong> Qual é a atitude correta no início do atendimento?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10a" value="A"> A) Pedir para o cliente ligar depois, pois o sistema pode estar fora do ar.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="B"> B) Cumprimentar educadamente e solicitar dados do pedido (nome, CPF ou número do pedido) para localizar a compra.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="C"> C) Informar de imediato que a loja não tem controle sobre prazos de entrega.</label>
+                    <label class="option-item"><input type="radio" name="p10a" value="D"> D) Transferir a ligação para outro setor sem informar o motivo.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>b)</strong> Ao consultar o sistema, você vê que o pedido está "Em transporte", com previsão de chegada em 2 dias. Qual é a melhor forma de informar isso?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10b" value="A"> A) "Não sei dizer exatamente, esses prazos de transportadora sempre atrasam mesmo."</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="B"> B) "Isso não depende de mim, o senhor vai ter que aguardar."</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="C"> C) "Seu pedido já está em transporte, com previsão de chegada em até 2 dias. Qualquer atraso, você será notificado."</label>
+                    <label class="option-item"><input type="radio" name="p10b" value="D"> D) Não informar nada e pedir para o cliente verificar sozinho no site depois.</label>
+                </div>
+
+                <p class="enunciado" style="margin-top:22px"><strong>c)</strong> Como encerrar corretamente o atendimento?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10c" value="A"> A) Desligar assim que a informação principal for passada, sem mais perguntas.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="B"> B) Perguntar se o cliente precisa de mais alguma ajuda, agradecer e registrar o atendimento.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="C"> C) Pedir para o cliente avaliar o atendimento antes mesmo de resolver o problema.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="D"> D) Encaminhar para outro atendente repetir tudo de novo.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">
+                    O gabarito não é exibido. Nas questões práticas, cada etapa vale uma fração do ponto —
+                    o quadro mostra quantas etapas você acertou.
+                </p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Operador de Telemarketing</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+
+    /* ---- Gabarito das 7 objetivas ---- */
+    const gabarito = {
+        p1: "B",
+        p2: "C",
+        p3: "B",
+        p4: "B",
+        p5: "C",
+        p6: "B",
+        p7: "C"
+    };
+
+    const temas = {
+        p1: "Empatia", p2: "Comunicação", p3: "Marketing Pessoal", p4: "Identificar Necessidades",
+        p5: "Destacar Benefícios", p6: "Construir Confiança", p7: "Lidar com Objeção"
+    };
+
+    /* ---- Respostas das partes práticas (cada uma com N escolhas, valendo 1/N do ponto) ---- */
+    const PRATICAS = {
+        q8: {
+            tema: "Diálogo de persuasão",
+            escolhas: [
+                { nome: "p8a", certo: "C" },
+                { nome: "p8b", certo: "B" }
+            ]
+        },
+        q9: {
+            tema: "Técnicas aplicadas",
+            escolhas: [
+                { nome: "p9a", certo: "A" },
+                { nome: "p9b", certo: "B" },
+                { nome: "p9c", certo: "C" }
+            ]
+        },
+        q10: {
+            tema: "Simulação de atendimento",
+            escolhas: [
+                { nome: "p10a", certo: "B" },
+                { nome: "p10b", certo: "C" },
+                { nome: "p10c", certo: "B" }
+            ]
+        }
+    };
+
+    function avaliarPratica(form, pratica) {
+        let acertos = 0;
+        let semResposta = 0;
+        pratica.escolhas.forEach(e => {
+            const m = form.querySelector(`input[name="${e.nome}"]:checked`);
+            if (!m) semResposta++;
+            if (m && m.value === e.certo) acertos++;
+        });
+        return { acertos, total: pratica.escolhas.length, semResposta };
+    }
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= 10) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+            document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaTelemarketing');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- 7 objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- Q8, Q9, Q10: práticas, cada uma vale 1 ponto no total ---
+        const resultadosPraticas = {};
+        ["q8", "q9", "q10"].forEach((chave, idx) => {
+            const pratica = PRATICAS[chave];
+            const r = avaliarPratica(form, pratica);
+            semResposta += r.semResposta;
+            nota += r.acertos / r.total;
+            resultadosPraticas[chave] = r;
+            detalhe.push({
+                rotulo: "Q" + (8 + idx), tema: pratica.tema,
+                estado: r.acertos === r.total ? "ok" : (r.acertos === 0 ? "nao" : "parcial"),
+                texto: `${r.acertos}/${r.total}`
+            });
+        });
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.slice(0, 7).filter(d => d.estado === "ok").length;
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 7 objetivas · Q8: ${resultadosPraticas.q8.acertos}/${resultadosPraticas.q8.total} · ` +
+            `Q9: ${resultadosPraticas.q9.acertos}/${resultadosPraticas.q9.total} · Q10: ${resultadosPraticas.q10.acertos}/${resultadosPraticas.q10.total}`;
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo de atendimento e técnicas de vendas por telefone.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Revise as técnicas de vendas e o roteiro de atendimento.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        // A parte prática é o núcleo do módulo: avisa quando ela foi mal,
+        // mesmo que a nota geral tenha ficado boa por causa das objetivas.
+        const totalAcertosPraticas = resultadosPraticas.q8.acertos + resultadosPraticas.q9.acertos + resultadosPraticas.q10.acertos;
+        if (totalAcertosPraticas <= 3) {
+            msg.textContent += ' Atenção: o desempenho na parte prática (Q8, Q9 e Q10) ficou baixo — ' +
+                               'revise a simulação de diálogo, as técnicas de vendas e o roteiro de atendimento.';
+        }
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

@@ -423,6 +423,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Prática - Custos.docx",
       "path": "provas/Custos/Avaliação Prática - Custos.docx",
       "size": "55.5 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova custos",
+      "path": "provas/Custos/prova-custos.prova.html",
+      "size": "32.7 KB"
     }
   ],
   "Desenvolvimento de Games": [
@@ -894,6 +900,12 @@ const PROVAS_MANIFEST = {
       "label": "Avaliação Prática - Operador de Telemarketing.pdf",
       "path": "provas/Operador de Telemarketing/Avaliação Prática - Operador de Telemarketing.pdf",
       "size": "335.3 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Prova operador de telemarketing",
+      "path": "provas/Operador de Telemarketing/prova-operador-de-telemarketing.prova.html",
+      "size": "33.2 KB"
     }
   ],
   "Power B.I": [

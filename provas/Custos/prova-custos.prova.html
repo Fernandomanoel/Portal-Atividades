@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prova de Custos - 10 Questões</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #134e4a 0%, #042f2e 100%);
+        color: #333;
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        padding: clamp(20px, 4vw, 40px);
+        border-radius: 16px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    header {
+        background: linear-gradient(135deg, #0f766e 0%, #2dd4bf 100%);
+        color: white;
+        padding: clamp(22px, 4vw, 35px);
+        border-radius: 12px;
+        text-align: center;
+        margin-bottom: 26px;
+    }
+
+    h1 { font-size: clamp(1.4rem, 4.5vw, 2.2em); margin-bottom: 10px; }
+    header p { font-size: clamp(.9rem, 2.6vw, 1.1em); opacity: 0.95; }
+
+    .aviso-tempo {
+        background: rgba(255,255,255,.2);
+        border: 1px solid rgba(255,255,255,.4);
+        border-radius: 999px;
+        display: inline-block;
+        padding: 5px 16px;
+        margin-top: 12px;
+        font-size: clamp(.75rem, 2.2vw, .88rem);
+        font-weight: 600;
+    }
+
+    .progress-container {
+        background: #e2e8f0;
+        height: 8px;
+        border-radius: 4px;
+        margin-bottom: 26px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        background: #0f766e;
+        height: 100%;
+        width: 10%;
+        transition: width 0.3s ease;
+    }
+
+    .chapter { display: none; }
+    .chapter.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-card {
+        background: #f0fdfa;
+        border: 2px solid #99f6e4;
+        border-left: 6px solid #0f766e;
+        padding: clamp(18px, 3.5vw, 25px);
+        border-radius: 12px;
+        margin-bottom: 25px;
+    }
+
+    .question-card.pratica {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+        border-left-color: #b45309;
+    }
+
+    .question-card h3 {
+        color: #134e4a;
+        margin-bottom: 8px;
+        font-size: clamp(1rem, 3vw, 1.25em);
+    }
+
+    .question-card.pratica h3 { color: #78350f; }
+
+    .tema {
+        display: inline-block;
+        background: #ccfbf1;
+        color: #115e59;
+        border-radius: 999px;
+        padding: 3px 12px;
+        font-size: clamp(.68rem, 2vw, .78rem);
+        font-weight: 700;
+        margin-bottom: 14px;
+        text-transform: uppercase;
+        letter-spacing: .03em;
+    }
+
+    .tema.pratica-tag { background: #fef3c7; color: #92400e; }
+
+    .question-card p.enunciado {
+        font-size: clamp(.95rem, 2.7vw, 1.05em);
+        line-height: 1.65;
+        margin-bottom: 20px;
+        color: #334155;
+    }
+
+    .caso {
+        background: #fff;
+        border: 1px dashed #2dd4bf;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        line-height: 1.6;
+        color: #0f172a;
+    }
+
+    .caso strong { color: #0f766e; }
+    .question-card.pratica .caso { border-color: #f59e0b; }
+    .question-card.pratica .caso strong { color: #b45309; }
+
+    /* --- Orientações das questões práticas --- */
+    .orientacao {
+        background: #fffbeb;
+        border: 2px solid #f59e0b;
+        border-radius: 10px;
+        padding: 14px 16px;
+        margin-bottom: 18px;
+        font-size: clamp(.84rem, 2.4vw, .96em);
+        line-height: 1.65;
+        color: #78350f;
+    }
+
+    .orientacao h4 {
+        font-size: clamp(.85rem, 2.5vw, .98em);
+        margin-bottom: 8px;
+        color: #92400e;
+    }
+
+    .orientacao ul { margin: 6px 0 0 20px; }
+    .orientacao li { margin-bottom: 5px; }
+    .orientacao code {
+        background: #fef3c7;
+        padding: 2px 7px;
+        border-radius: 5px;
+        font-family: 'Courier New', monospace;
+        font-weight: 700;
+    }
+
+    /* --- Ficha de dados do cenário --- */
+    .ficha {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 18px;
+    }
+
+    .ficha-linha {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 9px 15px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: clamp(.85rem, 2.4vw, .97em);
+    }
+
+    .ficha-linha:last-child { border-bottom: none; }
+    .ficha-linha:nth-child(even) { background: #f8fafc; }
+    .ficha-linha .rot { color: #64748b; }
+    .ficha-linha .val { font-weight: 700; color: #0f172a; text-align: right; }
+    .ficha-linha .val.alerta { color: #b91c1c; }
+
+    /* --- Campos de resposta --- */
+    .campos {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+        gap: 14px;
+        margin-bottom: 6px;
+    }
+
+    .campo-box {
+        background: #fff;
+        border: 2px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 13px 15px;
+    }
+
+    .campo-box label {
+        display: block;
+        font-size: clamp(.78rem, 2.3vw, .88em);
+        font-weight: 700;
+        color: #334155;
+        margin-bottom: 8px;
+    }
+
+    .campo-box .dica-campo {
+        display: block;
+        font-weight: 400;
+        color: #64748b;
+        font-size: .92em;
+        margin-top: 2px;
+    }
+
+    .campo-box input {
+        width: 100%;
+        padding: 11px 13px;
+        font-family: 'Courier New', monospace;
+        font-size: clamp(1rem, 3vw, 1.15em);
+        font-weight: 700;
+        border: 2px solid #cbd5e1;
+        border-radius: 8px;
+        outline: none;
+        color: #0f172a;
+    }
+
+    .campo-box input:focus { border-color: #b45309; box-shadow: 0 0 0 4px rgba(180,83,9,.15); }
+
+    .options-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .option-item {
+        background: white;
+        border: 2px solid #cbd5e1;
+        padding: 14px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        line-height: 1.55;
+    }
+
+    .option-item:hover { border-color: #0f766e; background: #f0fdfa; }
+    .question-card.pratica .option-item:hover { border-color: #b45309; background: #fffbeb; }
+
+    .option-item input[type="radio"] {
+        accent-color: #0f766e;
+        width: 18px;
+        height: 18px;
+        margin-top: 2px;
+        flex: none;
+    }
+
+    .question-card.pratica .option-item input[type="radio"] { accent-color: #b45309; }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-top: 34px;
+        padding-top: 20px;
+        border-top: 2px solid #f1f5f9;
+        flex-wrap: wrap;
+    }
+
+    button {
+        background: #0f766e;
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: clamp(.88rem, 2.5vw, 1em);
+        font-weight: 600;
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+
+    button:hover:not(:disabled) {
+        background: #115e59;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25);
+    }
+
+    button:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    #counterDisplay { font-weight: 700; color: #0f766e; font-size: clamp(.82rem, 2.4vw, .95rem); }
+
+    .summary-box {
+        background: #f0fdfa;
+        border: 2px solid #0f766e;
+        border-radius: 12px;
+        padding: clamp(22px, 4vw, 34px);
+        text-align: center;
+    }
+
+    .summary-box h2 { color: #134e4a; margin-bottom: 14px; font-size: clamp(1.2rem, 4vw, 1.6rem); }
+
+    .score-display {
+        font-size: clamp(2.6rem, 12vw, 3.8em);
+        font-weight: 800;
+        margin: 16px 0 6px;
+        line-height: 1;
+    }
+
+    .score-pass { color: #059669; }
+    .score-fail { color: #dc2626; }
+    .score-sub { color: #475569; font-size: clamp(.9rem, 2.6vw, 1.05rem); margin-bottom: 18px; }
+
+    .revisao {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
+        gap: 8px;
+        margin: 22px 0 6px;
+    }
+
+    .revisao-item {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 9px 8px;
+        font-size: clamp(.68rem, 2.1vw, .78rem);
+        font-weight: 600;
+        color: #475569;
+        text-align: center;
+    }
+
+    .revisao-item.ok      { border-color: #059669; background: #ecfdf5; color: #065f46; }
+    .revisao-item.parcial { border-color: #f59e0b; background: #fffbeb; color: #92400e; }
+    .revisao-item.nao     { border-color: #dc2626; background: #fef2f2; color: #991b1b; }
+    .revisao-item .tema-mini { display: block; font-weight: 500; opacity: .85; margin-top: 2px; }
+
+    .nota-revisao {
+        font-size: clamp(.76rem, 2.2vw, .86rem);
+        color: #64748b;
+        margin-top: 14px;
+        font-style: italic;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 36px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e8f0;
+        color: #64748b;
+        font-size: clamp(.75rem, 2.2vw, .9em);
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>💰 Prova de Custos</h1>
+        <p>Custos fixos e variáveis, custo total, margem de contribuição e formação de preço</p>
+        <div class="aviso-tempo">10 questões · 8 objetivas + 2 práticas · nota 0 a 10 · aprovação a partir de 7</div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <form id="provaCustos">
+
+        <!-- Q1 -->
+        <div class="chapter active" id="q1">
+            <div class="question-card">
+                <h3>Questão 1 de 10</h3>
+                <span class="tema">Custo Fixo</span>
+                <p class="enunciado">Sobre custos fixos, é correto afirmar que:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p1" value="A"> A) Variam proporcionalmente à quantidade produzida ou vendida.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="B"> B) Permanecem praticamente os mesmos independentemente do volume de produção ou vendas, dentro de uma faixa razoável (ex: aluguel).</label>
+                    <label class="option-item"><input type="radio" name="p1" value="C"> C) Só existem em empresas industriais, nunca em comércio ou serviços.</label>
+                    <label class="option-item"><input type="radio" name="p1" value="D"> D) Sempre podem ser eliminados assim que as vendas caem a zero.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="chapter" id="q2">
+            <div class="question-card">
+                <h3>Questão 2 de 10</h3>
+                <span class="tema">Custo Variável</span>
+                <p class="enunciado">Um exemplo típico de custo variável em uma lanchonete é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p2" value="A"> A) O aluguel do ponto comercial.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="B"> B) O salário fixo do gerente.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="C"> C) A matéria-prima usada para preparar os lanches vendidos.</label>
+                    <label class="option-item"><input type="radio" name="p2" value="D"> D) A assinatura mensal do sistema de ponto de venda.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="chapter" id="q3">
+            <div class="question-card">
+                <h3>Questão 3 de 10</h3>
+                <span class="tema">Custo Direto x Indireto</span>
+                <p class="enunciado">A diferença entre custo direto e custo indireto está em:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p3" value="A"> A) O custo direto pode ser identificado e apropriado diretamente a um produto específico; o indireto precisa de um critério de rateio entre produtos.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="B"> B) O custo direto é sempre variável e o indireto é sempre fixo.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="C"> C) O custo indireto só existe em empresas de grande porte.</label>
+                    <label class="option-item"><input type="radio" name="p3" value="D"> D) Não existe diferença prática entre os dois conceitos.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="chapter" id="q4">
+            <div class="question-card">
+                <h3>Questão 4 de 10</h3>
+                <span class="tema">Custo Total</span>
+                <p class="enunciado">
+                    Uma pequena empresa teve, em um mês, <strong>R$ 1.500,00</strong> de custos fixos e
+                    <strong>R$ 900,00</strong> de custos variáveis. Qual foi o Custo Total do mês?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p4" value="A"> A) R$ 600,00</label>
+                    <label class="option-item"><input type="radio" name="p4" value="B"> B) R$ 900,00</label>
+                    <label class="option-item"><input type="radio" name="p4" value="C"> C) R$ 1.500,00</label>
+                    <label class="option-item"><input type="radio" name="p4" value="D"> D) R$ 2.400,00</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="chapter" id="q5">
+            <div class="question-card">
+                <h3>Questão 5 de 10</h3>
+                <span class="tema">Margem de Contribuição</span>
+                <p class="enunciado">A Margem de Contribuição Unitária de um produto é calculada por:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p5" value="A"> A) Preço de Venda + Custo Variável Unitário.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="B"> B) Preço de Venda − Custo Variável Unitário.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="C"> C) Custo Fixo ÷ Quantidade Vendida.</label>
+                    <label class="option-item"><input type="radio" name="p5" value="D"> D) Preço de Venda ÷ Custo Total.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="chapter" id="q6">
+            <div class="question-card">
+                <h3>Questão 6 de 10</h3>
+                <span class="tema">Margem %</span>
+                <p class="enunciado">
+                    Um produto é vendido por <strong>R$ 40,00</strong> e tem custo variável de <strong>R$ 28,00</strong>
+                    por unidade. Qual é a Margem de Contribuição Percentual?
+                </p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p6" value="A"> A) 12%</label>
+                    <label class="option-item"><input type="radio" name="p6" value="B"> B) 30%</label>
+                    <label class="option-item"><input type="radio" name="p6" value="C"> C) 40%</label>
+                    <label class="option-item"><input type="radio" name="p6" value="D"> D) 70%</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="chapter" id="q7">
+            <div class="question-card">
+                <h3>Questão 7 de 10</h3>
+                <span class="tema">Ponto de Equilíbrio</span>
+                <p class="enunciado">O Ponto de Equilíbrio representa:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p7" value="A"> A) O lucro máximo que a empresa pode obter em um mês.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="B"> B) A quantidade mínima que a empresa precisa vender para que a receita cubra todos os custos, sem lucro nem prejuízo.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="C"> C) O valor total investido na abertura do negócio.</label>
+                    <label class="option-item"><input type="radio" name="p7" value="D"> D) O custo fixo dividido pelo custo variável.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="chapter" id="q8">
+            <div class="question-card">
+                <h3>Questão 8 de 10</h3>
+                <span class="tema">Formação de Preço</span>
+                <p class="enunciado">Ao formar o preço de venda de um produto, uma prática recomendada é:</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p8" value="A"> A) Definir o preço apenas copiando o valor cobrado pelo concorrente, sem considerar os próprios custos.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="B"> B) Considerar o custo do produto, a margem de contribuição desejada e as despesas, além do preço praticado no mercado.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="C"> C) Ignorar os custos fixos, pois eles não influenciam o preço de venda.</label>
+                    <label class="option-item"><input type="radio" name="p8" value="D"> D) Definir um preço único para todos os produtos, independentemente do custo de cada um.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q9 — PRÁTICA: CUSTO TOTAL DA OPERAÇÃO -->
+        <div class="chapter" id="q9">
+            <div class="question-card pratica">
+                <h3>Questão 9 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">🧾 Custo total da operação</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Você é o responsável financeiro da "Lanchonete da Ana". Com base na ficha de custos do mês,
+                    calcule os dois totais pedidos e responda à pergunta final.
+                    <ul>
+                        <li>Use ponto ou vírgula para decimais. Não precisa escrever "R$".</li>
+                    </ul>
+                </div>
+
+                <div class="ficha">
+                    <div class="ficha-linha"><span class="rot">Aluguel do ponto (fixo)</span><span class="val">R$ 800,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Salário do funcionário (fixo)</span><span class="val">R$ 1.200,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Ingredientes do mês (variável)</span><span class="val">R$ 600,00</span></div>
+                    <div class="ficha-linha"><span class="rot">Embalagens descartáveis (variável)</span><span class="val">R$ 150,00</span></div>
+                </div>
+
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c9a">a) Total de Custos Fixos do mês
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c9a" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c9b">b) Total de Custos Variáveis do mês
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c9b" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                </div>
+
+                <p class="enunciado" style="margin-top:20px">c) Se as vendas do mês que vem dobrarem, o que deve acontecer com os Custos Fixos?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p9c" value="A"> A) Também dobram, pois todo custo varia junto com a venda.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="B"> B) Permanecem praticamente os mesmos, pois não dependem diretamente do volume vendido.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="C"> C) Caem para zero, pois passam a ser cobertos pela receita extra.</label>
+                    <label class="option-item"><input type="radio" name="p9c" value="D"> D) Deixam de existir, pois se tornam custos variáveis.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Q10 — PRÁTICA: MARGEM DE CONTRIBUIÇÃO E PRECIFICAÇÃO -->
+        <div class="chapter" id="q10">
+            <div class="question-card pratica">
+                <h3>Questão 10 de 10 — Parte prática</h3>
+                <span class="tema pratica-tag">📈 Margem de contribuição e precificação</span>
+
+                <div class="orientacao">
+                    <h4>📋 Como responder esta questão</h4>
+                    Fórmulas:
+                    <ul>
+                        <li>Margem de Contribuição = <code>Preço de Venda − Custo Variável por Unidade</code></li>
+                        <li>Margem (%) = <code>(Margem de Contribuição ÷ Preço de Venda) × 100</code></li>
+                        <li>Responda os campos numéricos e, depois, a pergunta final.</li>
+                    </ul>
+                </div>
+
+                <div class="caso">
+                    A Lanchonete da Ana vende um combo por <strong>R$ 50,00</strong> a unidade. O custo variável
+                    (matéria-prima, embalagem, comissão etc.) por unidade é de <strong>R$ 30,00</strong>.
+                </div>
+
+                <div class="campos">
+                    <div class="campo-box">
+                        <label for="c10a">a) Margem de Contribuição Unitária
+                            <span class="dica-campo">em reais</span>
+                        </label>
+                        <input type="text" id="c10a" inputmode="decimal" autocomplete="off" placeholder="0,00">
+                    </div>
+                    <div class="campo-box">
+                        <label for="c10b">b) Margem de Contribuição Percentual
+                            <span class="dica-campo">em % — ex.: 40</span>
+                        </label>
+                        <input type="text" id="c10b" inputmode="decimal" autocomplete="off" placeholder="0,0">
+                    </div>
+                </div>
+
+                <p class="enunciado" style="margin-top:20px">c) Se o custo variável subir para R$ 38,00 e o preço de venda continuar R$ 50,00, qual ação <strong>NÃO</strong> ajuda a recuperar a margem perdida?</p>
+                <div class="options-list">
+                    <label class="option-item"><input type="radio" name="p10c" value="A"> A) Reajustar o preço de venda para cobrir o aumento de custo.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="B"> B) Negociar com o fornecedor ou buscar um fornecedor com preço melhor.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="C"> C) Manter o preço de venda igual e ignorar o aumento do custo.</label>
+                    <label class="option-item"><input type="radio" name="p10c" value="D"> D) Rever a ficha técnica do produto para reduzir desperdício de insumos.</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- RESULTADO -->
+        <div class="chapter" id="q11">
+            <div class="summary-box">
+                <h2 id="resultTitle">Prova finalizada</h2>
+                <div class="score-display" id="scoreDisplay">0,0</div>
+                <div class="score-sub" id="scoreSub">—</div>
+                <p id="resultMessage"></p>
+
+                <div class="revisao" id="revisao"></div>
+                <p class="nota-revisao">
+                    O gabarito não é exibido. Nas questões práticas, cada item vale 1/3 do ponto —
+                    o quadro mostra quantas partes você acertou.
+                </p>
+
+                <div style="margin-top: 22px">
+                    <button type="button" onclick="location.reload()">Refazer a prova</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" id="navButtonsContainer">
+            <button type="button" id="prevBtn" onclick="changeChapter(-1)" disabled>← Anterior</button>
+            <span id="counterDisplay">Questão 1 de 10</span>
+            <button type="button" id="nextBtn" onclick="changeChapter(1)">Próximo →</button>
+        </div>
+    </form>
+
+    <footer>
+        <p><strong>Portal Educacional Interativo</strong> | Custos</p>
+    </footer>
+</div>
+
+<script>
+    let currentStep = 1;
+    const totalSteps = 11;              // 10 questões + tela de resultado
+
+    /* ---- Gabarito das 8 objetivas ---- */
+    const gabarito = {
+        p1: "B",
+        p2: "C",
+        p3: "A",
+        p4: "D",
+        p5: "B",
+        p6: "B",
+        p7: "B",
+        p8: "B"
+    };
+
+    const temas = {
+        p1: "Custo Fixo", p2: "Custo Variável", p3: "Direto x Indireto", p4: "Custo Total",
+        p5: "Margem", p6: "Margem %", p7: "Ponto de Equilíbrio", p8: "Formação de Preço"
+    };
+
+    /* ---- Respostas das partes práticas ---- */
+    const PRATICAS = {
+        q9: {
+            tema: "Custo total",
+            itens: [
+                { campo: "c9a", certo: 2000, tol: 0.01 },  // 800 + 1200
+                { campo: "c9b", certo: 750,  tol: 0.01 }   // 600 + 150
+            ],
+            escolha: { nome: "p9c", certo: "B" }
+        },
+        q10: {
+            tema: "Margem de contribuição",
+            itens: [
+                { campo: "c10a", certo: 20, tol: 0.01 },  // 50 - 30
+                { campo: "c10b", certo: 40, tol: 0.5 }    // 20/50*100
+            ],
+            escolha: { nome: "p10c", certo: "C" }
+        }
+    };
+
+    /* Lê o número digitado aceitando "1.234,56", "1234.56", "R$ 20,00" e "40%". */
+    function lerNumero(texto) {
+        if (texto == null) return NaN;
+        let s = String(texto).trim().replace(/[R$\s%]/gi, "");
+        if (s === "") return NaN;
+        if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+        return parseFloat(s);
+    }
+
+    function confere(valor, certo, tol) {
+        const n = lerNumero(valor);
+        return !isNaN(n) && Math.abs(n - certo) <= tol;
+    }
+
+    function updateView() {
+        for (let i = 1; i <= totalSteps; i++) {
+            const el = document.getElementById('q' + i);
+            if (el) el.classList.toggle('active', i === currentStep);
+        }
+
+        document.getElementById('prevBtn').disabled = (currentStep === 1);
+
+        const nextBtn = document.getElementById('nextBtn');
+        if (currentStep === totalSteps) {
+            document.getElementById('navButtonsContainer').style.display = 'none';
+            calcularResultado();
+        } else {
+            document.getElementById('navButtonsContainer').style.display = 'flex';
+            nextBtn.textContent = (currentStep === totalSteps - 1) ? 'Finalizar e ver nota →' : 'Próximo →';
+        }
+
+        if (currentStep <= 10) {
+            document.getElementById('counterDisplay').textContent = `Questão ${currentStep} de 10`;
+            document.getElementById('progressBar').style.width = (currentStep / 10) * 100 + '%';
+        } else {
+            document.getElementById('counterDisplay').textContent = 'Resultado';
+            document.getElementById('progressBar').style.width = '100%';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function changeChapter(direction) {
+        if (direction === 1 && currentStep < totalSteps) currentStep++;
+        else if (direction === -1 && currentStep > 1) currentStep--;
+        updateView();
+    }
+
+    function calcularResultado() {
+        const form = document.getElementById('provaCustos');
+        let nota = 0;
+        const detalhe = [];
+        let semResposta = 0;
+
+        // --- 8 objetivas: 1 ponto cada ---
+        for (const q in gabarito) {
+            const marcada = form.querySelector(`input[name="${q}"]:checked`);
+            const certo = marcada && marcada.value === gabarito[q];
+            if (certo) nota += 1;
+            if (!marcada) semResposta++;
+            detalhe.push({ rotulo: "Q" + q.slice(1), tema: temas[q], estado: certo ? "ok" : "nao", texto: certo ? "✓" : "✗" });
+        }
+
+        // --- Q9: 2 campos + 1 escolha, valendo 1/3 do ponto cada ---
+        const q9 = PRATICAS.q9;
+        let partes9 = 0;
+        q9.itens.forEach(it => {
+            const v = document.getElementById(it.campo).value;
+            if (v.trim() === "") semResposta++;
+            if (confere(v, it.certo, it.tol)) partes9++;
+        });
+        const esc9 = form.querySelector(`input[name="${q9.escolha.nome}"]:checked`);
+        if (!esc9) semResposta++;
+        if (esc9 && esc9.value === q9.escolha.certo) partes9++;
+        nota += partes9 / 3;
+        detalhe.push({
+            rotulo: "Q9", tema: q9.tema,
+            estado: partes9 === 3 ? "ok" : (partes9 === 0 ? "nao" : "parcial"),
+            texto: `${partes9}/3`
+        });
+
+        // --- Q10: 2 campos + 1 escolha, valendo 1/3 do ponto cada ---
+        const q10 = PRATICAS.q10;
+        let partes10 = 0;
+        q10.itens.forEach(it => {
+            const v = document.getElementById(it.campo).value;
+            if (v.trim() === "") semResposta++;
+            if (confere(v, it.certo, it.tol)) partes10++;
+        });
+        const esc10 = form.querySelector(`input[name="${q10.escolha.nome}"]:checked`);
+        if (!esc10) semResposta++;
+        if (esc10 && esc10.value === q10.escolha.certo) partes10++;
+        nota += partes10 / 3;
+        detalhe.push({
+            rotulo: "Q10", tema: q10.tema,
+            estado: partes10 === 3 ? "ok" : (partes10 === 0 ? "nao" : "parcial"),
+            texto: `${partes10}/3`
+        });
+
+        nota = Math.round(nota * 10) / 10;   // uma casa decimal
+
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.textContent = nota.toFixed(1).replace('.', ',');
+        scoreEl.className = 'score-display ' + (nota >= 7 ? 'score-pass' : 'score-fail');
+
+        const objetivasCertas = detalhe.slice(0, 8).filter(d => d.estado === "ok").length;
+        document.getElementById('scoreSub').textContent =
+            `${objetivasCertas} de 8 objetivas · Q9: ${partes9}/3 · Q10: ${partes10}/3`;
+
+        const msg = document.getElementById('resultMessage');
+        if (nota >= 9.5)      msg.textContent = 'Excelente! Domínio completo dos conceitos de custos.';
+        else if (nota >= 8)   msg.textContent = 'Muito bom! Desempenho acima do esperado.';
+        else if (nota >= 7)   msg.textContent = 'Aprovado(a). Revise os temas assinalados para consolidar.';
+        else if (nota >= 5)   msg.textContent = 'Perto da aprovação. Refaça os cálculos com atenção às fórmulas do enunciado.';
+        else                  msg.textContent = 'Recomenda-se revisar o conteúdo do módulo antes de refazer a prova.';
+
+        // A parte prática é o núcleo do módulo: avisa quando ela foi mal,
+        // mesmo que a nota geral tenha ficado boa por causa das objetivas.
+        const partesPraticas = partes9 + partes10;
+        if (partesPraticas <= 2) {
+            msg.textContent += ' Atenção: o desempenho na parte prática (Q9 e Q10) ficou baixo — ' +
+                               'refaça os cálculos de custo total e de margem de contribuição.';
+        }
+
+        if (semResposta > 0) msg.textContent += ` (${semResposta} item(ns) sem resposta.)`;
+
+        document.getElementById('resultTitle').textContent =
+            nota >= 7 ? '✅ Aprovado(a)!' : '📚 Prova finalizada';
+
+        document.getElementById('revisao').innerHTML = detalhe.map(d => `
+            <div class="revisao-item ${d.estado}">
+                ${d.texto} ${d.rotulo}
+                <span class="tema-mini">${d.tema}</span>
+            </div>`).join('');
+    }
+
+    document.addEventListener('keydown', (e) => {
+        // as setas não devem trocar de questão enquanto o aluno digita nos campos
+        if (e.target.tagName === 'INPUT' && e.target.type === 'text') return;
+        if (e.key === 'ArrowRight' && currentStep < totalSteps - 1) changeChapter(1);
+        if (e.key === 'ArrowLeft' && currentStep > 1) changeChapter(-1);
+    });
+
+    updateView();
+</script>
+</body>
+</html>

@@ -653,6 +653,12 @@ const PROVAS_MANIFEST = {
       "size": "34.2 KB"
     },
     {
+      "type": "quiz_html",
+      "label": "Avaliacao google ads marketing busca",
+      "path": "provas/Google Adwords/avaliacao-google-ads-marketing-busca.prova.html",
+      "size": "39.3 KB"
+    },
+    {
       "type": "file",
       "label": "Avaliação Prática - Google Ads.docx",
       "path": "provas/Google Adwords/Avaliação Prática - Google Ads.docx",
@@ -681,6 +687,12 @@ const PROVAS_MANIFEST = {
   ],
   "Inglês": [],
   "Inteligência Artificial": [
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao ia engenharia prompts llms",
+      "path": "provas/Inteligência Artificial/avaliacao-ia-engenharia-prompts-llms.prova.html",
+      "size": "38.6 KB"
+    },
     {
       "type": "file",
       "label": "Inteligência Artificial I.txt",
@@ -1014,6 +1026,12 @@ const PROVAS_MANIFEST = {
       "size": "42.6 KB"
     },
     {
+      "type": "quiz_html",
+      "label": "Avaliacao seguranca digital redes",
+      "path": "provas/Segurança da Era Digital/avaliacao-seguranca-digital-redes.prova.html",
+      "size": "22.7 KB"
+    },
+    {
       "type": "quiz",
       "label": "Avaliação Segurança da Era Digital",
       "path": "provas/Segurança da Era Digital/Avaliação - Segurança da Era Digital.prova.js",
@@ -1068,124 +1086,16 @@ const PROVAS_MANIFEST = {
   ],
   "Windows 11": [
     {
-      "type": "file",
-      "label": "Avaliação Prática - Windows 11 - 01.pdf",
-      "path": "provas/Windows 11/Avaliação Prática - Windows 11 - 01.pdf",
-      "size": "315.2 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao ferramentas e sistema",
+      "path": "provas/Windows 11/avaliacao-ferramentas-e-sistema.prova.html",
+      "size": "10.5 KB"
     },
     {
-      "type": "file",
-      "label": "Avaliação Prática - Windows 11 - 02.pdf",
-      "path": "provas/Windows 11/Avaliação Prática - Windows 11 - 02.pdf",
-      "size": "317.2 KB"
-    },
-    {
-      "type": "file",
-      "label": "Avaliação Prática - Windows 11.pdf",
-      "path": "provas/Windows 11/Avaliação Prática - Windows 11.pdf",
-      "size": "315.2 KB"
-    },
-    {
-      "type": "file",
-      "label": "Avaliação Windows 11.docx",
-      "path": "provas/Windows 11/Avaliação Windows 11.docx",
-      "size": "20.6 KB"
-    },
-    {
-      "type": "file",
-      "label": "ingrid / personalidade / persolização / personalização / img.bmp",
-      "path": "provas/Windows 11/ingrid/personalidade/persolização/personalização/img.bmp",
-      "size": "0 B"
-    },
-    {
-      "type": "file",
-      "label": "Início - Atalho.lnk",
-      "path": "provas/Windows 11/Início - Atalho.lnk",
-      "size": "359 B"
-    },
-    {
-      "type": "file",
-      "label": "jarlison / personalizaçao / bitmap ,IMG.bmp",
-      "path": "provas/Windows 11/jarlison/personalizaçao/bitmap ,IMG.bmp",
-      "size": "0 B"
-    },
-    {
-      "type": "file",
-      "label": "jarlison / personalizaçao / microlins / Novo(a) Imagem de bitmap.bmp",
-      "path": "provas/Windows 11/jarlison/personalizaçao/microlins/Novo(a) Imagem de bitmap.bmp",
-      "size": "0 B"
-    },
-    {
-      "type": "file",
-      "label": "jarlison / sistema / Configurações do sistema / Configurações do sistema - Atalho.lnk",
-      "path": "provas/Windows 11/jarlison/sistema/Configurações do sistema/Configurações do sistema - Atalho.lnk",
-      "size": "2.5 KB"
-    },
-    {
-      "type": "file",
-      "label": "jarlison / sistema / Configurações do sistema / Thumbs.db",
-      "path": "provas/Windows 11/jarlison/sistema/Configurações do sistema/Thumbs.db",
-      "size": "7.5 KB"
-    },
-    {
-      "type": "file",
-      "label": "Meus documetos 2 / Estudos / Counter-Strike Original.lnk",
-      "path": "provas/Windows 11/Meus documetos 2/Estudos/Counter-Strike Original.lnk",
-      "size": "1.6 KB"
-    },
-    {
-      "type": "file",
-      "label": "Meus documetos 2 / Estudos / expectativas.txt",
-      "path": "provas/Windows 11/Meus documetos 2/Estudos/expectativas.txt",
-      "size": "454 B"
-    },
-    {
-      "type": "file",
-      "label": "Meus documetos 2 / Pessoal / Portal do Aluno   Microlins.lnk",
-      "path": "provas/Windows 11/Meus documetos 2/Pessoal/Portal do Aluno   Microlins.lnk",
-      "size": "2.5 KB"
-    },
-    {
-      "type": "file",
-      "label": "Meus documetos 2 / Trabalho / Firefox.exe - Atalho.lnk",
-      "path": "provas/Windows 11/Meus documetos 2/Trabalho/Firefox.exe - Atalho.lnk",
-      "size": "935 B"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / progeto 2 / Desempenho_Sistema.png",
-      "path": "provas/Windows 11/projeto[prova windows]/progeto 2/Desempenho_Sistema.png",
-      "size": "118.8 KB"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / progeto 2 / WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "path": "provas/Windows 11/projeto[prova windows]/progeto 2/WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "size": "448.5 KB"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / projeto 1 / Impacto_Tecnologia_Dia_a_Dia.rtf",
-      "path": "provas/Windows 11/projeto[prova windows]/projeto 1/Impacto_Tecnologia_Dia_a_Dia.rtf",
-      "size": "686 B"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / projeto 1 / WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "path": "provas/Windows 11/projeto[prova windows]/projeto 1/WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "size": "448.5 KB"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / projeto 3 / Impacto_Tecnologia_Dia_a_Dia.rtf",
-      "path": "provas/Windows 11/projeto[prova windows]/projeto 3/Impacto_Tecnologia_Dia_a_Dia.rtf",
-      "size": "686 B"
-    },
-    {
-      "type": "file",
-      "label": "projeto[prova windows] / projeto 3 / WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "path": "provas/Windows 11/projeto[prova windows]/projeto 3/WhatsApp Image 2026-05-25 at 09.01.18.jpeg",
-      "size": "448.5 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao windows11 completa",
+      "path": "provas/Windows 11/avaliacao-windows11-completa.prova.html",
+      "size": "12.5 KB"
     }
   ],
   "Word": [

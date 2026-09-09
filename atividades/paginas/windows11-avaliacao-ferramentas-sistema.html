@@ -1,0 +1,218 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática de Windows 11 - Ferramentas e Sistema</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7fb;
+            color: #2c3e50;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.06);
+        }
+        h1 {
+            text-align: center;
+            color: #1a5276;
+            border-bottom: 2px solid #eaeded;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #ebf5fb;
+            border-left: 5px solid #2980b9;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 4px;
+        }
+        .instructions h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #2980b9;
+        }
+        .task-card {
+            margin-bottom: 35px;
+            border: 1px solid #e5e8e8;
+            border-radius: 8px;
+            padding: 25px;
+            transition: box-shadow 0.3s;
+        }
+        .task-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        .task-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f2f3f4;
+            padding-bottom: 10px;
+        }
+        .task-header h2 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.4em;
+        }
+        .objective {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            display: block;
+        }
+        ol {
+            padding-left: 20px;
+            margin-bottom: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .evidence {
+            margin-top: 15px;
+            background-color: #fef9e7;
+            border-left: 4px solid #f1c40f;
+            padding: 12px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .delivery-steps {
+            background-color: #f8f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .step-title {
+            font-weight: 600;
+            color: #34495e;
+        }
+        code {
+            background-color: #f2f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+            color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Avaliação Prática de Windows 11</h1>
+        
+        <div class="instructions">
+            <h2>Instruções Gerais</h2>
+            <p>Nesta avaliação, focaremos no uso de ferramentas do sistema, gerenciamento de recursos e produtividade no Windows 11.</p>
+            <ul>
+                <li>Para cada tarefa concluída, você deverá registrar uma <strong>captura de tela (Print)</strong> usando o atalho <strong>Windows + Shift + S</strong>.</li>
+                <li>Salve <strong>todos</strong> os prints temporariamente na sua <strong>Área de Trabalho</strong> para facilitar a organização no final da prova.</li>
+                <li>Certifique-se de nomear os arquivos exatamente como solicitado para que a estrutura fique correta no momento da entrega.</li>
+            </ul>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 1: Informações do Sistema</h2>
+            </div>
+            <span class="objective">Objetivo: Identificar a versão do Windows e as especificações de hardware do computador.</span>
+            <ol>
+                <li>Abra as <strong>Configurações</strong> do Windows (atalho: <code>Windows + I</code>).</li>
+                <li>No menu lateral esquerdo, certifique-se de estar na aba <strong>Sistema</strong>.</li>
+                <li>Role a página até o final e clique em <strong>Sobre</strong>.</li>
+                <li>Nesta tela, você verá as especificações do dispositivo (como processador e RAM) e as especificações do Windows (edição e versão).</li>
+            </ol>
+            <div class="evidence">
+                📷 Evidência: Tire um print da tela exibindo as "Especificações do Windows". Salve na Área de Trabalho como: <code>Print1_Sobre.png</code>.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 2: Gerenciador de Tarefas e Desempenho</h2>
+            </div>
+            <span class="objective">Objetivo: Monitorar o uso atual de recursos da máquina.</span>
+            <ol>
+                <li>Pressione simultaneamente as teclas <code>Ctrl + Shift + Esc</code> para abrir o <strong>Gerenciador de Tarefas</strong>.</li>
+                <li>Se ele abrir em uma janela pequena, clique em <strong>"Mais detalhes"</strong> na parte inferior (se aplicável).</li>
+                <li>No menu lateral esquerdo, clique no ícone de <strong>Desempenho</strong> (geralmente representado por um gráfico com uma linha).</li>
+                <li>Clique em <strong>Memória</strong> para visualizar o gráfico de consumo de RAM.</li>
+            </ol>
+            <div class="evidence">
+                📷 Evidência: Tire um print da janela do Gerenciador de Tarefas mostrando o gráfico de Memória. Salve como: <code>Print2_Desempenho.png</code>.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 3: Sensor de Armazenamento</h2>
+            </div>
+            <span class="objective">Objetivo: Configurar a limpeza automática de arquivos temporários para otimizar espaço.</span>
+            <ol>
+                <li>Abra novamente as <strong>Configurações</strong> e vá em <strong>Sistema</strong>.</li>
+                <li>Clique em <strong>Armazenamento</strong>.</li>
+                <li>Procure a seção "Gerenciamento de armazenamento" e localize a chave do <strong>Sensor de Armazenamento</strong>.</li>
+                <li>Ative essa chave (mude para "Ativado").</li>
+            </ol>
+            <div class="evidence">
+                📷 Evidência: Tire um print da tela garantindo que o Sensor de Armazenamento apareça ativado. Salve como: <code>Print3_Armazenamento.png</code>.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 4: Áreas de Trabalho Virtuais (Task View)</h2>
+            </div>
+            <span class="objective">Objetivo: Criar múltiplos ambientes de trabalho para separar tarefas.</span>
+            <ol>
+                <li>Clique no botão <strong>Visão de Tarefas</strong> (dois quadrados sobrepostos na barra de tarefas) ou pressione <code>Windows + Tab</code>.</li>
+                <li>Na parte inferior ou superior da tela, clique no botão <strong>+ Nova área de trabalho</strong>.</li>
+                <li>Uma "Área de trabalho 2" será criada ao lado da original.</li>
+                <li>Mantenha a tela de Visão de Tarefas aberta para visualizar ambas.</li>
+            </ol>
+            <div class="evidence">
+                📷 Evidência: Com a Visão de Tarefas aberta (mostrando a Área de trabalho 1 e 2 na tela), tire um print. Salve como: <code>Print4_AreasVirtuais.png</code>.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 5: Organização do Menu Iniciar</h2>
+            </div>
+            <span class="objective">Objetivo: Fixar e reposicionar aplicativos de uso frequente para acesso rápido.</span>
+            <ol>
+                <li>Clique no botão <strong>Iniciar</strong>.</li>
+                <li>Na barra de pesquisa no topo, digite <strong>"Painel de Controle"</strong>.</li>
+                <li>Nos resultados, clique com o botão direito sobre o Painel de Controle e escolha <strong>Fixar no Iniciar</strong>.</li>
+                <li>Apague a pesquisa, abra o Menu Iniciar novamente. Role para baixo, localize o Painel de Controle recém-fixado, clique e arraste-o para a primeira linha, no topo da lista.</li>
+            </ol>
+            <div class="evidence">
+                📷 Evidência: Tire um print do Menu Iniciar aberto, mostrando o Painel de Controle fixado na primeira linha. Salve como: <code>Print5_MenuIniciar.png</code>.
+            </div>
+        </div>
+
+        <div class="task-card">
+            <div class="task-header">
+                <h2>Tarefa 6: Estruturação, Empacotamento e Entrega</h2>
+            </div>
+            <span class="objective">Objetivo: Organizar todas as evidências coletadas em uma estrutura de diretórios e compactar para envio.</span>
+            <div class="delivery-steps">
+                <ol>
+                    <li><span class="step-title">Criar a Estrutura:</span> Abra o <strong>Explorador de Arquivos</strong> (<code>Windows + E</code>), vá até a pasta <strong>Documentos</strong>.</li>
+                    <li><span class="step-title">Pasta Principal:</span> Crie uma nova pasta chamada <strong>Avaliacao_Ferramentas_Win11</strong>.</li>
+                    <li><span class="step-title">Subpasta:</span> Abra esta pasta e crie uma subpasta chamada <strong>Capturas_De_Tela</strong>.</li>
+                    <li><span class="step-title">Mover as Evidências:</span> Vá até a sua <strong>Área de Trabalho</strong>, recorte (<code>Ctrl + X</code>) os 5 prints gerados nas tarefas anteriores e cole-os (<code>Ctrl + V</code>) dentro da pasta <strong>Capturas_De_Tela</strong>.</li>
+                    <li><span class="step-title">Preparar para Compactação:</span> Volte ao diretório <strong>Documentos</strong>, para que você consiga visualizar a pasta principal pelo lado de fora.</li>
+                    <li><span class="step-title">Compactar em ZIP:</span> Clique com o <strong>botão direito</strong> sobre a pasta <strong>Avaliacao_Ferramentas_Win11</strong> e clique na opção <strong>Comprimir para arquivo ZIP</strong>.</li>
+                    <li><span class="step-title">Finalização:</span> O arquivo <code>Avaliacao_Ferramentas_Win11.zip</code> será criado. Este é o arquivo que contém a sua prova completa e deve ser submetido ao professor.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

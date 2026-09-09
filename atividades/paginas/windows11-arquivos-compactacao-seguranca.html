@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivos, Compactação e Segurança de Pastas — Windows 11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .desafio { background: #f5f0ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+        .desafio h4 { color: #5b21b6; margin-bottom: 8px; }
+        .desafio p:last-child { margin-bottom: 0; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🗂️ Arquivos, Compactação e Segurança de Pastas</h1>
+        <p>Windows 11 — Organização de Verdade</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=windows-11">← Voltar para Windows 11</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo Geral</h2>
+        <p>Criar uma estrutura de pastas como em um projeto de verdade, compactar arquivos para economizar espaço e facilitar o envio, e aprender formas simples (e os limites) de proteger uma pasta de olhares curiosos.</p>
+
+        <h2>1️⃣ Atividade 1: Estrutura de Pastas de um Projeto</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Crie uma pasta <strong>"Projeto Final"</strong> dentro de Documentos.</li>
+            <li>Dentro dela, crie 3 subpastas: <strong>"Textos"</strong>, <strong>"Imagens"</strong> e <strong>"Backup"</strong>.</li>
+            <li>Em "Textos", crie 2 arquivos <code>.txt</code> com conteúdos diferentes.</li>
+            <li>Em "Imagens", salve pelo menos 1 captura de tela (<code>Windows + Shift + S</code>).</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Organizar informação em hierarquia — do jeito que qualquer projeto real é organizado.</p></div>
+
+        <h2>2️⃣ Atividade 2: Renomeação em Lote</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Dentro de "Textos", selecione os 2 arquivos ao mesmo tempo (clique no primeiro, segure <code>Ctrl</code> e clique no segundo).</li>
+            <li>Pressione <code>F2</code> e digite um nome, como <code>"anotacao"</code>, e pressione Enter.</li>
+            <li>Observe: o Explorador numera os arquivos automaticamente — <code>"anotacao (1).txt"</code>, <code>"anotacao (2).txt"</code>.</li>
+        </ol>
+        <div class="desafio">
+            <h4>🏆 Desafio Extra</h4>
+            <p>Crie mais 3 arquivos de texto vazios em "Textos" (total de 5), selecione todos e renomeie em lote de uma vez só.</p>
+        </div>
+        <div class="box"><p><strong>Objetivo:</strong> Descobrir um atalho de produtividade real do Explorador de Arquivos.</p></div>
+
+        <h2>3️⃣ Atividade 3: Compactando a Pasta Inteira</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Clique com o botão direito na pasta <strong>"Projeto Final"</strong> → <strong>Enviar para → Pasta compactada (zipada)</strong>.</li>
+            <li>Compare o tamanho do arquivo <code>.zip</code> gerado com o tamanho da pasta original (botão direito → Propriedades em cada um).</li>
+            <li>Copie o <code>.zip</code> para dentro da subpasta "Backup".</li>
+            <li>Clique com o botão direito no <code>.zip</code> → <strong>Extrair tudo</strong>, escolha outra pasta, e confirme que os arquivos saíram intactos.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Entender compactação como forma de economizar espaço e de enviar vários arquivos como um só.</p></div>
+
+        <h2>4️⃣ Atividade 4: Compactação NTFS (Invisível)</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Clique com o botão direito na pasta "Textos" → <strong>Propriedades → Avançados</strong>.</li>
+            <li>Marque <strong>"Compactar conteúdo para economizar espaço em disco"</strong> e confirme.</li>
+            <li>Observe se o nome da pasta ou dos arquivos aparece em uma cor diferente (indicando compactação NTFS ativa).</li>
+            <li>Ao final, desmarque a opção — deixe a pasta como estava.</li>
+        </ol>
+        <div class="aviso">⚠️ Essa compactação é diferente do ZIP: ela é "invisível" — os arquivos continuam abrindo normalmente, sem precisar extrair nada. Só ocupam menos espaço no disco.</div>
+
+        <h2>5️⃣ Atividade 5: Ocultando uma Pasta</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Crie uma pasta chamada <strong>"Particular"</strong> dentro de "Projeto Final".</li>
+            <li>Clique com o botão direito → Propriedades → marque o atributo <strong>"Oculto"</strong>.</li>
+            <li>Feche e reabra o Explorador de Arquivos — a pasta deve sumir da visualização.</li>
+            <li>Na faixa de opções, ative <strong>Exibir → Mostrar → Itens ocultos</strong> para vê-la de novo, e depois desative essa exibição.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Perceber que "ocultar" é uma proteção simples contra olhares casuais — <strong>não</strong> é uma senha de verdade, qualquer um que saiba mostrar itens ocultos consegue ver.</p></div>
+
+        <h2>6️⃣ Atividade 6: Verificando Permissões de uma Pasta</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Clique com o botão direito em "Projeto Final" → Propriedades → aba <strong>"Segurança"</strong>.</li>
+            <li>Veja a lista de "Nomes de grupo ou usuário" e clique em cada um para ver o que pode fazer (Leitura, Gravação, Controle total).</li>
+            <li>Anote no seu arquivo de anotações quem tem permissão de <strong>"Controle total"</strong> nessa pasta.</li>
+        </ol>
+        <div class="aviso">⚠️ <strong>Não altere nada</strong> na aba Segurança. Mudar permissões por engano pode travar o acesso à própria pasta, até para você. Esta atividade é só de observação.</div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Windows 11</footer>
+</div>
+</body>
+</html>

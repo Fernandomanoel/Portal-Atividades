@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática: Inteligência Artificial & Engenharia de Prompts (10 Questões)</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #6366f1;
+            --brand-light: #e0e7ff;
+            --accent-color: #4f46e5;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #6366f1 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #c7d2fe; max-width: 850px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 19px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .ai-practice-box {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-left: 4px solid #0284c7;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 18px;
+            font-size: 13.5px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 200px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+
+        #result-modal {
+            display: none;
+            background-color: #ffffff;
+            border: 2px solid var(--brand-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .result-header { text-align: center; border-bottom: 2px solid var(--brand-light); padding-bottom: 20px; margin-bottom: 20px; }
+        .score-big { font-size: 48px; font-weight: 800; color: var(--brand-color); }
+        .score-level { font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Avaliação Prática: Inteligência Artificial, Engenharia de Prompts & LLMs</h1>
+        <p>Atividade completa em 10 módulos com múltiplos formatos de interação e exercícios práticos para serem executados diretamente em LLMs gratuitas (ChatGPT, Gemini, Claude ou Le Chat). No final, emita seu Relatório de Desempenho.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status do Teste: <span id="completion-text" style="color: var(--warning-color);">Em Andamento (0 / 10 Concluídos)</span></div>
+            <div class="status-info" id="status-summary">Responda aos 10 módulos (incluindo as práticas na IA) e clique no botão para calcular a nota final.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🎓 Validar e Emitir Resultado</button>
+    </div>
+
+    <!-- QUESTÃO 1: MÚLTIPLA ESCOLHA — CONCEITO FUNDAMENTAL DE LLMs -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Múltipla Escolha] Fundamentos de Large Language Models (LLMs)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Conceito Teórico:</strong> O que diferencia fundamentalmente um modelo de Linguagem Generativo (LLM) de um sistema de software tradicional baseado em regras lógicas condicionais (if/else)?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="ai1" value="regras">
+                a) LLMs executam apenas comandos previamente programados linha por linha sem capacidade de inferência.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ai1" value="probabilidade">
+                b) LLMs funcionam prevendo probabilisticamente a próxima palavra/token com base no contexto do treinamento massivo.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="ai1" value="banco_dados">
+                c) LLMs realizam buscas exatas de trechos de texto em um banco de dados relacional e copiam a resposta idêntica.
+            </label>
+        </div>
+        <div id="feedback-ai1" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 2: PREENCHIMENTO DE LACANAS — ARQUITETURA TRANSFORMER -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Preenchimento de Lacunas] Arquitetura e Processamento de Texto em IA</h2>
+        </div>
+        <div class="scenario-description">
+            Selecione o termo técnico adequado para cada espaço no texto sobre o funcionamento de IAs generativas de texto:
+        </div>
+        <div class="fill-text-paragraph">
+            Na arquitetura Transformer, o texto de entrada é dividido em pequenas unidades chamadas 
+            <select id="ai2-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="tokens">Tokens (pedaços de palavras/caracteres)</option>
+                <option value="prompts">Prompts diretos de comando</option>
+            </select>. 
+            O limite máximo de texto que a IA consegue considerar em uma única interação é definido pela sua 
+            <select id="ai2-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="janela_contexto">Janela de Contexto (Context Window)</option>
+                <option value="temperatura">Temperatura de amostragem</option>
+            </select>, 
+            enquanto o algoritmo calcula o peso das relações entre palavras usando o mecanismo de 
+            <select id="ai2-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="atencao">Mecanismo de Atenção (Self-Attention)</option>
+                <option value="fundo">Backpropagation estático</option>
+            </select>.
+        </div>
+        <div id="feedback-ai2" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 3: PRÁTICA NA IA FREE 1 — ENGENHARIA DE PROMPTS E PERSONA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Prática na IA Gratuita 1] Construção de Prompt Estruturado (P-C-T-F)</h2>
+        </div>
+        <div class="ai-practice-box">
+            🌐 <strong>EXERCÍCIO PRÁTICO EM IA GRATUITA:</strong><br>
+            1. Abra em outra aba qualquer IA gratuita à sua escolha (ex: ChatGPT, Gemini, Le Chat ou Claude Free).<br>
+            2. Crie e envie um prompt utilizando o método de 4 pilares: <strong>Persona (Papel) + Contexto + Tarefa + Formato de Saída</strong>.<br>
+            3. Cole no campo abaixo o **Prompt completo** que você escreveu e enviou para a IA.
+        </div>
+        <textarea id="ai3-prompt" class="input-box" placeholder="Exemplo: Act as an expert copywriter (Persona)... I need a post for LinkedIn (Context)... Write 3 options (Task)... Format as bullet points (Format)..."></textarea>
+        <div id="feedback-ai3" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 4: ASSOCIAÇÃO EM TABELA — ECOSSISTEMA DE FERRAMENTAS GRATUITAS DE IA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Associação em Tabela] Ecossistema de Ferramentas de IA para Produtividade</h2>
+        </div>
+        <div class="scenario-description">
+            Associe cada necessidade prática do dia a dia à plataforma de IA gratuita mais indicada para o objetivo:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 55%;">Objetivo de Uso em IA</th>
+                    <th style="width: 45%;">Plataforma Gratuita Recomendada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pesquisa acadêmica e busca com citações diretas de fontes em tempo real da Web.</td>
+                    <td>
+                        <select id="ai4-t1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="perplexity">Perplexity AI (Busca conversacional com fontes)</option>
+                            <option value="huggingface">Hugging Face (Hub open-source de modelos)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Acesso e teste de modelos de código aberto (Open-Source) e datasets comunitários.</td>
+                    <td>
+                        <select id="ai4-t2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="perplexity">Perplexity AI (Busca conversacional com fontes)</option>
+                            <option value="huggingface">Hugging Face (Hub open-source de modelos)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-ai4" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 5: CÁLCULO NUMÉRICO EXATO — ESTIMATIVA DE TOKENS E CUSTOS DE API -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Cálculo Numérico] Estimativa de Custo de Requisições via API de LLM</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Integração:</strong> Um sistema envia uma requisição contendo um prompt de <strong>6.000 tokens de entrada</strong> e recebe uma resposta da IA de <strong>2.000 tokens de saída</strong>.
+        </div>
+        <div class="ai-practice-box">
+            📌 <strong>Tabela de Custos da API:</strong><br>
+            • Custo de Entrada (Input): R$ 0,01 por cada 1.000 tokens.<br>
+            • Custo de Saída (Output): R$ 0,03 por cada 1.000 tokens.
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Custo das 6.000 tokens de Entrada em R$ [Ex: 0.06]:</label>
+                <input type="text" id="ai5-input-cost" class="input-box" placeholder="Digite o valor numérico em R$...">
+                <div id="feedback-ai5-input" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Custo TOTAL da requisição (Entrada + Saída) em R$ [Ex: 0.12]:</label>
+                <input type="text" id="ai5-total-cost" class="input-box" placeholder="Digite o custo total em R$...">
+                <div id="feedback-ai5-total" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- QUESTÃO 6: MATRIZ VERDADEIRO OU FALSO — ÉTICA, ALUCINAÇÕES E VIÉS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>[Matriz Verdadeiro ou Falso] Riscos, Alucinações e Limitações de LLMs</h2>
+        </div>
+        <div class="scenario-description">
+            Classifique as afirmações sobre limitações dos modelos generativos em **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Afirmação sobre Limitações de IA</th>
+                    <th style="width: 30%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. "Alucinação" ocorre quando o LLM gera afirmações incorretas ou fatos inexistentes apresentados com tom de total certeza.</td>
+                    <td>
+                        <select id="ai6-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Modelos de linguagem atuais são completamente neutros e não possuem nenhum risco de viés de gênero, raça ou cultura.</td>
+                    <td>
+                        <select id="ai6-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-ai6" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 7: MULTI-SELEÇÃO / CHECKBOXES — TÉCNICAS AVANÇADAS DE PROMPTING -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">7</div>
+            <h2>[Seleção Múltipla] Técnicas Eficazes de Engenharia de Prompts</h2>
+        </div>
+        <div class="scenario-description">
+            Marque <strong>APENAS as afirmativas VERDADEIRAS</strong> sobre estratégias para otimizar respostas de modelos de linguagem:
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="checkbox" id="ai7-opt1" value="few_shot">
+                a) Few-Shot Prompting consiste em fornecer 2 a 3 exemplos práticos de entrada/saída dentro do prompt para guiar a IA.
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="ai7-opt2" value="mudar_tudo">
+                b) Quanto mais ambíguo e vago for o prompt, melhor e mais precisa será a resposta da IA.
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="ai7-opt3" value="chain_thought">
+                c) Chain-of-Thought (Cadeia de Pensamento) instrui a IA a pensar passo a passo antes de dar a resposta final, reduzindo erros em raciocínios complexos.
+            </label>
+        </div>
+        <div id="feedback-ai7" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 8: PRÁTICA NA IA FREE 2 — RACIOCÍNIO PASSO A PASSO / CODE REVIEW -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">8</div>
+            <h2>[Prática na IA Gratuita 2] Resolução de Problemas com Chain-of-Thought</h2>
+        </div>
+        <div class="ai-practice-box">
+            🌐 <strong>EXERCÍCIO PRÁTICO EM IA GRATUITA:</strong><br>
+            1. Vá na sua IA gratuita e envie o seguinte pedido:<br>
+            <em>"Resolva o seguinte problema pensando passo a passo antes de dar a resposta final: Se 3 gatos caçam 3 ratos em 3 minutos, quanto tempo 100 gatos levam para caçar 100 ratos?"</em><br>
+            2. Cole abaixo o **trecho do raciocínio e a resposta final** fornecida pela IA.
+        </div>
+        <textarea id="ai8-cot" class="input-box" placeholder="Cole aqui a resposta gerada pela IA demonstrando o raciocínio e a conclusão..."></textarea>
+        <div id="feedback-ai8" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 9: SEQUENCIAMENTO DE ETAPAS — PIPELINE RAG -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">9</div>
+            <h2>[Sequenciamento de Passos] Fluxo de Operação da Arquitetura RAG</h2>
+        </div>
+        <div class="scenario-description">
+            Ordene cronologicamente os passos de funcionamento de um sistema RAG (Geração Aumentada por Recuperação):
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Etapa do Processo RAG</th>
+                    <th style="width: 35%;">Ordem no Fluxo (1º ao 3º)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Conversão de documentos internos em vetores (Embeddings) e armazenamento em banco vetorial.</td>
+                    <td>
+                        <select id="ai9-ord1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Preparação / Indexação)</option>
+                            <option value="2">2º Passo (Busca por Similaridade)</option>
+                            <option value="3">3º Passo (Geração Aumentada pelo LLM)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Busca e recuperação dos trechos de documentos mais relevantes para a pergunta do usuário.</td>
+                    <td>
+                        <select id="ai9-ord2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Preparação / Indexação)</option>
+                            <option value="2">2º Passo (Busca por Similaridade)</option>
+                            <option value="3">3º Passo (Geração Aumentada pelo LLM)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Envio dos trechos encontrados como contexto extra no prompt para o LLM gerar a resposta fundamentada.</td>
+                    <td>
+                        <select id="ai9-ord3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Preparação / Indexação)</option>
+                            <option value="2">2º Passo (Busca por Similaridade)</option>
+                            <option value="3">3º Passo (Geração Aumentada pelo LLM)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-ai9" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 10: DIAGNÓSTICO E ANÁLISE CRÍTICA — SEGURANÇA E PRIVACIDADE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">10</div>
+            <h2>[Diagnóstico de Governança] Privacidade e Proteção de Dados em IAs Públicas</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso de Governança:</strong> Um colaborador de uma empresa colou o código-fonte proprietário de um software interno e relatórios financeiros confidenciais na versão gratuita de um chatbot de IA na web. Descreva quais são os **riscos de segurança/privacidade** envolvidos e qual a conduta correta.
+        </div>
+        <textarea id="ai10-governance" class="input-box" placeholder="Explique os riscos de vazamento de dados corporativos, utilização das informações para treinamento de modelos públicos e a necessidade de usar ambientes empresariais privados com cláusulas de não-treinamento..."></textarea>
+        <div id="feedback-ai10" class="feedback-badge"></div>
+    </article>
+
+    <!-- RELATÓRIO / RESULTADO FINAL EMITIDO -->
+    <section id="result-modal">
+        <div class="result-header">
+            <span class="badge-tag">Resultado Oficial Emitido</span>
+            <h2>Relatório de Desempenho e Proficiência em IA</h2>
+            <div class="score-big" id="score-display">0 / 10</div>
+            <div class="score-level" id="level-display">Nível: Calculando...</div>
+        </div>
+        <div id="detailed-feedback" style="font-size: 14px; line-height: 1.8;"></div>
+    </section>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${palavras.length} de no mínimo ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 10;
+        let relatorio = [];
+
+        // Q1: Radio Button
+        const ai1Selected = document.querySelector('input[name="ai1"]:checked');
+        if (ai1Selected && ai1Selected.value === 'probabilidade') {
+            aplicarFeedback('feedback-ai1', { valido: true, motivo: "Correto! LLMs preveem probabilisticamente o próximo token com base no treinamento." });
+            acertos++;
+            relatorio.push("Módulo 1 (Fundamentos LLM): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai1', { valido: false, motivo: "Incorreto. A essência do LLM é a previsão probabilística de palavras/tokens." });
+            relatorio.push("Módulo 1 (Fundamentos LLM): ❌ Incorreto");
+        }
+
+        // Q2: Preenchimento de Lacunas
+        const l1 = document.getElementById('ai2-l1').value;
+        const l2 = document.getElementById('ai2-l2').value;
+        const l3 = document.getElementById('ai2-l3').value;
+        if (l1 === 'tokens' && l2 === 'janela_contexto' && l3 === 'atencao') {
+            aplicarFeedback('feedback-ai2', { valido: true, motivo: "Excelente! As unidades são Tokens, o limite é a Janela de Contexto e o núcleo é a Atenção." });
+            acertos++;
+            relatorio.push("Módulo 2 (Arquitetura Transformer): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai2', { valido: false, motivo: "Incorreto. Verifique a associação dos conceitos de Tokens, Janela de Contexto e Mecanismo de Atenção." });
+            relatorio.push("Módulo 2 (Arquitetura Transformer): ❌ Incorreto");
+        }
+
+        // Q3: Prática em IA Free 1
+        const pVal = document.getElementById('ai3-prompt').value;
+        const resP = validarTextoInteligente(pVal, 5, 20);
+        if (resP.valido) {
+            const termosPrompt = /act|como|atu|papel|persona|context|taref|format|escrev|crie/i;
+            if (!termosPrompt.test(pVal)) {
+                resP.valido = false;
+                resP.motivo = "O prompt inserido deve conter elementos de instrução como Persona, Contexto ou Formato de Saída.";
+            }
+        }
+        aplicarFeedback('feedback-ai3', resP);
+        if (resP.valido) {
+            acertos++;
+            relatorio.push("Módulo 3 (Prática de Prompting): ✅ Validado");
+        } else {
+            relatorio.push("Módulo 3 (Prática de Prompting): ❌ Incorreto / Incompleto");
+        }
+
+        // Q4: Tabela Dropdown
+        const t1 = document.getElementById('ai4-t1').value;
+        const t2 = document.getElementById('ai4-t2').value;
+        if (t1 === 'perplexity' && t2 === 'huggingface') {
+            aplicarFeedback('feedback-ai4', { valido: true, motivo: "Perfeito! Perplexity é focado em pesquisas com fontes e Hugging Face em modelos open-source." });
+            acertos++;
+            relatorio.push("Módulo 4 (Ecossistema de IAs): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai4', { valido: false, motivo: "Incorreto. Verifique a correspondência de Perplexity AI e Hugging Face." });
+            relatorio.push("Módulo 4 (Ecossistema de IAs): ❌ Incorreto");
+        }
+
+        // Q5: Cálculo Numérico
+        const inCostRaw = document.getElementById('ai5-input-cost').value.replace(',', '.').replace(/[^0-9.]/g, '');
+        const totCostRaw = document.getElementById('ai5-total-cost').value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+        let inOk = parseFloat(inCostRaw) === 0.06;
+        let totOk = parseFloat(totCostRaw) === 0.12;
+
+        if (inOk) {
+            aplicarFeedback('feedback-ai5-input', { valido: true, motivo: "Custo de entrada correto: (6.000 / 1.000) × R$ 0,01 = R$ 0,06." });
+        } else {
+            aplicarFeedback('feedback-ai5-input', { valido: false, motivo: "Incorreto. Calcule 6 × R$ 0,01 (Resultado: 0.06)." });
+        }
+
+        if (totOk) {
+            aplicarFeedback('feedback-ai5-total', { valido: true, motivo: "Custo total correto: R$ 0,06 (entrada) + R$ 0,06 (saída: 2 × 0,03) = R$ 0,12." });
+        } else {
+            aplicarFeedback('feedback-ai5-total', { valido: false, motivo: "Incorreto. Some entrada (R$ 0,06) com saída (2 × R$ 0,03 = R$ 0,06) -> Total: 0.12." });
+        }
+
+        if (inOk && totOk) {
+            acertos++;
+            relatorio.push("Módulo 5 (Cálculo de Tokens e Custo): ✅ Correto");
+        } else {
+            relatorio.push("Módulo 5 (Cálculo de Tokens e Custo): ❌ Incorreto");
+        }
+
+        // Q6: Matriz V/F
+        const vf1 = document.getElementById('ai6-vf1').value;
+        const vf2 = document.getElementById('ai6-vf2').value;
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-ai6', { valido: true, motivo: "Correto! Alucinação é a geração com falsa certeza (V); IAs podem sim conter viés dos dados (F)." });
+            acertos++;
+            relatorio.push("Módulo 6 (Alucinações e Viés): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai6', { valido: false, motivo: "Incorreto. Alucinação é verdadeira (V) e ausência total de viés é falsa (F)." });
+            relatorio.push("Módulo 6 (Alucinações e Viés): ❌ Incorreto");
+        }
+
+        // Q7: Checkboxes
+        const opt1 = document.getElementById('ai7-opt1').checked;
+        const opt2 = document.getElementById('ai7-opt2').checked;
+        const opt3 = document.getElementById('ai7-opt3').checked;
+
+        if (opt1 && !opt2 && opt3) {
+            aplicarFeedback('feedback-ai7', { valido: true, motivo: "Excelente! Few-Shot e Chain-of-Thought são pilares para aumentar a precisão." });
+            acertos++;
+            relatorio.push("Módulo 7 (Técnicas de Prompting): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai7', { valido: false, motivo: "Atenção: Apenas (a) e (c) são corretas. Prompts ambíguos pioram os resultados." });
+            relatorio.push("Módulo 7 (Técnicas de Prompting): ❌ Incorreto");
+        }
+
+        // Q8: Prática em IA Free 2
+        const cotVal = document.getElementById('ai8-cot').value;
+        const resCot = validarTextoInteligente(cotVal, 4, 15);
+        if (resCot.valido) {
+            const termosCot = /3|três|minuto|tempo|100|gato|rato|raciocí|passo|lógica/i;
+            if (!termosCot.test(cotVal)) {
+                resCot.valido = false;
+                resCot.motivo = "Cole o raciocínio gerado pela IA referente ao problema dos 100 gatos e 100 ratos.";
+            }
+        }
+        aplicarFeedback('feedback-ai8', resCot);
+        if (resCot.valido) {
+            acertos++;
+            relatorio.push("Módulo 8 (Prática Chain-of-Thought): ✅ Validado");
+        } else {
+            relatorio.push("Módulo 8 (Prática Chain-of-Thought): ❌ Incorreto / Incompleto");
+        }
+
+        // Q9: Sequenciamento RAG
+        const ord1 = document.getElementById('ai9-ord1').value;
+        const ord2 = document.getElementById('ai9-ord2').value;
+        const ord3 = document.getElementById('ai9-ord3').value;
+
+        if (ord1 === '1' && ord2 === '2' && ord3 === '3') {
+            aplicarFeedback('feedback-ai9', { valido: true, motivo: "Excelente! A ordem do RAG é: 1º Indexação/Embeddings -> 2º Busca de Similaridade -> 3º Geração com Contexto." });
+            acertos++;
+            relatorio.push("Módulo 9 (Pipeline RAG): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-ai9', { valido: false, motivo: "Incorreto. A ordem correta é: 1º Indexação, 2º Busca e 3º Geração Aumentada." });
+            relatorio.push("Módulo 9 (Pipeline RAG): ❌ Incorreto");
+        }
+
+        // Q10: Governança e Privacidade
+        const govVal = document.getElementById('ai10-governance').value;
+        const resGov = validarTextoInteligente(govVal, 4, 15);
+        if (resGov.valido) {
+            const termosGov = /dado|vazam|treinament|privad|seguranç|confidenc|lgpd|vazar|polític/i;
+            if (!termosGov.test(govVal)) {
+                resGov.valido = false;
+                resGov.motivo = "Discorra sobre riscos de vazamento de dados corporativos ou uso de informações para treinamento.";
+            }
+        }
+        aplicarFeedback('feedback-ai10', resGov);
+        if (resGov.valido) {
+            acertos++;
+            relatorio.push("Módulo 10 (Governança e Privacidade): ✅ Validado");
+        } else {
+            relatorio.push("Módulo 10 (Governança e Privacidade): ❌ Incorreto / Incompleto");
+        }
+
+        // EMISSÃO DO RESULTADO FINAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+        const resultModal = document.getElementById('result-modal');
+        const scoreDisplay = document.getElementById('score-display');
+        const levelDisplay = document.getElementById('level-display');
+        const detailedFeedback = document.getElementById('detailed-feedback');
+
+        completionText.innerText = `Avaliação Finalizada: ${acertos} de ${total} Módulos Validados`;
+        completionText.style.color = acertos >= 7 ? "var(--success-color)" : "var(--error-color)";
+        statusSummary.innerText = `Você atingiu ${(acertos/total)*100}% de aproveitamento geral no teste de Inteligência Artificial.`;
+
+        scoreDisplay.innerText = `${acertos} / ${total}`;
+        
+        let nivel = "";
+        if (acertos >= 9) nivel = "🌟 Especialista em IA e Engenharia de Prompts (Nível Avançado)";
+        else if (acertos >= 7) nivel = "🚀 Proficiente em IA e Práticas Generativas (Nível Intermediário)";
+        else if (acertos >= 5) nivel = "📈 Praticante de IA em Desenvolvimento (Nível Básico/Intermediário)";
+        else nivel = "⚠️ Necessita de Revisão em Conceitos de IA e Prompts";
+
+        levelDisplay.innerText = nivel;
+        detailedFeedback.innerHTML = "<strong>Detalhamento por Módulo:</strong><br>• " + relatorio.join("<br>• ");
+
+        resultModal.style.display = "block";
+        resultModal.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('ai3-prompt').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosPrompt = /act|como|atu|papel|persona|context|taref|format|escrev|crie/i;
+                if (!termosPrompt.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Insira um prompt com elementos estruturados (Persona, Contexto, Tarefa, Formato).";
+                }
+            }
+            aplicarFeedback('feedback-ai3', res);
+        });
+
+        document.getElementById('ai8-cot').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosCot = /3|três|minuto|tempo|100|gato|rato|raciocí|passo|lógica/i;
+                if (!termosCot.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Cole a resposta obtida na IA demonstrando o raciocínio sobre a pegadinha lógica dos gatos e ratos.";
+                }
+            }
+            aplicarFeedback('feedback-ai8', res);
+        });
+
+        document.getElementById('ai10-governance').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 4, 15);
+            if (res.valido) {
+                const termosGov = /dado|vazam|treinament|privad|seguranç|confidenc|lgpd|vazar|polític/i;
+                if (!termosGov.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Discorra sobre riscos de vazamento de informações sigilosas e treinamento em LLMs públicas.";
+                }
+            }
+            aplicarFeedback('feedback-ai10', res);
+        });
+    });
+</script>
+
+</body>
+</html>

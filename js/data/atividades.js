@@ -50,18 +50,67 @@ const ATIVIDADES = [
     cor: "#2b579a",
     materiais: [
       {
-        titulo: "Avaliação Prática: Recursos do Windows 11",
+        titulo: "Organização de Pastas e Arquivos",
         descricao:
-          "Roteiro prático sobre as novas funcionalidades de organização e interface do Windows 11: Configurações Rápidas, alinhamento da barra de tarefas, Áreas de Trabalho Virtuais, Snap Layouts, Ferramenta de Captura avançada e Bloco de Notas com abas.",
+          "Atividade prática para aprender a criar e organizar pastas, editar arquivos e salvar imagens (print) no formato .bmp no Windows.",
         tipo: "link",
-        url: "atividades/paginas/windows11-avaliacao-recursos-novos.html",
+        url: "atividades/paginas/windows11-organizacao-pastas-arquivos.html",
       },
       {
-        titulo: "Avaliação Prática: Windows 11",
+        titulo: "Personalizando a Área de Trabalho",
         descricao:
-          "Passo a passo detalhado de gerenciamento e personalização do sistema: criação de pastas e subpastas, papel de parede, cursor do mouse, Gerenciador de Tarefas e compactação final em ZIP.",
+          "Revisão (Dia 1) com 5 atividades: personalizar a área de trabalho, organizar arquivos no Explorador, usar a barra de tarefas e o menu Iniciar, ajustar configurações do sistema e gerenciar aplicativos instalados.",
         tipo: "link",
-        url: "atividades/paginas/windows11-avaliacao-detalhada.html",
+        url: "atividades/paginas/windows11-personalizando-area-trabalho.html",
+      },
+      {
+        titulo: "Copiar, Recortar e Colar Arquivos",
+        descricao:
+          "Exercício prático trabalhando a criação, cópia, recorte e colagem de arquivos e pastas, utilizando o Explorador de Arquivos e atalhos do teclado.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-copiar-recortar-colar.html",
+      },
+      {
+        titulo: "Personalização Avançada",
+        descricao:
+          "6 atividades além do papel de parede: cursor do mouse, cores de destaque, plano de fundo em apresentação de slides, tema salvo, sons do sistema e comportamento da barra de tarefas.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-personalizacao-avancada.html",
+      },
+      {
+        titulo: "Arquivos, Compactação e Segurança de Pastas",
+        descricao:
+          "6 atividades: estrutura de pastas de projeto, renomeação em lote, compactação em ZIP, compactação NTFS, ocultar pastas e verificar permissões de segurança.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-arquivos-compactacao-seguranca.html",
+      },
+      {
+        titulo: "Particionamento de Disco e Memória",
+        descricao:
+          "6 atividades com o Gerenciamento de Disco: criar e formatar uma partição de até 1 GB, usá-la, desfazê-la com segurança, e entender RAM vs. memória virtual.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-particionamento-memoria.html",
+      },
+      {
+        titulo: "Atalhos de Teclado e Acessibilidade",
+        descricao:
+          "6 atividades: atalhos essenciais, organizar janelas sem mouse, um desafio 'sem mouse', teclas de aderência/filtragem, Acesso por Voz, Narrador, alto contraste e Lupa.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-atalhos-acessibilidade.html",
+      },
+      {
+        titulo: "Avaliação Prática: Ferramentas e Sistema",
+        descricao:
+          "Prova prática sobre ferramentas do sistema: informações do dispositivo, Gerenciador de Tarefas, Sensor de Armazenamento, Áreas de Trabalho Virtuais e organização do Menu Iniciar, com entrega em ZIP.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-avaliacao-ferramentas-sistema.html",
+      },
+      {
+        titulo: "Avaliação Prática: Windows 11 Completa",
+        descricao:
+          "Prova prática completa: tema e plano de fundo, cores de destaque, alinhamento da barra de tarefas, personalização do cursor, Snap Layouts e organização de pastas, com entrega em ZIP.",
+        tipo: "link",
+        url: "atividades/paginas/windows11-avaliacao-completa.html",
       },
     ],
   },
@@ -613,6 +662,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/seguranca-defesa-pessoal-consciencia-situacional.html",
       },
+      {
+        titulo: "Prova Oficial: Segurança Digital e Redes",
+        descricao:
+          "Prova individual com 10 questões sobre navegação anônima, autenticação em duas etapas, permissões de apps, phishing, HTTPS e senhas fortes, com etapas práticas em Google Drive, VirusTotal e YouTube.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-prova-redes-seguranca.html",
+      },
     ],
   },
 
@@ -939,6 +995,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ia-generativa-engenharia-prompt-aplicacoes.html",
       },
+      {
+        titulo: "Avaliação: Inteligência Artificial, Engenharia de Prompts & LLMs",
+        descricao:
+          "Prova com 10 módulos sobre fundamentos de LLMs, arquitetura Transformer, RAG, alucinações e viés, além de exercícios práticos feitos direto em uma IA gratuita.",
+        tipo: "link",
+        url: "atividades/paginas/ia-prova-llms-prompts.html",
+      },
     ],
   },
 
@@ -1157,6 +1220,13 @@ const ATIVIDADES = [
         descricao: "Simulação prática de construção de marca (branding), publicidade e ações de ativação de marca.",
         tipo: "link",
         url: "atividades/paginas/marketing-branding-publicidade-avancada.html",
+      },
+      {
+        titulo: "Avaliação: Google Ads & Marketing de Busca",
+        descricao:
+          "Prova teórica com 10 questões sobre tráfego pago: tipos de correspondência de palavras-chave, métricas (CTR, CPC, CPA), lances inteligentes, estrutura de conta, redes e copywriting de anúncios.",
+        tipo: "link",
+        url: "atividades/paginas/marketing-prova-google-ads.html",
       },
     ],
   },

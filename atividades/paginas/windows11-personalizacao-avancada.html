@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalização Avançada — Windows 11</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container { width: 100%; min-height: 100vh; background: #fff; }
+
+        header { background: linear-gradient(135deg, #1e3f73 0%, #2b579a 100%); color: #fff; padding: 40px; text-align: center; }
+        header h1 { font-size: 2em; margin-bottom: 8px; }
+        header p { font-size: 1.05em; opacity: 0.9; }
+
+        .content { max-width: 1100px; margin: 0 auto; padding: 40px 50px 60px; }
+
+        h2 { color: #1e3f73; margin: 34px 0 16px; border-bottom: 3px solid #2b579a; padding-bottom: 8px; font-size: 1.5em; }
+        h2:first-child { margin-top: 0; }
+        h3 { color: #2b579a; margin-top: 26px; margin-bottom: 12px; font-size: 1.15em; }
+        p, li { margin-bottom: 10px; font-size: 1em; line-height: 1.7; }
+        ul, ol { margin-left: 25px; margin-bottom: 14px; }
+        li { margin-bottom: 6px; }
+
+        .box { background: #eef3fb; border: 2px solid #2b579a; border-radius: 8px; padding: 18px 22px; margin: 18px 0; }
+        .box h4 { color: #1e3f73; margin-bottom: 10px; }
+        .box ul { margin-bottom: 0; }
+        .box p:last-child { margin-bottom: 0; }
+
+        .aviso { background: #fff8e1; border-left: 4px solid #f59e0b; padding: 14px 18px; border-radius: 6px; margin: 18px 0; color: #7a5200; }
+
+        .desafio { background: #f5f0ff; border: 2px solid #7c3aed; border-radius: 8px; padding: 16px 20px; margin: 16px 0; }
+        .desafio h4 { color: #5b21b6; margin-bottom: 8px; }
+        .desafio p:last-child { margin-bottom: 0; }
+
+        .passos { counter-reset: passo; list-style: none; margin-left: 0; }
+        .passos li { padding-left: 42px; position: relative; margin-bottom: 12px; }
+        .passos li::before {
+            counter-increment: passo; content: counter(passo);
+            position: absolute; left: 0; top: 0;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #2b579a; color: #fff; font-weight: 700;
+            display: flex; align-items: center; justify-content: center; font-size: 0.9em;
+        }
+
+        .voltar { display: inline-block; margin: 30px 50px 0; color: #2b579a; text-decoration: none; font-weight: 600; }
+        .voltar:hover { text-decoration: underline; }
+
+        footer { background: #f5f5f5; border-top: 2px solid #e0e0e0; padding: 22px 50px; text-align: center; color: #666; font-size: 0.9em; }
+
+        @media (max-width: 700px) {
+            header { padding: 28px 22px; }
+            .content { padding: 26px 22px 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🎨 Personalização Avançada</h1>
+        <p>Windows 11 — Além do Papel de Parede</p>
+    </header>
+
+    <a class="voltar" href="../../atividade.html?curso=windows-11">← Voltar para Windows 11</a>
+
+    <div class="content">
+        <h2>🎯 Objetivo Geral</h2>
+        <p>Você já sabe trocar o papel de parede. Esta atividade vai mais fundo: cursor, cores de destaque, apresentação de slides, tema salvo, sons do sistema e o comportamento da barra de tarefas — tudo que faz um Windows parecer "seu".</p>
+
+        <h2>1️⃣ Atividade 1: Personalizando o Cursor do Mouse</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Abra <strong>Configurações</strong> (<code>Windows + I</code>) → <strong>Acessibilidade</strong> → <strong>Ponteiro do mouse</strong>.</li>
+            <li>Troque o estilo do ponteiro (branco, preto ou personalizado) e escolha uma <strong>cor personalizada</strong> vibrante para ele.</li>
+            <li>Aumente o <strong>tamanho</strong> do ponteiro até o máximo, observe a diferença, e depois deixe num tamanho confortável.</li>
+        </ol>
+        <div class="desafio">
+            <h4>🏆 Desafio Extra</h4>
+            <p>Em <strong>Acessibilidade → Cursor de texto</strong>, ative o "indicador do cursor de texto" e mude a espessura dele. Abra o Bloco de Notas e veja a diferença ao digitar.</p>
+        </div>
+        <div class="box"><p><strong>Objetivo:</strong> Descobrir que o ponteiro do mouse também é personalizável — e que isso é, na verdade, um recurso de acessibilidade.</p></div>
+
+        <h2>2️⃣ Atividade 2: Cores de Destaque e Modo de Cores</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Vá em <strong>Configurações → Personalização → Cores</strong>.</li>
+            <li>Em "Escolher seu modo", selecione <strong>"Personalizado"</strong> e defina um modo diferente para o Windows e para os aplicativos (ex: Windows escuro, apps claro).</li>
+            <li>Ative <strong>"Mostrar cor de destaque automaticamente no Início e na barra de tarefas"</strong> — o Windows escolhe uma cor combinando com seu papel de fundo.</li>
+            <li>Depois, desligue essa opção e escolha manualmente uma cor de destaque diferente. Observe onde ela aparece (bordas de janela, botões, links).</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Entender a diferença entre uma cor escolhida automaticamente (combinando com a imagem) e uma escolhida manualmente.</p></div>
+
+        <h2>3️⃣ Atividade 3: Plano de Fundo em Apresentação de Slides</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Crie uma pasta <strong>"Meus Papéis de Parede"</strong> dentro de Imagens, e salve nela pelo menos 3 imagens diferentes (pode usar capturas de tela com <code>Windows + Shift + S</code>).</li>
+            <li>Vá em <strong>Configurações → Personalização → Plano de fundo</strong> e escolha <strong>"Apresentação de slides"</strong>.</li>
+            <li>Aponte para a pasta que você criou, e configure o intervalo de troca para <strong>1 minuto</strong>.</li>
+            <li>Ative também <strong>"Embaralhar a ordem"</strong> e espere a primeira troca acontecer.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Automatizar a personalização em vez de trocar a imagem manualmente toda vez.</p></div>
+
+        <h2>4️⃣ Atividade 4: Salvando um Tema Completo</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Vá em <strong>Configurações → Personalização → Tela de bloqueio</strong> e escolha uma imagem <strong>diferente</strong> da sua área de trabalho.</li>
+            <li>Volte para <strong>Personalização → Temas</strong> e clique em <strong>"Salvar tema"</strong>. Dê um nome com o seu nome, por exemplo <code>"Tema-SeuNome"</code>.</li>
+            <li>Troque temporariamente para um tema pronto do Windows (ex: "Bloom" ou "Floresta").</li>
+            <li>Volte para o seu tema salvo e confirme que tudo — cores, papel de fundo, tela de bloqueio — voltou como você configurou.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Entender que um "tema" é um pacote que guarda várias personalizações juntas, prontas para reaplicar.</p></div>
+
+        <h2>5️⃣ Atividade 5: Sons do Sistema</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Pesquise <strong>"Alterar sons do sistema"</strong> no menu Iniciar e abra o painel de Sons.</li>
+            <li>Na lista de "Eventos de programa", escolha <strong>"Notificação"</strong> e troque o som para um diferente do padrão (use o botão "Testar" para ouvir antes de escolher).</li>
+            <li>Faça o mesmo para o evento <strong>"Erro crítico"</strong>.</li>
+            <li>Clique em <strong>"Salvar como..."</strong> e crie um novo esquema de sons com seu nome.</li>
+        </ol>
+        <div class="box"><p><strong>Objetivo:</strong> Descobrir que sons também fazem parte da personalização — e que é possível trocar cada evento individualmente.</p></div>
+
+        <h2>6️⃣ Atividade 6: Comportamento da Barra de Tarefas</h2>
+        <h3>Tarefa</h3>
+        <ol class="passos">
+            <li>Vá em <strong>Configurações → Personalização → Barra de tarefas → Comportamentos da barra de tarefas</strong>.</li>
+            <li>Troque o alinhamento dos ícones de <strong>"Centro"</strong> para <strong>"Esquerda"</strong> (o visual do Windows 10 clássico).</li>
+            <li>Ative <strong>"Ocultar automaticamente a barra de tarefas"</strong>. Teste: mova o mouse para longe da barra (ela some) e depois até a borda inferior da tela (ela reaparece).</li>
+            <li>Ao final, decida se prefere deixar ativado ou desativado, e volte o alinhamento para o que você preferir.</li>
+        </ol>
+        <div class="desafio">
+            <h4>🏆 Desafio Extra</h4>
+            <p>Em <strong>Barra de tarefas → Cantos da barra de tarefas</strong>, esconda um ícone que você nunca usa (ex: "Rede") e mostre um que estava escondido.</p>
+        </div>
+        <div class="box"><p><strong>Objetivo:</strong> Perceber que até o comportamento da barra de tarefas — não só a aparência — pode ser ajustado.</p></div>
+    </div>
+
+    <footer>Microlins São José — Atividade de Windows 11</footer>
+</div>
+</body>
+</html>

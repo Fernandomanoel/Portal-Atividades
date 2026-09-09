@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Prática: Google Ads & Marketing de Busca (10 Questões)</title>
+    <style>
+        :root {
+            --primary-dark: #202124;
+            --brand-color: #1a73e8;
+            --brand-light: #e8f0fe;
+            --accent-color: #1557b0;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #202124 0%, #1a73e8 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #d2e3fc; max-width: 850px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.18);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            position: sticky;
+            top: 20px;
+            z-index: 100;
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .module-header h2 { font-size: 19px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .formula-box {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            border-left: 4px solid #eab308;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 18px;
+            font-size: 13.5px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 210px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13.5px;
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 12px; }
+        .field-group { display: flex; flex-direction: column; gap: 5px; }
+        .field-group label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+
+        #result-modal {
+            display: none;
+            background-color: #ffffff;
+            border: 2px solid var(--brand-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .result-header { text-align: center; border-bottom: 2px solid var(--brand-light); padding-bottom: 20px; margin-bottom: 20px; }
+        .score-big { font-size: 48px; font-weight: 800; color: var(--brand-color); }
+        .score-level { font-size: 18px; font-weight: 700; color: var(--primary-dark); margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Avaliação Teórica e Estratégica: Google Ads & Marketing de Busca</h1>
+        <p>Teste seus conhecimentos em estratégias de anúncios, correspondência de palavras-chave, lances inteligentes, métricas de tráfego pago, cópias de anúncios e otimização de conversão. Responda aos 10 módulos e emita seu relatório final.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Prova: <span id="completion-text" style="color: var(--warning-color);">Em Andamento (0 / 10 Concluídos)</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as questões teóricas e práticas antes de solicitar a emissão da nota final.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🎯 Validar e Emitir Resultado</button>
+    </div>
+
+    <!-- QUESTÃO 1: MÚLTIPLA ESCOLHA — TIPOS DE CORRESPONDÊNCIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Múltipla Escolha] Tipos de Correspondência de Palavras-Chave</h2>
+        </div>
+        <div class="scenario-description">
+            No Google Ads, a escolha do tipo de correspondência controla o quão próxima a pesquisa do usuário precisa ser da sua palavra-chave. Qual das opções descreve corretamente o comportamento da **Correspondência Exata `[palavra-chave]`**?
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="radio" name="gads1" value="ampla">
+                a) Exibe o anúncio para qualquer pesquisa que tenha relação vaga com o tema, incluindo sinônimos e variações distantes.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="gads1" value="exata">
+                b) Exibe o anúncio apenas quando a pesquisa tem a mesma intenção exata ou significado idêntico do termo entre colchetes.
+            </label>
+            <label class="option-label">
+                <input type="radio" name="gads1" value="frase">
+                c) Exibe o anúncio apenas se a pesquisa contiver a frase exata entre aspas com palavras extras obrigatoriamente antes ou depois.
+            </label>
+        </div>
+        <div id="feedback-gads1" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 2: PREENCHIMENTO DE LACANAS — MÉTRICAS DE DESEMPENHO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Preenchimento de Lacunas] Indicadores Chave de Desempenho (KPIs)</h2>
+        </div>
+        <div class="scenario-description">
+            Associe os conceitos das métricas essenciais de campanhas de tráfego pago selecionando o termo correto:
+        </div>
+        <div class="fill-text-paragraph">
+            A porcentagem de usuários que viram o anúncio e clicaram nele é chamada de 
+            <select id="gads2-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="ctr">CTR (Click-Through Rate)</option>
+                <option value="cpc">CPC (Custo por Clique)</option>
+                <option value="cpa">CPA (Custo por Aquisição)</option>
+            </select>. 
+            O valor médio pago pelo anunciante a cada clique recebido na campanha é o 
+            <select id="gads2-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="ctr">CTR (Click-Through Rate)</option>
+                <option value="cpc">CPC (Custo por Clique)</option>
+                <option value="cpa">CPA (Custo por Aquisição)</option>
+            </select>, 
+            enquanto o custo médio para gerar uma conversão ou venda final é representado pelo 
+            <select id="gads2-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="ctr">CTR (Click-Through Rate)</option>
+                <option value="cpc">CPC (Custo por Clique)</option>
+                <option value="cpa">CPA (Custo por Aquisição)</option>
+            </select>.
+        </div>
+        <div id="feedback-gads2" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 3: ASSOCIAÇÃO EM TABELA — ESTRATÉGIAS DE LANCES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Associação em Tabela] Estratégias de Lances Inteligentes (Smart Bidding)</h2>
+        </div>
+        <div class="scenario-description">
+            Conecte o objetivo de negócio do anunciante à estratégia automatizada de lances mais apropriada no Google Ads:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 55%;">Objetivo de Campanha</th>
+                    <th style="width: 45%;">Estratégia de Lances Adequada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Obter o máximo volume de conversões dentro de um custo médio meta por ação pré-definido.</td>
+                    <td>
+                        <select id="gads3-t1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="tcpa">CPA Desejado (Target CPA)</option>
+                            <option value="troas">ROAS Desejado (Target ROAS)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Maximizar o valor total de receita gerado com base no retorno percentual sobre o investimento publicitário.</td>
+                    <td>
+                        <select id="gads3-t2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="tcpa">CPA Desejado (Target CPA)</option>
+                            <option value="troas">ROAS Desejado (Target ROAS)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-gads3" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 4: CÁLCULO NUMÉRICO EXATO — CTR E CPC -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Cálculo Numérico] Cálculo de Métrica de Desempenho (CTR e CPC)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário da Campanha:</strong> Uma campanha na Rede de Pesquisa registrou <strong>10.000 impressões</strong> e gerou <strong>500 cliques</strong>. O investimento total no período foi de <strong>R$ 1.000,00</strong>.
+        </div>
+        <div class="formula-box">
+            📊 <strong>Fórmulas Úteis:</strong><br>
+            • CTR (%) = (Total de Cliques ÷ Total de Impressões) × 100<br>
+            • CPC Médio (R$) = Investimento Total ÷ Total de Cliques
+        </div>
+        <div class="grid-2">
+            <div class="field-group">
+                <label>Informe a Taxa de Clique / CTR em % [Ex: 5]:</label>
+                <input type="text" id="gads4-ctr" class="input-box" placeholder="Digite apenas o número (Ex: 5)...">
+                <div id="feedback-gads4-ctr" class="feedback-badge"></div>
+            </div>
+            <div class="field-group">
+                <label>Informe o CPC Médio em R$ [Ex: 2.00]:</label>
+                <input type="text" id="gads4-cpc" class="input-box" placeholder="Digite o valor numérico em R$...">
+                <div id="feedback-gads4-cpc" class="feedback-badge"></div>
+            </div>
+        </div>
+    </article>
+
+    <!-- QUESTÃO 5: MATRIZ VERDADEIRO OU FALSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Matriz Verdadeiro ou Falso] Palavras-Chave Negativas e Índice de Qualidade</h2>
+        </div>
+        <div class="scenario-description">
+            Julgue as afirmações sobre o funcionamento técnico de leilão e otimização no Google Ads:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Afirmação Técnica / Estratégica</th>
+                    <th style="width: 30%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Adicionar palavras-chave negativas (ex: "grátis", "download", "pdf") impede que o anúncio seja exibido para buscas irrelevantes, evitando cliques desqualificados.</td>
+                    <td>
+                        <select id="gads5-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. O Índice de Qualidade (Quality Score) depende unicamente do valor do lance financeiro oferecido pelo anunciante, ignorando a relevância da Landing Page.</td>
+                    <td>
+                        <select id="gads5-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-gads5" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 6: MULTI-SELEÇÃO / CHECKBOXES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>[Seleção Múltipla] Recursos e Extensões de Anúncios de Pesquisa</h2>
+        </div>
+        <div class="scenario-description">
+            Marque **APENAS as afirmativas VERDADEIRAS** sobre a utilização de Recursos/Extensões de Anúncios no Google Ads:
+        </div>
+        <div class="options-group">
+            <label class="option-label">
+                <input type="checkbox" id="gads6-opt1" value="sitelinks">
+                a) Extensões de Sitelink adicionam links extras abaixo do anúncio, direcionando o usuário para páginas específicas do site (ex: "Fale Conosco", "Preços").
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="gads6-opt2" value="garantia_topo">
+                b) Ativar extensões de anúncio garante que o seu anúncio apareça sempre na 1ª posição absoluta do Google sem cobrar pelos cliques.
+            </label>
+            <label class="option-label">
+                <input type="checkbox" id="gads6-opt3" value="callouts">
+                c) Frases de Destaque (Callout Extensions) permitem incluir textos curtos de diferenciais competitivos como "Atendimento 24h" e "Frete Grátis".
+            </label>
+        </div>
+        <div id="feedback-gads6" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 7: REDAÇÃO E COPYWRITING DE ANÚNCIO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">7</div>
+            <h2>[Redação Estratégica] Copywriting para Anúncio de Pesquisa Responsivo</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Desafio de Copywriting:</strong> Elabore a proposta de texto para um anúncio de pesquisa do produto fictício <strong>"Curso Prático de Gestão Financeira"</strong>. O texto deve obrigatoriamente conter:
+            <br>• Um Título persuasivo com a palavra-chave principal.
+            <br>• Uma Descrição com benefício claro e uma **Chamada para Ação (CTA)** (ex: "Inscreva-se", "Garanta sua vaga", "Confira agora").
+        </div>
+        <textarea id="gads7-copy" class="input-box" placeholder="Exemplo de Anúncio:
+Título: Curso Prático de Gestão Financeira | Vagas Abertas
+Descrição: Domine o controle de caixa da sua empresa com aulas práticas e planilhas prontas. Garanta sua vaga hoje mesmo!"></textarea>
+        <div id="feedback-gads7" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 8: ORDENAÇÃO CRONOLÓGICA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">8</div>
+            <h2>[Sequenciamento Estrutural] Hierarquia de Organização do Google Ads</h2>
+        </div>
+        <div class="scenario-description">
+            Ordene do nível mais abrangente (1º Nível) ao nível mais específico (3º Nível) a estrutura de organização de uma conta no Google Ads:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Nível da Estrutura</th>
+                    <th style="width: 35%;">Ordem de Hierarquia (1º ao 3º)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Nível de Conta:</strong> Configuração de faturamento, acessos de usuários e fuso horário.</td>
+                    <td>
+                        <select id="gads8-ord1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Nível (Topo da Hierarquia)</option>
+                            <option value="2">2º Nível (Intermediário)</option>
+                            <option value="3">3º Nível (Específico)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Nível de Campanha:</strong> Definição do orçamento diário, segmento de rede, metas e local geográfico.</td>
+                    <td>
+                        <select id="gads8-ord2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Nível (Topo da Hierarquia)</option>
+                            <option value="2">2º Nível (Intermediário)</option>
+                            <option value="3">3º Nível (Específico)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Nível de Grupo de Anúncios:</strong> Organização temática de palavras-chave e redação de anúncios correspondentes.</td>
+                    <td>
+                        <select id="gads8-ord3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Nível (Topo da Hierarquia)</option>
+                            <option value="2">2º Nível (Intermediário)</option>
+                            <option value="3">3º Nível (Específico)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-gads8" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 9: SELEÇÃO DE REDES DO GOOGLE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">9</div>
+            <h2>[Estratégia de Canais] Rede de Pesquisa vs. Rede de Display</h2>
+        </div>
+        <div class="scenario-description">
+            Associe o objetivo de marketing à Rede do Google mais adequada para a estratégia:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 55%;">Comportamento e Objetivo de Mídia</th>
+                    <th style="width: 45%;">Rede do Google Indicada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Capturar demanda consciente de usuários ativamente buscando por soluções específicas no buscador (Fundo de Funil).</td>
+                    <td>
+                        <select id="gads9-t1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="pesquisa">Rede de Pesquisa (Search)</option>
+                            <option value="display">Rede de Display (Banners em portais parceiros)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gerar reconhecimento de marca (Awareness) e impacto visual em potenciais clientes navegando em sites parceiros.</td>
+                    <td>
+                        <select id="gads9-t2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="pesquisa">Rede de Pesquisa (Search)</option>
+                            <option value="display">Rede de Display (Banners em portais parceiros)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-gads9" class="feedback-badge"></div>
+    </article>
+
+    <!-- QUESTÃO 10: DIAGNÓSTICO E RESOLUÇÃO DE PROBLEMAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">10</div>
+            <h2>[Diagnóstico de Campanha] Resolução de Problemas de Baixa Conversão</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Estudo de Caso Prático:</strong> Uma campanha no Google Ads está recebendo muitos cliques (alto CTR), gastando todo o orçamento diário, porém a **Taxa de Conversão está próxima de zero**.
+            <br>Descreva pelo menos duas **ações de otimização imediata** que o gestor de tráfego deve realizar para corrigir este problema na Landing Page ou na campanha.
+        </div>
+        <textarea id="gads10-diag" class="input-box" placeholder="Explique medidas como: verificar o alinhamento da promessa do anúncio com a Landing Page, negativar palavras-chave irrelevantes que trazem tráfego curioso, melhorar a velocidade de carregamento da página e testar formulários/CTAs..."></textarea>
+        <div id="feedback-gads10" class="feedback-badge"></div>
+    </article>
+
+    <!-- RELATÓRIO / RESULTADO FINAL EMITIDO -->
+    <section id="result-modal">
+        <div class="result-header">
+            <span class="badge-tag">Resultado Oficial Emitido</span>
+            <h2>Relatório de Desempenho em Google Ads</h2>
+            <div class="score-big" id="score-display">0 / 10</div>
+            <div class="score-level" id="level-display">Nível: Calculando...</div>
+        </div>
+        <div id="detailed-feedback" style="font-size: 14px; line-height: 1.8;"></div>
+    </section>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 3, minComprimento = 12) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números foram digitados. Escreva uma resposta em português." };
+        if (!limpo.includes(' ') && limpo.length > 16) return { valido: false, motivo: "Sequência contínua sem espaços detectada." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva pelo menos ${palavras.length} de no mínimo ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.82) return { valido: false, motivo: "Texto ilegível ou digitação aleatória." };
+
+        if (/(.)\1{4,}/i.test(limpo) || /qwerty|asdfgh|zxcvbn|123456/i.test(limpo)) return { valido: false, motivo: "Padrão repetitivo do teclado detectado." };
+
+        return { valido: true, motivo: "Resposta válida e compreensível!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 10;
+        let relatorio = [];
+
+        // Q1: Radio Button (Correspondência)
+        const gads1Selected = document.querySelector('input[name="gads1"]:checked');
+        if (gads1Selected && gads1Selected.value === 'exata') {
+            aplicarFeedback('feedback-gads1', { valido: true, motivo: "Correto! Correspondência exata busca a intenção e significado idênticos do termo." });
+            acertos++;
+            relatorio.push("Módulo 1 (Correspondência de Palavras-Chave): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads1', { valido: false, motivo: "Incorreto. A correspondência exata [termo] é acionada para pesquisas com o mesmo significado/intenção." });
+            relatorio.push("Módulo 1 (Correspondência de Palavras-Chave): ❌ Incorreto");
+        }
+
+        // Q2: Preenchimento de Lacunas (Métricas)
+        const l1 = document.getElementById('gads2-l1').value;
+        const l2 = document.getElementById('gads2-l2').value;
+        const l3 = document.getElementById('gads2-l3').value;
+        if (l1 === 'ctr' && l2 === 'cpc' && l3 === 'cpa') {
+            aplicarFeedback('feedback-gads2', { valido: true, motivo: "Perfeito! CTR mede taxa de clique, CPC o custo do clique e CPA o custo por conversão." });
+            acertos++;
+            relatorio.push("Módulo 2 (KPIs e Métricas): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads2', { valido: false, motivo: "Incorreto. A ordem correta das métricas é: 1º CTR, 2º CPC e 3º CPA." });
+            relatorio.push("Módulo 2 (KPIs e Métricas): ❌ Incorreto");
+        }
+
+        // Q3: Tabela Smart Bidding
+        const t1 = document.getElementById('gads3-t1').value;
+        const t2 = document.getElementById('gads3-t2').value;
+        if (t1 === 'tcpa' && t2 === 'troas') {
+            aplicarFeedback('feedback-gads3', { valido: true, motivo: "Excelente! Para custo por ação fixo usa-se tCPA; para faturamento percentual usa-se tROAS." });
+            acertos++;
+            relatorio.push("Módulo 3 (Estratégias de Lances): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads3', { valido: false, motivo: "Incorreto. Verifique a associação de CPA Desejado e ROAS Desejado." });
+            relatorio.push("Módulo 3 (Estratégias de Lances): ❌ Incorreto");
+        }
+
+        // Q4: Cálculo Numérico CTR / CPC
+        const ctrRaw = document.getElementById('gads4-ctr').value.replace(',', '.').replace(/[^0-9.]/g, '');
+        const cpcRaw = document.getElementById('gads4-cpc').value.replace(',', '.').replace(/[^0-9.]/g, '');
+
+        let ctrOk = parseFloat(ctrRaw) === 5;
+        let cpcOk = parseFloat(cpcRaw) === 2;
+
+        if (ctrOk) {
+            aplicarFeedback('feedback-gads4-ctr', { valido: true, motivo: "CTR correto: (500 / 10.000) × 100 = 5%." });
+        } else {
+            aplicarFeedback('feedback-gads4-ctr', { valido: false, motivo: "Incorreto. Calcule (500 ÷ 10.000) × 100 (Resultado: 5)." });
+        }
+
+        if (cpcOk) {
+            aplicarFeedback('feedback-gads4-cpc', { valido: true, motivo: "CPC correto: R$ 1.000 / 500 cliques = R$ 2,00." });
+        } else {
+            aplicarFeedback('feedback-gads4-cpc', { valido: false, motivo: "Incorreto. Divida R$ 1.000 por 500 cliques (Resultado: 2)." });
+        }
+
+        if (ctrOk && cpcOk) {
+            acertos++;
+            relatorio.push("Módulo 4 (Cálculos de CTR e CPC): ✅ Correto");
+        } else {
+            relatorio.push("Módulo 4 (Cálculos de CTR e CPC): ❌ Incorreto");
+        }
+
+        // Q5: Matriz V/F
+        const vf1 = document.getElementById('gads5-vf1').value;
+        const vf2 = document.getElementById('gads5-vf2').value;
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-gads5', { valido: true, motivo: "Correto! Negativas reduzem tráfego irrelevante (V); Índice de Qualidade considera CTR e Landing Page além do lance (F)." });
+            acertos++;
+            relatorio.push("Módulo 5 (Negativas e Quality Score): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads5', { valido: false, motivo: "Incorreto. Palavras negativas são essenciais (V) e o Índice de Qualidade engloba mais que o lance (F)." });
+            relatorio.push("Módulo 5 (Negativas e Quality Score): ❌ Incorreto");
+        }
+
+        // Q6: Checkboxes (Extensões)
+        const opt1 = document.getElementById('gads6-opt1').checked;
+        const opt2 = document.getElementById('gads6-opt2').checked;
+        const opt3 = document.getElementById('gads6-opt3').checked;
+
+        if (opt1 && !opt2 && opt3) {
+            aplicarFeedback('feedback-gads6', { valido: true, motivo: "Excelente! Sitelinks e Frases de Destaque ampliam o anúncio e aumentam a taxa de clique." });
+            acertos++;
+            relatorio.push("Módulo 6 (Recursos de Anúncio): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads6', { valido: false, motivo: "Atenção: Apenas (a) e (c) são verdadeiras. Extensões não garantem 1ª posição grátis." });
+            relatorio.push("Módulo 6 (Recursos de Anúncio): ❌ Incorreto");
+        }
+
+        // Q7: Redação de Anúncio (Textarea)
+        const copyVal = document.getElementById('gads7-copy').value;
+        const resCopy = validarTextoInteligente(copyVal, 5, 20);
+        if (resCopy.valido) {
+            const termosCTA = /inscreva|garanta|confira|compre|clique|vagas|curso|finance|agora|hoje|saiba/i;
+            if (!termosCTA.test(copyVal)) {
+                resCopy.valido = false;
+                resCopy.motivo = "Inclua uma Chamada para Ação (CTA) clara (ex: Inscreva-se, Garanta sua vaga, Confira).";
+            }
+        }
+        aplicarFeedback('feedback-gads7', resCopy);
+        if (resCopy.valido) {
+            acertos++;
+            relatorio.push("Módulo 7 (Copywriting de Anúncio): ✅ Validado");
+        } else {
+            relatorio.push("Módulo 7 (Copywriting de Anúncio): ❌ Incorreto / Incompleto");
+        }
+
+        // Q8: Hierarquia da Conta
+        const ord1 = document.getElementById('gads8-ord1').value;
+        const ord2 = document.getElementById('gads8-ord2').value;
+        const ord3 = document.getElementById('gads8-ord3').value;
+
+        if (ord1 === '1' && ord2 === '2' && ord3 === '3') {
+            aplicarFeedback('feedback-gads8', { valido: true, motivo: "Correto! A ordem de topo a fundo é: 1º Conta -> 2º Campanha -> 3º Grupo de Anúncios." });
+            acertos++;
+            relatorio.push("Módulo 8 (Hierarquia de Conta): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads8', { valido: false, motivo: "Incorreto. A sequência hierárquica é: 1º Conta, 2º Campanha e 3º Grupo de Anúncios." });
+            relatorio.push("Módulo 8 (Hierarquia de Conta): ❌ Incorreto");
+        }
+
+        // Q9: Escolha de Redes
+        const net1 = document.getElementById('gads9-t1').value;
+        const net2 = document.getElementById('gads9-t2').value;
+        if (net1 === 'pesquisa' && net2 === 'display') {
+            aplicarFeedback('feedback-gads9', { valido: true, motivo: "Perfeito! Busca ativa pertence à Rede de Pesquisa e visibilidade/awareness à Rede de Display." });
+            acertos++;
+            relatorio.push("Módulo 9 (Estratégia de Redes): ✅ Correto");
+        } else {
+            aplicarFeedback('feedback-gads9', { valido: false, motivo: "Incorreto. Intenção ativa = Rede de Pesquisa; Atração visual = Rede de Display." });
+            relatorio.push("Módulo 9 (Estratégia de Redes): ❌ Incorreto");
+        }
+
+        // Q10: Diagnóstico de Conversão (Textarea)
+        const diagVal = document.getElementById('gads10-diag').value;
+        const resDiag = validarTextoInteligente(diagVal, 5, 20);
+        if (resDiag.valido) {
+            const termosDiag = /landing|página|destino|negativ|palavra|convers|oferta|alinh|velocid|carreg|form/i;
+            if (!termosDiag.test(diagVal)) {
+                resDiag.valido = false;
+                resDiag.motivo = "Mencione fatores como otimização da Landing Page, alinhamento do anúncio com a oferta ou palavras-chave negativas.";
+            }
+        }
+        aplicarFeedback('feedback-gads10', resDiag);
+        if (resDiag.valido) {
+            acertos++;
+            relatorio.push("Módulo 10 (Diagnóstico e Otimização): ✅ Validado");
+        } else {
+            relatorio.push("Módulo 10 (Diagnóstico e Otimização): ❌ Incorreto / Incompleto");
+        }
+
+        // EMISSÃO DO RESULTADO FINAL
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+        const resultModal = document.getElementById('result-modal');
+        const scoreDisplay = document.getElementById('score-display');
+        const levelDisplay = document.getElementById('level-display');
+        const detailedFeedback = document.getElementById('detailed-feedback');
+
+        completionText.innerText = `Avaliação Finalizada: ${acertos} de ${total} Módulos Validados`;
+        completionText.style.color = acertos >= 7 ? "var(--success-color)" : "var(--error-color)";
+        statusSummary.innerText = `Você atingiu ${(acertos/total)*100}% de aproveitamento geral no teste de Google Ads.`;
+
+        scoreDisplay.innerText = `${acertos} / ${total}`;
+        
+        let nivel = "";
+        if (acertos >= 9) nivel = "🏆 Especialista em Estratégia de Google Ads & Tráfego Pago";
+        else if (acertos >= 7) nivel = "🚀 Gestor de Tráfego Proficiente (Nível Intermediário/Avançado)";
+        else if (acertos >= 5) nivel = "📈 Analista de Mídia em Desenvolvimento (Nível Básico/Intermediário)";
+        else nivel = "⚠️ Necessita de Revisão nos Conceitos Teóricos de Google Ads";
+
+        levelDisplay.innerText = nivel;
+        detailedFeedback.innerHTML = "<strong>Detalhamento do Desempenho:</strong><br>• " + relatorio.join("<br>• ");
+
+        resultModal.style.display = "block";
+        resultModal.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById('gads7-copy').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosCTA = /inscreva|garanta|confira|compre|clique|vagas|curso|finance|agora|hoje|saiba/i;
+                if (!termosCTA.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Inclua uma Chamada para Ação (CTA) clara (ex: Inscreva-se, Garanta sua vaga, Saiba mais).";
+                }
+            }
+            aplicarFeedback('feedback-gads7', res);
+        });
+
+        document.getElementById('gads10-diag').addEventListener('blur', function() {
+            const res = validarTextoInteligente(this.value, 5, 20);
+            if (res.valido) {
+                const termosDiag = /landing|página|destino|negativ|palavra|convers|oferta|alinh|velocid|carreg|form/i;
+                if (!termosDiag.test(this.value)) {
+                    res.valido = false;
+                    res.motivo = "Mencione ajustes na Landing Page, palavras-chave negativas ou alinhamento de proposta de valor.";
+                }
+            }
+            aplicarFeedback('feedback-gads10', res);
+        });
+    });
+</script>
+
+</body>
+</html>

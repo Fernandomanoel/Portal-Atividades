@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prova Oficial: Segurança, Redes e Ferramentas de Nuvem</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #3b82f6;
+            --brand-light: #dbeafe;
+            --accent-color: #2563eb;
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --yt-color: #ef4444;
+            --drive-color: #16a34a;
+            --vt-color: #0ea5e9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bfdbfe; margin: 0 auto; max-width: 800px; }
+
+        .student-info {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+        }
+
+        .input-box:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        textarea.input-box { min-height: 90px; resize: vertical; }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+            break-inside: avoid;
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-number.drive { background-color: var(--drive-color); }
+        .module-number.vt { background-color: var(--vt-color); }
+        .module-number.yt { background-color: var(--yt-color); }
+
+        .module-header h2 { font-size: 18px; color: var(--primary-dark); }
+
+        .scenario-description {
+            font-size: 14.5px;
+            margin-bottom: 15px;
+            color: #334155;
+        }
+        
+        .external-instruction {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid var(--brand-color);
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 13.5px;
+            margin-bottom: 15px;
+        }
+
+        .options-group { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        
+        .option-label:hover { background-color: #f8fafc; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .feedback-badge {
+            margin-top: 15px;
+            padding: 12px 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+            text-align: center;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        .action-panel {
+            background-color: var(--primary-dark);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .btn-submit {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-submit:hover { background-color: var(--accent-color); }
+
+        .results-panel {
+            display: none;
+            background-color: var(--bg-card);
+            border: 2px solid var(--brand-color);
+            padding: 30px;
+            border-radius: 10px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .grade-display {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary-dark);
+            margin: 10px 0;
+        }
+
+        .btn-print {
+            background-color: var(--text-main);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        @media print {
+            body { background-color: white; padding: 0; }
+            .container { box-shadow: none; border: none; padding: 0; }
+            .action-panel, .btn-print { display: none; }
+            .module-card { border: 1px solid #000; margin-bottom: 20px; padding: 15px; }
+            .input-box { border: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <h1>Prova Oficial: Segurança Digital e Redes</h1>
+        <p>Esta avaliação é individual e sem consulta. O teste é composto por 10 questões valendo 1,0 ponto cada. Realize as etapas práticas com atenção e preencha seus dados antes de enviar.</p>
+    </header>
+
+    <div class="student-info">
+        <div class="input-group">
+            <label>Nome Completo do Aluno</label>
+            <input type="text" id="student-name" class="input-box" placeholder="Digite seu nome completo">
+        </div>
+        <div class="input-group">
+            <label>Turma / Data</label>
+            <input type="text" id="student-class" class="input-box" placeholder="Ex: Informática - Manhã">
+        </div>
+    </div>
+
+    <!-- QUESTÕES (1 a 10) -->
+    
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>Navegação Anônima</h2>
+        </div>
+        <div class="scenario-description">Qual é a principal função técnica da "Guia Anônima" nos navegadores de internet?</div>
+        <div class="options-group">
+            <label class="option-label"><input type="radio" name="q1" value="errado1"> a) Esconder o endereço de IP e usar VPN automática.</label>
+            <label class="option-label"><input type="radio" name="q1" value="correto"> b) Não salvar histórico de navegação, cookies e formulários localmente.</label>
+            <label class="option-label"><input type="radio" name="q1" value="errado2"> c) Bloquear a entrada de vírus e ataques cibernéticos.</label>
+        </div>
+        <div id="feedback-q1" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>Segurança de Contas</h2>
+        </div>
+        <div class="scenario-description">Para evitar clonagem no WhatsApp, é recomendado ativar um código extra via SMS ou app, além da senha padrão. Escreva a sigla ou nome desse recurso:</div>
+        <input type="text" id="q2-input" class="input-box" placeholder="Sua resposta...">
+        <div id="feedback-q2" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>Permissões de Aplicativos</h2>
+        </div>
+        <div class="scenario-description">Ao instalar um app simples de "Lanterna", marque <strong>APENAS</strong> as permissões que são consideradas PERIGOSAS/ABUSIVAS para ele:</div>
+        <div class="options-group">
+            <label class="option-label"><input type="checkbox" id="q3-opt1" value="camera"> a) Acesso ao Flash/Câmera traseira.</label>
+            <label class="option-label"><input type="checkbox" id="q3-opt2" value="contatos"> b) Acesso aos Contatos e Agenda.</label>
+            <label class="option-label"><input type="checkbox" id="q3-opt3" value="localizacao"> c) Acesso à Localização (GPS).</label>
+            <label class="option-label"><input type="checkbox" id="q3-opt4" value="tela"> d) Impedir que a tela escureça.</label>
+        </div>
+        <div id="feedback-q3" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>Engenharia Social</h2>
+        </div>
+        <div class="scenario-description">Por que postar fotos mostrando o seu crachá de trabalho (com nome, QR Code e logo da empresa) em redes sociais é um risco sério?</div>
+        <textarea id="q4-input" class="input-box" placeholder="Escreva sua justificativa técnica..."></textarea>
+        <div id="feedback-q4" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>Identificação de Ameaças</h2>
+        </div>
+        <div class="scenario-description">Associe a ameaça à sua definição:</div>
+        <table>
+            <tr><th style="width: 50%;">Ameaça</th><th>Definição</th></tr>
+            <tr>
+                <td><strong>Phishing</strong></td>
+                <td>
+                    <select id="q5-select1" class="input-box">
+                        <option value="">Selecione...</option>
+                        <option value="fake">Notícias falsas para manipular opiniões.</option>
+                        <option value="phishing">Iscas falsas para roubar senhas/dados.</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><strong>Fake News</strong></td>
+                <td>
+                    <select id="q5-select2" class="input-box">
+                        <option value="">Selecione...</option>
+                        <option value="fake">Notícias falsas para manipular opiniões.</option>
+                        <option value="phishing">Iscas falsas para roubar senhas/dados.</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <div id="feedback-q5" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">6</div>
+            <h2>Protocolo Web</h2>
+        </div>
+        <div class="scenario-description">O que significa a letra "S" em HTTPS:// ao acessar um site de banco ou loja?</div>
+        <div class="options-group">
+            <label class="option-label"><input type="radio" name="q6" value="errado1"> a) Site sem restrição de velocidade.</label>
+            <label class="option-label"><input type="radio" name="q6" value="correto"> b) Comunicação criptografada e segura (Secure).</label>
+            <label class="option-label"><input type="radio" name="q6" value="errado2"> c) Servidor localizado no Brasil.</label>
+        </div>
+        <div id="feedback-q6" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">7</div>
+            <h2>Criptografia e Senhas</h2>
+        </div>
+        <div class="scenario-description">Descreva três características que compõem uma senha "Forte" contra ataques de força bruta.</div>
+        <textarea id="q7-input" class="input-box" placeholder="Sua resposta..."></textarea>
+        <div id="feedback-q7" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number drive">8</div>
+            <h2>[Prática] Nuvem e Compartilhamento (Google Drive)</h2>
+        </div>
+        <div class="external-instruction">
+            1. Acesse seu Google Drive (drive.google.com).<br>
+            2. Crie um arquivo/pasta e configure o acesso para <strong>"Qualquer pessoa com o link"</strong> como <strong>Leitor</strong>.<br>
+            3. Cole o link gerado abaixo para provar a execução:
+        </div>
+        <input type="text" id="q8-input" class="input-box" placeholder="Cole a URL do Google Drive aqui...">
+        <div id="feedback-q8" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number vt">9</div>
+            <h2>[Prática] Análise de Malware (VirusTotal)</h2>
+        </div>
+        <div class="external-instruction">
+            1. Acesse <strong>virustotal.com</strong> e vá na aba "URL".<br>
+            2. Faça a varredura em qualquer site (ex: globo.com).<br>
+            3. Cole o link do relatório final (URL da barra do navegador) no campo abaixo:
+        </div>
+        <input type="text" id="q9-input" class="input-box" placeholder="Cole a URL do VirusTotal aqui...">
+        <div id="feedback-q9" class="feedback-badge"></div>
+    </article>
+
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number yt">10</div>
+            <h2>[Prática] Privacidade de Mídia (YouTube)</h2>
+        </div>
+        <div class="external-instruction">
+            1. Acesse o <strong>YouTube</strong>, clique em "Enviar Vídeo".<br>
+            2. Envie um arquivo de teste e marque "Não é conteúdo para crianças" na aba Público.<br>
+            3. Na aba Visibilidade, escolha <strong>Não Listado</strong>, salve e cole o link do vídeo abaixo:
+        </div>
+        <input type="text" id="q10-input" class="input-box" placeholder="Cole o link do vídeo do YouTube aqui...">
+        <div id="feedback-q10" class="feedback-badge"></div>
+    </article>
+
+    <!-- PAINEL DE AÇÃO -->
+    <div class="action-panel" id="actionPanel">
+        <h3 style="margin-bottom: 15px; font-size: 20px;">Finalização da Prova</h3>
+        <p style="margin-bottom: 25px; color: #cbd5e1;">Certifique-se de que respondeu a todas as questões e preencheu seu nome antes de enviar.</p>
+        <button class="btn-submit" onclick="finalizarProva()">Finalizar e Corrigir Prova</button>
+    </div>
+
+    <!-- RESULTADO FINAL -->
+    <div class="results-panel" id="resultsPanel">
+        <h2>Resultado da Avaliação Oficial</h2>
+        <p style="font-size: 18px; margin-top: 10px;">Aluno(a): <strong id="res-name">---</strong> | Turma: <strong id="res-class">---</strong></p>
+        
+        <div class="grade-display" id="grade-score">0.0 / 10.0</div>
+        <p id="grade-message" style="font-size: 16px; margin-bottom: 20px; font-weight: 500;"></p>
+        
+        <button class="btn-print" onclick="window.print()">🖨️ Imprimir / Salvar Prova em PDF</button>
+    </div>
+
+</div>
+
+<script>
+    function avaliarTexto(texto, minPalavras) {
+        if (!texto) return false;
+        const limpo = texto.trim();
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        return palavras.length >= minPalavras;
+    }
+
+    function aplicarFeedbackProva(elementId, acertou) {
+        const badge = document.getElementById(elementId);
+        if (acertou) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ RESPOSTA CORRETA (1,0 pt)";
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ RESPOSTA INCORRETA (0,0 pt)";
+        }
+    }
+
+    function finalizarProva() {
+        const nome = document.getElementById('student-name').value.trim();
+        if (nome === "") {
+            alert("Por favor, preencha o seu Nome Completo antes de enviar a prova.");
+            document.getElementById('student-name').focus();
+            return;
+        }
+
+        let nota = 0.0;
+
+        // Q1 (Radio)
+        const q1 = document.querySelector('input[name="q1"]:checked');
+        const q1Certa = (q1 && q1.value === 'correto');
+        if (q1Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q1', q1Certa);
+
+        // Q2 (Text Exact)
+        const q2 = document.getElementById('q2-input').value.toLowerCase().trim();
+        const q2Certa = (q2.includes('2fa') || q2.includes('dois fatores') || q2.includes('duas etapas'));
+        if (q2Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q2', q2Certa);
+
+        // Q3 (Checkboxes)
+        const c1 = document.getElementById('q3-opt1').checked;
+        const c2 = document.getElementById('q3-opt2').checked;
+        const c3 = document.getElementById('q3-opt3').checked;
+        const c4 = document.getElementById('q3-opt4').checked;
+        const q3Certa = (!c1 && c2 && c3 && !c4);
+        if (q3Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q3', q3Certa);
+
+        // Q4 (Dissertativa Engenharia Social)
+        const q4 = document.getElementById('q4-input').value;
+        const regexQ4 = /golpe|falsific|engenharia|informação|clonagem|dados|risco|segurança/i;
+        const q4Certa = (avaliarTexto(q4, 4) && regexQ4.test(q4));
+        if (q4Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q4', q4Certa);
+
+        // Q5 (Dropdown Tabela)
+        const s1 = document.getElementById('q5-select1').value;
+        const s2 = document.getElementById('q5-select2').value;
+        const q5Certa = (s1 === 'phishing' && s2 === 'fake');
+        if (q5Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q5', q5Certa);
+
+        // Q6 (Radio HTTPS)
+        const q6 = document.querySelector('input[name="q6"]:checked');
+        const q6Certa = (q6 && q6.value === 'correto');
+        if (q6Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q6', q6Certa);
+
+        // Q7 (Dissertativa Senha)
+        const q7 = document.getElementById('q7-input').value;
+        const regexQ7 = /maiúscula|número|especial|caracter|tamanho|forte|longa|símbolo/i;
+        const q7Certa = (avaliarTexto(q7, 4) && regexQ7.test(q7));
+        if (q7Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q7', q7Certa);
+
+        // Q8 (Prática Drive)
+        const q8 = document.getElementById('q8-input').value;
+        const q8Certa = (/drive\.google\.com|docs\.google\.com/i.test(q8));
+        if (q8Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q8', q8Certa);
+
+        // Q9 (Prática VT)
+        const q9 = document.getElementById('q9-input').value;
+        const q9Certa = (/virustotal\.com/i.test(q9));
+        if (q9Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q9', q9Certa);
+
+        // Q10 (Prática YT)
+        const q10 = document.getElementById('q10-input').value;
+        const q10Certa = (/youtu\.be|youtube\.com/i.test(q10));
+        if (q10Certa) nota += 1.0;
+        aplicarFeedbackProva('feedback-q10', q10Certa);
+
+        // Desabilitar edição (Simulando envio de prova)
+        const inputs = document.querySelectorAll('input, textarea, select');
+        inputs.forEach(input => input.disabled = true);
+
+        // Exibir resultados
+        document.getElementById('actionPanel').style.display = 'none';
+        
+        document.getElementById('res-name').innerText = document.getElementById('student-name').value || "Não informado";
+        document.getElementById('res-class').innerText = document.getElementById('student-class').value || "Não informada";
+        
+        const gradeElement = document.getElementById('grade-score');
+        const msgElement = document.getElementById('grade-message');
+        
+        // Formatar nota para ter 1 casa decimal (ex: 8.0)
+        let notaFormatada = nota.toFixed(1);
+        gradeElement.innerText = `${notaFormatada} / 10.0`;
+
+        if (nota >= 7.0) {
+            gradeElement.style.color = "var(--success-color)";
+            document.querySelector('.results-panel').style.borderColor = "var(--success-color)";
+            msgElement.innerText = "Parabéns! Você foi APROVADO(A).";
+            msgElement.style.color = "var(--success-color)";
+        } else {
+            gradeElement.style.color = "var(--error-color)";
+            document.querySelector('.results-panel').style.borderColor = "var(--error-color)";
+            msgElement.innerText = "Sua nota foi abaixo da média. REVISÃO NECESSÁRIA.";
+            msgElement.style.color = "var(--error-color)";
+        }
+
+        document.getElementById('resultsPanel').style.display = 'block';
+        document.getElementById('resultsPanel').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>

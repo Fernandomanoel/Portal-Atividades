@@ -647,6 +647,12 @@ const PROVAS_MANIFEST = {
       "size": "34.2 KB"
     },
     {
+      "type": "quiz_html",
+      "label": "Avaliacao google ads marketing busca",
+      "path": "provas/Google Adwords/avaliacao-google-ads-marketing-busca.prova.html",
+      "size": "39.3 KB"
+    },
+    {
       "type": "file",
       "label": "Avaliação Prática - Google Ads.docx",
       "path": "provas/Google Adwords/Avaliação Prática - Google Ads.docx",
@@ -675,6 +681,12 @@ const PROVAS_MANIFEST = {
   ],
   "Inglês": [],
   "Inteligência Artificial": [
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao ia engenharia prompts llms",
+      "path": "provas/Inteligência Artificial/avaliacao-ia-engenharia-prompts-llms.prova.html",
+      "size": "38.6 KB"
+    },
     {
       "type": "file",
       "label": "Inteligência Artificial I.txt",
@@ -1000,6 +1012,12 @@ const PROVAS_MANIFEST = {
       "label": "ATIVIDADE PRÁTICA - SEGURANÇA NA ERA DIGITAL.pdf",
       "path": "provas/Segurança da Era Digital/ATIVIDADE PRÁTICA - SEGURANÇA NA ERA DIGITAL.pdf",
       "size": "42.6 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao seguranca digital redes",
+      "path": "provas/Segurança da Era Digital/avaliacao-seguranca-digital-redes.prova.html",
+      "size": "22.7 KB"
     },
     {
       "type": "quiz",

@@ -64,7 +64,7 @@
             padding: clamp(10px, 1.6vh, 18px) clamp(14px, 1.6vw, 22px);
             flex-shrink: 0;
         }
-        .topo-emoji { font-size: clamp(1.8rem, 3.4vh, 2.6rem); line-height: 1; }
+        .topo-emoji { font-size: clamp(1.8rem, 3.4vh, 2.6rem); line-height: 1; display: flex; align-items: center; gap: clamp(4px,.6vw,8px); flex-shrink: 0; }
         .topo-textos { flex: 1; min-width: 0; }
         .topo h1 { font-size: clamp(1.05rem, 2.5vh, 1.75rem); font-weight: 800; line-height: 1.15; }
         .topo p { font-size: clamp(.75rem, 1.5vh, 1rem); opacity: .92; }
@@ -132,6 +132,63 @@
         }
         .folha .linha { margin-bottom: 8px; color: #333; font-size: clamp(.85rem, 1.6vh, 1.05rem); }
         .folha .titulo-folha { text-align: center; font-weight: 800; font-size: clamp(1rem, 2vh, 1.3rem); color: var(--uva); margin-bottom: 10px; }
+
+        /* ---------- Ícones de botão (parecidos com os do Word de verdade) ---------- */
+        .gb {
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+            width: clamp(34px,5.4vh,48px); height: clamp(34px,5.4vh,48px); flex-shrink: 0;
+            background: #fff; border: 1px solid #c7cfdd; border-radius: 9px;
+            box-shadow: 0 2px 4px rgba(20,33,61,.16);
+            font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b;
+            line-height: 1; gap: 3px;
+        }
+        .gb-letra { font-size: clamp(1rem,2.2vh,1.4rem); }
+        .gb-n .gb-letra { font-weight: 900; }
+        .gb-i .gb-letra { font-style: italic; font-weight: 700; }
+        .gb-s .gb-letra { text-decoration: underline; text-underline-offset: 2px; font-weight: 700; }
+        .gb-barra { width: 62%; height: 4px; border-radius: 2px; background: var(--coral); }
+        .gb-tam { flex-direction: row; gap: 2px; font-family: inherit; }
+        .gb-tam .gb-num { font-size: clamp(.72rem,1.5vh,.92rem); font-weight: 800; }
+        .gb-tam .gb-setas { display: flex; flex-direction: column; font-size: .5rem; line-height: .75; color: #7c8aa5; }
+        .gb-align { gap: 3px; padding: 7px; justify-content: center; }
+        .gb-align .gb-linha { height: 3px; border-radius: 2px; background: #556; }
+        .gb-align.esq { align-items: flex-start; }
+        .gb-align.centro { align-items: center; }
+        .gb-align.dir { align-items: flex-end; }
+        .gb-align .gb-linha:nth-child(1) { width: 100%; }
+        .gb-align .gb-linha:nth-child(2) { width: 62%; }
+        .gb-align .gb-linha:nth-child(3) { width: 80%; }
+        .gb-lista { gap: 3px; padding: 7px 8px; align-items: flex-start; justify-content: center; }
+        .gb-lista .gb-linhaponto { display: flex; align-items: center; gap: 3px; }
+        .gb-lista .gb-ponto { width: 4px; height: 4px; border-radius: 50%; background: #556; flex-shrink: 0; }
+        .gb-lista .gb-tra { width: 18px; height: 3px; border-radius: 2px; background: #556; }
+        .gb-emoji { font-size: clamp(1.1rem,2.4vh,1.5rem); font-family: inherit; }
+
+        .ribbon-mock {
+            display: flex; align-items: center; gap: clamp(6px,1vw,10px); flex-wrap: wrap; justify-content: center;
+            background: #eef1f7; border: 2px solid var(--borda); border-radius: 16px;
+            padding: clamp(10px,1.5vh,16px);
+        }
+        .ribbon-mock .rotulo {
+            width: 100%; text-align: center; font-weight: 800; color: #7c8aa5;
+            font-size: clamp(.66rem,1.3vh,.8rem); text-transform: uppercase; letter-spacing: .05em;
+            margin-bottom: 2px;
+        }
+
+        /* ---------- Tabela de vocabulário ---------- */
+        .tabela-vocab { width: 100%; border-collapse: collapse; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 14px rgba(20,33,61,.12); }
+        .tabela-vocab th {
+            background: var(--uva); color: #fff; text-align: left;
+            padding: clamp(8px,1.3vh,12px) clamp(10px,1vw,14px);
+            font-size: clamp(.75rem,1.45vh,.92rem);
+        }
+        .tabela-vocab td {
+            padding: clamp(7px,1.15vh,11px) clamp(10px,1vw,14px);
+            font-size: clamp(.72rem,1.35vh,.88rem); line-height: 1.3;
+            border-bottom: 1px solid var(--borda); background: #fff;
+        }
+        .tabela-vocab tr:nth-child(even) td { background: var(--uva-claro); }
+        .tabela-vocab td:first-child { font-weight: 800; color: var(--uva); white-space: nowrap; }
 
         /* ---------- Checklist ---------- */
         .lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: clamp(7px,1.1vh,11px); }
@@ -279,6 +336,50 @@
             return `<div class="item"><span class="ic">${ic}</span><span class="txt">${txt}</span><span class="selo">⬜</span></div>`;
         }
 
+        // ---------- Ícones de botão parecidos com os do Word de verdade ----------
+        function gbLetra(cls, letra) { return `<span class="gb ${cls}"><span class="gb-letra">${letra}</span></span>`; }
+        function gbCor() { return `<span class="gb gb-cor"><span class="gb-letra" style="font-weight:900">A</span><span class="gb-barra"></span></span>`; }
+        function gbTam() { return `<span class="gb gb-tam"><span class="gb-num">14</span><span class="gb-setas">▲▼</span></span>`; }
+        function gbAlign(tipo) { return `<span class="gb gb-align ${tipo}"><span class="gb-linha"></span><span class="gb-linha"></span><span class="gb-linha"></span></span>`; }
+        function gbLista() { return `<span class="gb gb-lista">${[1,2,3].map(() => '<span class="gb-linhaponto"><span class="gb-ponto"></span><span class="gb-tra"></span></span>').join('')}</span>`; }
+        function gbEmoji(emoji) { return `<span class="gb"><span class="gb-emoji">${emoji}</span></span>`; }
+
+        const BOTAO_N = gbLetra('gb-n', 'N');
+        const BOTAO_I = gbLetra('gb-i', 'I');
+        const BOTAO_S = gbLetra('gb-s', 'S');
+        const BOTAO_COR = gbCor();
+        const BOTAO_TAM = gbTam();
+        const BOTAO_ESQ = gbAlign('esq');
+        const BOTAO_CENTRO = gbAlign('centro');
+        const BOTAO_DIR = gbAlign('dir');
+        const BOTAO_LISTA = gbLista();
+        const BOTAO_DESFAZER = gbEmoji('↩️');
+        const BOTAO_SALVAR = gbEmoji('💾');
+
+        function ribbonMock() {
+            return `<div class="ribbon-mock">
+                <span class="rotulo">📋 Guia Início — os botões que você vai usar</span>
+                ${BOTAO_N}${BOTAO_I}${BOTAO_S}${BOTAO_COR}${BOTAO_TAM}${BOTAO_ESQ}${BOTAO_CENTRO}${BOTAO_DIR}${BOTAO_LISTA}${BOTAO_DESFAZER}${BOTAO_SALVAR}
+            </div>`;
+        }
+
+        function tabelaVocab() {
+            const linhas = [
+                ['Negrito', 'Deixa a letra mais grossa e escura.'],
+                ['Itálico', 'Deixa a letra tombada para o lado.'],
+                ['Sublinhado', 'Faz um risco embaixo da letra.'],
+                ['Cor da fonte', 'Muda a cor da letra.'],
+                ['Alinhar', 'Decide se o texto fica na esquerda, no meio ou na direita da folha.'],
+                ['Lista', 'Coloca uma bolinha antes de cada linha.'],
+                ['Desfazer', 'Volta o que você acabou de fazer, se errou algo.'],
+                ['Salvar', 'Guarda o arquivo no computador.'],
+            ];
+            return `<table class="tabela-vocab">
+                <thead><tr><th>Botão</th><th>O que ele faz</th></tr></thead>
+                <tbody>${linhas.map(([t,d]) => `<tr><td>${t}</td><td>${d}</td></tr>`).join('')}</tbody>
+            </table>`;
+        }
+
         const telas = [
             // 1 capa
             { html: `<div class="capa">
@@ -286,14 +387,14 @@
                 <h1>Conhecendo o Word!</h1>
                 <p class="sub">Aprendendo a usar a ferramenta de verdade</p>
                 <div class="grade-icones">
-                    <div class="mini"><span class="ic">𝐍</span><span>Negrito</span></div>
-                    <div class="mini"><span class="ic">𝑰</span><span>Itálico</span></div>
-                    <div class="mini"><span class="ic">🎨</span><span>Cor</span></div>
-                    <div class="mini"><span class="ic">↔️</span><span>Alinhar</span></div>
-                    <div class="mini"><span class="ic">🔠</span><span>Tamanho</span></div>
-                    <div class="mini"><span class="ic">•</span><span>Lista</span></div>
-                    <div class="mini"><span class="ic">↩️</span><span>Desfazer</span></div>
-                    <div class="mini"><span class="ic">💾</span><span>Salvar</span></div>
+                    <div class="mini">${BOTAO_N}<span>Negrito</span></div>
+                    <div class="mini">${BOTAO_I}<span>Itálico</span></div>
+                    <div class="mini">${BOTAO_COR}<span>Cor</span></div>
+                    <div class="mini">${BOTAO_CENTRO}<span>Alinhar</span></div>
+                    <div class="mini">${BOTAO_TAM}<span>Tamanho</span></div>
+                    <div class="mini">${BOTAO_LISTA}<span>Lista</span></div>
+                    <div class="mini">${BOTAO_DESFAZER}<span>Desfazer</span></div>
+                    <div class="mini">${BOTAO_SALVAR}<span>Salvar</span></div>
                 </div>
                 <button class="btn-ouvir" style="background:var(--uva); border-color:var(--uva);" data-falar="Bem-vindo! Hoje você vai aprender a usar o Word de verdade no computador.">🔊 Ouvir</button>
             </div>` },
@@ -321,7 +422,8 @@
             { html: topo('🖥️','Conhecendo a Tela','Onde ficam os botões','Lá em cima da tela fica a Guia Início, com os botões de negrito, cor e tamanho da letra.') + `
                 <div class="corpo">
                     <div class="cartao uva">Lá em cima da tela do Word tem várias abas. A mais importante para você agora é a <b>Guia Início</b> — normalmente ela já vem selecionada.</div>
-                    <div class="cartao laranja">É na Guia Início que ficam os botões de <b>negrito, itálico, sublinhado, cor da letra, tamanho e alinhamento</b>. Vamos usar todos eles!</div>
+                    ${ribbonMock()}
+                    ${tabelaVocab()}
                 </div>` },
 
             // 5 digitando o texto
@@ -351,13 +453,13 @@
                 </div>` },
 
             // 7 negrito itálico sublinhado
-            { html: topo('𝗡 𝑰 U̲','Negrito, Itálico e Sublinhado','As três letrinhas mágicas','Selecione o título Sobre Mim e clique no N para negrito, no I para itálico e no U para sublinhado.') + `
+            { html: topo(BOTAO_N + BOTAO_I + BOTAO_S,'Negrito, Itálico e Sublinhado','As três letrinhas mágicas','Selecione o título Sobre Mim e clique no N para negrito, no I para itálico e no S para sublinhado.') + `
                 <div class="corpo">
                     <div class="cartao uva">Selecione o título <b>"Sobre Mim"</b> e experimente clicar em cada um destes botões da Guia Início:</div>
                     ${trilha([
-                        {ic:'𝗡', txt:'N = Negrito (letra grossa)'},
-                        {ic:'𝑰', txt:'I = Itálico (letra tombada)'},
-                        {ic:'U̲', txt:'S = Sublinhado (risco embaixo)'},
+                        {ic: BOTAO_N, txt:'N = Negrito (letra grossa)'},
+                        {ic: BOTAO_I, txt:'I = Itálico (letra tombada)'},
+                        {ic: BOTAO_S, txt:'S = Sublinhado (risco embaixo)'},
                     ])}
                     <div class="cartao laranja">Você pode clicar em mais de um ao mesmo tempo! Deixe o título em <b>negrito</b>.</div>
                 </div>` },
@@ -374,30 +476,30 @@
                 </div>`, jogo: 'vf1' },
 
             // 9 tamanho e cor
-            { html: topo('🔠🎨','Tamanho e Cor da Fonte','Deixando do seu jeito','Selecione o título e mude o número do tamanho da letra e clique na setinha da cor da fonte para escolher uma cor.') + `
+            { html: topo(BOTAO_TAM + BOTAO_COR,'Tamanho e Cor da Fonte','Deixando do seu jeito','Selecione o título e mude o número do tamanho da letra e clique na setinha da cor da fonte para escolher uma cor.') + `
                 <div class="corpo">
                     <div class="cartao laranja">Com o título ainda selecionado, procure na Guia Início:</div>
                     ${trilha([
-                        {ic:'🔠', txt:'A caixinha com um número = tamanho da letra'},
-                        {ic:'🎨', txt:'A letra A com uma cor embaixo = cor da fonte'},
+                        {ic: BOTAO_TAM, txt:'A caixinha com um número = tamanho da letra'},
+                        {ic: BOTAO_COR, txt:'A letra A com uma cor embaixo = cor da fonte'},
                     ])}
                     <div class="cartao menta">Aumente o tamanho da letra do título e escolha a sua cor favorita para ele!</div>
                 </div>` },
 
             // 10 alinhamento
-            { html: topo('↔️','Alinhamento','Onde o texto fica na folha','Selecione o título e clique no botão do meio, o de centralizar, para deixar o título no meio da folha.') + `
+            { html: topo(BOTAO_ESQ + BOTAO_CENTRO + BOTAO_DIR,'Alinhamento','Onde o texto fica na folha','Selecione o título e clique no botão do meio, o de centralizar, para deixar o título no meio da folha.') + `
                 <div class="corpo">
                     <div class="cartao uva">O alinhamento decide se o texto fica na esquerda, no meio, na direita ou espalhado na folha.</div>
                     ${trilha([
-                        {ic:'⬅️', txt:'Esquerda'},
-                        {ic:'⏺️', txt:'Centralizar'},
-                        {ic:'➡️', txt:'Direita'},
+                        {ic: BOTAO_ESQ, txt:'Esquerda'},
+                        {ic: BOTAO_CENTRO, txt:'Centralizar'},
+                        {ic: BOTAO_DIR, txt:'Direita'},
                     ])}
                     <div class="cartao laranja">Selecione o título "Sobre Mim" e clique no botão do <b>meio (centralizar)</b>.</div>
                 </div>` },
 
             // 11 lista com marcadores
-            { html: topo('•','Lista com Marcadores','Bolinhas antes de cada linha','Selecione suas 3 últimas linhas e clique no botão da lista com bolinhas para transformar em uma lista.') + `
+            { html: topo(BOTAO_LISTA,'Lista com Marcadores','Bolinhas antes de cada linha','Selecione suas 3 últimas linhas e clique no botão da lista com bolinhas para transformar em uma lista.') + `
                 <div class="corpo">
                     <div class="cartao laranja">Selecione as linhas de <b>idade, cor favorita e animal favorito</b> (as 3 últimas) e clique no botão da lista com bolinhas, na Guia Início.</div>
                     <div class="folha">
@@ -419,24 +521,24 @@
                 </div>`, jogo: 'ligar1' },
 
             // 13 desfazer
-            { html: topo('↩️','Desfazer','O botão que te salva de erros','Se você errar alguma coisa, aperte Ctrl mais Z, ou clique na setinha para a esquerda lá em cima, para desfazer.') + `
+            { html: topo(BOTAO_DESFAZER,'Desfazer','O botão que te salva de erros','Se você errar alguma coisa, aperte Ctrl mais Z, ou clique na setinha para a esquerda lá em cima, para desfazer.') + `
                 <div class="corpo">
                     <div class="cartao coral">Errou alguma coisa? Não precisa ficar nervoso(a)! O Word tem um botão mágico para consertar.</div>
                     ${trilha([
                         {ic:'⌨️', txt:'Aperte Ctrl + Z ao mesmo tempo'},
-                        {ic:'↩️', txt:'Ou clique na setinha para a esquerda, lá em cima'},
+                        {ic: BOTAO_DESFAZER, txt:'Ou clique na setinha para a esquerda, lá em cima'},
                     ])}
                     <div class="cartao menta">Experimente: digite uma letra qualquer a mais, e depois desfaça ela com Ctrl + Z.</div>
                 </div>` },
 
             // 14 salvando
-            { html: topo('💾','Salvando o Arquivo','Guardando seu trabalho','Aperte Ctrl mais S, escolha um lugar para guardar, escreva um nome para o arquivo e clique em Salvar.') + `
+            { html: topo(BOTAO_SALVAR,'Salvando o Arquivo','Guardando seu trabalho','Aperte Ctrl mais S, escolha um lugar para guardar, escreva um nome para o arquivo e clique em Salvar.') + `
                 <div class="corpo">
                     ${trilha([
                         {ic:'⌨️', txt:'Aperte Ctrl + S'},
                         {ic:'📁', txt:'Escolha um lugar (ex: área de trabalho)'},
                         {ic:'✏️', txt:'Escreva um nome para o arquivo'},
-                        {ic:'💾', txt:'Clique em Salvar'},
+                        {ic: BOTAO_SALVAR, txt:'Clique em Salvar'},
                     ])}
                     <div class="cartao menta">Pronto! Da próxima vez, você só aperta <b>Ctrl + S</b> de novo para salvar as novas mudanças.</div>
                 </div>` },
@@ -447,12 +549,12 @@
                     <div class="lista">
                         ${item('📂','Abri o Word e um documento em branco')}
                         ${item('⌨️','Digitei o texto Sobre Mim')}
-                        ${item('𝗡','Deixei uma palavra em negrito')}
-                        ${item('🎨','Mudei o tamanho ou a cor da letra')}
-                        ${item('↔️','Centralizei o título')}
-                        ${item('•','Fiz uma lista com bolinhas')}
-                        ${item('↩️','Usei o Ctrl + Z para desfazer algo')}
-                        ${item('💾','Salvei o arquivo com um nome')}
+                        ${item(BOTAO_N,'Deixei uma palavra em negrito')}
+                        ${item(BOTAO_COR,'Mudei o tamanho ou a cor da letra')}
+                        ${item(BOTAO_CENTRO,'Centralizei o título')}
+                        ${item(BOTAO_LISTA,'Fiz uma lista com bolinhas')}
+                        ${item(BOTAO_DESFAZER,'Usei o Ctrl + Z para desfazer algo')}
+                        ${item(BOTAO_SALVAR,'Salvei o arquivo com um nome')}
                     </div>
                     <div class="placar" id="placarFinal">0 de 8 feitos</div>
                 </div>` },
@@ -488,10 +590,10 @@
 
         // ---------- dados dos jogos ----------
         const PARES_BOTOES = [
-            { e:'𝗡  Negrito',      d:'Deixa a letra mais grossa' },
-            { e:'𝑰  Itálico',      d:'Deixa a letra tombada' },
-            { e:'🎨 Cor da fonte', d:'Muda a cor da letra' },
-            { e:'⏺️ Centralizar',  d:'Coloca o texto no meio da folha' },
+            { chave:'negrito',    e: BOTAO_N + '<span>Negrito</span>',        d:'Deixa a letra mais grossa' },
+            { chave:'italico',    e: BOTAO_I + '<span>Itálico</span>',        d:'Deixa a letra tombada' },
+            { chave:'cor',        e: BOTAO_COR + '<span>Cor da fonte</span>', d:'Muda a cor da letra' },
+            { chave:'centralizar',e: BOTAO_CENTRO + '<span>Centralizar</span>', d:'Coloca o texto no meio da folha' },
         ];
 
         const misturar = l => { const c=l.slice(); for(let i=c.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[c[i],c[j]]=[c[j],c[i]];} return c; };
@@ -536,12 +638,12 @@
 
             pares.forEach((p, i) => {
                 const b = document.createElement('button');
-                b.className = 'liga cor' + (i % 4); b.textContent = p.e; b.dataset.chave = p.e;
+                b.className = 'liga cor' + (i % 4); b.innerHTML = p.e; b.dataset.chave = p.chave;
                 colE.appendChild(b);
             });
             direitas.forEach((p, i) => {
                 const b = document.createElement('button');
-                b.className = 'liga cor' + (i % 4); b.textContent = p.d; b.dataset.chave = p.e;
+                b.className = 'liga cor' + (i % 4); b.textContent = p.d; b.dataset.chave = p.chave;
                 colD.appendChild(b);
             });
 

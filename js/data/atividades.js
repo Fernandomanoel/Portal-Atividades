@@ -445,6 +445,13 @@ const ATIVIDADES = [
         categoria: "windows",
       },
       {
+        titulo: "Conhecendo o Word",
+        descricao:
+          "Atividade para fazer no Word de verdade: digitar um texto curtinho e praticar negrito, itálico, sublinhado, cor, tamanho, alinhamento, lista com marcadores, desfazer e salvar. Com áudio explicando cada passo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-conhecendo-o-word.html",
+      },
+      {
         titulo: "Missão: Meu Primeiro Relatório",
         descricao:
           "Atividade guiada para crianças escreverem um mini relatório no Word (título, formatação e parágrafos) e aprenderem a salvar o arquivo em PDF, com checklist interativo.",

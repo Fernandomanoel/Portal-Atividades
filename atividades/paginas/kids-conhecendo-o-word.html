@@ -108,15 +108,20 @@
         }
 
         /* ---------- Trilha de cliques ---------- */
-        .trilha { display: flex; align-items: stretch; gap: clamp(6px,.8vw,10px); flex-wrap: nowrap; }
+        .trilha { display: flex; align-items: stretch; gap: clamp(8px,1vw,14px); flex-wrap: nowrap; }
         .trilha-passo {
-            flex: 1; min-width: 0;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-            background: #fff; border: 3px solid var(--uva); border-radius: 16px;
-            padding: clamp(8px,1.4vh,14px) clamp(6px,.8vw,12px);
-            font-weight: 800; color: var(--uva); text-align: center;
-            font-size: clamp(.72rem, 1.5vh, .98rem); line-height: 1.2;
+            flex: 1; min-width: 0; max-width: 240px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+            border: none; border-radius: 18px;
+            padding: clamp(12px,1.8vh,18px) clamp(10px,1vw,16px);
+            font-weight: 800; text-align: center;
+            font-size: clamp(.72rem, 1.5vh, .98rem); line-height: 1.25;
+            box-shadow: 0 6px 0 rgba(0,0,0,.08);
         }
+        .trilha-passo.cor0 { background: var(--uva-claro); color: var(--uva); }
+        .trilha-passo.cor1 { background: var(--menta-claro); color: #0b7c5b; }
+        .trilha-passo.cor2 { background: var(--laranja-claro); color: #b45c1e; }
+        .trilha-passo.cor3 { background: var(--coral-claro); color: #b02525; }
         .trilha-passo .ic { font-size: clamp(1.4rem, 3vh, 2.1rem); line-height: 1; }
         .trilha-seta { display: flex; align-items: center; font-size: clamp(1.1rem,2.4vh,1.7rem); color: var(--laranja); font-weight: 900; flex-shrink: 0; }
 
@@ -167,18 +172,25 @@
         .aviso.ok  { background: var(--menta-claro); color: #0b7c5b; }
         .aviso.nao { background: var(--coral-claro); color: #b02525; }
 
-        .duplas { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(8px,1vw,16px); }
-        .coluna { display: flex; flex-direction: column; gap: clamp(6px,1vh,9px); }
+        .duplas { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px,1.4vw,22px); max-width: 760px; margin: 0 auto; width: 100%; }
+        .coluna { display: flex; flex-direction: column; gap: clamp(9px,1.3vh,14px); }
         .liga {
-            background: #fff; border: 3px solid var(--borda); border-radius: 13px;
-            padding: clamp(8px,1.25vh,13px) clamp(9px,1vw,14px);
-            font-weight: 700; font-size: clamp(.75rem,1.5vh,.98rem); cursor: pointer;
-            font-family: inherit; text-align: left; color: var(--tinta); transition: all .18s; line-height: 1.2;
+            display: flex; align-items: center; gap: clamp(8px,1vw,12px);
+            border: 3px solid transparent; border-radius: 16px;
+            padding: clamp(12px,1.8vh,18px) clamp(12px,1.2vw,18px);
+            font-weight: 800; font-size: clamp(.78rem,1.55vh,1rem); cursor: pointer;
+            font-family: inherit; text-align: left; transition: transform .15s, box-shadow .15s; line-height: 1.25;
+            box-shadow: 0 4px 0 rgba(0,0,0,.10);
         }
-        .liga:hover { border-color: var(--laranja); }
-        .liga.sel { border-color: var(--uva); background: var(--uva-claro); }
-        .liga.certo { border-color: var(--menta); background: var(--menta-claro); cursor: default; }
-        .liga.errado { border-color: var(--coral); background: var(--coral-claro); }
+        .liga:hover { transform: translateY(-2px); box-shadow: 0 6px 0 rgba(0,0,0,.14); }
+        .liga.cor0 { background: var(--uva-claro); color: var(--uva); }
+        .liga.cor1 { background: var(--menta-claro); color: #0b7c5b; }
+        .liga.cor2 { background: var(--laranja-claro); color: #b45c1e; }
+        .liga.cor3 { background: var(--coral-claro); color: #b02525; }
+        .liga.sel { border-color: var(--tinta); transform: translateY(-2px); }
+        .liga.certo { border-color: var(--menta); background: var(--menta-claro); color: #0b7c5b; cursor: default; box-shadow: none; transform: none; }
+        .liga.errado { border-color: var(--coral); animation: chacoalhar .3s; }
+        @keyframes chacoalhar { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
         /* ---------- Capa e final ---------- */
         .capa { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: clamp(8px,1.6vh,18px); min-height: 0; }
@@ -259,7 +271,7 @@
         function trilha(passos) {
             return `<div class="trilha">${passos.map((p,i) =>
                 (i ? '<div class="trilha-seta">➜</div>' : '') +
-                `<div class="trilha-passo"><span class="ic">${p.ic}</span>${p.txt}</div>`
+                `<div class="trilha-passo cor${i % 4}"><span class="ic">${p.ic}</span>${p.txt}</div>`
             ).join('')}</div>`;
         }
 
@@ -290,7 +302,7 @@
             { html: topo('🎯','O Que Vamos Fazer?','Aprender aqui, fazer no Word de verdade','Vamos aprender aqui na tela e depois fazer a mesma coisa no Word de verdade, no computador.') + `
                 <div class="corpo">
                     <div class="cartao uva">Essa atividade não é para escrever um trabalho grande. É para você <b>conhecer os botões do Word</b> e saber usá-los em qualquer arquivo, não importa o que você for escrever depois.</div>
-                    <div class="cartao">Você vai digitar só um textinho bem curto, chamado <b>"Sobre Mim"</b>, e usar ele para praticar os botões.</div>
+                    <div class="cartao laranja">Você vai digitar só um textinho bem curto, chamado <b>"Sobre Mim"</b>, e usar ele para praticar os botões.</div>
                     <div class="aviso-adulto">👨‍👩‍👧 Peça para um adulto ficar por perto enquanto você usa o computador!</div>
                 </div>` },
 
@@ -308,14 +320,14 @@
             // 4 conhecendo a tela
             { html: topo('🖥️','Conhecendo a Tela','Onde ficam os botões','Lá em cima da tela fica a Guia Início, com os botões de negrito, cor e tamanho da letra.') + `
                 <div class="corpo">
-                    <div class="cartao">Lá em cima da tela do Word tem várias abas. A mais importante para você agora é a <b>Guia Início</b> — normalmente ela já vem selecionada.</div>
+                    <div class="cartao uva">Lá em cima da tela do Word tem várias abas. A mais importante para você agora é a <b>Guia Início</b> — normalmente ela já vem selecionada.</div>
                     <div class="cartao laranja">É na Guia Início que ficam os botões de <b>negrito, itálico, sublinhado, cor da letra, tamanho e alinhamento</b>. Vamos usar todos eles!</div>
                 </div>` },
 
             // 5 digitando o texto
             { html: topo('⌨️','Digitando "Sobre Mim"','Um texto bem curtinho','Digite seu nome, sua idade, sua cor favorita e um animal que você gosta, cada coisa em uma linha.') + `
                 <div class="corpo">
-                    <div class="cartao">Na folha em branco, digite estas 4 linhas (pode trocar pelas suas respostas de verdade!):</div>
+                    <div class="cartao laranja">Na folha em branco, digite estas 4 linhas (pode trocar pelas suas respostas de verdade!):</div>
                     <div class="folha">
                         <div class="titulo-folha">Sobre Mim</div>
                         <div class="linha">Nome: Ana</div>
@@ -335,13 +347,13 @@
                         {ic:'👆', txt:'Clicar e arrastar seleciona um pedaço maior'},
                         {ic:'⌨️', txt:'Ctrl + A seleciona a folha inteira'},
                     ])}
-                    <div class="cartao">Experimente selecionar a palavra <b>"Sobre"</b> do seu título, dando 2 cliques rápidos nela.</div>
+                    <div class="cartao menta">Experimente selecionar a palavra <b>"Sobre"</b> do seu título, dando 2 cliques rápidos nela.</div>
                 </div>` },
 
             // 7 negrito itálico sublinhado
             { html: topo('𝗡 𝑰 U̲','Negrito, Itálico e Sublinhado','As três letrinhas mágicas','Selecione o título Sobre Mim e clique no N para negrito, no I para itálico e no U para sublinhado.') + `
                 <div class="corpo">
-                    <div class="cartao">Selecione o título <b>"Sobre Mim"</b> e experimente clicar em cada um destes botões da Guia Início:</div>
+                    <div class="cartao uva">Selecione o título <b>"Sobre Mim"</b> e experimente clicar em cada um destes botões da Guia Início:</div>
                     ${trilha([
                         {ic:'𝗡', txt:'N = Negrito (letra grossa)'},
                         {ic:'𝑰', txt:'I = Itálico (letra tombada)'},
@@ -364,7 +376,7 @@
             // 9 tamanho e cor
             { html: topo('🔠🎨','Tamanho e Cor da Fonte','Deixando do seu jeito','Selecione o título e mude o número do tamanho da letra e clique na setinha da cor da fonte para escolher uma cor.') + `
                 <div class="corpo">
-                    <div class="cartao">Com o título ainda selecionado, procure na Guia Início:</div>
+                    <div class="cartao laranja">Com o título ainda selecionado, procure na Guia Início:</div>
                     ${trilha([
                         {ic:'🔠', txt:'A caixinha com um número = tamanho da letra'},
                         {ic:'🎨', txt:'A letra A com uma cor embaixo = cor da fonte'},
@@ -375,7 +387,7 @@
             // 10 alinhamento
             { html: topo('↔️','Alinhamento','Onde o texto fica na folha','Selecione o título e clique no botão do meio, o de centralizar, para deixar o título no meio da folha.') + `
                 <div class="corpo">
-                    <div class="cartao">O alinhamento decide se o texto fica na esquerda, no meio, na direita ou espalhado na folha.</div>
+                    <div class="cartao uva">O alinhamento decide se o texto fica na esquerda, no meio, na direita ou espalhado na folha.</div>
                     ${trilha([
                         {ic:'⬅️', txt:'Esquerda'},
                         {ic:'⏺️', txt:'Centralizar'},
@@ -387,7 +399,7 @@
             // 11 lista com marcadores
             { html: topo('•','Lista com Marcadores','Bolinhas antes de cada linha','Selecione suas 3 últimas linhas e clique no botão da lista com bolinhas para transformar em uma lista.') + `
                 <div class="corpo">
-                    <div class="cartao">Selecione as linhas de <b>idade, cor favorita e animal favorito</b> (as 3 últimas) e clique no botão da lista com bolinhas, na Guia Início.</div>
+                    <div class="cartao laranja">Selecione as linhas de <b>idade, cor favorita e animal favorito</b> (as 3 últimas) e clique no botão da lista com bolinhas, na Guia Início.</div>
                     <div class="folha">
                         <div class="linha">• Idade: 8 anos</div>
                         <div class="linha">• Cor favorita: Verde</div>
@@ -414,7 +426,7 @@
                         {ic:'⌨️', txt:'Aperte Ctrl + Z ao mesmo tempo'},
                         {ic:'↩️', txt:'Ou clique na setinha para a esquerda, lá em cima'},
                     ])}
-                    <div class="cartao">Experimente: digite uma letra qualquer a mais, e depois desfaça ela com Ctrl + Z.</div>
+                    <div class="cartao menta">Experimente: digite uma letra qualquer a mais, e depois desfaça ela com Ctrl + Z.</div>
                 </div>` },
 
             // 14 salvando
@@ -522,14 +534,14 @@
             const direitas = misturar(pares);
             let selecionada = null, acertos = 0;
 
-            pares.forEach((p) => {
+            pares.forEach((p, i) => {
                 const b = document.createElement('button');
-                b.className = 'liga'; b.textContent = p.e; b.dataset.chave = p.e;
+                b.className = 'liga cor' + (i % 4); b.textContent = p.e; b.dataset.chave = p.e;
                 colE.appendChild(b);
             });
-            direitas.forEach((p) => {
+            direitas.forEach((p, i) => {
                 const b = document.createElement('button');
-                b.className = 'liga'; b.textContent = p.d; b.dataset.chave = p.e;
+                b.className = 'liga cor' + (i % 4); b.textContent = p.d; b.dataset.chave = p.e;
                 colD.appendChild(b);
             });
 

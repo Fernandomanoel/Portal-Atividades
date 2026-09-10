@@ -25,6 +25,14 @@ const ROTULOS_MATERIAL = {
   link: "Link",
 };
 
+// A categoria marca de qual programa é a atividade, para o card sair com a
+// cor e o selo do app (ver .material--* em css/components.css).
+const CLASSES_CATEGORIA = {
+  windows: "material--windows",
+  word: "material--word",
+  powerpoint: "material--powerpoint",
+};
+
 // Caminhos de arquivo têm espaço e acento; encodeURI evita link quebrado.
 function enderecoDoMaterial(material) {
   return material.tipo === "link" ? material.url : encodeURI(material.arquivo || "");
@@ -87,7 +95,8 @@ function cardCurso(curso) {
 function cardMaterial(material) {
   const tipo = material.tipo || "pdf";
   const el = document.createElement("article");
-  el.className = material.categoria === "windows" ? "material material--windows" : "material";
+  const modificador = CLASSES_CATEGORIA[material.categoria];
+  el.className = modificador ? `material ${modificador}` : "material";
   el.innerHTML = `
     <div class="material-icone" aria-hidden="true">${ICONES_MATERIAL[tipo] || "📎"}</div>
 

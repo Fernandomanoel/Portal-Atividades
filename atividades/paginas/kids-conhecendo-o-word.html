@@ -122,22 +122,34 @@
         }
 
         /* ---------- Trilha de cliques ---------- */
-        .trilha { display: flex; align-items: stretch; gap: clamp(8px,1vw,14px); flex-wrap: nowrap; }
+        /* Passos quadrados (não esticados), tema azul do Word, cada um com um selo numerado. */
+        .trilha { display: flex; align-items: stretch; gap: clamp(10px,1.4vw,20px); flex-wrap: wrap; justify-content: center; }
         .trilha-passo {
-            flex: 1; min-width: 0; max-width: 240px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-            border: none; border-radius: 18px;
-            padding: clamp(12px,1.8vh,18px) clamp(10px,1vw,16px);
+            position: relative;
+            flex: 1 1 0; min-width: clamp(130px, 20vw, 200px); max-width: 300px;
+            min-height: clamp(130px, 21vh, 215px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(8px,1.4vh,14px);
+            border: 3px solid var(--uva); border-radius: 22px;
+            padding: clamp(14px,2.2vh,24px) clamp(10px,1.2vw,18px);
             font-weight: 800; text-align: center;
-            font-size: clamp(.72rem, 1.5vh, .98rem); line-height: 1.25;
-            box-shadow: 0 6px 0 rgba(0,0,0,.12);
+            font-size: clamp(.75rem, 1.6vh, 1.05rem); line-height: 1.3;
+            box-shadow: 0 6px 0 var(--uva);
         }
-        .trilha-passo.cor0 { background: var(--uva-claro); color: #0c6ea3; box-shadow: 0 6px 0 #a9e2ff; }
-        .trilha-passo.cor1 { background: var(--menta-claro); color: #2f6e00; box-shadow: 0 6px 0 #b6f27a; }
-        .trilha-passo.cor2 { background: var(--laranja-claro); color: #8a5200; box-shadow: 0 6px 0 #ffd699; }
-        .trilha-passo.cor3 { background: var(--coral-claro); color: #a81f1f; box-shadow: 0 6px 0 #ffb3b5; }
-        .trilha-passo .ic { font-size: clamp(1.4rem, 3vh, 2.1rem); line-height: 1; }
-        .trilha-seta { display: flex; align-items: center; font-size: clamp(1.1rem,2.4vh,1.7rem); color: var(--laranja); font-weight: 900; flex-shrink: 0; }
+        .trilha-passo::before {
+            content: attr(data-passo);
+            position: absolute; top: -12px; left: -12px;
+            width: clamp(24px,3.4vh,30px); height: clamp(24px,3.4vh,30px);
+            border-radius: 50%; background: var(--sol); color: #7a5b00;
+            display: flex; align-items: center; justify-content: center;
+            font-size: clamp(.7rem,1.4vh,.85rem); font-weight: 800;
+            box-shadow: 0 3px 0 var(--sol-escuro);
+        }
+        .trilha-passo.cor0 { background: var(--uva-claro); color: var(--uva-escuro); }
+        .trilha-passo.cor1 { background: #e3f1ff; color: #0d5fa8; border-color: #4c9eea; box-shadow: 0 6px 0 #4c9eea; }
+        .trilha-passo.cor2 { background: #eaf0fd; color: #1d3f8f; border-color: #2b579a; box-shadow: 0 6px 0 #2b579a; }
+        .trilha-passo.cor3 { background: #e6ecfb; color: #17275c; border-color: #1c2f6b; box-shadow: 0 6px 0 #1c2f6b; }
+        .trilha-passo .ic { font-size: clamp(1.5rem, 3.2vh, 2.2rem); line-height: 1; }
+        .trilha-seta { display: flex; align-items: center; align-self: center; font-size: clamp(1.2rem,2.8vh,2rem); color: var(--laranja); font-weight: 900; flex-shrink: 0; }
 
         /* ---------- Exemplo de folha do Word ---------- */
         .folha {
@@ -334,10 +346,10 @@
             .topo { flex-wrap: wrap; padding: 10px 14px; gap: 10px; }
             .topo-emoji { font-size: 1.7rem; }
             .btn-ouvir { width: 100%; margin-top: 2px; }
-            .trilha { flex-direction: column; gap: 4px; }
-            .trilha-passo { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 9px 12px; text-align: left; }
+            .trilha { flex-direction: column; gap: 10px; }
+            .trilha-passo { flex-direction: row; justify-content: flex-start; gap: 10px; padding: 9px 12px 9px 20px; width: 100%; min-height: auto; text-align: left; }
             .trilha-passo .ic { font-size: 1.4rem; }
-            .trilha-seta { justify-content: center; transform: rotate(90deg); font-size: 1rem; }
+            .trilha-seta { height: auto; justify-content: center; transform: rotate(90deg); font-size: 1rem; }
             .duplas { grid-template-columns: 1fr; }
             .opcoes.duas { grid-template-columns: 1fr; }
             .grade-icones { grid-template-columns: repeat(4, minmax(0,1fr)); }
@@ -374,7 +386,7 @@
         function trilha(passos) {
             return `<div class="trilha">${passos.map((p,i) =>
                 (i ? '<div class="trilha-seta">➜</div>' : '') +
-                `<div class="trilha-passo cor${i % 4}"><span class="ic">${p.ic}</span>${p.txt}</div>`
+                `<div class="trilha-passo cor${i % 4}" data-passo="${i + 1}"><span class="ic">${p.ic}</span>${p.txt}</div>`
             ).join('')}</div>`;
         }
 

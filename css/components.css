@@ -252,6 +252,71 @@
   box-shadow: 0 12px 25px rgba(0, 120, 212, 0.3);
 }
 
+/* Box diferenciada para as atividades de Word do Informática Kids,
+   mesmo esquema do Windows acima, para bater o olho e já saber o app. */
+.material--word {
+  position: relative;
+  border-color: #185abd;
+  background: linear-gradient(160deg, rgba(24, 90, 189, 0.08), var(--card) 45%);
+}
+
+.material--word::before {
+  content: "📝 Word";
+  position: absolute;
+  top: -11px;
+  left: 22px;
+  background: linear-gradient(135deg, #185abd, #2b7cd9);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(24, 90, 189, 0.35);
+}
+
+.material--word .material-icone {
+  background: linear-gradient(135deg, #185abd, #2b7cd9);
+  color: #fff;
+}
+
+.material--word:hover {
+  border-color: #2b7cd9;
+  box-shadow: 0 12px 25px rgba(24, 90, 189, 0.3);
+}
+
+/* Mesmo esquema para as atividades de PowerPoint. */
+.material--powerpoint {
+  position: relative;
+  border-color: #c43e1c;
+  background: linear-gradient(160deg, rgba(196, 62, 28, 0.08), var(--card) 45%);
+}
+
+.material--powerpoint::before {
+  content: "📽️ PowerPoint";
+  position: absolute;
+  top: -11px;
+  left: 22px;
+  background: linear-gradient(135deg, #c43e1c, #ed6c47);
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.02em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(196, 62, 28, 0.35);
+}
+
+.material--powerpoint .material-icone {
+  background: linear-gradient(135deg, #c43e1c, #ed6c47);
+  color: #fff;
+}
+
+.material--powerpoint:hover {
+  border-color: #ed6c47;
+  box-shadow: 0 12px 25px rgba(196, 62, 28, 0.3);
+}
+
 .material-icone {
   flex-shrink: 0;
   width: 64px;

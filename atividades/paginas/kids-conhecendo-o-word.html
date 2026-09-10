@@ -19,6 +19,7 @@
             --sol: #ffd43b;
             --coral: #ff6b6b;
             --coral-claro: #fff0f0;
+            --sol-claro: #fff9db;
             --borda: #dfe3ec;
         }
 
@@ -133,36 +134,57 @@
         .folha .linha { margin-bottom: 8px; color: #333; font-size: clamp(.85rem, 1.6vh, 1.05rem); }
         .folha .titulo-folha { text-align: center; font-weight: 800; font-size: clamp(1rem, 2vh, 1.3rem); color: var(--uva); margin-bottom: 10px; }
 
-        /* ---------- Ícones de botão (parecidos com os do Word de verdade) ---------- */
+        /* ---------- Ícones de botão (parecidos com os do Word de verdade, mas coloridos) ---------- */
         .gb {
             display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-            width: clamp(34px,5.4vh,48px); height: clamp(34px,5.4vh,48px); flex-shrink: 0;
-            background: #fff; border: 1px solid #c7cfdd; border-radius: 9px;
-            box-shadow: 0 2px 4px rgba(20,33,61,.16);
+            width: clamp(40px,6.2vh,58px); height: clamp(40px,6.2vh,58px); flex-shrink: 0;
+            background: #fff; border: 2.5px solid var(--borda); border-radius: 12px;
+            box-shadow: 0 3px 0 rgba(0,0,0,.10);
             font-family: Georgia, 'Times New Roman', serif; color: #2b2b2b;
             line-height: 1; gap: 3px;
         }
-        .gb-letra { font-size: clamp(1rem,2.2vh,1.4rem); }
+        .gb-letra { font-size: clamp(1.15rem,2.7vh,1.65rem); }
         .gb-n .gb-letra { font-weight: 900; }
         .gb-i .gb-letra { font-style: italic; font-weight: 700; }
         .gb-s .gb-letra { text-decoration: underline; text-underline-offset: 2px; font-weight: 700; }
-        .gb-barra { width: 62%; height: 4px; border-radius: 2px; background: var(--coral); }
-        .gb-tam { flex-direction: row; gap: 2px; font-family: inherit; }
-        .gb-tam .gb-num { font-size: clamp(.72rem,1.5vh,.92rem); font-weight: 800; }
-        .gb-tam .gb-setas { display: flex; flex-direction: column; font-size: .5rem; line-height: .75; color: #7c8aa5; }
-        .gb-align { gap: 3px; padding: 7px; justify-content: center; }
-        .gb-align .gb-linha { height: 3px; border-radius: 2px; background: #556; }
+        .gb-barra { width: 62%; height: 5px; border-radius: 2px; background: var(--coral); }
+        .gb-tam { flex-direction: row; gap: 3px; font-family: inherit; }
+        .gb-tam .gb-num { font-size: clamp(.82rem,1.8vh,1.08rem); font-weight: 800; }
+        .gb-tam .gb-setas { display: flex; flex-direction: column; font-size: .55rem; line-height: .8; color: #8a6d00; }
+        .gb-align { gap: 4px; padding: 8px; justify-content: center; }
+        .gb-align .gb-linha { height: 4px; border-radius: 2px; background: #556; }
         .gb-align.esq { align-items: flex-start; }
         .gb-align.centro { align-items: center; }
         .gb-align.dir { align-items: flex-end; }
         .gb-align .gb-linha:nth-child(1) { width: 100%; }
         .gb-align .gb-linha:nth-child(2) { width: 62%; }
         .gb-align .gb-linha:nth-child(3) { width: 80%; }
-        .gb-lista { gap: 3px; padding: 7px 8px; align-items: flex-start; justify-content: center; }
-        .gb-lista .gb-linhaponto { display: flex; align-items: center; gap: 3px; }
-        .gb-lista .gb-ponto { width: 4px; height: 4px; border-radius: 50%; background: #556; flex-shrink: 0; }
-        .gb-lista .gb-tra { width: 18px; height: 3px; border-radius: 2px; background: #556; }
-        .gb-emoji { font-size: clamp(1.1rem,2.4vh,1.5rem); font-family: inherit; }
+        .gb-lista { gap: 4px; padding: 8px 9px; align-items: flex-start; justify-content: center; }
+        .gb-lista .gb-linhaponto { display: flex; align-items: center; gap: 4px; }
+        .gb-lista .gb-ponto { width: 5px; height: 5px; border-radius: 50%; background: #556; flex-shrink: 0; }
+        .gb-lista .gb-tra { width: 20px; height: 4px; border-radius: 2px; background: #556; }
+        .gb-emoji { font-size: clamp(1.3rem,3vh,1.85rem); font-family: inherit; }
+
+        /* preenchimento colorido de cada botão, para combinar com o resto da atividade */
+        .gb-n { background: var(--laranja-claro); border-color: var(--laranja); }
+        .gb-n .gb-letra { color: #b45c1e; }
+        .gb-i { background: var(--menta-claro); border-color: var(--menta); }
+        .gb-i .gb-letra { color: #0b7c5b; }
+        .gb-s { background: var(--uva-claro); border-color: var(--uva); }
+        .gb-s .gb-letra { color: var(--uva); }
+        .gb-cor { background: var(--coral-claro); border-color: var(--coral); }
+        .gb-tam { background: var(--sol-claro); border-color: var(--sol); }
+        .gb-tam .gb-num { color: #8a6d00; }
+        .gb-align.esq { background: var(--uva-claro); border-color: var(--uva); }
+        .gb-align.esq .gb-linha { background: var(--uva); }
+        .gb-align.centro { background: var(--menta-claro); border-color: var(--menta); }
+        .gb-align.centro .gb-linha { background: #0b7c5b; }
+        .gb-align.dir { background: var(--laranja-claro); border-color: var(--laranja); }
+        .gb-align.dir .gb-linha { background: #b45c1e; }
+        .gb-lista { background: var(--coral-claro); border-color: var(--coral); }
+        .gb-lista .gb-ponto, .gb-lista .gb-tra { background: #b02525; }
+        .gb-desfazer { background: var(--sol-claro); border-color: var(--sol); }
+        .gb-salvar { background: var(--menta-claro); border-color: var(--menta); }
 
         .ribbon-mock {
             display: flex; align-items: center; gap: clamp(6px,1vw,10px); flex-wrap: wrap; justify-content: center;
@@ -342,7 +364,7 @@
         function gbTam() { return `<span class="gb gb-tam"><span class="gb-num">14</span><span class="gb-setas">▲▼</span></span>`; }
         function gbAlign(tipo) { return `<span class="gb gb-align ${tipo}"><span class="gb-linha"></span><span class="gb-linha"></span><span class="gb-linha"></span></span>`; }
         function gbLista() { return `<span class="gb gb-lista">${[1,2,3].map(() => '<span class="gb-linhaponto"><span class="gb-ponto"></span><span class="gb-tra"></span></span>').join('')}</span>`; }
-        function gbEmoji(emoji) { return `<span class="gb"><span class="gb-emoji">${emoji}</span></span>`; }
+        function gbEmoji(emoji, cls) { return `<span class="gb ${cls || ''}"><span class="gb-emoji">${emoji}</span></span>`; }
 
         const BOTAO_N = gbLetra('gb-n', 'N');
         const BOTAO_I = gbLetra('gb-i', 'I');
@@ -353,8 +375,8 @@
         const BOTAO_CENTRO = gbAlign('centro');
         const BOTAO_DIR = gbAlign('dir');
         const BOTAO_LISTA = gbLista();
-        const BOTAO_DESFAZER = gbEmoji('↩️');
-        const BOTAO_SALVAR = gbEmoji('💾');
+        const BOTAO_DESFAZER = gbEmoji('↩️', 'gb-desfazer');
+        const BOTAO_SALVAR = gbEmoji('💾', 'gb-salvar');
 
         function ribbonMock() {
             return `<div class="ribbon-mock">

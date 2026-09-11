@@ -1310,6 +1310,94 @@ const ATIVIDADES = [
       },
     ],
   },
+
+  {
+    slug: "recursos-humanos",
+    titulo: "Recursos Humanos",
+    descricao: "Rotinas de RH, relações trabalhistas e benefícios em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "RH",
+    cor: "#ec4899",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Assistente de Recursos Humanos",
+        descricao: "Divisões do subsistema de RH, cargos e salários, classificação de cargos e divulgação de vaga.",
+        tipo: "link",
+        url: "atividades/paginas/recursos-humanos-assistente-rh.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Talentos e Comunicação",
+        descricao: "Métodos de avaliação de desempenho, treinamento e desenvolvimento, comunicação interna e feedback.",
+        tipo: "link",
+        url: "atividades/paginas/recursos-humanos-gestao-talentos-comunicacao.html",
+      },
+      {
+        titulo: "Atividade Prática: Relações Trabalhistas e Resolução de Conflitos",
+        descricao: "Rescisão por quebra de confiança, assédio moral, gestão de jornada e abandono de emprego.",
+        tipo: "link",
+        url: "atividades/paginas/recursos-humanos-relacoes-trabalhistas-conflitos.html",
+      },
+      {
+        titulo: "Atividade Prática: Relações Trabalhistas e Conflitos II",
+        descricao: "Atos faltosos (Art. 482 da CLT), acordos coletivos, teletrabalho e direito à desconexão.",
+        tipo: "link",
+        url: "atividades/paginas/recursos-humanos-relacoes-trabalhistas-conflitos-2.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Contratos, Férias e Benefícios",
+        descricao: "Pacote de benefícios, regras de férias e abono pecuniário, e contrato de experiência.",
+        tipo: "link",
+        url: "atividades/paginas/recursos-humanos-contratos-ferias-beneficios.html",
+      },
+    ],
+  },
+
+  {
+    slug: "seguranca-do-trabalho",
+    titulo: "Segurança do Trabalho",
+    descricao: "Normas regulamentadoras, gestão de riscos e prevenção de acidentes em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "ST",
+    cor: "#eab308",
+    materiais: [
+      {
+        titulo: "Segurança do Trabalho: Análise de Acidente em Altura",
+        descricao: "Relato de irregularidades, normas regulamentadoras aplicáveis, responsabilidades e protocolo de emergência pós-acidente.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-acidente-em-altura.html",
+      },
+      {
+        titulo: "Práticas em Segurança do Trabalho",
+        descricao: "EPI x EPC, higiene ocupacional, primeiros socorros, combate a incêndio, CAT, SESMT x CIPA e mapeamento de riscos.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-laboratorios-praticos.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Riscos e Segurança do Trabalho",
+        descricao: "Hierarquia de controle, equipamentos e sinalização, matriz de riscos e protocolo de primeiros socorros.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-gestao-riscos.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Riscos e Segurança Ocupacional",
+        descricao: "Classificação de agentes ambientais, hierarquia de controles e EPIs, e Programa de Gerenciamento de Riscos (PGR).",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-higiene-ocupacional-pgr.html",
+      },
+      {
+        titulo: "Atividade Prática: NRs de Alto Risco na Segurança do Trabalho",
+        descricao: "Combate a incêndio (NR-23), trabalho em altura (NR-35), ergonomia (NR-17) e espaço confinado (NR-33).",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-nrs-alto-risco.html",
+      },
+      {
+        titulo: "Atividade Prática: Elaboração e Interpretação do Mapa de Riscos",
+        descricao: "Conceito e elaboração do mapa de riscos (NR-5), padronização de cores e regras de representação.",
+        tipo: "link",
+        url: "atividades/paginas/seguranca-trabalho-mapa-de-riscos.html",
+      },
+    ],
+  },
 ];
 
 // Busca um curso pelo slug da URL. Devolve undefined se não existir.

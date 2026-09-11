@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Segurança do Trabalho — Análise de Acidente em Altura</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #0284c7;
+            --brand-light: #e0f2fe;
+            --accent-color: #0369a1;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #0284c7 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bae6fd; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background-color: #000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .btn-external-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: #dc2626; 
+            color: white;
+            text-decoration: none;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            margin: 0 0 25px 0;
+            transition: background-color 0.2s, transform 0.1s;
+            box-shadow: 0 4px 6px rgba(220, 38, 38, 0.2);
+            width: 100%;
+        }
+
+        .btn-external-link:hover {
+            background-color: #b91c1c;
+            transform: translateY(-2px);
+            color: white;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 190px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .risk-matrix {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            margin-top: 15px;
+        }
+        .matrix-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .matrix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; font-size: 14px; }
+        .matrix-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Atividade Prática Interativa</span>
+        <h1>Segurança do Trabalho: Análise de Acidente em Altura</h1>
+        <p>Baseado no vídeo fornecido, você atuará como um Técnico/Fiscal de Segurança. Seu papel é relatar as irregularidades, aplicar as NRs correspondentes, classificar os riscos e definir as ações de emergência após a queda do trabalhador.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ESTUDO DE CASO COM VÍDEO (EMBED + LINK EXTERNO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Parecer Técnico] Relato de Irregularidades e Fiscalização</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Análise da Ocorrência:</strong> Assista ao vídeo que mostra um acidente na instalação de um ar-condicionado. Se o vídeo não carregar aqui, utilize o botão vermelho para abrir no YouTube.
+        </div>
+        
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/0QiLlgnmdYQ" title="Acidente de trabalho em altura" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <a href="https://youtu.be/0QiLlgnmdYQ?si=amzCJ9ArRESlpi0B" target="_blank" class="btn-external-link">
+            ▶️ Erro no reprodutor? Clique aqui para abrir o vídeo no YouTube (Nova Aba)
+        </a>
+
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Atuando como fiscal de segurança, descreva detalhadamente quais **erros graves** causaram a queda (ex: falta de EPI, equipamento improvisado). Cite qual Norma Regulamentadora (ex: NR-35) foi violada:
+        </label>
+        <textarea id="m1-dissertativa" class="input-box" placeholder="Ex: O acidente ocorreu porque o andaime estava instável e improvisado. Houve grave violação da NR-35, pois o trabalhador não utilizava cinto de segurança (EPI) nem linha de vida para ancoragem..."></textarea>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: PREENCHIMENTO DE LACUNAS (NRs APLICÁVEIS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Legislação Aplicada] Relacionamento de Normas Regulamentadoras</h2>
+        </div>
+        <div class="scenario-description">
+            Com base na situação do vídeo, complete o relatório de inspeção selecionando a norma correspondente a cada infração observada:
+        </div>
+        <div class="fill-text-paragraph">
+            Na análise do vídeo, constatou-se que a atividade ocorria a mais de 2 metros do nível inferior. Logo, é obrigatória a aplicação da 
+            <select id="m2-l1" class="input-inline">
+                <option value="">Selecione a NR...</option>
+                <option value="NR-10">NR-10 (Elétrica)</option>
+                <option value="NR-33">NR-33 (Espaço Confinado)</option>
+                <option value="NR-35">NR-35 (Trabalho em Altura)</option>
+            </select>. 
+            A ausência total de cinturão de segurança tipo paraquedista configurou infração direta à norma que rege o fornecimento de Equipamentos de Proteção Individual, a 
+            <select id="m2-l2" class="input-inline">
+                <option value="">Selecione a NR...</option>
+                <option value="NR-06">NR-06 (EPI)</option>
+                <option value="NR-12">NR-12 (Máquinas)</option>
+            </select>. 
+            Além disso, a estrutura tubular improvisada e solta violou os padrões de segurança em canteiros de obras e montagem de andaimes previstos na 
+            <select id="m2-l3" class="input-inline">
+                <option value="">Selecione a NR...</option>
+                <option value="NR-17">NR-17 (Ergonomia)</option>
+                <option value="NR-18">NR-18 (Condições na Construção)</option>
+            </select>.
+        </div>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: MATRIZ VERDADEIRO OU FALSO (DIREITOS E DEVERES) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Matriz de Responsabilidade] Direitos do Trabalhador e Empresa</h2>
+        </div>
+        <div class="scenario-description">
+            Diante do risco iminente visto na gravação, julgue as afirmações trabalhistas e previdenciárias como **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Afirmação Técnica</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. O trabalhador possui o "Direito de Recusa", podendo interromper suas atividades sempre que constatar risco grave e iminente para sua vida e saúde (como subir no andaime solto sem cinto).</td>
+                    <td>
+                        <select id="m3-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Apenas a imprudência do trabalhador causou o acidente, portanto, a empresa fica desobrigada de emitir a Comunicação de Acidente de Trabalho (CAT).</td>
+                    <td>
+                        <select id="m3-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: ORDENAÇÃO CRONOLÓGICA (PRIMEIROS SOCORROS) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Plano de Resposta] Protocolo de Emergência Pós-Acidente</h2>
+        </div>
+        <div class="scenario-description">
+            Após a violenta queda filmada, as pessoas ao redor devem seguir um protocolo de emergência estrito. Ordene as ações do **1º passo (Imediato)** ao **4º passo (Administrativo)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Ação a ser Tomada</th>
+                    <th style="width: 35%;">Ordem (1º ao 4º)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Isolar o local e <strong>NÃO movimentar a vítima</strong> (para evitar agravamento de possível lesão na coluna).</td>
+                    <td>
+                        <select id="m4-ord1" class="input-box">
+                            <option value="">Selecione a ordem...</option>
+                            <option value="1">1º (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo (Fase Burocrática)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Acionar imediatamente o serviço médico de emergência (SAMU / Corpo de Bombeiros) relatando queda de altura.</td>
+                    <td>
+                        <select id="m4-ord2" class="input-box">
+                            <option value="">Selecione a ordem...</option>
+                            <option value="1">1º (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo (Fase Burocrática)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Emitir a CAT (Comunicação de Acidente de Trabalho) até o primeiro dia útil seguinte ao da ocorrência.</td>
+                    <td>
+                        <select id="m4-ord3" class="input-box">
+                            <option value="">Selecione a ordem...</option>
+                            <option value="1">1º (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo (Fase Burocrática)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: CÁLCULO INTERATIVO DE MATRIZ DE RISCO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Cálculo Interativo] Apuração do Nível de Risco</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Auditoria Pós-Acidente:</strong> O Engenheiro de Segurança precisa registrar o perigo na documentação da empresa (PGR). O cálculo básico define que <code>Risco = Probabilidade × Severidade</code>.
+        </div>
+        <div class="risk-matrix">
+            <div class="matrix-header">DADOS DA AVALIAÇÃO (ANDAIME SEM EPI)</div>
+            <div class="matrix-grid">
+                <div><strong>Índice de Probabilidade (P):</strong> 5 (Frequente / Quase Certo devido à instabilidade)</div>
+                <div><strong>Índice de Severidade (S):</strong> 4 (Crítico / Morte ou Invalidez permanente)</div>
+            </div>
+            <div class="matrix-footer">
+                Fórmula: Probabilidade (5) × Severidade (4)
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o valor final do Nível de Risco a ser registrado (Número Exato):</label>
+            <input type="text" id="m5-calculo" class="input-box" style="margin-top: 6px;" placeholder="Digite apenas o número resultante (Ex: 15)...">
+            <div id="feedback-m5" class="feedback-badge"></div>
+        </div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 6, minComprimento = 25) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `A resposta deve ter pelo menos ${minComprimento} caracteres.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Responda utilizando texto, não apenas números." };
+        
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua análise precisa conter no mínimo ${minPalavras} palavras.` };
+
+        return { valido: true, motivo: "Análise recebida com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Análise Dissertativa (Vídeo)
+        const textM1 = document.getElementById('m1-dissertativa').value;
+        const resM1 = validarTextoInteligente(textM1, 6, 25);
+        if (resM1.valido) {
+            const termosChave = /cinto|epi|nr-?35|nr-?18|andaime|ancoragem|queda|altura|segurança|improvis/i;
+            if (!termosChave.test(textM1)) {
+                resM1.valido = false;
+                resM1.motivo = "Incorreto. Você precisa mencionar a ausência de 'EPI', 'cinto', a violação da 'NR-35' ou o problema com o 'andaime'.";
+            } else {
+                resM1.motivo = "Excelente fiscalização! Você identificou as falhas graves nos equipamentos (andaime/EPI) e as normas desrespeitadas (NR-35).";
+            }
+        }
+        aplicarFeedback('feedback-m1', resM1);
+        if (resM1.valido) acertos++;
+
+        // Módulo 2: Preenchimento de Lacunas (NRs)
+        const l1 = document.getElementById('m2-l1').value;
+        const l2 = document.getElementById('m2-l2').value;
+        const l3 = document.getElementById('m2-l3').value;
+
+        if (l1 === 'NR-35' && l2 === 'NR-06' && l3 === 'NR-18') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Perfeito! Altura é NR-35, EPIs são exigidos pela NR-06, e os Andaimes/Construção pela NR-18." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. Revise: Altura = NR-35 | Fornecimento de EPI = NR-06 | Condições e Andaimes = NR-18." });
+        }
+
+        // Módulo 3: Matriz V/F
+        const vf1 = document.getElementById('m3-vf1').value;
+        const vf2 = document.getElementById('m3-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Correto! O Direito de Recusa (V) protege a vida do trabalhador. A emissão da CAT é obrigatória independente de culpa (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. O trabalhador TEM o Direito de Recusa (V). A CAT DEVE ser emitida mesmo havendo imprudência (F)." });
+        }
+
+        // Módulo 4: Sequenciamento de Resposta à Emergência
+        const ord1 = document.getElementById('m4-ord1').value;
+        const ord2 = document.getElementById('m4-ord2').value;
+        const ord3 = document.getElementById('m4-ord3').value;
+
+        // A ordem lógica é: 1 (Não mover), 2 (Chamar Samu), 4 (Emitir CAT na fase administrativa)
+        if (ord1 === '1' && ord2 === '2' && ord3 === '4') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Muito bem! 1º Protege-se a vítima in loco, 2º Chama-se socorro especializado, e 4º (fase burocrática) emite-se a CAT." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. A prioridade de vida é: 1º Isolar e não mover a vítima; 2º Chamar o resgate. A CAT é o último passo (4º)." });
+        }
+
+        // Módulo 5: Cálculo de Risco
+        const calcVal = document.getElementById('m5-calculo').value.trim();
+        if (calcVal === '20' || calcVal === '20,0' || calcVal === '20.0') {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Cálculo Exato! Nível de Risco = 5 (Frequente) × 4 (Crítico) = 20 (Risco Intolerável)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "Incorreto. Multiplique Probabilidade (5) por Severidade (4). O resultado exato é 20." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você atuou perfeitamente na fiscalização. Validou todos os ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários na Fiscalização";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção Técnico(a): Você validou ${acertos} de ${total} módulos. Corrija os pontos indicados em vermelho para concluir a inspeção.`;
+        }
+    }
+</script>
+
+</body>
+</html>

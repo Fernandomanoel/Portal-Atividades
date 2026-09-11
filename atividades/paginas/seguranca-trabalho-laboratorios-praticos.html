@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratórios Práticos: Segurança e Saúde Ocupacional</title>
+    <style>
+        :root {
+            --primary-dark: #064e3b;
+            --brand-color: #059669;
+            --brand-light: #d1fae5;
+            --accent-color: #10b981;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--brand-color) 100%);
+            color: white;
+            padding: 35px 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+        .main-header p { font-size: 15px; color: var(--brand-light); max-width: 850px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px 24px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        /* Abas (Tabs) */
+        .tab-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+        }
+
+        .tab-btn {
+            background-color: var(--bg-card);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover { background-color: var(--brand-light); color: var(--brand-color); }
+        .tab-btn.active {
+            background-color: var(--primary-dark);
+            color: white;
+            border-color: var(--primary-dark);
+        }
+
+        .tab-content { display: none; animation: fadeIn 0.3s ease-in-out; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Módulos */
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 19px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 16px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 90px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 15px;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Práticas em Segurança do Trabalho</h1>
+        <p>Desenvolva habilidades práticas simulando cenários reais das aulas de PPRA, Higiene Ocupacional, Primeiros Socorros, Prevenção de Incêndios e Ética Profissional no ambiente corporativo.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Você validou 0 de 15 módulos. Preencha as atividades e valide.</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- Controle das Abas -->
+    <div class="tab-controls">
+        <button class="tab-btn active" onclick="openTab('tab1', this)">1. Gestão, Riscos e EPIs (Aulas 4, 6 e 8)</button>
+        <button class="tab-btn" onclick="openTab('tab2', this)">2. Emergências e Acidentes (Aulas 10, 11 e 12)</button>
+        <button class="tab-btn" onclick="openTab('tab3', this)">3. Sinalização, Estrutura e Ética (Aulas 3, 14 e 16)</button>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TRILHA 1: GESTÃO DE RISCOS E EPI (Aulas 4,6,8) -->
+    <!-- ========================================== -->
+    <div id="tab1" class="tab-content active">
+        
+        <!-- Módulo 1.1 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">1</div>
+                <h2>[Associação] EPI vs EPC (Aula 4)</h2>
+            </div>
+            <div class="scenario-description">
+                Na gestão de canteiros, você deve distinguir equipamentos individuais e coletivos. Associe corretamente:
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 70%;">Sistema de exaustão de gases e Guarda-corpo.</td>
+                    <td>
+                        <select id="t1-m1-a1" class="input-box">
+                            <option value="">Selecione...</option><option value="EPI">EPI (Individual)</option><option value="EPC">EPC (Coletivo)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Protetor auricular tipo concha e Luvas de raspa.</td>
+                    <td>
+                        <select id="t1-m1-a2" class="input-box">
+                            <option value="">Selecione...</option><option value="EPI">EPI (Individual)</option><option value="EPC">EPC (Coletivo)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t1-m1" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 1.2 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">2</div>
+                <h2>[Preenchimento] Higiene Ocupacional (Aula 6)</h2>
+            </div>
+            <div class="scenario-description">
+                O Técnico de Segurança precisa classificar os agentes de risco no mapa. Complete as lacunas:
+            </div>
+            <div class="fill-text-paragraph">
+                O ruído contínuo das máquinas e as vibrações são classificados como Riscos 
+                <select id="t1-m2-l1" class="input-inline">
+                    <option value="">Selecione...</option><option value="fisicos">Físicos (Verde)</option><option value="biologicos">Biológicos (Marrom)</option>
+                </select>. 
+                Já a inalação de vapores de solventes e poeiras minerais configuram Riscos 
+                <select id="t1-m2-l2" class="input-inline">
+                    <option value="">Selecione...</option><option value="quimicos">Químicos (Vermelho)</option><option value="ergonomicos">Ergonômicos (Amarelo)</option>
+                </select>. 
+                Por fim, bactérias e vírus em um laboratório representam Riscos 
+                <select id="t1-m2-l3" class="input-inline">
+                    <option value="">Selecione...</option><option value="biologicos">Biológicos (Marrom)</option><option value="fisicos">Físicos (Verde)</option>
+                </select>.
+            </div>
+            <div id="feedback-t1-m2" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 1.3 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">3</div>
+                <h2>[Matriz V/F] Programa de Prevenção (Aula 8)</h2>
+            </div>
+            <div class="scenario-description">
+                Julgue os conceitos fundamentais sobre os programas de prevenção de riscos:
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 75%;">1. O PPRA (atualmente englobado pelo PGR) tem como objetivo antecipar, reconhecer, avaliar e controlar os riscos ambientais na empresa.</td>
+                    <td>
+                        <select id="t1-m3-vf1" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. A elaboração do programa de riscos isenta automaticamente a empresa de fornecer EPIs aos seus trabalhadores.</td>
+                    <td>
+                        <select id="t1-m3-vf2" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t1-m3" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 1.4 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">4</div>
+                <h2>[Input Exato] Legislação de Equipamentos</h2>
+            </div>
+            <div class="scenario-description">
+                Todo Equipamento de Proteção Individual, seja de fabricação nacional ou importado, só pode ser comercializado com o Certificado de Aprovação (CA). Qual é o número exato da Norma Regulamentadora que trata exclusivamente de EPI?
+            </div>
+            <div style="max-width: 250px;">
+                <input type="text" id="t1-m4-calc" class="input-box" placeholder="Digite apenas o número da NR (ex: 12)...">
+            </div>
+            <div id="feedback-t1-m4" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 1.5 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">5</div>
+                <h2>[Análise Situacional] Recusa do Uso de EPI (Aula 4/16)</h2>
+            </div>
+            <div class="scenario-description">
+                <strong>Situação:</strong> Um operário experiente recusa-se a usar o capacete alegando que o equipamento é "desconfortável e dá dor de cabeça". Como Técnico/Fiscal, qual deve ser o procedimento técnico e educativo imediato antes de aplicar punições?
+            </div>
+            <textarea id="t1-m5-diss" class="input-box" placeholder="Explique a necessidade de orientar, treinar ou advertir o funcionário, além de verificar o conforto do equipamento..."></textarea>
+            <div id="feedback-t1-m5" class="feedback-badge"></div>
+        </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TRILHA 2: EMERGÊNCIAS (Aulas 10, 11 e 12)  -->
+    <!-- ========================================== -->
+    <div id="tab2" class="tab-content">
+        
+        <!-- Módulo 2.1 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">6</div>
+                <h2>[Ordenação] Primeiros Socorros e Resgate (Aula 11)</h2>
+            </div>
+            <div class="scenario-description">
+                Ocorreu um acidente grave com choque elétrico. Seguindo o protocolo internacional (PAS - Proteger, Avisar, Socorrer), ordene as ações:
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 65%;">Acionar o resgate especializado (SAMU/Bombeiros).</td>
+                    <td>
+                        <select id="t2-m6-o1" class="input-box">
+                            <option value="">Selecione...</option><option value="1">1º (Proteger)</option><option value="2">2º (Avisar)</option><option value="3">3º (Socorrer)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Prestar o atendimento de suporte básico (massagem cardíaca), caso capacitado.</td>
+                    <td>
+                        <select id="t2-m6-o2" class="input-box">
+                            <option value="">Selecione...</option><option value="1">1º (Proteger)</option><option value="2">2º (Avisar)</option><option value="3">3º (Socorrer)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Desligar a chave geral de energia para isolar o local e garantir a segurança do socorrista.</td>
+                    <td>
+                        <select id="t2-m6-o3" class="input-box">
+                            <option value="">Selecione...</option><option value="1">1º (Proteger)</option><option value="2">2º (Avisar)</option><option value="3">3º (Socorrer)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t2-m6" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 2.2 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">7</div>
+                <h2>[Associação] Proteção Contra Incêndio (Aula 10)</h2>
+            </div>
+            <div class="scenario-description">
+                A brigada de emergência precisa utilizar o extintor adequado. Relacione a classe do incêndio ao seu combustível:
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 60%;">Materiais sólidos (Papel, madeira, tecido).</td>
+                    <td>
+                        <select id="t2-m7-a1" class="input-box">
+                            <option value="">Selecione...</option><option value="A">Classe A</option><option value="B">Classe B</option><option value="C">Classe C</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Líquidos inflamáveis (Gasolina, álcool, óleo).</td>
+                    <td>
+                        <select id="t2-m7-a2" class="input-box">
+                            <option value="">Selecione...</option><option value="A">Classe A</option><option value="B">Classe B</option><option value="C">Classe C</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t2-m7" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 2.3 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">8</div>
+                <h2>[Matriz V/F] Comunicação de Acidente (Aula 12)</h2>
+            </div>
+            <div class="scenario-description">
+                Avalie as diretrizes legais sobre a emissão da Comunicação de Acidente de Trabalho (CAT):
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 75%;">1. Acidentes de trajeto (no percurso entre a casa e o trabalho) também exigem a emissão da CAT pela empresa.</td>
+                    <td>
+                        <select id="t2-m8-vf1" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. A CAT só deve ser emitida se o acidente causar lesões que afastem o trabalhador por mais de 15 dias.</td>
+                    <td>
+                        <select id="t2-m8-vf2" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t2-m8" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 2.4 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">9</div>
+                <h2>[Input Exato] Prazos de Emissão da CAT</h2>
+            </div>
+            <div class="scenario-description">
+                Qual é o prazo máximo (em horas corridas ou equivalente no próximo dia útil) que a empresa possui para emitir a CAT após a ocorrência de um acidente sem óbito?
+            </div>
+            <div style="max-width: 250px;">
+                <input type="text" id="t2-m9-calc" class="input-box" placeholder="Digite o número de horas (Ex: 48)...">
+            </div>
+            <div id="feedback-t2-m9" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 2.5 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">10</div>
+                <h2>[Prática Externa] Formulário de CAT</h2>
+            </div>
+            <div class="scenario-description">
+                Crie um modelo simplificado de formulário de ocorrência de acidentes no Google Docs ou Google Forms e cole o link abaixo para compor o portfólio de gestão de segurança.
+            </div>
+            <input type="url" id="t2-m10-link" class="input-box" placeholder="https://docs.google.com/forms/d/exemplo...">
+            <div id="feedback-t2-m10" class="feedback-badge"></div>
+        </article>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TRILHA 3: ESTRUTURA E ÉTICA (Aulas 3, 14, 16) -->
+    <!-- ========================================== -->
+    <div id="tab3" class="tab-content">
+        
+        <!-- Módulo 3.1 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">11</div>
+                <h2>[Lacunas] Sinalização de Segurança (Aula 14)</h2>
+            </div>
+            <div class="scenario-description">
+                As normas técnicas definem cores específicas para padronizar a segurança visual:
+            </div>
+            <div class="fill-text-paragraph">
+                Na sinalização industrial, a cor 
+                <select id="t3-m11-l1" class="input-inline">
+                    <option value="">Selecione...</option><option value="vermelho">Vermelha</option><option value="amarelo">Amarela</option>
+                </select> 
+                é utilizada exclusivamente para identificar equipamentos de combate a incêndio. Para indicar 'Atenção' e advertir sobre perigos, como máquinas pesadas, usa-se a cor 
+                <select id="t3-m11-l2" class="input-inline">
+                    <option value="">Selecione...</option><option value="amarelo">Amarela</option><option value="verde">Verde</option>
+                </select>. 
+                Já a cor 
+                <select id="t3-m11-l3" class="input-inline">
+                    <option value="">Selecione...</option><option value="azul">Azul</option><option value="verde">Verde</option>
+                </select> 
+                é padronizada para identificar segurança, caixas de primeiros socorros e rotas de fuga seguras.
+            </div>
+            <div id="feedback-t3-m11" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 3.2 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">12</div>
+                <h2>[Associação] SESMT x CIPA (Aula 3)</h2>
+            </div>
+            <div class="scenario-description">
+                Identifique a diferença entre as duas principais frentes de segurança nas organizações:
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 65%;">Composta por profissionais técnicos contratados (Engenheiros, Médicos, Técnicos de Segurança).</td>
+                    <td>
+                        <select id="t3-m12-a1" class="input-box">
+                            <option value="">Selecione...</option><option value="SESMT">SESMT</option><option value="CIPA">CIPA</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Comissão formada por representantes eleitos pelos empregados e indicados pelo empregador.</td>
+                    <td>
+                        <select id="t3-m12-a2" class="input-box">
+                            <option value="">Selecione...</option><option value="SESMT">SESMT</option><option value="CIPA">CIPA</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t3-m12" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 3.3 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">13</div>
+                <h2>[Análise Situacional] Ética e Sistemas Corporativos (Aula 16)</h2>
+            </div>
+            <div class="scenario-description">
+                <strong>Caso Situacional:</strong> Você está desenvolvendo e arquitetando a lógica de um dashboard web (usando React e um banco de dados PostgreSQL) para o SESMT de uma indústria. O gestor da planta pede para que você crie uma funcionalidade oculta no backend que permita "apagar do histórico do sistema" acidentes leves (que não geraram afastamento), com o objetivo de mascarar os dados antes de auditorias do Ministério do Trabalho.
+            </div>
+            <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+                Baseado na Ética Profissional (Aula 16), qual deve ser seu posicionamento técnico e ético como desenvolvedor frente a essa demanda?
+            </label>
+            <textarea id="t3-m13-diss" class="input-box" placeholder="Justifique sua recusa citando os riscos legais (fraude, crime), a integridade dos dados, rastreabilidade e compromisso ético com a segurança real dos trabalhadores..."></textarea>
+            <div id="feedback-t3-m13" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 3.4 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">14</div>
+                <h2>[Matriz V/F] Condições Sanitárias e Conforto (Aula 15)</h2>
+            </div>
+            <div class="scenario-description">
+                Sobre as exigências da NR-24 (Condições Sanitárias e de Conforto):
+            </div>
+            <table>
+                <tr>
+                    <td style="width: 75%;">1. A empresa é obrigada a fornecer água potável filtrada e instalações sanitárias limpas para os trabalhadores.</td>
+                    <td>
+                        <select id="t3-m14-vf1" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Refeitórios não são obrigatórios, os operários podem fazer as refeições nos próprios postos de trabalho em meio às máquinas.</td>
+                    <td>
+                        <select id="t3-m14-vf2" class="input-box">
+                            <option value="">Selecione...</option><option value="V">Verdadeiro (V)</option><option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <div id="feedback-t3-m14" class="feedback-badge"></div>
+        </article>
+
+        <!-- Módulo 3.5 -->
+        <article class="module-card">
+            <div class="module-header">
+                <div class="module-number">15</div>
+                <h2>[Prática Externa] Mapeamento Visual de Riscos</h2>
+            </div>
+            <div class="scenario-description">
+                Acesse o Canva (ou similar) e crie um layout básico representando um "Mapa de Riscos" de um ambiente operacional usando os círculos coloridos (Verde, Vermelho, Marrom). Cole o link de visualização pública.
+            </div>
+            <input type="url" id="t3-m15-link" class="input-box" placeholder="https://www.canva.com/design/exemplo...">
+            <div id="feedback-t3-m15" class="feedback-badge"></div>
+        </article>
+
+    </div>
+
+</div>
+
+<script>
+    // Tab Navigation Logic
+    function openTab(tabId, btnElement) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        btnElement.classList.add('active');
+    }
+
+    // Validation Helpers
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTextoInteligente(texto, minPalavras, palavrasChaveRegex, msgIncorreto) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Escreva uma análise mais detalhada (mínimo de ${minPalavras} palavras).` };
+        if (!palavrasChaveRegex.test(limpo)) return { valido: false, motivo: msgIncorreto };
+        
+        return { valido: true, motivo: "Análise técnica excelente e fundamentada!" };
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        const total = 15;
+
+        // --- TAB 1 ---
+        const t1m1_1 = document.getElementById('t1-m1-a1').value;
+        const t1m1_2 = document.getElementById('t1-m1-a2').value;
+        if (t1m1_1 === 'EPC' && t1m1_2 === 'EPI') {
+            aplicarFeedback('feedback-t1-m1', { valido: true, motivo: "Correto! Exaustão e guarda-corpo protegem o grupo (EPC); luva e protetor são individuais (EPI)." }); acertos++;
+        } else { aplicarFeedback('feedback-t1-m1', { valido: false, motivo: "Incorreto. Guarda-corpo é EPC, Protetores e luvas são EPIs." }); }
+
+        const t1m2_1 = document.getElementById('t1-m2-l1').value;
+        const t1m2_2 = document.getElementById('t1-m2-l2').value;
+        const t1m2_3 = document.getElementById('t1-m2-l3').value;
+        if (t1m2_1 === 'fisicos' && t1m2_2 === 'quimicos' && t1m2_3 === 'biologicos') {
+            aplicarFeedback('feedback-t1-m2', { valido: true, motivo: "Perfeito! Ruído = Físico, Poeira/Gases = Químico, Vírus = Biológico." }); acertos++;
+        } else { aplicarFeedback('feedback-t1-m2', { valido: false, motivo: "Revise a classificação: Ruído (Físico), Vapores (Químicos), Bactérias (Biológicos)." }); }
+
+        const t1m3_1 = document.getElementById('t1-m3-vf1').value;
+        const t1m3_2 = document.getElementById('t1-m3-vf2').value;
+        if (t1m3_1 === 'V' && t1m3_2 === 'F') {
+            aplicarFeedback('feedback-t1-m3', { valido: true, motivo: "Correto! O Programa avalia os riscos (V), mas os EPIs continuam obrigatórios caso haja risco residual (F)." }); acertos++;
+        } else { aplicarFeedback('feedback-t1-m3', { valido: false, motivo: "O PPRA reconhece riscos (V), mas NÃO isenta o fornecimento de EPI (F)." }); }
+
+        const t1m4 = document.getElementById('t1-m4-calc').value.trim();
+        if (t1m4 === '6' || t1m4 === '06') {
+            aplicarFeedback('feedback-t1-m4', { valido: true, motivo: "Exato! A NR-06 é a norma que regulamenta a fabricação, CA e uso de EPIs." }); acertos++;
+        } else { aplicarFeedback('feedback-t1-m4', { valido: false, motivo: "Incorreto. A Norma Regulamentadora exclusiva de EPI é a número 6." }); }
+
+        const t1m5 = document.getElementById('t1-m5-diss').value;
+        const resT1M5 = validarTextoInteligente(t1m5, 6, /orientar|treinar|conscientizar|advertir|explicar|ensinar|dialogar|motivo/i, "Faltam ações educativas essenciais. Cite a importância de orientar, treinar, conscientizar ou advertir formalmente.");
+        aplicarFeedback('feedback-t1-m5', resT1M5);
+        if (resT1M5.valido) acertos++;
+
+        // --- TAB 2 ---
+        const t2m6_1 = document.getElementById('t2-m6-o1').value; // Avisar (2)
+        const t2m6_2 = document.getElementById('t2-m6-o2').value; // Socorrer (3)
+        const t2m6_3 = document.getElementById('t2-m6-o3').value; // Proteger (1)
+        if (t2m6_3 === '1' && t2m6_1 === '2' && t2m6_2 === '3') {
+            aplicarFeedback('feedback-t2-m6', { valido: true, motivo: "Protocolo PAS correto: 1º Proteger a cena (energia), 2º Avisar emergência, 3º Socorrer a vítima." }); acertos++;
+        } else { aplicarFeedback('feedback-t2-m6', { valido: false, motivo: "A ordem salva vidas: 1º Proteger a cena; 2º Avisar o SAMU; 3º Socorrer a vítima." }); }
+
+        const t2m7_1 = document.getElementById('t2-m7-a1').value;
+        const t2m7_2 = document.getElementById('t2-m7-a2').value;
+        if (t2m7_1 === 'A' && t2m7_2 === 'B') {
+            aplicarFeedback('feedback-t2-m7', { valido: true, motivo: "Correto! Classe A para sólidos e Classe B para líquidos inflamáveis." }); acertos++;
+        } else { aplicarFeedback('feedback-t2-m7', { valido: false, motivo: "Sólidos combustíveis são Classe A; Líquidos Inflamáveis são Classe B." }); }
+
+        const t2m8_1 = document.getElementById('t2-m8-vf1').value;
+        const t2m8_2 = document.getElementById('t2-m8-vf2').value;
+        if (t2m8_1 === 'V' && t2m8_2 === 'F') {
+            aplicarFeedback('feedback-t2-m8', { valido: true, motivo: "Correto! Acidente de trajeto é acidente de trabalho (V). Qualquer acidente, mesmo sem afastamento, exige CAT (F)." }); acertos++;
+        } else { aplicarFeedback('feedback-t2-m8', { valido: false, motivo: "Trajeto exige CAT (Verdadeiro). CAT é exigida independentemente de dias de afastamento (Falso)." }); }
+
+        const t2m9 = document.getElementById('t2-m9-calc').value.trim();
+        if (t2m9 === '24') {
+            aplicarFeedback('feedback-t2-m9', { valido: true, motivo: "Exato! O prazo legal é de 24 horas (ou 1 dia útil) após o ocorrido." }); acertos++;
+        } else { aplicarFeedback('feedback-t2-m9', { valido: false, motivo: "Incorreto. A legislação define o prazo de 24 horas úteis." }); }
+
+        const t2m10 = document.getElementById('t2-m10-link').value.trim();
+        if (/https?:\/\/(docs|forms)\.google\.com/i.test(t2m10)) {
+            aplicarFeedback('feedback-t2-m10', { valido: true, motivo: "Link validado! Formulário registrado com sucesso." }); acertos++;
+        } else { aplicarFeedback('feedback-t2-m10', { valido: false, motivo: "Insira uma URL pública válida do Google Docs ou Forms." }); }
+
+        // --- TAB 3 ---
+        const t3m11_1 = document.getElementById('t3-m11-l1').value;
+        const t3m11_2 = document.getElementById('t3-m11-l2').value;
+        const t3m11_3 = document.getElementById('t3-m11-l3').value;
+        if (t3m11_1 === 'vermelho' && t3m11_2 === 'amarelo' && t3m11_3 === 'verde') {
+            aplicarFeedback('feedback-t3-m11', { valido: true, motivo: "Perfeito! Vermelho = Incêndio, Amarelo = Atenção/Perigo, Verde = Segurança/Rotas." }); acertos++;
+        } else { aplicarFeedback('feedback-t3-m11', { valido: false, motivo: "Cores da norma: Incêndio (Vermelho), Atenção (Amarelo), Segurança (Verde)." }); }
+
+        const t3m12_1 = document.getElementById('t3-m12-a1').value;
+        const t3m12_2 = document.getElementById('t3-m12-a2').value;
+        if (t3m12_1 === 'SESMT' && t3m12_2 === 'CIPA') {
+            aplicarFeedback('feedback-t3-m12', { valido: true, motivo: "Exato! SESMT é técnico e contratado; CIPA é uma comissão mista e eleita." }); acertos++;
+        } else { aplicarFeedback('feedback-t3-m12', { valido: false, motivo: "Profissionais técnicos contratados = SESMT. Comissão de trabalhadores = CIPA." }); }
+
+        const t3m13 = document.getElementById('t3-m13-diss').value;
+        const resT3M13 = validarTextoInteligente(t3m13, 8, /fraude|crime|ética|antiético|recusar|negar|auditoria|rastreabilidade|integridade|lei|segurança/i, "Faltou clareza na recusa ética. Cite termos como fraude, recusa da ação, integridade dos dados do banco ou violação da lei.");
+        aplicarFeedback('feedback-t3-m13', resT3M13);
+        if (resT3M13.valido) acertos++;
+
+        const t3m14_1 = document.getElementById('t3-m14-vf1').value;
+        const t3m14_2 = document.getElementById('t3-m14-vf2').value;
+        if (t3m14_1 === 'V' && t3m14_2 === 'F') {
+            aplicarFeedback('feedback-t3-m14', { valido: true, motivo: "Correto! Água potável é básico (V). Refeições no posto de trabalho são proibidas por higiene e segurança (F)." }); acertos++;
+        } else { aplicarFeedback('feedback-t3-m14', { valido: false, motivo: "Instalações sanitárias são obrigatórias (Verdadeiro). Comer no posto de trabalho é infração à NR-24 (Falso)." }); }
+
+        const t3m15 = document.getElementById('t3-m15-link').value.trim();
+        if (/https?:\/\/(www\.)?canva\.com/i.test(t3m15)) {
+            aplicarFeedback('feedback-t3-m15', { valido: true, motivo: "Link do Canva validado com sucesso!" }); acertos++;
+        } else { aplicarFeedback('feedback-t3-m15', { valido: false, motivo: "Insira uma URL válida do Canva." }); }
+
+        // --- STATUS UPDATE ---
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Trilhas Concluídas com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você aplicou corretamente os conceitos de Segurança do Trabalho e validou os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Ajustes Necessários";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Você validou ${acertos} de ${total} módulos. Navegue pelas abas e corrija os pontos destacados em vermelho.`;
+        }
+    }
+</script>
+
+</body>
+</html>

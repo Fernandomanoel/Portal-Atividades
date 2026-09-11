@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Gestão de Riscos e Segurança do Trabalho</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #059669; /* Verde Segurança */
+            --brand-light: #d1fae5;
+            --accent-color: #047857;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .simulacao-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .simulacao-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .simulacao-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .simulacao-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: space-between; font-weight: bold; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Gestão de Riscos e Segurança do Trabalho</h1>
+        <p>Analise cenários reais do ambiente corporativo e aplique normas de segurança. Explore módulos de Gestão de Riscos Ocupacionais, Equipamentos de Proteção, Primeiros Socorros e Ética Profissional.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: PREENCHIMENTO DE LACUNAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Preenchimento de Lacunas] Gestão de Riscos e Hierarquia de Controle</h2>
+        </div>
+        <div class="scenario-description">
+            Complete o relatório técnico sobre o planejamento preventivo do ambiente de trabalho:
+        </div>
+        <div class="fill-text-paragraph">
+            O documento principal para gerenciamento ocupacional na empresa é o 
+            <select id="m1-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="PGR">PGR (Programa de Gerenciamento de Riscos)</option>
+                <option value="CAT">CAT (Comunicação de Acidente)</option>
+            </select>. 
+            Nele, agentes como ruído intenso e vibração são classificados estruturalmente como riscos 
+            <select id="m1-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="quimicos">Químicos</option>
+                <option value="fisicos">Físicos</option>
+            </select>. 
+            Quando um perigo é detectado, a medida de controle prioritária adotada deve ser sempre a instalação de proteção 
+            <select id="m1-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="coletiva">Coletiva (EPC)</option>
+                <option value="individual">Individual (EPI)</option>
+            </select>, antes de recorrer a outras defesas.
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Equipamentos e Sinalização</h2>
+        </div>
+        <div class="scenario-description">
+            Com base nas Normas Regulamentadoras, avalie as afirmativas abaixo como **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Afirmação Técnica</th>
+                    <th style="width: 30%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. O fornecimento do EPI é obrigação exclusiva da empresa (de forma gratuita), mas a guarda, conservação e uso correto são deveres do trabalhador.</td>
+                    <td>
+                        <select id="m2-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Na sinalização de segurança, a cor vermelha é utilizada tanto para equipamentos de incêndio quanto para indicar rotas de fuga e saídas seguras.</td>
+                    <td>
+                        <select id="m2-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: SIMULAÇÃO INTERATIVA DE CÁLCULO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Simulação de Auditoria] Cálculo na Matriz de Riscos</h2>
+        </div>
+        <div class="scenario-description">
+            Como auditor de segurança, você identificou uma prensa mecânica operando sem a proteção frontal. Calcule o **Nível de Risco** final aplicando a fórmula padrão de avaliação (Probabilidade × Severidade):
+        </div>
+        <div class="simulacao-box">
+            <div class="simulacao-header">FICHA DE AVALIAÇÃO DE RISCO OPERACIONAL</div>
+            <div class="simulacao-grid">
+                <div><strong>Indicador Avaliado</strong></div>
+                <div><strong>Peso Atribuído</strong></div>
+
+                <div>Índice de Probabilidade (Ocorrência Frequente)</div>
+                <div>3</div>
+
+                <div>Índice de Severidade (Risco de Amputação)</div>
+                <div>4</div>
+            </div>
+            <div class="simulacao-footer">
+                <span>Fórmula: Probabilidade × Severidade</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Informe o NÍVEL DE RISCO (Valor Numérico Resultante):</label>
+            <input type="text" id="m3-risco" class="input-box" style="margin-top: 6px; max-width: 250px;" placeholder="Digite apenas o número (Ex: 8)...">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: ORDENAÇÃO CRONOLÓGICA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Sequenciamento] Protocolo de Primeiros Socorros e Resgate</h2>
+        </div>
+        <div class="scenario-description">
+            Um operário sofreu um acidente envolvendo um painel elétrico na fábrica. Ordene corretamente as ações do protocolo internacional de emergência (PAS - Proteger, Avisar, Socorrer):
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Ação de Emergência</th>
+                    <th style="width: 35%;">Ordem Correta (1º ao 3º)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Desligar a chave geral para isolar o local e garantir a segurança de todos.</td>
+                    <td>
+                        <select id="m4-ord1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Acionar imediatamente o resgate especializado (SAMU/Bombeiros).</td>
+                    <td>
+                        <select id="m4-ord2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Prestar suporte básico à vítima apenas se possuir treinamento adequado.</td>
+                    <td>
+                        <select id="m4-ord3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo (Prioridade Máxima)</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: ANÁLISE CRÍTICA (DISSERTATIVA INTELIGENTE) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Crítica] Ética Profissional e Omissão de Acidentes</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Caso Situacional:</strong> Um trabalhador sofreu um corte profundo na mão durante o turno. O encarregado de produção exige que o Técnico de Segurança não registre a Comunicação de Acidente de Trabalho (CAT) para que o setor não perca o prêmio do placar "Dias Sem Acidentes".
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Qual deve ser o posicionamento ético e legal do profissional de segurança diante dessa exigência?
+        </label>
+        <textarea id="m5-dissertativa" class="input-box" placeholder="Justifique sua resposta mencionando a obrigatoriedade da lei, a emissão do documento adequado (CAT) e a não omissão de dados..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 6, minComprimento = 25) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva pelo menos ${minComprimento} caracteres coerentes.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números detectados. Formule uma resposta discursiva." };
+        
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua justificativa requer no mínimo ${minPalavras} palavras.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.8) return { valido: false, motivo: "Texto apresenta indícios de digitação ilegível." };
+
+        return { valido: true, motivo: "Análise recebida com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Preenchimento de Lacunas
+        const l1 = document.getElementById('m1-l1').value;
+        const l2 = document.getElementById('m1-l2').value;
+        const l3 = document.getElementById('m1-l3').value;
+
+        if (l1 === 'PGR' && l2 === 'fisicos' && l3 === 'coletiva') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! O PGR gere os riscos físicos (ruído) e prioriza medidas de Proteção Coletiva (EPC)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Lembre-se: o programa é o PGR, ruído é risco físico, e a proteção prioritária é coletiva." });
+        }
+
+        // Módulo 2: Matriz Verdadeiro ou Falso
+        const vf1 = document.getElementById('m2-vf1').value;
+        const vf2 = document.getElementById('m2-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Correto! O dever de guarda do EPI é do empregado (V). A cor para rotas de fuga é Verde, e não Vermelha (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. Reveja as cores da sinalização (Vermelho é exclusivo para incêndio; Verde é rota de fuga)." });
+        }
+
+        // Módulo 3: Input Exato (Simulação)
+        const riscoVal = document.getElementById('m3-risco').value.trim();
+        if (riscoVal === '12' || riscoVal === '12,0') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! Nível de Risco = Probabilidade (3) × Severidade (4) = 12." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Efetue a multiplicação direta dos índices na tabela (3 vezes 4)." });
+        }
+
+        // Módulo 4: Ordenação Cronológica (PAS)
+        const ord1 = document.getElementById('m4-ord1').value;
+        const ord2 = document.getElementById('m4-ord2').value;
+        const ord3 = document.getElementById('m4-ord3').value;
+
+        if (ord1 === '1' && ord2 === '2' && ord3 === '3') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Excelente! Sequência P.A.S. correta: 1º Proteger a cena (energia), 2º Avisar o resgate, 3º Socorrer." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. A ordem vital é: 1º Proteger (desligar energia), 2º Avisar (chamar socorro), 3º Socorrer." });
+        }
+
+        // Módulo 5: Dissertativa Inteligente
+        const audVal = document.getElementById('m5-dissertativa').value;
+        const resAud = validarTextoInteligente(audVal, 6, 25);
+        if (resAud.valido) {
+            const termosEtica = /cat|obrigat|lei|étic|ocult|fraude|registrar|notific|emit/i;
+            if (!termosEtica.test(audVal)) {
+                resAud.valido = false;
+                resAud.motivo = "Você precisa mencionar explicitamente a obrigação de 'emitir a CAT', cumprir a 'lei' ou manter a 'ética', não ocultando dados.";
+            } else {
+                resAud.motivo = "Diagnóstico ético perfeito. A emissão da CAT é uma obrigação legal inegociável, garantindo os direitos do trabalhador.";
+            }
+        }
+        aplicarFeedback('feedback-m5', resAud);
+        if (resAud.valido) acertos++;
+
+        // Status Geral
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou perfeitamente todos os ${acertos} de ${total} módulos práticos.`;
+        } else {
+            completionText.innerText = "Em Andamento";
+            completionText.style.color = "var(--warning-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos foram validados. Verifique o feedback em vermelho e tente novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

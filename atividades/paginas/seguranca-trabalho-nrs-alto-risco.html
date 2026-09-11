@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Segurança do Trabalho — Normas de Alto Risco</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #059669; /* Verde Segurança */
+            --brand-light: #d1fae5;
+            --accent-color: #047857;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: NRs de Alto Risco na Segurança do Trabalho</h1>
+        <p>Aprofunde-se nos protocolos de ambientes críticos. Solucione cenários de Prevenção de Incêndios (NR-23), Trabalho em Altura (NR-35), Espaços Confinados (NR-33) e Ergonomia (NR-17).</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ASSOCIAÇÃO - CLASSES DE INCÊNDIO E EXTINTORES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Associação] Equipamentos de Combate a Incêndio (NR-23)</h2>
+        </div>
+        <div class="scenario-description">
+            O uso do extintor incorreto pode agravar o acidente. Associe o tipo de fogo ao agente extintor mais adequado para apagá-lo com segurança:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Cenário de Incêndio</th>
+                    <th style="width: 35%;">Agente Extintor Ideal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Fogo em materiais sólidos que deixam cinzas (Ex: Madeira, papelão, tecidos - Classe A).</td>
+                    <td>
+                        <select id="m1-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="agua">Água Pressurizada</option>
+                            <option value="co2">Gás Carbônico (CO2)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Fogo em painéis elétricos energizados e servidores de TI (Classe C).</td>
+                    <td>
+                        <select id="m1-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="agua">Água Pressurizada</option>
+                            <option value="co2">Gás Carbônico (CO2)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: PREENCHIMENTO DE LACUNAS - TRABALHO EM ALTURA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Preenchimento de Lacunas] Protocolo de Trabalho em Altura (NR-35)</h2>
+        </div>
+        <div class="scenario-description">
+            Complete o procedimento de segurança obrigatório para atividades executadas acima do nível do solo:
+        </div>
+        <div class="fill-text-paragraph">
+            Segundo a NR-35, o uso de sistema de ancoragem e EPI é obrigatório para toda atividade executada acima de 
+            <select id="m2-l1" class="input-inline">
+                <option value="">Selecione a altura...</option>
+                <option value="2m">2,0 metros</option>
+                <option value="5m">5,0 metros</option>
+            </select> 
+            do nível inferior. Nessas operações, o trabalhador não pode usar cintos simples, sendo obrigatório o uso de cinturão de segurança tipo 
+            <select id="m2-l2" class="input-inline">
+                <option value="">Selecione o EPI...</option>
+                <option value="abdominal">Abdominal</option>
+                <option value="paraquedista">Paraquedista</option>
+            </select>. 
+            Além disso, o serviço só pode iniciar após a emissão do documento conhecido como 
+            <select id="m2-l3" class="input-inline">
+                <option value="">Selecione o Documento...</option>
+                <option value="pt">PT (Permissão de Trabalho)</option>
+                <option value="cat">CAT (Comunicação de Acidente)</option>
+            </select>.
+        </div>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: MATRIZ VERDADEIRO OU FALSO - ERGONOMIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Matriz Verdadeiro ou Falso] Posto de Trabalho e Ergonomia (NR-17)</h2>
+        </div>
+        <div class="scenario-description">
+            Julgue as afirmações relacionadas à adaptação do trabalho ao homem (Ergonomia):
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Afirmação Técnica (NR-17)</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Em postos informatizados, o monitor deve estar na altura dos olhos e a cadeira deve possuir regulagem de altura e encosto lombar.</td>
+                    <td>
+                        <select id="m3-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Para aumentar a produtividade, o trabalhador que faz levantamento manual de caixas não tem limite de peso estabelecido, dependendo apenas da sua força física.</td>
+                    <td>
+                        <select id="m3-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: INPUT EXATO / LEGISLAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Input Exato] Identificação de Norma Regulamentadora</h2>
+        </div>
+        <div class="scenario-description">
+            O Ministério do Trabalho classifica e numera rigorosamente os temas de segurança. Sabendo que a **NR-35** trata de Trabalho em Altura e a **NR-06** trata de EPIs...
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Digite APENAS o NÚMERO exato da Norma Regulamentadora que trata especificamente sobre Segurança em "Instalações e Serviços em Eletricidade":</label>
+            <input type="text" id="m4-input" class="input-box" style="margin-top: 6px; max-width: 250px;" placeholder="Exemplo: 12">
+            <div id="feedback-m4" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: DISSERTATIVA INTELIGENTE - ESPAÇO CONFINADO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Situacional] Liberação de Espaço Confinado (NR-33)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário Crítico:</strong> Um trabalhador foi escalado para entrar em um tanque subterrâneo (silo/cisterna) para realizar a limpeza profunda. Esse ambiente tem pouca ventilação natural e não foi projetado para ocupação humana contínua.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Atuando como Supervisor de Entrada, descreva quais procedimentos OBRIGATÓRIOS devem ser feitos antes da entrada (mencione termos como: medidor de gases/oxigênio, PET, ou Vigia externo).
+        </label>
+        <textarea id="m5-dissertativa" class="input-box" placeholder="Ex: Antes de entrar, deve-se aferir o oxigênio com o medidor de gases, emitir a PET (Permissão de Entrada) e garantir que um Vigia fique do lado de fora..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 6, minComprimento = 20) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `A resposta deve ser mais elaborada (mín. ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Utilize texto descritivo, não apenas números." };
+        
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta precisa ter no mínimo ${minPalavras} palavras.` };
+
+        return { valido: true, motivo: "Análise recebida com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Associação
+        const a1 = document.getElementById('m1-a1').value;
+        const a2 = document.getElementById('m1-a2').value;
+
+        if (a1 === 'agua' && a2 === 'co2') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! Água apaga resfriando Classe A, enquanto o CO2 é seguro para eletricidade (Classe C) pois não conduz energia." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Lembre-se que jogar água em painéis elétricos causa choques/curtos. Use Água na Classe A e CO2 na Classe C." });
+        }
+
+        // Módulo 2: Preenchimento de Lacunas
+        const l1 = document.getElementById('m2-l1').value;
+        const l2 = document.getElementById('m2-l2').value;
+        const l3 = document.getElementById('m2-l3').value;
+
+        if (l1 === '2m' && l2 === 'paraquedista' && l3 === 'pt') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente! Altura > 2 metros exige Cinto Paraquedista e a prévia Permissão de Trabalho (PT)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. As regras da NR-35 são claras: Acima de 2 metros; cinto tipo paraquedista; exige PT." });
+        }
+
+        // Módulo 3: Matriz Verdadeiro/Falso
+        const vf1 = document.getElementById('m3-vf1').value;
+        const vf2 = document.getElementById('m3-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Correto! Ajustes ergonômicos na mesa são vitais (V). O peso máximo de cargas é estritamente limitado por lei (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. A CLT e a NR-17 estabelecem limites claros de peso para evitar lesões na coluna (Afirmação 2 é Falsa)." });
+        }
+
+        // Módulo 4: Input Exato
+        const inputVal = document.getElementById('m4-input').value.trim();
+        if (inputVal === '10' || inputVal === 'NR10' || inputVal.toLowerCase() === 'nr-10') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Exato! A NR-10 é a norma que previne acidentes com eletricidade (choques, arcos elétricos)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. O número da norma exclusiva para serviços com eletricidade é 10." });
+        }
+
+        // Módulo 5: Dissertativa Inteligente
+        const textM5 = document.getElementById('m5-dissertativa').value;
+        const resM5 = validarTextoInteligente(textM5, 6, 25);
+        if (resM5.valido) {
+            const termosChave = /pet|permissão|vigia|gás|gases|oxigênio|atmosfera|medidor/i;
+            if (!termosChave.test(textM5)) {
+                resM5.valido = false;
+                resM5.motivo = "Ação de risco letal. Mencione a obrigatoriedade de medir os gases/oxigênio, manter um 'Vigia' e/ou emitir a PET.";
+            } else {
+                resM5.motivo = "Diagnóstico preciso! Aferir a atmosfera e manter um vigia do lado de fora (via PET) salva vidas em espaços confinados (NR-33).";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // Status Geral
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou excelente domínio das NRs de Alto Risco, validando os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Em Andamento";
+            completionText.style.color = "var(--warning-color)";
+            statusSummary.innerText = `Atenção: Apenas ${acertos} de ${total} módulos estão corretos. Verifique os feedbacks em vermelho e tente novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

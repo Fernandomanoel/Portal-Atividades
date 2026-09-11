@@ -445,11 +445,20 @@ const ATIVIDADES = [
         categoria: "windows",
       },
       {
+        titulo: "Conhecendo o Word",
+        descricao:
+          "Atividade para fazer no Word de verdade: digitar um texto curtinho e praticar negrito, itálico, sublinhado, cor, tamanho, alinhamento, lista com marcadores, desfazer e salvar. Com áudio explicando cada passo.",
+        tipo: "link",
+        url: "atividades/paginas/kids-conhecendo-o-word.html",
+        categoria: "word",
+      },
+      {
         titulo: "Missão: Meu Primeiro Relatório",
         descricao:
           "Atividade guiada para crianças escreverem um mini relatório no Word (título, formatação e parágrafos) e aprenderem a salvar o arquivo em PDF, com checklist interativo.",
         tipo: "link",
         url: "atividades/paginas/kids-word-mini-relatorio-pdf.html",
+        categoria: "word",
       },
       {
         titulo: "Missão: Minha Primeira Apresentação",
@@ -457,6 +466,7 @@ const ATIVIDADES = [
           "Atividade guiada para crianças criarem uma apresentação no PowerPoint: escolher design, montar slide de capa, adicionar slides com imagens e apresentar com F5, com checklist interativo.",
         tipo: "link",
         url: "atividades/paginas/kids-powerpoint-minha-apresentacao.html",
+        categoria: "powerpoint",
       },
       {
         titulo: "Missão Arquivos e Pastas",

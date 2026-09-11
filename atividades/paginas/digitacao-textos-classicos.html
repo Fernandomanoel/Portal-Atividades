@@ -40,15 +40,22 @@
             overflow-x: hidden;
         }
 
-        /* ---------- Rabiscos decorativos ---------- */
+        /* ---------- Rabiscos decorativos (estrelas e cactos) ---------- */
         .rabisco { position: absolute; pointer-events: none; user-select: none; z-index: 0; }
-        .rabisco.estrelas { top: 60px; left: 10px; width: clamp(60px, 7vw, 96px); color: var(--coral); }
+        .rabisco.estrelas { top: 58px; left: 8px; width: clamp(58px, 6.5vw, 92px); color: var(--coral); }
+        .rabisco.estrela-s { top: 470px; left: 62px; width: 26px; color: var(--destaque); transform: rotate(-14deg); }
+        .rabisco.estrela-d { top: 118px; right: 34px; width: 34px; color: var(--destaque); transform: rotate(12deg); }
+        .rabisco.estrela-d2 { bottom: 140px; right: 74px; width: 22px; color: var(--coral); transform: rotate(-8deg); }
         .rabisco.hash {
-            top: 232px; left: 26px;
-            font-family: 'Space Mono', monospace; font-size: clamp(34px, 4vw, 52px);
+            top: 228px; left: 24px;
+            font-family: 'Space Mono', monospace; font-size: clamp(32px, 3.8vw, 50px);
             font-weight: 700; color: var(--tinta);
         }
-        @media (max-width: 1100px) { .rabisco { display: none; } }
+        .rabisco.cacto { width: clamp(52px, 5.6vw, 82px); }
+        .rabisco.cacto-1 { top: 320px; left: 18px; transform: rotate(-5deg); }
+        .rabisco.cacto-2 { top: 300px; right: 18px; transform: rotate(6deg) scaleX(-1); }
+        .rabisco.cacto-3 { bottom: 40px; left: 48px; width: clamp(40px, 4.4vw, 62px); transform: rotate(3deg); }
+        @media (max-width: 1280px) { .rabisco { display: none; } }
 
         .pagina { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; }
 
@@ -115,6 +122,9 @@
         }
         @keyframes piscar { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
         .texto .ch.atual { color: var(--tinta); }
+        /* Marca a quebra de linha, para o aluno saber que ali é o Enter. */
+        .texto .ch.quebra::after { content: "↵"; color: var(--cinza-claro); font-size: .8em; }
+        .texto .ch.quebra.ok::after { color: var(--verde); }
 
         /* Campo invisível que recebe o que o aluno digita. Fica fora da vista,
            mas precisa continuar focável — é ele que entrega as letras com
@@ -288,11 +298,56 @@
         .modal h2 { font-size: 1.15rem; margin-bottom: 12px; }
         .modal p { font-size: .9rem; line-height: 1.6; margin-bottom: 10px; color: #5c5548; font-weight: 600; }
         .modal ul { margin: 0 0 14px 18px; font-size: .88rem; line-height: 1.7; color: #5c5548; font-weight: 600; }
-        .modal button {
+        .modal > button {
             background: var(--destaque); color: #fff; border: none; border-radius: 999px;
             padding: 9px 22px; font-family: inherit; font-weight: 800; cursor: pointer; font-size: .9rem;
         }
-        .modal button:hover { background: var(--destaque-escuro); }
+        .modal > button:hover { background: var(--destaque-escuro); }
+
+        /* ---------- Botão e janela de escolha de texto ---------- */
+        .btn-texto {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fbf3e2; border: 2px solid var(--borda); border-radius: 999px;
+            padding: 5px 14px; cursor: pointer; font-family: inherit;
+            font-size: clamp(.72rem, 1.45vh, .85rem); font-weight: 800; color: var(--tinta);
+            max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .btn-texto:hover { border-color: var(--destaque); background: #fdf0d8; }
+        .btn-texto .seta { color: var(--cinza); }
+
+        .modal-largo { max-width: 780px; max-height: 86vh; overflow-y: auto; }
+        .modal-topo { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .modal-sub { font-size: .84rem; color: var(--cinza); font-weight: 600; margin-bottom: 16px; }
+        .fechar-x {
+            background: none; border: none; cursor: pointer; font-size: 1.05rem;
+            color: var(--cinza); font-family: inherit; padding: 4px 8px; border-radius: 8px;
+        }
+        .fechar-x:hover { background: var(--borda); color: var(--tinta); }
+
+        .nivel { margin-bottom: 20px; }
+        .nivel:last-child { margin-bottom: 0; }
+        .nivel-cabecalho {
+            border-left: 5px solid var(--cor-nivel); padding-left: 10px; margin-bottom: 10px;
+        }
+        .nivel-cabecalho h3 { font-size: .95rem; color: var(--cor-nivel); }
+        .nivel-cabecalho p { font-size: .78rem; color: var(--cinza); font-weight: 600; margin: 0; }
+        .nivel-grade { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: 10px; }
+        .carta-texto {
+            display: flex; flex-direction: column; gap: 3px; text-align: left;
+            background: #fbf7ea; border: 2px solid var(--borda); border-radius: 14px;
+            padding: 11px 13px; cursor: pointer; font-family: inherit; color: var(--tinta);
+            transition: border-color .15s, transform .1s, background .15s;
+        }
+        .carta-texto:hover { border-color: var(--cor-nivel); transform: translateY(-2px); background: #fffdf7; }
+        .carta-texto.escolhido { border-color: var(--cor-nivel); background: #fffdf7; box-shadow: 0 0 0 3px rgba(0,0,0,.05); }
+        .carta-texto.escolhido .carta-titulo::after { content: " ✓"; color: var(--cor-nivel); }
+        .carta-titulo { font-weight: 800; font-size: .88rem; }
+        .carta-autor { font-size: .74rem; color: var(--cinza); font-weight: 700; font-style: italic; }
+        .carta-medida { font-size: .7rem; color: var(--cor-nivel); font-weight: 700; }
+        .carta-previa {
+            font-family: 'Space Mono', monospace; font-size: .68rem; line-height: 1.45;
+            color: var(--cinza); margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -300,20 +355,72 @@
         <path d="M28 8 l6 14 15 2 -11 10 3 15 -13 -8 -13 8 3 -15 -11 -10 15 -2z"/>
         <path d="M63 40 l8 18 19 3 -14 13 4 19 -17 -10 -17 10 4 -19 -14 -13 19 -3z"/>
     </svg>
+    <svg class="rabisco estrela-s" viewBox="0 0 40 40" fill="currentColor" aria-hidden="true">
+        <path d="M20 2 l5 12 13 1 -10 9 3 13 -11 -7 -11 7 3 -13 -10 -9 13 -1z"/>
+    </svg>
+    <svg class="rabisco estrela-d" viewBox="0 0 40 40" fill="currentColor" aria-hidden="true">
+        <path d="M20 2 l5 12 13 1 -10 9 3 13 -11 -7 -11 7 3 -13 -10 -9 13 -1z"/>
+    </svg>
+    <svg class="rabisco estrela-d2" viewBox="0 0 40 40" fill="currentColor" aria-hidden="true">
+        <path d="M20 2 l5 12 13 1 -10 9 3 13 -11 -7 -11 7 3 -13 -10 -9 13 -1z"/>
+    </svg>
     <div class="rabisco hash" aria-hidden="true">#</div>
+
+    <!-- Cactos: tronco com dois braços, vasinho e espinhos -->
+    <svg class="rabisco cacto cacto-1" viewBox="0 0 100 150" aria-hidden="true">
+        <g fill="#8bbf7a" stroke="#4f7a45" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M50 132 V56 a12 12 0 0 1 24 0 v22"/>
+            <path d="M50 96 V78 a12 12 0 0 0 -24 0 v16"/>
+            <rect x="38" y="24" width="24" height="110" rx="12"/>
+            <circle cx="74" cy="80" r="11"/>
+            <circle cx="26" cy="96" r="11"/>
+        </g>
+        <g stroke="#4f7a45" stroke-width="3" stroke-linecap="round">
+            <path d="M44 48 h-6 M56 62 h6 M44 78 h-6 M56 96 h6 M44 110 h-6"/>
+        </g>
+        <path d="M32 132 h36 l-5 16 h-26z" fill="#e0996a" stroke="#a86a3f" stroke-width="4" stroke-linejoin="round"/>
+    </svg>
+
+    <svg class="rabisco cacto cacto-2" viewBox="0 0 100 150" aria-hidden="true">
+        <g fill="#9ccb8a" stroke="#4f7a45" stroke-width="4" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M50 128 V64 a13 13 0 0 1 26 0 v14"/>
+            <rect x="37" y="34" width="26" height="100" rx="13"/>
+            <circle cx="76" cy="80" r="12"/>
+        </g>
+        <g stroke="#4f7a45" stroke-width="3" stroke-linecap="round">
+            <path d="M43 56 h-6 M57 74 h6 M43 92 h-6 M57 110 h6"/>
+        </g>
+        <path d="M31 132 h38 l-5 17 h-28z" fill="#e0996a" stroke="#a86a3f" stroke-width="4" stroke-linejoin="round"/>
+    </svg>
+
+    <svg class="rabisco cacto cacto-3" viewBox="0 0 100 150" aria-hidden="true">
+        <g fill="#8bbf7a" stroke="#4f7a45" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <ellipse cx="50" cy="86" rx="28" ry="40"/>
+        </g>
+        <g stroke="#4f7a45" stroke-width="3" stroke-linecap="round">
+            <path d="M50 52 v66 M36 62 v50 M64 62 v50"/>
+        </g>
+        <path d="M50 46 l4 -12 8 6" fill="none" stroke="#f2705e" stroke-width="5" stroke-linecap="round"/>
+        <path d="M30 126 h40 l-5 18 h-30z" fill="#e0996a" stroke="#a86a3f" stroke-width="5" stroke-linejoin="round"/>
+    </svg>
 
     <div class="pagina">
         <nav class="migalha">
             <a href="../../index.html">início</a>
             <span class="sep">&gt;</span>
-            <a href="../../atividade.html?curso=digitacao">textos</a>
+            <a href="#" id="mig-textos">textos</a>
             <span class="sep">&gt;</span>
-            <span class="atual"><em id="mig-titulo">Cinco minutos</em>, <span id="mig-autor">José de Alencar</span></span>
+            <span class="atual" id="mig-nivel">Nível 1 — Iniciante</span>
+            <span class="sep">&gt;</span>
+            <span class="atual"><em id="mig-titulo">A Rotina Simples</em><span id="mig-autor"></span></span>
         </nav>
 
         <div class="palco">
             <main class="cartao" id="cartao">
                 <div class="barra-topo">
+                    <button class="btn-texto" id="btn-texto" title="Escolher outro texto">
+                        📚 <span class="rotulo-texto">A Rotina Simples</span> <span class="seta">▾</span>
+                    </button>
                     <div class="precisao-topo">precisão: <b id="precisao-topo">—</b></div>
                     <div class="contagem"><span id="contagem">0</span> de <span id="total">0</span></div>
                     <div class="barra-progresso"><span id="barra-fill"></span></div>
@@ -410,6 +517,17 @@
         </div>
     </div>
 
+    <div class="modal-fundo" id="modal-textos" hidden>
+        <div class="modal modal-largo" role="dialog" aria-modal="true" aria-labelledby="textos-titulo">
+            <div class="modal-topo">
+                <h2 id="textos-titulo">Escolha o texto</h2>
+                <button class="fechar-x" id="fechar-textos" aria-label="Fechar">✕</button>
+            </div>
+            <p class="modal-sub">Os níveis vão do mais simples ao mais puxado. Dá para trocar de texto a qualquer momento.</p>
+            <div id="lista-niveis"></div>
+        </div>
+    </div>
+
     <div class="modal-fundo" id="modal-ajuda" hidden>
         <div class="modal" role="dialog" aria-modal="true" aria-labelledby="ajuda-titulo">
             <h2 id="ajuda-titulo">Como funciona</h2>
@@ -426,18 +544,114 @@
 
 <script>
 /* ==================================================================
-   1) O TEXTO
-   Trecho de abertura de "Cinco Minutos" (1856), de José de Alencar —
-   obra em domínio público. Para trocar/acrescentar textos, é só mexer
-   aqui: o resto da tela se ajusta sozinho ao tamanho do texto.
+   1) OS TEXTOS, por nível de dificuldade
+   Para acrescentar um texto novo é só colar mais um item na lista do
+   nível — o seletor e o placar se ajustam sozinhos.
    ================================================================== */
-const TEXTO = {
-    titulo: "Cinco minutos",
-    autor: "José de Alencar",
-    corpo: "É uma história curiosa a que lhe vou contar, minha prima. " +
-           "Mas é uma história e não um romance. " +
-           "Há mais de dois anos, seriam seis horas da tarde, dirigi-me ao Rocio para tomar o ônibus de Andaraí.",
-};
+const NIVEIS = [
+    {
+        nome: "Nível 1 — Iniciante",
+        resumo: "Letras e ritmo, quase sem acento e sem pontuação difícil.",
+        cor: "#4b9b63",
+        textos: [
+            {
+                titulo: "A Rotina Simples",
+                corpo: "O sol nasce muito cedo e ilumina a casa de madeira perto do lago. As aves cantam alto nas copas das arvores grandes e verdes. O vento suave move as folhas secas que caem no gramado macio. Um gato malhado dorme no telhado e espera o tempo passar de forma lenta. As crianças correm pelo campo aberto com uma bola azul e vermelha. O cheiro de bolo quente sai pela janela da cozinha e chama todos para a mesa. A tarde chega devagar e o ceu muda de cor aos poucos. As nuvens brancas formam desenhos no alto e depois somem. O dia termina calmo e as luzes da rua acendem uma por uma.",
+            },
+            {
+                titulo: "Passeio na Natureza",
+                corpo: "Muitas pessoas caminham no parque todos os dias de manha. Elas buscam ar puro e um pouco de paz antes do trabalho. Os cachorros brincam felizes na grama e buscam os gravetos que seus donos jogam longe. Uma menina anda de bicicleta na pista de cimento enquanto o pai corre logo atras. Perto do lago pequeno os patos nadam em grupo e buscam comida na agua limpa. As flores do jardim mostram cores fortes como o amarelo o vermelho e o roxo. O barulho da cidade fica longe e apenas o som do vento nos galhos pode ser ouvido. Tudo parece estar no lugar certo e a vida flui de um jeito muito leve.",
+            },
+            {
+                titulo: "Letras Variadas",
+                corpo: "Hoje o jovem rapaz quer fazer um grande passeio de jipe verde pelas montanhas de terra seca. Ele levou na mochila um lanche simples com queijo presunto e um suco de caju bem doce. No meio do caminho ele viu uma zebra fugida do zoologico e ficou muito surpreso com as listras dela. O pneu do carro furou perto de um rio calmo e ele teve que usar o macaco para trocar a roda. Um homem chamado Xavier passou por la e ajudou com a chave de fenda. Eles riram muito da sorte daquele dia e comeram o lanche juntos sob uma arvore velha. O sol desceu no horizonte e o ceu noturno trouxe as estrelas brilhantes para guiar a volta.",
+            },
+        ],
+    },
+    {
+        nome: "Nível 2 — Vírgulas e Acentuação",
+        resumo: "Shift, acentos, crase e pontuação variada.",
+        cor: "#2f7fb8",
+        textos: [
+            {
+                titulo: "O Café da Manhã e as Opções",
+                corpo: "João, que é irmão de José e primo de Antônio, decidiu que não iria, sob hipótese alguma, tomar o café da manhã às pressas hoje. Ele foi à padaria, comprou pães franceses, três maçãs bem maduras, uma porção de mamão papaia e um pouco de chá de camomila. Ao chegar à sua residência, percebeu que havia esquecido o açúcar, além da manteiga, que estava na promoção. \"Não é possível!\", pensou ele, já um pouco impaciente com a situação. Mesmo assim, preparou a refeição, cortou o pão, passou a geleia de morango e aproveitou a manhã ensolarada. A xícara de porcelana, herança de sua bisavó, refletia a luz térmica que entrava pela janela do cômodo.",
+            },
+            {
+                titulo: "Reunião de Negócios",
+                corpo: "A secretária informou, no último memorando distribuído à equipe, que a reunião de cúpula acontecerá no próximo sábado, às três horas da tarde. Será imprescindível que todos os gerentes, supervisores e líderes de projetos tragam seus relatórios, estatísticas, gráficos e análises financeiras. O diretor, um homem pragmático e um tanto austero, enfatizou: \"Nós precisamos de números exatos, cálculos precisos e soluções rápidas; caso contrário, perderemos o contrato bilionário.\" Além disso, a crase e a pontuação nos documentos entregues serão avaliadas, pois a comunicação escrita é o cartão de visita da instituição. Conclui-se, portanto, que a excelência não é uma opção, mas uma exigência diária.",
+            },
+            {
+                titulo: "Diálogo e Pontuação Expressiva",
+                corpo: "— Como assim, você não encontrou os documentos? — indagou a avó, visivelmente perplexa e indignada com a desorganização do neto.\n" +
+                       "— Calma, vó! Eu procurei no armário, na cômoda, debaixo do colchão e até lá fora, no pátio, mas sumiu! — respondeu o menino, gesticulando freneticamente.\n" +
+                       "A mulher suspirou fundo, ajeitou os óculos na ponta do nariz e disse, num tom quase irônico:\n" +
+                       "— Se eu for até lá e encontrar, o que eu faço com você, mocinho? É óbvio que você olhou de qualquer jeito. Vai ver, deixou o papel jogado perto do sofá, ou talvez sobre o rádio antigo do seu avô!\n" +
+                       "E, de fato, lá estava ele: amassado, esquecido e coberto de poeira.",
+            },
+        ],
+    },
+    {
+        nome: "Nível 3 — Palavras Difíceis",
+        resumo: "Vocabulário complexo, dígrafos e armadilhas de ortografia.",
+        cor: "#8b5cf6",
+        textos: [
+            {
+                titulo: "O Discurso Jurídico",
+                corpo: "A idiossincrasia do comportamento humano frequentemente nos leva a questionar a verossimilhança das teorias sociológicas e antropológicas contemporâneas. Sob um escrutínio minucioso, nota-se que a inconstitucionalidade de certas prerrogativas governamentais gera uma miscelânea de interpretações nos tribunais superiores. O advogado, com sua retórica prolixa e persuasiva, argumentou que o réu agiu por motivos de força maior, isentando-o de qualquer responsabilidade civil ou criminal subjacente. A jurisprudência, outrossim, demonstra uma inflexibilidade tácita quando se trata de crimes de colarinho branco, exigindo um arcabouço probatório irrefutável para que a absolvição seja minimamente cogitada pelas instâncias deliberativas.",
+            },
+            {
+                titulo: "Relatório Médico e Científico",
+                corpo: "O otorrinolaringologista e o oftalmologista estavam em uma acalorada discussão sobre as características do músculo esternocleidomastoideo e suas implicações em casos de cefaleia tensional crônica. O paciente, que apresentava um quadro de hipocondria e claustrofobia, foi submetido a uma ressonância magnética computadorizada para descartar qualquer patologia neurológica preexistente. O laudo multidisciplinar apontou que a idiossincrasia farmacológica causou uma reação anafilática leve, exigindo a administração imediata de corticosteroides e anti-histamínicos de última geração. Além disso, a profilaxia recomendada envolveu uma reestruturação dietética rigorosa para mitigar os efeitos de possíveis disfunções gastrointestinais e metabólicas.",
+            },
+            {
+                titulo: "Armadilhas Ortográficas",
+                corpo: "A exceção à regra gerou uma sucessão de equívocos na redação do texto sobre a escassez de recursos hídricos. O excesso de zelo daquele ascensorista perfeccionista fez com que a engrenagem do elevador sofresse um desgaste desnecessário. A pretensão do xamã era curar a enxaqueca crônica do cacique utilizando um xarope extraído de uma planta majestosa, cujo gosto lembrava jiló com berinjela. Enquanto isso, o carrasco ressabiado hesitou ao puxar a alavanca, sentindo uma pontada no maxilar que o obrigou a buscar auxílio de um quiroprático especializado. A justaposição de ideias desconexas na cabeça do rapaz o deixou estupefato e completamente paralisado diante da lousa.",
+            },
+        ],
+    },
+    {
+        nome: "Nível 4 — Trava-línguas",
+        resumo: "Agilidade, repetição e saltos de dedo. Leia palavra por palavra.",
+        cor: "#d9594c",
+        textos: [
+            {
+                titulo: "O Festival do P, T e R",
+                corpo: "O peito do pé de Pedro é preto. Quem disser que o peito do pé de Pedro é preto, tem o peito do pé mais preto que o peito do pé de Pedro. O rato roeu a rica roupa do rei de Roma, e a rainha, com raiva, resolveu remendar os retalhos rasgados. Três pratos de trigo para três tigres tristes. Os três tigres tristes tragaram os três pratos de trigo no topo do telhado. Toco preto, porco fresco, corpo crespo. Atrás da porta torta tem uma porca morta, e quem rir da porca morta, vai ficar com a boca torta. A pia pinga, o pinto pia. Quanto mais a pia pinga, mais o pinto pia.",
+            },
+            {
+                titulo: "A Sineta do S, C, X e Z",
+                corpo: "Sabia que a mãe do sabiá não sabia que o sabiá sabia assobiar? O suco de caju que o sapo tomou o fez saltar sobre o saco de sal da sala. Se o bispo de Constantinopla a quisesse desconstantinopolitanizar, não haveria desconstantinopolitanizador que a desconstantinopolitanizasse desconstantinopolitanizadoramente. Um limão, mil limões, um milhão de limões para a limonada do lavrador. A aranha arranha a rã, a rã arranha a aranha. Nem a aranha arranha a rã, nem a rã arranha a aranha. O tempo perguntou ao tempo quanto tempo o tempo tem. O tempo respondeu ao tempo que o tempo tem tanto tempo quanto tempo o tempo tem.",
+            },
+            {
+                titulo: "Mistura Caótica de Sílabas",
+                corpo: "Num ninho de mafagafos, há sete mafagafinhos. Quando a mafagafa gafa, gafam os sete mafagafinhos. O desinquietador desinquietou as inquietações do rei que estava inquieto em seu trono de prata. Farofa feita com muita farinha fofa faz uma fofoca feia na família do farofeiro. O caju do Juca e a jaca do cajá, o jacaré no jardim da jiboia. O doce perguntou ao doce qual é o doce mais doce que o doce de batata-doce. O doce respondeu ao doce que o doce mais doce que o doce de batata-doce é o doce de doce de batata-doce. Casa suja, chão sujo. Chão sujo, casa suja.",
+            },
+        ],
+    },
+    {
+        nome: "Bônus — Literatura",
+        resumo: "Trecho clássico em domínio público.",
+        cor: "#cf8718",
+        textos: [
+            {
+                titulo: "Cinco Minutos",
+                autor: "José de Alencar",
+                corpo: "É uma história curiosa a que lhe vou contar, minha prima. " +
+                       "Mas é uma história e não um romance. " +
+                       "Há mais de dois anos, seriam seis horas da tarde, dirigi-me ao Rocio para tomar o ônibus de Andaraí.",
+            },
+        ],
+    },
+];
+
+// Texto em uso. Começa no primeiro do Nível 1.
+let textoAtual = NIVEIS[0].textos[0];
+let nivelAtual = NIVEIS[0];
+
+/* Alguns caracteres não têm tecla própria no ABNT2. O travessão usado nos
+   diálogos é aceito também como hífen, que é o que dá para digitar. */
+const EQUIVALENTES = { "—": "-", "–": "-" };
 
 /* ==================================================================
    2) TECLADO ABNT2 (o teclado brasileiro, com Ç e as teclas de acento)
@@ -462,7 +676,7 @@ const LINHAS_TECLADO = [
         { base: "a" }, { base: "s" }, { base: "d" }, { base: "f" }, { base: "g" },
         { base: "h" }, { base: "j" }, { base: "k" }, { base: "l" },
         { base: "ç" }, { base: "~", cima: "^" }, { base: "]", cima: "}" },
-        { rotulo: "enter", largura: 2 },
+        { rotulo: "enter", largura: 2, id: "enter" },
     ],
     [
         { rotulo: "shift", largura: 2, id: "shift-esq" },
@@ -570,6 +784,8 @@ const el = {
     statPpm: document.getElementById("stat-ppm"),
     migTitulo: document.getElementById("mig-titulo"),
     migAutor: document.getElementById("mig-autor"),
+    migNivel: document.getElementById("mig-nivel"),
+    btnTexto: document.getElementById("btn-texto"),
     painelOpcoes: document.getElementById("painel-opcoes"),
     painelCompleto: document.getElementById("painel-completo"),
 };
@@ -623,10 +839,11 @@ function montarTeclado() {
 
 function renderTexto() {
     const frag = document.createDocumentFragment();
-    for (let i = 0; i < TEXTO.corpo.length; i++) {
+    for (let i = 0; i < textoAtual.corpo.length; i++) {
         const span = document.createElement("span");
         span.className = "ch";
-        span.textContent = TEXTO.corpo[i];
+        span.textContent = textoAtual.corpo[i];
+        if (textoAtual.corpo[i] === "\n") span.classList.add("quebra");
         if (i < estado.pos) span.classList.add(estado.marcas[i] === "erro" ? "erro" : "ok");
         else if (i === estado.pos) span.classList.add("atual");
         else span.classList.add("pendente");
@@ -646,29 +863,37 @@ function acenderTeclaAlvo() {
     });
     if (estado.terminado || estado.pausado) return;
 
-    const alvo = TEXTO.corpo[estado.pos];
-    if (alvo === undefined) return;
+    const bruto = textoAtual.corpo[estado.pos];
+    if (bruto === undefined) return;
 
-    const passos = [];               // teclas a apertar, na ordem
-    let precisaShift = false;
+    // O travessão não tem tecla no ABNT2: acende a do hífen, que é o que vale.
+    const alvo = EQUIVALENTES[bruto] || bruto;
 
+    // Cada passo é uma tecla a apertar, na ordem. Acento vira dois passos.
+    const passos = [];
     const minuscula = alvo.toLowerCase();
-    if (ACENTOS[minuscula]) {
+
+    if (alvo === "\n") {
+        passos.push({ id: "enter" });
+    } else if (ACENTOS[minuscula]) {
         const [acento, letra] = ACENTOS[minuscula];
-        passos.push(acento, letra);
-        if (alvo !== minuscula) precisaShift = true;   // É, Á, Ã…
+        // ^ e ` são o Shift das teclas ~ e ´, então viram tecla-base + Shift.
+        if (COM_SHIFT[acento]) passos.push({ base: COM_SHIFT[acento], shift: true });
+        else passos.push({ base: acento });
+        passos.push({ base: letra, shift: alvo !== minuscula });   // É, Á, Ã…
     } else if (COM_SHIFT[alvo]) {
-        passos.push(COM_SHIFT[alvo]);
-        precisaShift = true;
+        passos.push({ base: COM_SHIFT[alvo], shift: true });
     } else if (alvo !== minuscula) {
-        passos.push(minuscula);                        // letra maiúscula
-        precisaShift = true;
+        passos.push({ base: minuscula, shift: true });             // letra maiúscula
     } else {
-        passos.push(alvo);
+        passos.push({ base: alvo });
     }
 
-    passos.forEach((base, i) => {
-        const tecla = el.teclado.querySelector('.tecla[data-base="' + cssEscape(base) + '"]');
+    passos.forEach((passo, i) => {
+        const seletor = passo.id
+            ? '.tecla[data-id="' + passo.id + '"]'
+            : '.tecla[data-base="' + cssEscape(passo.base) + '"]';
+        const tecla = el.teclado.querySelector(seletor);
         if (!tecla) return;
         tecla.classList.add(passos.length > 1 && i === 0 ? "alvo-passo1" : "alvo");
         if (passos.length > 1) {
@@ -679,17 +904,19 @@ function acenderTeclaAlvo() {
         }
     });
 
-    if (precisaShift) {
-        const ultima = passos[passos.length - 1];
-        const usaMaoEsquerda = TECLAS_ESQUERDA.has(ultima);
-        const idShift = usaMaoEsquerda ? "shift-dir" : "shift-esq";
+    // Shift é apertado com a mão contrária à da tecla.
+    const passoComShift = passos.find((p) => p.shift);
+    if (passoComShift) {
+        const idShift = TECLAS_ESQUERDA.has(passoComShift.base) ? "shift-dir" : "shift-esq";
         const shift = el.teclado.querySelector('.tecla[data-id="' + idShift + '"]');
         if (shift) shift.classList.add("alvo-passo1");
     }
 }
 
+// O caractere entra dentro de um seletor CSS, então aspas e barras precisam
+// de escape — e nada que não seja um caractere simples pode chegar aqui.
 function cssEscape(valor) {
-    return valor.replace(/["\\]/g, "\\$&");
+    return String(valor).replace(/["\\]/g, "\\$&");
 }
 
 /* ==================================================================
@@ -715,8 +942,8 @@ function atualizarPlacar() {
     el.statPrecisao.textContent = textoPrecisao;
 
     el.contagem.textContent = estado.pos;
-    el.total.textContent = TEXTO.corpo.length;
-    el.barraFill.style.width = (estado.pos / TEXTO.corpo.length * 100) + "%";
+    el.total.textContent = textoAtual.corpo.length;
+    el.barraFill.style.width = (estado.pos / textoAtual.corpo.length * 100) + "%";
 
     el.statPontos.textContent = estado.pontos;
     el.statCombo.textContent = estado.combo;
@@ -781,8 +1008,9 @@ function digitar(caractere) {
         cronometro = setInterval(atualizarPlacar, 1000);
     }
 
-    const esperado = TEXTO.corpo[estado.pos];
-    if (caractere === esperado) {
+    const esperado = textoAtual.corpo[estado.pos];
+    const bateu = caractere === esperado || caractere === EQUIVALENTES[esperado];
+    if (bateu) {
         estado.marcas[estado.pos] = "ok";
         estado.acertos++;
         estado.combo++;
@@ -799,7 +1027,7 @@ function digitar(caractere) {
     }
 
     estado.pos++;
-    if (estado.pos >= TEXTO.corpo.length) terminar();
+    if (estado.pos >= textoAtual.corpo.length) terminar();
     renderTexto();
     atualizarPlacar();
 }
@@ -843,8 +1071,15 @@ captura.addEventListener("paste", (e) => e.preventDefault());
 
 document.addEventListener("keydown", (e) => {
     if (!document.getElementById("modal-ajuda").hidden) return;
+    if (!document.getElementById("modal-textos").hidden) return;
     if (e.ctrlKey || e.altKey || e.metaKey) return;
-    if (e.key === "Backspace") { e.preventDefault(); apagar(); }
+    if (e.key === "Backspace") { e.preventDefault(); apagar(); return; }
+    // O campo de captura não gera "\n" sozinho, então a quebra de linha
+    // dos diálogos entra por aqui.
+    if (e.key === "Enter" && document.activeElement === captura) {
+        e.preventDefault();
+        digitar("\n");
+    }
 });
 
 // Clicar em qualquer lugar que não seja um controle devolve o foco à digitação.
@@ -914,13 +1149,79 @@ document.getElementById("fechar-ajuda").addEventListener("click", () => { modalA
 modalAjuda.addEventListener("click", (e) => { if (e.target === modalAjuda) modalAjuda.hidden = true; });
 
 /* ==================================================================
-   10) INÍCIO
+   10) ESCOLHA DO TEXTO
    ================================================================== */
-el.migTitulo.textContent = TEXTO.titulo;
-el.migAutor.textContent = TEXTO.autor;
-el.painelCompleto.textContent = TEXTO.corpo;
-document.title = "Treino de Digitação — " + TEXTO.titulo + ", " + TEXTO.autor;
+const modalTextos = document.getElementById("modal-textos");
+
+function montarListaDeTextos() {
+    const lista = document.getElementById("lista-niveis");
+    lista.innerHTML = "";
+    NIVEIS.forEach((nivel, iNivel) => {
+        const bloco = document.createElement("section");
+        bloco.className = "nivel";
+        bloco.style.setProperty("--cor-nivel", nivel.cor);
+
+        const cabecalho = document.createElement("div");
+        cabecalho.className = "nivel-cabecalho";
+        cabecalho.innerHTML =
+            '<h3>' + nivel.nome + '</h3><p>' + nivel.resumo + '</p>';
+        bloco.appendChild(cabecalho);
+
+        const grade = document.createElement("div");
+        grade.className = "nivel-grade";
+        nivel.textos.forEach((texto, iTexto) => {
+            const botao = document.createElement("button");
+            botao.className = "carta-texto";
+            botao.type = "button";
+            if (texto === textoAtual) botao.classList.add("escolhido");
+
+            const palavras = texto.corpo.trim().split(/\s+/).length;
+            botao.innerHTML =
+                '<span class="carta-titulo">' + texto.titulo + '</span>' +
+                (texto.autor ? '<span class="carta-autor">' + texto.autor + '</span>' : '') +
+                '<span class="carta-medida">' + texto.corpo.length + " caracteres · " + palavras + ' palavras</span>' +
+                '<span class="carta-previa">' + texto.corpo.slice(0, 74).replace(/\n/g, " ") + '…</span>';
+
+            botao.addEventListener("click", () => escolherTexto(iNivel, iTexto));
+            grade.appendChild(botao);
+        });
+        bloco.appendChild(grade);
+        lista.appendChild(bloco);
+    });
+}
+
+function escolherTexto(iNivel, iTexto) {
+    nivelAtual = NIVEIS[iNivel];
+    textoAtual = nivelAtual.textos[iTexto];
+    modalTextos.hidden = true;
+    aplicarTextoEscolhido();
+    reiniciar();
+}
+
+function aplicarTextoEscolhido() {
+    el.migNivel.textContent = nivelAtual.nome;
+    el.migTitulo.textContent = textoAtual.titulo;
+    el.migAutor.textContent = textoAtual.autor ? ", " + textoAtual.autor : "";
+    el.painelCompleto.textContent = textoAtual.corpo;
+    el.btnTexto.querySelector(".rotulo-texto").textContent = textoAtual.titulo;
+    document.title = "Treino de Digitação — " + textoAtual.titulo;
+    montarListaDeTextos();
+}
+
+function abrirTextos() { montarListaDeTextos(); modalTextos.hidden = false; }
+
+el.btnTexto.addEventListener("click", abrirTextos);
+document.getElementById("mig-textos").addEventListener("click", (e) => { e.preventDefault(); abrirTextos(); });
+document.getElementById("fechar-textos").addEventListener("click", () => { modalTextos.hidden = true; focarCaptura(); });
+modalTextos.addEventListener("click", (e) => {
+    if (e.target === modalTextos) { modalTextos.hidden = true; focarCaptura(); }
+});
+
+/* ==================================================================
+   11) INÍCIO
+   ================================================================== */
 montarTeclado();
+aplicarTextoEscolhido();
 reiniciar();
 </script>
 </body>

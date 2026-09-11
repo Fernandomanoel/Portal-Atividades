@@ -534,9 +534,9 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-mario-teclado.html",
       },
       {
-        titulo: "Textos Clássicos — Treino de Digitação",
+        titulo: "Treino de Digitação por Níveis",
         descricao:
-          "Treino de digitação com um trecho de \"Cinco Minutos\", de José de Alencar: o teclado na tela acende a tecla certa (inclusive as duas teclas dos acentos), e o placar mostra pontos, combo, precisão e palavras por minuto, com uma carinha reagindo a cada acerto e erro.",
+          "13 textos em quatro níveis, do básico (letras e ritmo) até trava-línguas, passando por acentuação e palavras difíceis. O teclado na tela acende a tecla certa — inclusive as duas teclas dos acentos — e o placar mostra pontos, combo, precisão e palavras por minuto, com uma carinha reagindo a cada acerto e erro.",
         tipo: "link",
         url: "atividades/paginas/digitacao-textos-classicos.html",
       },

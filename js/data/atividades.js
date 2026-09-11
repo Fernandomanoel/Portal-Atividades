@@ -534,6 +534,13 @@ const ATIVIDADES = [
         url: "atividades/paginas/kids-mario-teclado.html",
       },
       {
+        titulo: "Textos Clássicos — Treino de Digitação",
+        descricao:
+          "Treino de digitação com um trecho de \"Cinco Minutos\", de José de Alencar: o teclado na tela acende a tecla certa (inclusive as duas teclas dos acentos), e o placar mostra pontos, combo, precisão e palavras por minuto, com uma carinha reagindo a cada acerto e erro.",
+        tipo: "link",
+        url: "atividades/paginas/digitacao-textos-classicos.html",
+      },
+      {
         titulo: "Batalha das 12 Casas — Digitação",
         descricao:
           "Jogo de digitação com as 12 casas do zodíaco: cada letra certa golpeia o Cavaleiro de Ouro e cada erro tira a vida do Seiya. Digitar rápido e sem errar queima o cosmo e multiplica o dano. As casas mudam de idioma — português, inglês e japonês em romaji — e cada uma tem seu próprio cenário com a constelação do signo.",

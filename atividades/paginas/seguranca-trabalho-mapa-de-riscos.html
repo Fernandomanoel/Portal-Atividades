@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Segurança do Trabalho — Mapa de Riscos Ocupacionais</title>
+    <style>
+        :root {
+            --primary-dark: #0f172a;
+            --brand-color: #059669; /* Verde Segurança */
+            --brand-light: #d1fae5;
+            --accent-color: #047857;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #0f172a 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Aprendizagem</span>
+        <h1>Atividade Prática: Elaboração e Interpretação do Mapa de Riscos</h1>
+        <p>Aprenda a mapear e sinalizar visualmente os perigos em um ambiente de trabalho. Entenda a função da CIPA, as categorias de riscos (físicos, químicos, ergonômicos) e a padronização das cores.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- VÍDEO INTRODUTÓRIO DE APOIO -->
+    <article class="module-card" style="padding-bottom: 15px;">
+        <div class="module-header" style="border-bottom: none; margin-bottom: 10px;">
+            <h2 style="font-size: 16px; color: var(--text-muted);">🎥 Material de Apoio Recomendado (Opcional)</h2>
+        </div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Ny9jNq8JvRQ" title="O que é MAPA DE RISCOS?" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+    </article>
+
+    <!-- MÓDULO 1: PREENCHIMENTO DE LACUNAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Preenchimento de Lacunas] Conceito e Elaboração do Mapa (NR-5)</h2>
+        </div>
+        <div class="scenario-description">
+            Complete o texto descritivo sobre o propósito e a responsabilidade da criação do Mapa de Riscos:
+        </div>
+        <div class="fill-text-paragraph">
+            O Mapa de Riscos é uma representação gráfica (planta baixa) que visa identificar os riscos ocupacionais em cada setor. A Norma Regulamentadora NR-5 estabelece que a elaboração desse mapa é uma atribuição obrigatória da 
+            <select id="m1-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="CIPA">CIPA</option>
+                <option value="SESMT">SESMT</option>
+            </select>, 
+            devendo ser feito preferencialmente com a colaboração técnica do SESMT. Uma vez elaborado, o mapa não pode ficar guardado em gavetas; a legislação determina que ele deve ser afixado em local de fácil 
+            <select id="m1-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="visualizacao">visualização</option>
+                <option value="acesso_restrito">acesso restrito da chefia</option>
+            </select> 
+            para informar e conscientizar todos os trabalhadores e visitantes. Além disso, a atualização dessa planta deve ocorrer obrigatoriamente de forma 
+            <select id="m1-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="anual">Anual (a cada nova gestão)</option>
+                <option value="mensal">Mensal</option>
+            </select>, 
+            ou sempre que houver modificações significativas no layout ou processos produtivos.
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: ASSOCIAÇÃO - CORES E RISCOS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Associação] Padronização de Cores por Natureza do Risco</h2>
+        </div>
+        <div class="scenario-description">
+            No mapa, os perigos são representados por círculos coloridos. Associe a categoria do risco ambiental à cor correspondente estabelecida na legislação:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Categoria e Exemplos de Agentes</th>
+                    <th style="width: 35%;">Cor no Mapa</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Riscos Químicos</strong> (Névoas, poeiras minerais, solventes, vapores tóxicos)</td>
+                    <td>
+                        <select id="m2-a1" class="input-box">
+                            <option value="">Selecione a cor...</option>
+                            <option value="verde">Verde</option>
+                            <option value="vermelho">Vermelho</option>
+                            <option value="marrom">Marrom</option>
+                            <option value="amarelo">Amarelo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Riscos Ergonômicos</strong> (Postura inadequada, esforço físico intenso, jornada excessiva)</td>
+                    <td>
+                        <select id="m2-a2" class="input-box">
+                            <option value="">Selecione a cor...</option>
+                            <option value="verde">Verde</option>
+                            <option value="vermelho">Vermelho</option>
+                            <option value="marrom">Marrom</option>
+                            <option value="amarelo">Amarelo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Riscos Mecânicos / Acidentes</strong> (Arranjo físico deficiente, máquinas sem proteção, incêndio)</td>
+                    <td>
+                        <select id="m2-a3" class="input-box">
+                            <option value="">Selecione a cor...</option>
+                            <option value="verde">Verde</option>
+                            <option value="vermelho">Vermelho</option>
+                            <option value="marrom">Marrom</option>
+                            <option value="amarelo">Amarelo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Riscos Físicos</strong> (Ruído, vibração, radiações, calor/frio extremo)</td>
+                    <td>
+                        <select id="m2-a4" class="input-box">
+                            <option value="">Selecione a cor...</option>
+                            <option value="verde">Verde</option>
+                            <option value="vermelho">Vermelho</option>
+                            <option value="marrom">Marrom</option>
+                            <option value="amarelo">Amarelo</option>
+                            <option value="azul">Azul</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: MATRIZ VERDADEIRO OU FALSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Matriz Verdadeiro ou Falso] Regras de Representação (Círculos)</h2>
+        </div>
+        <div class="scenario-description">
+            O tamanho e a disposição dos círculos no layout transmitem informações cruciais sobre a severidade e sobreposição de perigos. Julgue as regras abaixo:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Afirmação Técnica sobre o Mapa</th>
+                    <th style="width: 30%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. O tamanho do círculo desenhado no mapa indica o grau de intensidade do risco (Pequeno = Leve; Médio = Médio; Grande = Elevado).</td>
+                    <td>
+                        <select id="m3-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Se no mesmo local (ex: setor de usinagem) existirem riscos de naturezas diferentes e de intensidades diferentes, é obrigatório desenhar vários círculos separados, sendo proibido dividir um mesmo círculo em fatias coloridas.</td>
+                    <td>
+                        <select id="m3-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: INPUT EXATO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Cálculo Visual] Agrupamento de Agentes da Mesma Natureza</h2>
+        </div>
+        <div class="scenario-description">
+            Imagine a seguinte situação prática num galpão industrial: O técnico de segurança identificou que os soldadores estão expostos a **3** agentes ergonômicos distintos (postura inadequada, repetitividade e peso excessivo), mas todos esses três agentes possuem exatamente o mesmo grau de risco (Risco Médio).
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Para não poluir o mapa, a recomendação técnica dita que eles devem ser agrupados. Quantos **círculos amarelos de tamanho médio** você precisará desenhar neste setor específico da planta?</label>
+            <input type="text" id="m4-input" class="input-box" style="margin-top: 6px; max-width: 250px;" placeholder="Digite apenas o número (Ex: 5)...">
+            <div id="feedback-m4" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: DISSERTATIVA INTELIGENTE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Situacional] Divisão de Círculos e Otimização Visual</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário de Análise:</strong> Ao inspecionar a área de estamparia (prensas), a equipe da CIPA constatou a presença de **Ruído excessivo (Risco Físico)** e **Risco de prensamento de membros (Risco de Acidente)**. Ambos os perigos foram classificados com o grau **MÁXIMO (Elevado)**. Para representar isso na planta, o secretário da CIPA sugeriu desenhar apenas **UM** círculo grande dividido ao meio: metade verde e metade azul.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como membro experiente da CIPA, avalie a proposta do secretário (mínimo de 10 palavras). Confirme se o procedimento de dividir (fatiar) o círculo para riscos de mesma gradação está correto para evitar poluição visual.
+        </label>
+        <textarea id="m5-dissertativa" class="input-box" placeholder="Ex: O procedimento proposto está perfeitamente correto. Quando há mais de um risco com o mesmo grau no mesmo local, divide-se o círculo em partes iguais para não poluir visualmente a planta..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 6, minComprimento = 25) {
+        if (!texto) return { valido: false, motivo: "O campo dissertativo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma justificativa de pelo menos ${minComprimento} caracteres.` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não são permitidos. Redija um parecer técnico." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta deve ter no mínimo ${minPalavras} palavras argumentativas.` };
+
+        const vogais = (limpo.match(/[aeiouáéíóúâêôãõà]/gi) || []).length;
+        const razaoVogais = vogais / limpo.length;
+        if (razaoVogais < 0.18 || razaoVogais > 0.8) return { valido: false, motivo: "O texto parece conter caracteres aleatórios ou está ilegível." };
+
+        return { valido: true, motivo: "Parecer recebido com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Preenchimento de Lacunas (NR-5 / CIPA)
+        const l1 = document.getElementById('m1-l1').value;
+        const l2 = document.getElementById('m1-l2').value;
+        const l3 = document.getElementById('m1-l3').value;
+
+        if (l1 === 'CIPA' && l2 === 'visualizacao' && l3 === 'anual') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! A elaboração é responsabilidade da CIPA, deve ser exposto publicamente e atualizado a cada gestão (anualmente)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. A responsabilidade normativa é da CIPA, o acesso deve ser livre (visualização) e a renovação é anual." });
+        }
+
+        // Módulo 2: Associação (Cores)
+        const a1 = document.getElementById('m2-a1').value;
+        const a2 = document.getElementById('m2-a2').value;
+        const a3 = document.getElementById('m2-a3').value;
+        const a4 = document.getElementById('m2-a4').value;
+
+        if (a1 === 'vermelho' && a2 === 'amarelo' && a3 === 'azul' && a4 === 'verde') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente correspondência! Químico(Vermelho), Ergonômico(Amarelo), Acidente(Azul) e Físico(Verde)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. Revise o padrão legal: Químico=Vermelho; Ergonômico=Amarelo; Acidente=Azul; Físico=Verde." });
+        }
+
+        // Módulo 3: Matriz Verdadeiro/Falso (Regras Gráficas)
+        const vf1 = document.getElementById('m3-vf1').value;
+        const vf2 = document.getElementById('m3-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Correto! O tamanho dita a gravidade (V). É perfeitamente legal (e recomendado) dividir/fatiar um círculo para riscos de mesmo grau no mesmo local (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Atenção à afirmativa 2: Quando há riscos diferentes com o MESMO grau no mesmo local, DEVE-SE fatiar o círculo (pizza) para não poluir o mapa (Afirmação 2 é Falsa)." });
+        }
+
+        // Módulo 4: Input Exato (Agrupamento de Mesma Natureza)
+        const inputVal = document.getElementById('m4-input').value.trim();
+        if (inputVal === '1' || inputVal.toLowerCase() === 'um') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Cálculo preciso! Sendo todos do mesmo grupo (ergonômico) e mesma gradação (médio), você desenha apenas UM círculo e lista os 3 agentes dentro/ao lado dele." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. Se os riscos pertencem ao mesmo grupo (Amarelo) e possuem a mesma intensidade (Médio), eles são fundidos. O número correto é 1." });
+        }
+
+        // Módulo 5: Dissertativa Inteligente (Fatiamento de Círculos)
+        const textM5 = document.getElementById('m5-dissertativa').value;
+        const resM5 = validarTextoInteligente(textM5, 8, 30);
+        if (resM5.valido) {
+            const termosChave = /correto|certo|dividi|fatia|polui|mesmo grau|mesma gradação|fração|frações/i;
+            if (!termosChave.test(textM5)) {
+                resM5.valido = false;
+                resM5.motivo = "Você deve avaliar se a atitude foi correta e mencionar a técnica de 'dividir' o círculo para perigos de 'mesmo grau' evitando 'poluir' o mapa.";
+            } else {
+                resM5.motivo = "Avaliação perfeita! Dividir um único círculo grande (metade Verde/Físico e metade Azul/Acidente) é a prática correta e recomendada pelo MTE para otimizar a planta.";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou pleno domínio na confecção do Mapa de Riscos, validando os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Você validou ${acertos} de ${total} módulos. Analise as mensagens em vermelho para corrigir o layout do seu Mapa de Riscos.`;
+        }
+    }
+</script>
+
+</body>
+</html>

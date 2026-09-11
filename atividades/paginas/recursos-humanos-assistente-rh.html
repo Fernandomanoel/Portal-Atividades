@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Assistente de Recursos Humanos</title>
+    <style>
+        :root {
+            --primary-dark: #1e1b4b;
+            --brand-color: #6366f1;
+            --brand-light: #e0e7ff;
+            --accent-color: #4f46e5;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #c7d2fe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Assistente de Recursos Humanos</h1>
+        <p>Aprofunde seus conhecimentos nas rotinas fundamentais de Recursos Humanos. Analise situações práticas sobre Recrutamento e Seleção, Treinamento & Desenvolvimento, Cargos e Salários, Ética e Relações Interpessoais.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todas as etapas e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ASSOCIAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Associação] Divisões do Subsistema de RH (Aulas 2 e 3)</h2>
+        </div>
+        <div class="scenario-description">
+            O setor de Recursos Humanos é dividido em vários subsistemas. Relacione a atividade descrita ao seu respectivo processo no RH:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Atividade Executada no Setor</th>
+                    <th style="width: 30%;">Subsistema de RH</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Divulgação de vagas, triagem de currículos e condução de entrevistas para preencher posições em aberto.</td>
+                    <td>
+                        <select id="hr-m1-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="RS">Recrutamento e Seleção</option>
+                            <option value="TD">Treinamento e Desenvolvimento</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Criação de trilhas de aprendizagem, onboarding de novos funcionários e capacitação técnica das equipes.</td>
+                    <td>
+                        <select id="hr-m1-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="RS">Recrutamento e Seleção</option>
+                            <option value="TD">Treinamento e Desenvolvimento</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Cargos e Salários / Remuneração (Aulas 5 e 6)</h2>
+        </div>
+        <div class="scenario-description">
+            Julgue as afirmações normativas sobre estruturação de cargos e políticas de remuneração da empresa como **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Afirmação Prática</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. A Descrição de Cargos é essencial pois define as responsabilidades, requisitos e serve de base para justificar a hierarquia salarial da empresa.</td>
+                    <td>
+                        <select id="hr-m2-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. O termo "Remuneração" é sinônimo restrito de "Salário", englobando exclusivamente o valor fixo mensal, não fazendo parte dela os benefícios sociais e comissões.</td>
+                    <td>
+                        <select id="hr-m2-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: INPUT EXATO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Input Exato] Classificação de Cargos (Aula 5)</h2>
+        </div>
+        <div class="scenario-description">
+            Ao estruturar o plano de cargos e salários ou realizar registros no Departamento Pessoal, o profissional de RH precisa consultar o documento oficial do governo brasileiro que reconhece, nomeia e codifica as ocupações do mercado de trabalho.
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Qual é a **sigla de 3 letras** utilizada para nomear essa Classificação Brasileira de Ocupações?</label>
+            <input type="text" id="hr-m3-input" class="input-box" style="margin-top: 6px; max-width: 200px;" placeholder="Digite a sigla (Ex: CLT)...">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: DISSERTATIVA INTELIGENTE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Análise Situacional] Relações Interpessoais e Conflitos (Aulas 13 e 15)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Dois analistas do setor de marketing entraram em um atrito severo devido a uma falha de comunicação, afetando o clima organizacional e a entrega do projeto. A gestão solicitou a intervenção do RH.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como profissional de Recursos Humanos, descreva sua conduta inicial para resolver o impasse. Sua resposta deve demonstrar postura ética e técnica, mencionando a importância de **ouvir**, promover o **diálogo** ou atuar como **mediador/dar feedback**.
+        </label>
+        <textarea id="hr-m4-dissertativa" class="input-box" placeholder="Ex: O RH deve atuar como mediador, chamando os colaboradores para uma reunião privada. O objetivo é ouvir ativamente ambas as partes, promover o diálogo pacífico e fornecer um feedback construtivo..."></textarea>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRÁTICA EXTERNA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Prática Externa / Mão na Massa] Divulgação de Vaga (Aulas 4 e 11)</h2>
+        </div>
+        <div class="scenario-description">
+            O alinhamento da comunicação visual da empresa e o uso correto das mídias sociais são vitais na Atração de Talentos. Utilize a ferramenta **Canva** para criar um layout simples de um "Anúncio de Vaga" ou o **Google Docs** para montar o roteiro de Descrição do Cargo para postar no LinkedIn.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Cole abaixo o link público do seu arquivo (Canva ou Google Docs):
+        </label>
+        <input type="url" id="hr-m5-link" class="input-box" placeholder="https://www.canva.com/design/... ou docs.google.com">
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 6, minComprimento = 25) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma justificativa mais completa (mín. ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Por favor, elabore um texto e não apenas números." };
+        
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Desenvolva melhor a resposta (mínimo de ${minPalavras} palavras).` };
+
+        return { valido: true, motivo: "Parecer recebido com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Associação
+        const a1 = document.getElementById('hr-m1-a1').value;
+        const a2 = document.getElementById('hr-m1-a2').value;
+
+        if (a1 === 'RS' && a2 === 'TD') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Correto! Recrutamento & Seleção (R&S) traz talentos externos; Treinamento & Desenvolvimento (T&D) foca em capacitar o talento interno." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Atrair candidatos é função de Recrutamento & Seleção. Capacitar funcionários é função de T&D." });
+        }
+
+        // Módulo 2: Matriz V/F
+        const vf1 = document.getElementById('hr-m2-vf1').value;
+        const vf2 = document.getElementById('hr-m2-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente! O cargo orienta a gestão (V). Remuneração é um pacote total (salário + benefícios + bônus), diferente do simples 'Salário' (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: A descrição de cargos é base para salários (Afirmação 1 é Verdadeira). Remuneração engloba salário e benefícios em conjunto (Afirmação 2 é Falsa)." });
+        }
+
+        // Módulo 3: Input Exato
+        const inputVal = document.getElementById('hr-m3-input').value.trim().toUpperCase();
+        if (inputVal === 'CBO') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Exato! A CBO (Classificação Brasileira de Ocupações) é o documento padrão nacional para nomenclatura de cargos." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. A sigla correta composta por 3 letras é CBO (Classificação Brasileira de Ocupações)." });
+        }
+
+        // Módulo 4: Dissertativa Inteligente
+        const textM4 = document.getElementById('hr-m4-dissertativa').value;
+        const resM4 = validarTextoInteligente(textM4, 8, 30);
+        if (resM4.valido) {
+            const termosChave = /ouvir|escuta|diálogo|mediador|mediação|reunião|feedback|empatia|ética/i;
+            if (!termosChave.test(textM4)) {
+                resM4.valido = false;
+                resM4.motivo = "A conduta exige intervenção interpessoal. Utilize palavras que mostrem o papel do RH, como 'mediar', 'ouvir' as partes, dar 'feedback' ou promover o 'diálogo'.";
+            } else {
+                resM4.motivo = "Ótimo posicionamento! O profissional de RH atua com ética sendo um facilitador neutro, promovendo o diálogo e reestabelecendo o clima organizacional.";
+            }
+        }
+        aplicarFeedback('feedback-m4', resM4);
+        if (resM4.valido) acertos++;
+
+        // Módulo 5: Prática Externa (Link)
+        const urlLink = document.getElementById('hr-m5-link').value.trim();
+        const externalRegex = /^https?:\/\/(www\.)?(canva\.com|docs\.google\.com)\/.+/i;
+        if (urlLink && externalRegex.test(urlLink)) {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Link validado! Ótima aplicação prática da teoria de comunicação visual e de cargos." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "URL inválida. Cole o link público válido do Canva (canva.com) ou Google Docs (docs.google.com)." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou domínio nas rotinas de Recursos Humanos, validando todos os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Você validou ${acertos} de ${total} módulos. Verifique os feedbacks em vermelho, faça os ajustes e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

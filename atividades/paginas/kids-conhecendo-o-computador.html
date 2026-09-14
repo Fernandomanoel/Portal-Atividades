@@ -459,11 +459,29 @@
         ];
 
         /* ============ voz ============ */
+        // Sem isso, alguns navegadores (Chrome principalmente) ignoram o
+        // f.lang e falam com a voz padrão em inglês, porque a lista de vozes
+        // carrega de forma assíncrona e pode estar vazia na primeira chamada.
+        let vozPtBR = null;
+        function prepararVozPtBR() {
+            const vozes = speechSynthesis.getVoices();
+            if (!vozes.length) return;
+            vozPtBR =
+                vozes.find(v => v.lang === 'pt-BR') ||
+                vozes.find(v => v.lang && v.lang.toLowerCase().startsWith('pt')) ||
+                null;
+        }
+        if ('speechSynthesis' in window) {
+            prepararVozPtBR();
+            speechSynthesis.addEventListener('voiceschanged', prepararVozPtBR);
+        }
+
         function falar(texto, botao) {
             if (!('speechSynthesis' in window)) return;
             speechSynthesis.cancel();
             const f = new SpeechSynthesisUtterance(texto);
             f.lang = 'pt-BR'; f.rate = .92;
+            if (vozPtBR) f.voice = vozPtBR;
             if (botao) {
                 botao.classList.add('falando');
                 f.onend = () => botao.classList.remove('falando');

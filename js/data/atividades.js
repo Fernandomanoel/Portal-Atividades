@@ -693,6 +693,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ingles-listening-reading-beta.html",
       },
+      {
+        titulo: "Ouça e Leia em Inglês 2 — Comida, Compras e Rotina",
+        descricao:
+          "Segunda atividade de listening, reading e writing com a Gabi, com 20 exercícios sobre assuntos diferentes: restaurante, compras e preços, direções, família, trabalho e hobbies.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-listening-reading-beta-2.html",
+      },
     ],
   },
 

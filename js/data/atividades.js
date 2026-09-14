@@ -700,6 +700,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ingles-listening-reading-beta-2.html",
       },
+      {
+        titulo: "Diálogos em Inglês — Converse com a Gabi",
+        descricao:
+          "Dinâmica em formato de chat: você participa de 5 conversas de verdade com a Gabi (café, trabalho, rua, fim de semana, médico) e escolhe ou escreve a resposta certa pra continuar cada diálogo, com tradução e áudio (inclusive em câmera lenta) em cada fala.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-dialogos-beta.html",
+      },
     ],
   },
 

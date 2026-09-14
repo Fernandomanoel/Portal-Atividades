@@ -235,11 +235,15 @@
         }
         .tela-intro.off { display: none; }
         .tela-intro .moldura-topo, .tela-final .moldura-topo {
+            position: relative;
             width: clamp(175px,29vh,240px); height: clamp(175px,29vh,240px); border-radius: 50%;
-            background: var(--gradiente-azul); display: flex; align-items: flex-end; justify-content: center;
-            overflow: hidden; box-shadow: 0 10px 26px rgba(12,99,231,.32), 0 0 0 7px rgba(28,176,246,.16);
+            background: var(--gradiente-azul); overflow: hidden;
+            box-shadow: 0 10px 26px rgba(12,99,231,.32), 0 0 0 7px rgba(28,176,246,.16);
         }
-        .tela-intro img, .tela-final img { width: clamp(150px,25vh,215px); display: block; }
+        .tela-intro img, .tela-final img {
+            position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px);
+            object-fit: contain; object-position: top center; display: block;
+        }
         .tela-intro h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.3rem,3.2vh,1.9rem); color: var(--azul-escuro); }
         .tela-intro p { max-width: 460px; font-weight: 700; color: var(--cinza); font-size: clamp(.85rem,1.7vh,1rem); line-height: 1.5; }
         .selo-beta {

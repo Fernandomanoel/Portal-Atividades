@@ -100,9 +100,10 @@
         /* ---------- Botão de tocar áudio: retrato da Gabi com selo de som ---------- */
         .caixa-audio { display: flex; justify-content: center; padding: clamp(10px,2vh,20px) 0; }
         .btn-audio {
-            position: relative; width: clamp(96px,13vh,128px); height: clamp(96px,13vh,128px);
+            position: relative; width: clamp(116px,16vh,156px); height: clamp(116px,16vh,156px);
             border-radius: 50%; border: none; cursor: pointer; padding: 0;
-            background: var(--gradiente-azul); box-shadow: 0 6px 0 var(--azul-forte);
+            background: var(--gradiente-azul);
+            box-shadow: 0 6px 0 var(--azul-forte), 0 0 0 6px rgba(28,176,246,.18);
             transition: transform .08s, box-shadow .08s;
         }
         .btn-audio img {
@@ -114,11 +115,15 @@
             border-radius: 50%; background: var(--azul-forte); border: 3px solid #fff;
             display: flex; align-items: center; justify-content: center; color: #fff;
         }
-        .btn-audio:active, .btn-audio.tocando { transform: translateY(5px); box-shadow: 0 1px 0 var(--azul-forte); }
+        .btn-audio:active, .btn-audio.tocando {
+            transform: translateY(5px);
+            box-shadow: 0 1px 0 var(--azul-forte), 0 0 0 6px rgba(28,176,246,.18);
+        }
         .btn-audio.tocando .selo-som { background: var(--azul); }
         .opcoes-audio { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .dica-audio { text-align: center; font-size: .78rem; color: var(--cinza); font-weight: 700; margin: 0; }
         .btn-devagar {
+            display: inline-flex; align-items: center; gap: 5px;
             background: var(--azul-claro); color: var(--azul-forte); border: none; border-radius: 999px;
             padding: 6px 16px; font-family: inherit; font-weight: 800; font-size: .78rem; cursor: pointer;
         }
@@ -230,11 +235,11 @@
         }
         .tela-intro.off { display: none; }
         .tela-intro .moldura-topo, .tela-final .moldura-topo {
-            width: clamp(150px,25vh,210px); height: clamp(150px,25vh,210px); border-radius: 50%;
+            width: clamp(175px,29vh,240px); height: clamp(175px,29vh,240px); border-radius: 50%;
             background: var(--gradiente-azul); display: flex; align-items: flex-end; justify-content: center;
-            overflow: hidden; box-shadow: 0 10px 26px rgba(12,99,231,.28);
+            overflow: hidden; box-shadow: 0 10px 26px rgba(12,99,231,.32), 0 0 0 7px rgba(28,176,246,.16);
         }
-        .tela-intro img, .tela-final img { width: clamp(130px,22vh,190px); display: block; }
+        .tela-intro img, .tela-final img { width: clamp(150px,25vh,215px); display: block; }
         .tela-intro h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.3rem,3.2vh,1.9rem); color: var(--azul-escuro); }
         .tela-intro p { max-width: 460px; font-weight: 700; color: var(--cinza); font-size: clamp(.85rem,1.7vh,1rem); line-height: 1.5; }
         .selo-beta {
@@ -390,16 +395,27 @@ const EXERCICIOS = [
    2) VOZ EM INGLÊS
    Mesma correção usada nas atividades em português: sem escolher a
    voz explicitamente, o Chrome pode ignorar o idioma pedido e falar
-   com a voz padrão do sistema.
+   com a voz padrão do sistema. Além disso, como a Gabi é uma personagem,
+   a gente prefere uma voz feminina quando o sistema tem mais de uma opção
+   em inglês (a API não tem um campo de gênero, então usamos os nomes mais
+   comuns de vozes femininas nos sistemas operacionais e navegadores).
    ================================================================== */
 let vozEN = null;
+const NOMES_VOZ_FEMININA_EN = [
+    "female", "zira", "aria", "jenny", "michelle", "samantha", "susan", "karen",
+    "moira", "tessa", "victoria", "fiona", "kate", "salli", "joanna", "ivy",
+    "kimberly", "amy", "emma", "sara", "linda", "google us english",
+];
 function prepararVozEN() {
     const vozes = speechSynthesis.getVoices();
     if (!vozes.length) return;
-    vozEN =
-        vozes.find((v) => v.lang === "en-US") ||
-        vozes.find((v) => v.lang && v.lang.toLowerCase().startsWith("en")) ||
-        null;
+    const vozesEmIngles = vozes.filter((v) => v.lang && v.lang.toLowerCase().startsWith("en"));
+    const vozesEnUS = vozesEmIngles.filter((v) => v.lang === "en-US");
+    const candidatas = vozesEnUS.length ? vozesEnUS : vozesEmIngles;
+    const feminina = candidatas.find((v) =>
+        NOMES_VOZ_FEMININA_EN.some((nome) => v.name.toLowerCase().includes(nome))
+    );
+    vozEN = feminina || candidatas[0] || null;
 }
 if ("speechSynthesis" in window) {
     prepararVozEN();
@@ -415,6 +431,16 @@ function iconeSom(tamanho, cor) {
         <path d="M16.5 12c0-1.77-.77-3.29-2-4.24v8.48c1.23-.95 2-2.47 2-4.24z" opacity=".9"/>
         <path d="M14.5 3.23v2.06c2.89 1.09 5 3.94 5 7.31s-2.11 6.22-5 7.31v2.06c4-1.14 7-4.94 7-9.37s-3-8.23-7-9.37z" opacity=".7"/>
     </svg>`;
+}
+
+// Selo "½" para o "ouvir devagar". Tentamos desenhar uma tartaruga em SVG,
+// mas em tamanho pequeno ela ficava confusa — "½" é só texto normal (não
+// emoji), então tem garantia de aparecer igual em qualquer aparelho.
+function iconeDevagar(tamanho, cor) {
+    const c = cor || "currentColor";
+    return `<span class="icone-som" style="display:inline-flex; align-items:center; justify-content:center;
+        width:${tamanho}px; height:${tamanho}px; border-radius:50%; border:1.6px solid ${c};
+        font-size:${Math.round(tamanho * 0.62)}px; font-weight:800; line-height:1; color:${c};">½</span>`;
 }
 
 function falarEN(texto, botao, velocidade) {
@@ -520,7 +546,7 @@ function iniciarExercicio() {
         </button></div>`;
         html += `<div class="opcoes-audio">
             <p class="dica-audio">Toque na Gabi quantas vezes quiser</p>
-            <button class="btn-devagar" id="btn-devagar">🐢 Ouvir devagar</button>
+            <button class="btn-devagar" id="btn-devagar">${iconeDevagar(16)} Ouvir devagar</button>
         </div>`;
     } else if (ex.tipo === "ler-multipla") {
         html += `<span class="rotulo-tipo">📖 Atividade de leitura</span>`;
@@ -529,7 +555,7 @@ function iniciarExercicio() {
             <p>${ex.frase}</p>
             <div class="opcoes-audio-leitura">
                 <button id="btn-audio-leitura">${iconeSom(17)} ouvir</button>
-                <button id="btn-audio-leitura-devagar">🐢 devagar</button>
+                <button id="btn-audio-leitura-devagar">${iconeDevagar(15)} devagar</button>
             </div>
         </div>`;
     } else if (ex.tipo === "traduzir") {
@@ -579,8 +605,13 @@ function iniciarExercicio() {
             el.btnVerificar.disabled = campo.value.trim() === "";
         });
         campo.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" && !el.btnVerificar.disabled && !estado.respondido) verificar();
-            if (e.key === "Enter" && estado.respondido) continuar();
+            // "else if": verificar() já vira estado.respondido pra true, então
+            // com dois "if" separados a segunda linha disparava continuar()
+            // na mesma tecla Enter, pulando a etapa antes de mostrar o
+            // resultado. Só um dos dois pode acontecer por tecla.
+            if (e.key !== "Enter") return;
+            if (!estado.respondido) { if (!el.btnVerificar.disabled) verificar(); }
+            else continuar();
         });
     }
 }
@@ -623,8 +654,8 @@ function verificar() {
     el.feedback.classList.add("on", acertou ? "fundo-certo" : "fundo-errado");
     el.feedbackImg.src = acertou ? MASCOTE.certo : MASCOTE.errado;
     el.feedbackTitulo.textContent = acertou
-        ? ["Muito bem!", "Isso aí!", "Mandou bem!"][Math.floor(Math.random() * 3)]
-        : "Quase! Vamos praticar mais.";
+        ? ["Você acertou! 🎉", "Isso mesmo, acertou!", "Certíssimo!"][Math.floor(Math.random() * 3)]
+        : "Você errou — vamos praticar mais.";
 
     const ehEscrita = ex.tipo === "ouvir-escrever" || ex.tipo === "traduzir";
     if (ehEscrita) {
@@ -642,7 +673,13 @@ function verificar() {
     el.btnVerificar.style.display = "none";
     el.btnContinuar.style.display = "inline-block";
     el.btnContinuar.classList.toggle("errado", !acertou);
-    el.btnContinuar.focus();
+
+    // Importante: NÃO focar o botão agora. Se o Verificar foi acionado pelo
+    // Enter do teclado, focar o botão ainda dentro do mesmo evento de tecla
+    // faz o navegador interpretar o "keyup" daquele Enter como um clique no
+    // botão recém-focado — pulando a etapa antes da pessoa ver o resultado.
+    // Espera o Enter terminar de vez para então focar.
+    setTimeout(() => el.btnContinuar.focus(), 120);
 }
 
 function continuar() {

@@ -686,6 +686,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ingles-letras-digitacao.html",
       },
+      {
+        titulo: "Ouça e Leia em Inglês — com a Gabi",
+        descricao:
+          "Atividade de listening, reading e writing com 20 exercícios (ouvir e escolher, ler e escolher, ouvir e escrever, traduzir), com a mascote Gabi reagindo a cada resposta e opção de ouvir o áudio em câmera lenta.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-listening-reading-beta.html",
+      },
     ],
   },
 

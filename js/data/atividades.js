@@ -382,41 +382,6 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/powerpoint-lista-atividades-basico.html",
       },
-      {
-        titulo: "Avaliação Prática: Criação e Design de Apresentação",
-        descricao:
-          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 6 slides, aplicando boas práticas de design: estrutura, regra 60/30/10 de cores e consistência visual.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-criacao-e-design.html",
-      },
-      {
-        titulo: "Avaliação Prática: Tabelas e Gráficos",
-        descricao:
-          "Atividade guiada (tema livre) para criar uma apresentação com no mínimo 5 slides, incluindo pelo menos uma tabela e um gráfico com dados formatados.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-tabelas-e-graficos.html",
-      },
-      {
-        titulo: "Avaliação Prática: Vídeo, Edição e Transições",
-        descricao:
-          "Atividade guiada para inserir um vídeo em um slide, aplicar recursos de edição de vídeo (cortar, fade) e efeitos de transição entre slides. Inclui vídeo de prática para download.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-video-e-transicoes.html",
-      },
-      {
-        titulo: "Avaliação Prática: Criação de Slides com Conteúdo Fornecido",
-        descricao:
-          "Atividade com textos prontos para copiar e colar: tema de Energias Renováveis, SmartArt, gráfico, hiperlink, cabeçalho/rodapé, transições e exportação em PDF.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-avaliacao-conteudo-fornecido.html",
-      },
-      {
-        titulo: "Avaliação Prática: Slides Textuais Extensos",
-        descricao:
-          "Apresentação densa sobre a Evolução da Computação, com textos longos para formatar (alinhamento, justificação), SmartArt, gráfico, hiperlinks de navegação e caça às imagens.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-avaliacao-texto-extenso.html",
-      },
     ],
   },
 

@@ -931,39 +931,21 @@ const PROVAS_MANIFEST = {
   "Power Point": [
     {
       "type": "file",
-      "label": "assets / tartaruga-no-computador.mp4",
-      "path": "provas/Power Point/assets/tartaruga-no-computador.mp4",
-      "size": "1022.3 KB"
+      "label": "PowerPoint.docx",
+      "path": "provas/Power Point/PowerPoint.docx",
+      "size": "19.1 KB"
     },
     {
-      "type": "quiz_html",
-      "label": "Avaliacao powerpoint conteudo fornecido",
-      "path": "provas/Power Point/avaliacao-powerpoint-conteudo-fornecido.prova.html",
-      "size": "17.9 KB"
+      "type": "file",
+      "label": "Prova Prática – Microsoft PowerPoint 01.pdf",
+      "path": "provas/Power Point/Prova Prática – Microsoft PowerPoint 01.pdf",
+      "size": "313.9 KB"
     },
     {
-      "type": "quiz_html",
-      "label": "Avaliacao powerpoint criacao e design",
-      "path": "provas/Power Point/avaliacao-powerpoint-criacao-e-design.prova.html",
-      "size": "26.7 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Avaliacao powerpoint tabelas e graficos",
-      "path": "provas/Power Point/avaliacao-powerpoint-tabelas-e-graficos.prova.html",
-      "size": "27.4 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Avaliacao powerpoint texto extenso",
-      "path": "provas/Power Point/avaliacao-powerpoint-texto-extenso.prova.html",
-      "size": "21.1 KB"
-    },
-    {
-      "type": "quiz_html",
-      "label": "Avaliacao powerpoint video e transicoes",
-      "path": "provas/Power Point/avaliacao-powerpoint-video-e-transicoes.prova.html",
-      "size": "24.2 KB"
+      "type": "file",
+      "label": "Prova Prática – Microsoft PowerPoint 02 (1).pdf",
+      "path": "provas/Power Point/Prova Prática – Microsoft PowerPoint 02 (1).pdf",
+      "size": "304.2 KB"
     }
   ],
   "Python": [

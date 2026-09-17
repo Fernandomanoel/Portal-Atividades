@@ -173,6 +173,38 @@ const PROVAS_MANIFEST = {
       "size": "31.8 KB"
     }
   ],
+  "Assistente de Gestão": [
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao gestao desafios logisticos",
+      "path": "provas/Assistente de Gestão/avaliacao-gestao-desafios-logisticos.prova.html",
+      "size": "22.6 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao gestao empresarial estrategica",
+      "path": "provas/Assistente de Gestão/avaliacao-gestao-empresarial-estrategica.prova.html",
+      "size": "21.3 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao gestao logistica operacoes 2",
+      "path": "provas/Assistente de Gestão/avaliacao-gestao-logistica-operacoes-2.prova.html",
+      "size": "21.7 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao gestao logistica supply chain",
+      "path": "provas/Assistente de Gestão/avaliacao-gestao-logistica-supply-chain.prova.html",
+      "size": "21.7 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao gestao tecnicas vendas",
+      "path": "provas/Assistente de Gestão/avaliacao-gestao-tecnicas-vendas.prova.html",
+      "size": "22.0 KB"
+    }
+  ],
   "Assistente de Logística": [
     {
       "type": "quiz",
@@ -1018,22 +1050,28 @@ const PROVAS_MANIFEST = {
   ],
   "Secretariado": [
     {
-      "type": "quiz",
-      "label": "Avaliação Secretariado",
-      "path": "provas/Secretariado/Avaliação - Secretariado.prova.js",
-      "size": "3.6 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao secretariado gestao informacao 5s",
+      "path": "provas/Secretariado/avaliacao-secretariado-gestao-informacao-5s.prova.html",
+      "size": "24.1 KB"
     },
     {
-      "type": "file",
-      "label": "Prova Secretariado.txt",
-      "path": "provas/Secretariado/Prova Secretariado.txt",
-      "size": "35 B"
+      "type": "quiz_html",
+      "label": "Avaliacao secretariado gestao tempo comunicacao ferramentas",
+      "path": "provas/Secretariado/avaliacao-secretariado-gestao-tempo-comunicacao-ferramentas.prova.html",
+      "size": "22.3 KB"
     },
     {
-      "type": "file",
-      "label": "prova-secretariado.html",
-      "path": "provas/Secretariado/prova-secretariado.html",
-      "size": "5.5 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao secretariado rotinas assessoria administrativa",
+      "path": "provas/Secretariado/avaliacao-secretariado-rotinas-assessoria-administrativa.prova.html",
+      "size": "23.4 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao secretariado viagens eventos arquivo",
+      "path": "provas/Secretariado/avaliacao-secretariado-viagens-eventos-arquivo.prova.html",
+      "size": "24.4 KB"
     }
   ],
   "Segurança da Era Digital": [
@@ -1078,28 +1116,34 @@ const PROVAS_MANIFEST = {
   ],
   "Vendas": [
     {
-      "type": "file",
-      "label": "Avaliação - Vendas .txt",
-      "path": "provas/Vendas/Avaliação - Vendas .txt",
-      "size": "110 B"
+      "type": "quiz_html",
+      "label": "Avaliacao vendas funil crm retencao",
+      "path": "provas/Vendas/avaliacao-vendas-funil-crm-retencao.prova.html",
+      "size": "23.2 KB"
     },
     {
-      "type": "file",
-      "label": "AVALIAÇÃO - VENDAS.pdf",
-      "path": "provas/Vendas/AVALIAÇÃO - VENDAS.pdf",
-      "size": "30.1 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao vendas social selling inside sales",
+      "path": "provas/Vendas/avaliacao-vendas-social-selling-inside-sales.prova.html",
+      "size": "24.2 KB"
     },
     {
-      "type": "quiz",
-      "label": "Avaliação Vendas (Descritiva)",
-      "path": "provas/Vendas/Avaliação - Vendas (Descritiva).prova.js",
-      "size": "354 B"
+      "type": "quiz_html",
+      "label": "Avaliacao vendas tecnicas gestao vendas",
+      "path": "provas/Vendas/avaliacao-vendas-tecnicas-gestao-vendas.prova.html",
+      "size": "21.9 KB"
     },
     {
-      "type": "quiz",
-      "label": "Avaliação Vendas (Múltipla Escolha)",
-      "path": "provas/Vendas/Avaliação - Vendas (Múltipla Escolha).prova.js",
-      "size": "2.7 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao vendas tecnicas linha de frente",
+      "path": "provas/Vendas/avaliacao-vendas-tecnicas-linha-de-frente.prova.html",
+      "size": "23.3 KB"
+    },
+    {
+      "type": "quiz_html",
+      "label": "Avaliacao vendas tecnicas negociacao comercial",
+      "path": "provas/Vendas/avaliacao-vendas-tecnicas-negociacao-comercial.prova.html",
+      "size": "20.7 KB"
     }
   ],
   "Windows 11": [
@@ -1201,6 +1245,7 @@ const PROVAS_CATEGORIES = [
       "ADM",
       "Assistente ADM",
       "Assistente de Departamento Pessoal",
+      "Assistente de Gestão",
       "Assistente de Logística",
       "Atendimento ao Cliente",
       "Compras e Estoque",

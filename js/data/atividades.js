@@ -707,6 +707,13 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/ingles-dialogos-beta.html",
       },
+      {
+        titulo: "Diálogos em Inglês 2 — Complete a Frase",
+        descricao:
+          "Segunda rodada de diálogos com a Gabi (hotel, escola, aeroporto, loja de roupas, cinema), agora numa tela maior, com a Gabi grande do lado reagindo a cada resposta e um novo tipo de exercício: completar o espaço em branco escolhendo a peça certa, igual no Duolingo.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-dialogos-2-beta.html",
+      },
     ],
   },
 

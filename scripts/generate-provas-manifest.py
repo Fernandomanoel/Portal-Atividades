@@ -35,7 +35,6 @@ CATEGORY_ORDER = [
 CATEGORY_MAP = {
     "ADM": "Administrativo e Gestão",
     "Assistente ADM": "Administrativo e Gestão",
-    "Assistente de Gestão": "Administrativo e Gestão",
     "Assistente de Departamento Pessoal": "Administrativo e Gestão",
     "Assistente de Logística": "Administrativo e Gestão",
     "Atendimento ao Cliente": "Administrativo e Gestão",

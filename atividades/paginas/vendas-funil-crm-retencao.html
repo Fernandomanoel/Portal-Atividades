@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Estrutura de layout e novos formatos baseados no modelo fornecido[cite: 1] -->
+    <title>Atividade Prática: Vendas — Gestão de Funil, CRM e Retenção</title>
+    <style>
+        :root {
+            --primary-dark: #1e3a8a; /* Blue 900 */
+            --brand-color: #2563eb; /* Blue 600 */
+            --brand-light: #dbeafe; /* Blue 100 */
+            --accent-color: #1d4ed8; /* Blue 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #bfdbfe; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .metric-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .metric-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .metric-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .metric-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+
+        /* Estilo da área de lacunas baseada no design DP IV[cite: 1] */
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Vendas — Gestão de Funil, CRM e Retenção</h1>
+        <p>Desenvolva sua visão estratégica dominando as etapas do Funil de Vendas, estratégias Inbound/Outbound, técnicas de Up-selling/Cross-selling, uso de CRM e cálculo de Ticket Médio.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: PREENCHIMENTO DE LACUNAS - FUNIL DE VENDAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Preenchimento de Lacunas] A Jornada no Funil de Vendas</h2>
+        </div>
+        <div class="scenario-description">
+            O Funil de Vendas mapeia a jornada do cliente desde o primeiro contato até a compra. Complete o texto com as etapas corretas: <!-- Utilizando formato de lacunas do modelo[cite: 1] -->
+        </div>
+        <div class="fill-text-paragraph">
+            Na estratégia comercial, a atração de visitantes desconhecidos ocorre na etapa mais larga, chamada de 
+            <select id="vd3-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="topo">Topo do Funil (ToFu)</option>
+                <option value="fundo">Fundo do Funil (BoFu)</option>
+            </select>. 
+            Quando esses visitantes demonstram interesse e fornecem seus contatos (como e-mail), eles se tornam 
+            <select id="vd3-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="suspeitos">Suspeitos (Suspects)</option>
+                <option value="leads">Leads (Potenciais)</option>
+            </select> 
+            e avançam para o Meio do Funil. Por fim, na etapa de decisão, onde a equipe de vendas apresenta a proposta para fechamento, o cliente encontra-se no 
+            <select id="vd3-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="topo">Topo do Funil (ToFu)</option>
+                <option value="fundo">Fundo do Funil (BoFu)</option>
+            </select>.
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO - UP-SELL E CROSS-SELL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Técnicas de Aumento de Faturamento</h2>
+        </div>
+        <div class="scenario-description">
+            Vender mais para quem já está comprando é vital para o lucro. Avalie as afirmações sobre Cross-selling (Venda Cruzada) e Up-selling:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Prática Comercial</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Cross-selling (Venda Cruzada) é a técnica de oferecer produtos ou serviços complementares ao que o cliente está comprando (Ex: oferecer batata frita e refrigerante para quem compra um hambúrguer).</td>
+                    <td>
+                        <select id="vd3-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Up-selling ocorre quando o vendedor convence o cliente a cancelar a compra atual para procurar um produto mais barato na concorrência.</td>
+                    <td>
+                        <select id="vd3-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO - TICKET MÉDIO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Cálculo de KPI] Apuração do Ticket Médio</h2>
+        </div>
+        <div class="scenario-description">
+            O Ticket Médio representa o valor médio que cada cliente gasta na sua empresa. É um dos KPIs (Indicadores-chave) mais importantes em vendas.
+        </div>
+        <div class="metric-box">
+            <div class="metric-header">FECHAMENTO DO DIA - VENDEDOR CARLOS</div>
+            <div class="metric-grid">
+                <div><strong>Indicador de Desempenho</strong></div>
+                <div><strong>Resultado</strong></div>
+
+                <div>Faturamento Total do Dia</div>
+                <div>R$ 2.500,00</div>
+
+                <div>Número Total de Vendas (Pedidos Fechados)</div>
+                <div>5 vendas</div>
+            </div>
+            <div class="metric-footer">
+                <span>Fórmula: Faturamento Total ÷ Número de Vendas</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o Ticket Médio das vendas de Carlos (apenas o número em Reais, ex: 150):</label>
+            <input type="text" id="vd3-m3-input" class="input-box" style="margin-top: 6px; max-width: 220px;" placeholder="Exemplo: 200">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: ASSOCIAÇÃO - ESTRATÉGIAS DE CAPTAÇÃO E CRM -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Associação] Captação de Clientes e Ferramentas</h2>
+        </div>
+        <div class="scenario-description">
+            A forma como a empresa busca clientes e organiza essas informações define seu modelo comercial. Associe o conceito à sua respectiva estratégia/ferramenta:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Conceito Comercial</th>
+                    <th style="width: 30%;">Estratégia / Ferramenta</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Estratégia onde o vendedor vai ativamente atrás do cliente, através de ligações frias (cold calls), e-mails de prospecção e visitas porta a porta.</td>
+                    <td>
+                        <select id="vd3-m4-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Inbound Sales (Receptivo)</option>
+                            <option value="outbound">Outbound Sales (Ativo)</option>
+                            <option value="crm">Sistema CRM</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Estratégia onde o cliente chega até a empresa atraído por marketing de conteúdo, redes sociais, anúncios ou indicações. O vendedor atua de forma receptiva.</td>
+                    <td>
+                        <select id="vd3-m4-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Inbound Sales (Receptivo)</option>
+                            <option value="outbound">Outbound Sales (Ativo)</option>
+                            <option value="crm">Sistema CRM</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Software utilizado pela equipe para registrar todo o histórico de conversas, negociações, dados e preferências dos clientes em um único lugar.</td>
+                    <td>
+                        <select id="vd3-m4-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Inbound Sales (Receptivo)</option>
+                            <option value="outbound">Outbound Sales (Ativo)</option>
+                            <option value="crm">Sistema CRM</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: DISSERTATIVA INTELIGENTE - FOLLOW-UP -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Situacional] Estratégia de Follow-up (Acompanhamento)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Você teve uma ótima reunião com um cliente B2B e enviou a proposta comercial na segunda-feira. Hoje é quinta-feira e o cliente não respondeu mais às suas mensagens (o famoso "sumiço" ou ghosting).
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como você deve realizar o Follow-up (acompanhamento) hoje, sem ser inconveniente ou implorar pela venda? (Mínimo de 10 palavras). Dica: utilize palavras como "dúvida", "ajuda", "valor", "retorno" ou "feedback".
+        </label>
+        <textarea id="vd3-m5-dissertativa" class="input-box" placeholder="Ex: Devo fazer um contato focado em gerar valor, perguntando se ele teve alguma dúvida sobre a proposta enviada e me colocando à disposição para ajudar..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    /* Lógica de validação de texto inteligente adaptada do formato DP IV[cite: 1] */
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma resposta mais detalhada (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não são aceitos. Elabore sua estratégia de follow-up." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta deve conter no mínimo ${minPalavras} palavras argumentativas.` };
+
+        return { valido: true, motivo: "Estratégia de follow-up analisada com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Lacunas (Funil)
+        const l1 = document.getElementById('vd3-l1').value;
+        const l2 = document.getElementById('vd3-l2').value;
+        const l3 = document.getElementById('vd3-l3').value;
+
+        if (l1 === 'topo' && l2 === 'leads' && l3 === 'fundo') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! O funil inicia no Topo (atração), transforma visitantes em Leads (meio) e fecha a venda no Fundo." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. A atração é no TOPO. Contatos capturados são LEADS. A conversão ocorre no FUNDO do funil." });
+        }
+
+        // Módulo 2: Matriz V/F (Upsell/Cross-sell)
+        const vf1 = document.getElementById('vd3-vf1').value;
+        const vf2 = document.getElementById('vd3-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Correto! Cross-sell é a venda complementar (V). Up-selling é oferecer uma versão superior/Premium do produto para o cliente, e não mandá-lo para o concorrente (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: A primeira afirmação (Cross-sell) é Verdadeira. A segunda é Falsa, pois Up-selling visa fazer o cliente gastar mais levando um produto melhor, não mais barato na concorrência." });
+        }
+
+        // Módulo 3: Cálculo (Ticket Médio)
+        const inputVal = document.getElementById('vd3-m3-input').value.trim().replace(',', '.');
+        if (inputVal === '500' || inputVal === '500.00' || inputVal === '500,00') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! Dividindo o faturamento de R$ 2.500,00 por 5 vendas, chegamos ao Ticket Médio de R$ 500,00 por cliente." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Para achar o Ticket Médio, divida o Faturamento Total (2500) pelo Número de Vendas (5)." });
+        }
+
+        // Módulo 4: Associação (Estratégias e CRM)
+        const a1 = document.getElementById('vd3-m4-a1').value;
+        const a2 = document.getElementById('vd3-m4-a2').value;
+        const a3 = document.getElementById('vd3-m4-a3').value;
+
+        if (a1 === 'outbound' && a2 === 'inbound' && a3 === 'crm') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Excelente! Prospecção ativa é Outbound; Atração receptiva é Inbound; e a gestão de relacionamento é feita no CRM." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. Ir atrás do cliente = Outbound. Cliente vir até a empresa = Inbound. Software de registro = CRM." });
+        }
+
+        // Módulo 5: Dissertativa (Follow-up)
+        const textM5 = document.getElementById('vd3-m5-dissertativa').value;
+        const resM5 = validarTextoInteligente(textM5, 10, 35);
+        if (resM5.valido) {
+            const termosChave = /dúvida|dúvidas|ajuda|ajudar|valor|retorno|feedback|contato|acompanhamento/i;
+            if (!termosChave.test(textM5)) {
+                resM5.valido = false;
+                resM5.motivo = "Seu follow-up deve usar abordagens consultivas. Mencione oferecer 'ajuda', tirar uma 'dúvida' ou pedir um 'feedback' em vez de apenas cobrar.";
+            } else {
+                resM5.motivo = "Estratégia perfeita! O bom follow-up não cobra a venda, ele se coloca à disposição para ajudar e tirar dúvidas, reativando a conversa naturalmente.";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você domina a estrutura do funil de vendas e validou corretamente todos os ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção na Gestão Comercial: Você validou ${acertos} de ${total} módulos. Corrija os pontos destacados em vermelho e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

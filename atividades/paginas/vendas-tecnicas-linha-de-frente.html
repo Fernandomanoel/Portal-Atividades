@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Técnicas de Vendas na Linha de Frente</title>
+    <style>
+        :root {
+            --primary-dark: #78350f; /* Amber 900 */
+            --brand-color: #d97706; /* Amber 600 */
+            --brand-light: #fef3c7; /* Amber 100 */
+            --accent-color: #b45309; /* Amber 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #78350f 0%, #d97706 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fde68a; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .calc-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .calc-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .calc-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .calc-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Módulo de Ação Comercial</span>
+        <h1>Atividade Prática: Técnicas de Vendas na Linha de Frente</h1>
+        <p>Aprimore suas habilidades de "chão de loja" e vendas corporativas. Pratique a qualificação de leads com o método BANT, técnicas persuasivas de fechamento, ligações frias (Cold Call) e cálculo de comissionamento.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: PREENCHIMENTO DE LACUNAS (QUALIFICAÇÃO BANT) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Preenchimento de Lacunas] Qualificação de Leads: Método BANT</h2>
+        </div>
+        <div class="scenario-description">
+            O vendedor corporativo não pode perder tempo com quem não tem perfil de compra. O método BANT é mundialmente usado para qualificar potenciais clientes (Leads). Complete as lacunas com o significado de cada letra:
+        </div>
+        <div class="fill-text-paragraph">
+            A letra <strong>B</strong> (Budget) serve para descobrir se o cliente possui 
+            <select id="vds5-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="orcamento">Orçamento / Verba</option>
+                <option value="tempo">Tempo disponível</option>
+            </select> para a compra. 
+            A letra <strong>A</strong> (Authority) mapeia se a pessoa com quem você fala tem 
+            <select id="vds5-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="interesse">Interesse no produto</option>
+                <option value="poder">Poder de decisão</option>
+            </select>. 
+            O <strong>N</strong> (Need) verifica a real 
+            <select id="vds5-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="necessidade">Necessidade / Dor</option>
+                <option value="nobreza">Nobreza do cargo</option>
+            </select> do negócio dele, 
+            e o <strong>T</strong> (Timeline) define qual é o 
+            <select id="vds5-l4" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="prazo">Prazo para implementar</option>
+                <option value="telefone">Telefone de contato</option>
+            </select> a solução.
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO (TIPOS DE VENDA) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Modelos de Venda: B2B vs B2C</h2>
+        </div>
+        <div class="scenario-description">
+            A abordagem do vendedor muda completamente dependendo de quem está comprando. Avalie as afirmações sobre os modelos comerciais:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Característica da Venda</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Nas vendas B2B (Empresa vende para Empresa), o ciclo de decisão costuma ser mais longo, mais racional e envolve múltiplos decisores (Diretor, Compras, Financeiro).</td>
+                    <td>
+                        <select id="vds5-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. Nas vendas B2C (Empresa vende para o Consumidor Final), a compra é estritamente burocrática, sem apelo emocional, exigindo sempre a assinatura de contratos com 3 meses de negociação.</td>
+                    <td>
+                        <select id="vds5-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: ASSOCIAÇÃO (TÉCNICAS DE FECHAMENTO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Associação] Gatilhos e Técnicas de Fechamento</h2>
+        </div>
+        <div class="scenario-description">
+            O fechamento da venda ("closing") exige atitude. Relacione a fala do vendedor com a técnica de fechamento que ele está utilizando:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Fala do Vendedor (Pitch Final)</th>
+                    <th style="width: 35%;">Técnica Utilizada</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>"Vou preparar a papelada então. Qual será o CNPJ que devo colocar no contrato?"</td>
+                    <td>
+                        <select id="vds5-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="assuncao">Fechamento por Assunção (Assumptivo)</option>
+                            <option value="alternativo">Fechamento Alternativo (Ou/Ou)</option>
+                            <option value="urgencia">Fechamento por Urgência (Escassez)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>"Para a entrega dos produtos na sua casa, você prefere que seja agendado na terça de manhã ou na quarta à tarde?"</td>
+                    <td>
+                        <select id="vds5-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="assuncao">Fechamento por Assunção (Assumptivo)</option>
+                            <option value="alternativo">Fechamento Alternativo (Ou/Ou)</option>
+                            <option value="urgencia">Fechamento por Urgência (Escassez)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>"Consigo segurar esse desconto de 20% somente até o final do dia, amanhã o sistema roda a nova tabela de preços do mês."</td>
+                    <td>
+                        <select id="vds5-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="assuncao">Fechamento por Assunção (Assumptivo)</option>
+                            <option value="alternativo">Fechamento Alternativo (Ou/Ou)</option>
+                            <option value="urgencia">Fechamento por Urgência (Escassez)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m3" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 4: CÁLCULO FINANCEIRO (COMISSÃO) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Cálculo Comercial] Comissão com Bônus Acelerador</h2>
+        </div>
+        <div class="scenario-description">
+            O bom vendedor sabe exatamente quanto vai receber no fim do mês. Calcule o ganho total do vendedor de acordo com o plano de incentivo da empresa.
+        </div>
+        <div class="calc-box">
+            <div class="calc-header">HOLERITE DE VENDAS - JULIA</div>
+            <div class="calc-grid">
+                <div><strong>Parâmetro do Mês</strong></div>
+                <div><strong>Valor Alcançado</strong></div>
+
+                <div>Total de Vendas Faturadas</div>
+                <div>R$ 50.000,00</div>
+
+                <div>Percentual de Comissão Base</div>
+                <div>3% sobre as vendas</div>
+
+                <div>Bônus Fixo por Bater a Meta do Mês</div>
+                <div>R$ 500,00 extras</div>
+            </div>
+            <div class="calc-footer">
+                <span>Fórmula: (Vendas × 3%) + Bônus</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o valor TOTAL (Comissão + Bônus) que Julia vai receber (apenas números em Reais, ex: 1500):</label>
+            <input type="text" id="vds5-m4-input" class="input-box" style="margin-top: 6px; max-width: 220px;" placeholder="Exemplo: 1200">
+            <div id="feedback-m4" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 5: DISSERTATIVA INTELIGENTE (COLD CALL) -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Simulação de Roleplay] Abordagem em Cold Call (Ligação Fria)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Você conseguiu o telefone direto do Diretor de uma grande empresa que nunca ouviu falar de você. Você tem cerca de 10 segundos para não deixá-lo desligar o telefone.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Escreva qual seria a sua <strong>frase de abertura</strong> para quebrar o gelo e prender a atenção dele (Mínimo de 10 palavras). Dica: Utilize palavras como "motivo", "tempo", "ajudar", "atenção", "rápido" ou "desafio".
+        </label>
+        <textarea id="vds5-m5-dissertativa" class="input-box" placeholder="Ex: Olá [Nome], sei que seu tempo é corrido, o motivo desta ligação rápida é ajudar vocês a resolverem o desafio de..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo do roteiro não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma abordagem inicial mais elaborada (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não funcionam em uma ligação comercial." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Seu roteiro inicial precisa ter no mínimo ${minPalavras} palavras argumentativas.` };
+
+        return { valido: true, motivo: "Script inicial de vendas aprovado!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Lacunas (BANT)
+        const l1 = document.getElementById('vds5-l1').value;
+        const l2 = document.getElementById('vds5-l2').value;
+        const l3 = document.getElementById('vds5-l3').value;
+        const l4 = document.getElementById('vds5-l4').value;
+
+        if (l1 === 'orcamento' && l2 === 'poder' && l3 === 'necessidade' && l4 === 'prazo') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! BANT = Budget (Orçamento), Authority (Poder de Decisão), Need (Necessidade) e Timeline (Prazo)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Revise a sigla BANT: Orçamento, Poder de decisão, Necessidade, e Prazo." });
+        }
+
+        // Módulo 2: Matriz V/F (B2B vs B2C)
+        const vf1 = document.getElementById('vds5-vf1').value;
+        const vf2 = document.getElementById('vds5-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Correto! Vendas B2B são racionais, longas e complexas (V). Vendas B2C (para o consumidor final) costumam ser emocionais, curtas e menos burocráticas (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: A primeira é Verdadeira (B2B é complexo). A segunda é Falsa (B2C geralmente não exige contratos mensais ou 3 meses de negociação)." });
+        }
+
+        // Módulo 3: Associação (Técnicas de Fechamento)
+        const a1 = document.getElementById('vds5-a1').value;
+        const a2 = document.getElementById('vds5-a2').value;
+        const a3 = document.getElementById('vds5-a3').value;
+
+        if (a1 === 'assuncao' && a2 === 'alternativo' && a3 === 'urgencia') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Excelente! CNPJ = Assume que vendeu; Terça ou Quarta = Dá alternativas ilusórias; Último dia = Gera urgência." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Já pedir o CNPJ = Assunção. Oferecer opções de dia = Alternativo. Dizer que o desconto expira amanhã = Urgência." });
+        }
+
+        // Módulo 4: Cálculo (Comissão com Bônus)
+        const inputVal = document.getElementById('vds5-m4-input').value.trim().replace(',', '.');
+        if (inputVal === '2000' || inputVal === '2000.00' || inputVal === '2.000' || inputVal === '2000,00') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Cálculo exato! 3% de R$ 50.000 = R$ 1.500. Somando ao Bônus de R$ 500, Julia recebe um total de R$ 2.000,00." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. Calcule 3% de 50.000 (que resulta em 1500) e adicione o bônus fixo de 500." });
+        }
+
+        // Módulo 5: Dissertativa (Cold Call)
+        const textM5 = document.getElementById('vds5-m5-dissertativa').value;
+        const resM5 = validarTextoInteligente(textM5, 10, 35);
+        if (resM5.valido) {
+            const termosChave = /motivo|tempo|ajudar|ajuda|atenção|rápido|rápida|desafio|solução|problema|interesse/i;
+            if (!termosChave.test(textM5)) {
+                resM5.valido = false;
+                resM5.motivo = "Em uma ligação fria, é crucial respeitar o 'tempo', dar o 'motivo' rápido ou citar que veio 'ajudar' em um 'desafio'.";
+            } else {
+                resM5.motivo = "Script comercial promissor! Ser transparente com o motivo da ligação, respeitar o tempo do cliente e focar em ajudá-lo evita que o telefone seja desligado na sua cara.";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Meta de Vendas Atingida!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou que domina o chão de fábrica das vendas e validou os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão de Argumentação Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção no processo: Você validou ${acertos} de ${total} módulos. Avalie o feedback destacado em vermelho, refine sua técnica e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

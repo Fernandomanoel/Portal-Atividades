@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Desafios Logísticos e Operações Situacionais</title>
+    <style>
+        :root {
+            --primary-dark: #1e293b; /* Slate 800 */
+            --brand-color: #059669; /* Emerald 600 */
+            --brand-light: #d1fae5; /* Emerald 100 */
+            --accent-color: #047857; /* Emerald 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #1e293b 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .frete-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .frete-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .frete-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .frete-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Laboratório de Casos Práticos</span>
+        <h1>Atividade Prática: Desafios Logísticos e Operações Situacionais</h1>
+        <p>Assuma o papel de um Analista de Supply Chain. Enfrente cenários reais de tomada de decisão, resolvendo crises de abastecimento, avaliando custos de frete e definindo estratégias operacionais em tempo real.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ASSOCIAÇÃO - TOMADA DE DECISÃO EM MODAIS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Associação Situacional] Seleção Emergencial de Modal</h2>
+        </div>
+        <div class="scenario-description">
+            O setor de Logística Outbound recebeu três demandas simultâneas. Cada uma possui uma restrição diferente de prazo e custo. Associe o cenário ao Modal de Transporte mais adequado para resolver o problema:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Cenário Operacional</th>
+                    <th style="width: 30%;">Decisão de Modal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Uma peça vital da linha de montagem de um cliente a 2.500 km de distância quebrou. A fábrica dele está parada custando milhares de reais por hora. O frete não importa, apenas a urgência máxima.</td>
+                    <td>
+                        <select id="log2-m1-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="rodoviario">Modal Rodoviário</option>
+                            <option value="ferroviario">Modal Ferroviário/Aquaviário</option>
+                            <option value="aereo">Modal Aéreo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Sua empresa precisa abastecer 15 supermercados diferentes espalhados pelo mesmo estado em uma rota fracionada. Requer alta capilaridade e entrega "porta a porta".</td>
+                    <td>
+                        <select id="log2-m1-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="rodoviario">Modal Rodoviário</option>
+                            <option value="ferroviario">Modal Ferroviário/Aquaviário</option>
+                            <option value="aereo">Modal Aéreo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Exportação de 10.000 toneladas de minério de ferro. O prazo não é apertado, mas a prioridade absoluta é o menor custo possível por tonelada transportada ao longo de grandes distâncias.</td>
+                    <td>
+                        <select id="log2-m1-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="rodoviario">Modal Rodoviário</option>
+                            <option value="ferroviario">Modal Ferroviário/Aquaviário</option>
+                            <option value="aereo">Modal Aéreo</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO - EFEITO CHICOTE E RUPTURA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Falhas no Abastecimento</h2>
+        </div>
+        <div class="scenario-description">
+            Avalie as práticas e consequências descritas durante o gerenciamento de variações de demanda no varejo:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Situação Logística</th>
+                    <th style="width: 25%;">Análise</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Quando o varejo vende um pouco mais e faz pedidos exagerados aos centros de distribuição, gerando compras gigantescas nas fábricas (distorção da demanda), ocorre um fenômeno nocivo chamado "Efeito Chicote" (Bullwhip Effect).</td>
+                    <td>
+                        <select id="log2-m2-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. A Ruptura de Estoque (quando o cliente procura um produto na gôndola e ele está em falta) gera apenas a perda daquela venda momentânea, sem afetar a fidelização ou a imagem da marca.</td>
+                    <td>
+                        <select id="log2-m2-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO / INPUT EXATO - CUSTO DE FRETE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Cálculo Situacional] Orçamento de Frete Fracionado</h2>
+        </div>
+        <div class="scenario-description">
+            Você está analisando a tabela de uma transportadora parceira para aprovar a entrega de um pallet para um novo cliente. A cobrança é composta por uma taxa fixa de despacho e uma taxa variável pela quilometragem rodada.
+        </div>
+        <div class="frete-box">
+            <div class="frete-header">TABELA DE CÁLCULO DE FRETE RODOVIÁRIO</div>
+            <div class="frete-grid">
+                <div><strong>Parâmetro</strong></div>
+                <div><strong>Valor Acordado</strong></div>
+
+                <div>Taxa Fixa (Despacho / Ad Valorem)</div>
+                <div>R$ 150,00</div>
+
+                <div>Taxa Variável (Custo por KM rodado)</div>
+                <div>R$ 3,00 por Km</div>
+
+                <div>Distância até o Cliente</div>
+                <div>50 Km</div>
+            </div>
+            <div class="frete-footer">
+                <span>Fórmula: Taxa Fixa + (Distância × Taxa Variável)</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o Custo Total do Frete (em Reais):</label>
+            <input type="text" id="log2-m3-input" class="input-box" style="margin-top: 6px; max-width: 200px;" placeholder="Ex: 100">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: DISSERTATIVA INTELIGENTE - GESTÃO DE CRISE NO JIT -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Gestão de Crise] Falha no Just-In-Time (JIT)</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário Crítico:</strong> Sua montadora opera sob o sistema rigoroso de <em>Just-in-Time</em> (estoque praticamente zero). Às 07h00 da manhã, o fornecedor principal liga avisando que o caminhão tombou na rodovia e a carga de autopeças foi perdida. A linha de produção vai parar às 10h00.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como Gestor de Supply Chain, decreva seu plano de contingência imediato para tentar salvar o turno de produção (mínimo de 10 palavras). Você deve mencionar termos voltados à crise como acionar 'fornecedor reserva/alternativo', usar frete 'aéreo/urgente' ou 'realocar' a produção.
+        </label>
+        <textarea id="log2-m4-dissertativa" class="input-box" placeholder="Ex: Para evitar a parada total da linha, devemos acionar um fornecedor alternativo emergencial e solicitar o envio das peças por frete aéreo urgente..."></textarea>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRÁTICA EXTERNA - POP DE RECEBIMENTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Prática Externa] Procedimento Operacional Padrão (POP)</h2>
+        </div>
+        <div class="scenario-description">
+            O armazém tem sofrido com mercadorias aceitas mesmo com a embalagem danificada. Para padronizar a operação Inbound, crie um roteiro básico (Procedimento de Recebimento de Avarias) no **Google Docs** ou desenhe um fluxograma no **Canva**.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Cole abaixo o link público do seu documento ou fluxograma:
+        </label>
+        <input type="url" id="log2-m5-link" class="input-box" placeholder="https://docs.google.com/document/... ou https://canva.com/...">
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O plano de contingência não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma resposta mais detalhada (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não resolvem a crise. Descreva as ações necessárias." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta deve conter no mínimo ${minPalavras} palavras argumentativas.` };
+
+        return { valido: true, motivo: "Plano de ação processado com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Associação (Modais em Crise)
+        const a1 = document.getElementById('log2-m1-a1').value;
+        const a2 = document.getElementById('log2-m1-a2').value;
+        const a3 = document.getElementById('log2-m1-a3').value;
+
+        if (a1 === 'aereo' && a2 === 'rodoviario' && a3 === 'ferroviario') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Decisões corretas! Urgência máxima/Fábrica parada exige Modal Aéreo; Fracionamento/Porta a porta exige Rodoviário; Alto volume/Baixo custo exige Ferroviário/Aquaviário." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Atenção às escolhas: Máquina parada (Aéreo), Entrega de supermercados (Rodoviário) e Milhares de toneladas (Ferroviário)." });
+        }
+
+        // Módulo 2: Matriz V/F (Efeito Chicote)
+        const vf1 = document.getElementById('log2-m2-vf1').value;
+        const vf2 = document.getElementById('log2-m2-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente leitura! O Efeito Chicote (Bullwhip) causa superprodução na fábrica (V). E a Ruptura de Estoque é grave, pois irrita o cliente e o faz procurar a concorrência (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. A ampliação exagerada dos pedidos define perfeitamente o Efeito Chicote (Afirmação 1 Verdadeira). A falta de produtos (Ruptura) sempre afeta a fidelização e a marca (Afirmação 2 Falsa)." });
+        }
+
+        // Módulo 3: Cálculo Exato (Custo de Frete)
+        const inputVal = document.getElementById('log2-m3-input').value.trim();
+        if (inputVal === '300' || inputVal === '300,00' || inputVal === '300.00' || inputVal.toLowerCase() === 'trezentos') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! O custo variável é 50 Km × R$ 3 = R$ 150. Somando a Taxa Fixa de R$ 150, o total é R$ 300,00." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Multiplique a distância (50) pela taxa do Km (3) e depois SOME a taxa fixa (150)." });
+        }
+
+        // Módulo 4: Dissertativa Inteligente (Crise no JIT)
+        const textM4 = document.getElementById('log2-m4-dissertativa').value;
+        const resM4 = validarTextoInteligente(textM4, 10, 35);
+        if (resM4.valido) {
+            const termosChave = /reserva|urgência|urgente|aéreo|realocar|paralisação|contingência|alternativo|alternativa/i;
+            if (!termosChave.test(textM4)) {
+                resM4.valido = false;
+                resM4.motivo = "Em uma crise JIT, a velocidade é essencial. Cite a utilização de um 'fornecedor reserva/alternativo', mudança para frete 'aéreo/urgente' ou a necessidade de 'realocar' a produção.";
+            } else {
+                resM4.motivo = "Contingência perfeitamente delineada! O grande risco do JIT é a vulnerabilidade; acionar a redundância (fornecedor B) e frete expresso é a conduta esperada.";
+            }
+        }
+        aplicarFeedback('feedback-m4', resM4);
+        if (resM4.valido) acertos++;
+
+        // Módulo 5: Prática Externa (POP)
+        const urlLink = document.getElementById('log2-m5-link').value.trim();
+        const externalRegex = /^https?:\/\/(www\.)?(docs\.google\.com\/document|canva\.com)\/.+/i;
+        if (urlLink && externalRegex.test(urlLink)) {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Procedimento validado! A padronização da entrada (Inbound) evita a aceitação cega de produtos avariados e prejuízos no inventário." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "URL inválida. Certifique-se de colar o link público de um documento (Google Docs) ou design (Canva)." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Operação Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você resolveu todas as crises e validou corretamente os ${total} módulos logísticos.`;
+        } else {
+            completionText.innerText = "Revisão Operacional Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção na Operação: Você validou ${acertos} de ${total} módulos. Corrija os gargalos apontados em vermelho e tente novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

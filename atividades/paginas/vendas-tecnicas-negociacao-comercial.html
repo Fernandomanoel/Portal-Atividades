@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Técnicas de Vendas e Negociação Comercial</title>
+    <style>
+        :root {
+            --primary-dark: #881337;
+            --brand-color: #e11d48;
+            --brand-light: #ffe4e6;
+            --accent-color: #be123c;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #881337 0%, #e11d48 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fecdd3; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--brand-color);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Técnicas de Vendas e Negociação Comercial</h1>
+        <p>Explore novas abordagens nas vendas: estratégias de prospecção B2B (Spin Selling), técnicas de fechamento avançado, manuseio de objeções complexas, cálculo prático de margens de desconto e construção de ferramentas digitais de apoio comercial.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: MÚLTIPLA ESCOLHA / CHECKBOXES - TÉCNICAS SPIN SELLING -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Múltipla Escolha] Perguntas do Método SPIN Selling</h2>
+        </div>
+        <div class="scenario-description">
+            O método SPIN Selling categoriza perguntas para conduzir o cliente ao fechamento. Marque a alternativa que descreve corretamente o objetivo das <strong>Perguntas de Implicação (I)</strong>:
+        </div>
+        <div class="checkbox-group">
+            <label class="checkbox-label">
+                <input type="radio" name="vendas-m1" value="a">
+                a) Perguntar dados demográficos básicos da empresa, como número de funcionários e faturamento anual geral.
+            </label>
+            <label class="checkbox-label">
+                <input type="radio" name="vendas-m1" value="b">
+                b) Fazer o cliente compreender as consequências, a gravidade e o impacto financeiro negativo que o problema atual está causando em seu negócio.
+            </label>
+            <label class="checkbox-label">
+                <input type="radio" name="vendas-m1" value="c">
+                c) Perguntar diretamente se ele deseja assinar o contrato e fechar a compra imediatamente.
+            </label>
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: ASSOCIAÇÃO - GATILHOS MENTAIS E TÉCNICAS DE COMPRA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Associação] Gatilhos Mentais Aplicados à Venda</h2>
+        </div>
+        <div class="scenario-description">
+            Os gatilhos mentais aceleram a decisão de compra ativando atalhos no cérebro humano. Associe a frase de abordagem comercial ao seu respectivo gatilho mental:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Abordagem Comercial do Vendedor</th>
+                    <th style="width: 30%;">Gatilho Mental</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>"Restam apenas 2 unidades com este valor promocional para fechamento nesta turma, pois a procura está altíssima."</td>
+                    <td>
+                        <select id="vds2-m2-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="escassez">Escassez</option>
+                            <option value="autoridade">Autoridade</option>
+                            <option value="prova">Prova Social</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>"Mais de 5.000 empresários já implementaram nosso sistema de gestão fiscal e aprovaram os resultados no primeiro mês."</td>
+                    <td>
+                        <select id="vds2-m2-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="escassez">Escassez</option>
+                            <option value="autoridade">Autoridade</option>
+                            <option value="prova">Prova Social</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>"Sou especialista certificado em arquitetura financeira empresarial com mais de 15 anos de mercado orientando grandes marcas."</td>
+                    <td>
+                        <select id="vds2-m2-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="escassez">Escassez</option>
+                            <option value="autoridade">Autoridade</option>
+                            <option value="prova">Prova Social</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO / INPUT EXATO - MARGEM E DESCONTO MÁXIMO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Cálculo Comercial] Limite Máximo de Desconto Concedido</h2>
+        </div>
+        <div class="scenario-description">
+            Para fechar uma venda B2B de grande porte, o gerente autorizou conceder um desconto equivalente a <strong>15%</strong> sobre o valor de tabela do produto.
+        </div>
+        <div style="background: #fff; border: 1px solid var(--border-color); padding: 15px; border-radius: 6px; font-family: monospace; font-size: 14px; margin-bottom: 15px;">
+            <div>Valor Original de Tabela: R$ 2.000,00</div>
+            <div>Percentual de Desconto Autorizado: 15%</div>
+        </div>
+        <div>
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o VALOR FINAL do produto após a aplicação do desconto (apenas o número em Reais, ex: 1700):</label>
+            <input type="text" id="vds2-m3-input" class="input-box" style="margin-top: 6px; max-width: 220px;" placeholder="Digite o valor final...">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: DISSERTATIVA INTELIGENTE - ANÁLISE DE OBJEÇÃO DE CONCORRÊNCIA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Análise Estratégica] Contorno de Objeção: "O concorrente faz mais barato"</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> O cliente potencial ouviu sua proposta de consultoria em vendas, gostou muito da metodologia, mas soltou a objeção clássica: <em>"Achei excelente, mas a empresa X faz exatamente a mesma consultoria cobrando 30% a menos."</em>
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Descreva sua estratégia argumentativa para contornar essa objeção sem entrar em guerra de preços (mínimo de 10 palavras). Você deve mencionar a importância de destacar o **diferencial**, a **qualidade**, o **retorno (ROI)** ou a **experiência/suporte**.
+        </label>
+        <textarea id="vds2-m4-dissertativa" class="input-box" placeholder="Ex: Devo demonstrar que nosso diferencial competitivo foca na qualidade superior, no suporte especializado e no retorno sobre o investimento gerado..."></textarea>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRÁTICA EXTERNA - CRIAÇÃO DE APRESENTAÇÃO / PROPOSTA COMERCIAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Prática Externa] Desenvolvimento de Proposta Comercial Digital</h2>
+        </div>
+        <div class="scenario-description">
+            Uma proposta visualmente atrativa aumenta drasticamente a taxa de conversão de vendas. Utilize o **Canva** para montar um modelo visual de proposta comercial ou o **Google Docs** para criar um template de orçamento estruturado.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Cole abaixo o link público da sua proposta ou apresentação comercial criada:
+        </label>
+        <input type="url" id="vds2-m5-link" class="input-box" placeholder="https://www.canva.com/... ou https://docs.google.com/document/...">
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma resposta mais detalhada (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não são aceitos. Elabore um argumento comercial válido." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta deve conter no mínimo ${minPalavras} palavras argumentativas.` };
+
+        return { valido: true, motivo: "Argumentação comercial recebida com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Múltipla Escolha (SPIN - Implicação)
+        const m1Select = document.querySelector('input[name="vendas-m1"]:checked');
+        if (m1Select && m1Select.value === 'b') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Correto! As perguntas de Implicação (I) mostram a gravidade e o custo do problema, aumentando a urgência de compra." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. As perguntas de implicação focam em evidenciar as consequências e custos negativos do problema atual do cliente." });
+        }
+
+        // Módulo 2: Associação (Gatilhos Mentais)
+        const a1 = document.getElementById('vds2-m2-a1').value;
+        const a2 = document.getElementById('vds2-m2-a2').value;
+        const a3 = document.getElementById('vds2-m2-a3').value;
+
+        if (a1 === 'escassez' && a2 === 'prova' && a3 === 'autoridade') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente! Poucas unidades = Escassez; Milhares de clientes = Prova Social; Especialista certificado = Autoridade." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Incorreto. Revise os gatilhos: POUCAS unidades acIONam a Escassez; MUITOS clientes geram Prova Social; ESPECIALISTA transmite Autoridade." });
+        }
+
+        // Módulo 3: Cálculo (Desconto)
+        const inputVal = document.getElementById('vds2-m3-input').value.trim().replace(',', '.');
+        if (inputVal === '1700' || inputVal === '1700.00' || inputVal === '1700,00') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! 15% de R$ 2.000 = R$ 300 de desconto. R$ 2.000 - R$ 300 = R$ 1.700,00 valor final." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Calcule 15% de 2000 (que dá 300) e subtraia do valor original de tabela." });
+        }
+
+        // Módulo 4: Dissertativa Inteligente (Objeção)
+        const textM4 = document.getElementById('vds2-m4-dissertativa').value;
+        const resM4 = validarTextoInteligente(textM4, 8, 30);
+        if (resM4.valido) {
+            const termosChave = /diferencial|qualidade|roi|retorno|suporte|experiência|valor|benefício|especializado/i;
+            if (!termosChave.test(textM4)) {
+                resM4.valido = false;
+                resM4.motivo = "Sua argumentação deve citar elementos como 'diferencial', 'qualidade', 'suporte' ou 'retorno (ROI)' para justificar o investimento.";
+            } else {
+                resM4.motivo = "Diagnóstico comercial perfeito! Valorizar o diferencial competitivo e o retorno sobre o investimento impede a desvalorização do seu serviço.";
+            }
+        }
+        aplicarFeedback('feedback-m4', resM4);
+        if (resM4.valido) acertos++;
+
+        // Módulo 5: Prática Externa (Canva / Docs)
+        const urlLink = document.getElementById('vds2-m5-link').value.trim();
+        const externalRegex = /^https?:\/\/(www\.)?(canva\.com|docs\.google\.com)\/.+/i;
+        if (urlLink && externalRegex.test(urlLink)) {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Link validado com sucesso! Uma proposta profissional bem desenhada eleva a percepção de valor da sua oferta." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "URL inválida. Certifique-se de colar o link público de compartilhamento do Canva ou Google Docs." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou forte habilidade comercial e validou corretamente todos os ${acertos} de ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Você validou ${acertos} de ${total} módulos. Corrija os pontos destacados em vermelho e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

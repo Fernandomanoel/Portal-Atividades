@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diálogos em Inglês (Beta) — com a Gabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --azul: #1cb0f6;
+            --azul-escuro: #1899d6;
+            --azul-claro: #ddf4ff;
+            --azul-forte: #0c63e7;
+            --gradiente-azul: linear-gradient(135deg, #38bdf8 0%, #1cb0f6 45%, #0c63e7 100%);
+            --verde: #58cc02;
+            --verde-escuro: #46a302;
+            --verde-claro: #d7ffb8;
+            --vermelho: #ff4b4b;
+            --vermelho-escuro: #ea2b2b;
+            --vermelho-claro: #ffdfe0;
+            --amarelo: #ffc800;
+            --amarelo-escuro: #e6b400;
+            --tinta: #3c3c3c;
+            --cinza: #777;
+            --borda: #e5e5e5;
+            --papel: #f7f7f7;
+            --cartao: #ffffff;
+        }
+
+        html, body { height: 100%; }
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: var(--papel);
+            color: var(--tinta);
+            overflow: hidden;
+        }
+
+        .app { height: 100dvh; display: flex; flex-direction: column; }
+
+        /* ---------- Topo: progresso + placar ---------- */
+        .topo {
+            display: flex; align-items: center; gap: clamp(10px,1.6vw,18px);
+            padding: clamp(10px,1.6vh,18px) clamp(14px,2vw,28px);
+            flex-shrink: 0; background: linear-gradient(120deg, #f2fbff 0%, #e3f4ff 100%);
+            border-bottom: 2px solid var(--borda);
+        }
+        .topo a.sair {
+            color: var(--cinza); text-decoration: none; font-size: 1.4rem; font-weight: 800;
+            flex-shrink: 0; line-height: 1;
+        }
+        .topo a.sair:hover { color: var(--tinta); }
+        .barra-progresso { flex: 1; height: 15px; background: #d9ecfa; border-radius: 999px; overflow: hidden; }
+        .barra-progresso span { display: block; height: 100%; width: 0; background: var(--gradiente-azul); border-radius: 999px; transition: width .3s; }
+        .placar-topo {
+            display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+            font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: clamp(.85rem,1.7vh,1.05rem);
+        }
+        .placar-topo .item { display: flex; align-items: center; gap: 4px; }
+        .placar-topo .estrela { color: #f0a93b; }
+
+        /* ---------- Palco central ---------- */
+        .palco { flex: 1; min-height: 0; overflow-y: auto; display: flex; justify-content: center; }
+        .conteudo { width: 100%; max-width: 640px; padding: clamp(18px,3vh,36px) clamp(16px,3vw,24px) 24px; display: flex; flex-direction: column; gap: clamp(14px,2.4vh,22px); }
+
+        .rotulo-tipo {
+            display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
+            background: var(--gradiente-azul); color: #fff; font-weight: 800;
+            font-size: clamp(.72rem,1.4vh,.85rem); padding: 5px 14px; border-radius: 999px;
+        }
+
+        h1.pergunta {
+            font-family: 'Baloo 2', sans-serif; font-size: clamp(1.15rem,2.6vh,1.55rem);
+            font-weight: 700; line-height: 1.35; color: var(--tinta);
+        }
+
+        /* ---------- Ícone de alto-falante (SVG) ---------- */
+        .icone-som { display: inline-block; flex-shrink: 0; }
+
+        /* ---------- Chat do diálogo ---------- */
+        .chat-caixa {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 16px;
+            padding: clamp(12px,2vh,18px); display: flex; flex-direction: column; gap: 14px;
+            max-height: 44vh; overflow-y: auto;
+        }
+        .msg { display: flex; gap: 10px; max-width: 92%; }
+        .msg.gabi { align-self: flex-start; }
+        .msg.voce { align-self: flex-end; flex-direction: row-reverse; }
+        .msg .avatar {
+            width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; margin-top: 2px;
+            border: 2px solid var(--azul); background: var(--azul-claro);
+            object-fit: contain; object-position: top center;
+        }
+        .msg .conteudo-msg { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+        .msg.voce .conteudo-msg { align-items: flex-end; }
+        .msg .bolha-texto {
+            background: #fff; border: 2px solid var(--borda); border-radius: 15px 15px 15px 4px;
+            padding: 8px 13px; font-weight: 700; font-size: clamp(.85rem,1.65vh,.98rem); color: var(--tinta);
+        }
+        .msg.voce .bolha-texto {
+            background: var(--gradiente-azul); color: #fff; border: none; border-radius: 15px 15px 4px 15px;
+        }
+        .msg .traducao-msg { font-size: .72rem; color: var(--cinza); font-weight: 700; padding: 0 4px; }
+        .msg.voce .traducao-msg { text-align: right; }
+        .controles-msg { display: flex; gap: 14px; padding: 0 4px; }
+        .controles-msg button {
+            display: inline-flex; align-items: center; gap: 4px; background: none; border: none;
+            cursor: pointer; color: var(--azul-forte); font-weight: 800; font-size: .75rem; font-family: inherit;
+        }
+        .controles-msg button:hover { color: var(--azul-escuro); }
+        .controles-msg button.tocando { color: var(--azul); }
+
+        /* ---------- Opções de múltipla escolha ---------- */
+        .opcoes { display: flex; flex-direction: column; gap: 10px; }
+        .opcao {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 14px;
+            padding: clamp(12px,2vh,16px) clamp(14px,2vw,18px); text-align: left; cursor: pointer;
+            font-family: inherit; font-size: clamp(.88rem,1.75vh,1.05rem); font-weight: 700; color: var(--tinta);
+            box-shadow: 0 3px 0 var(--borda); transition: transform .08s, box-shadow .08s, border-color .12s, background .12s;
+        }
+        .opcao:hover:not(.travado) { border-color: #c2c2c2; }
+        .opcao.selecionada { border-color: var(--azul); background: var(--azul-claro); box-shadow: 0 3px 0 var(--azul); }
+        .opcao.certa { border-color: var(--verde); background: var(--verde-claro); box-shadow: 0 3px 0 var(--verde); color: #2f6e00; }
+        .opcao.errada { border-color: var(--vermelho); background: var(--vermelho-claro); box-shadow: 0 3px 0 var(--vermelho); color: #a81f1f; }
+        .opcao.travado { cursor: default; }
+        .opcao:active:not(.travado) { transform: translateY(2px); box-shadow: 0 1px 0 var(--borda); }
+
+        /* ---------- Campo de resposta escrita ---------- */
+        .campo-escrita {
+            width: 100%; border: 2px solid var(--borda); border-radius: 14px;
+            padding: clamp(12px,2vh,16px); font-family: 'Baloo 2', sans-serif;
+            font-size: clamp(1rem,2.1vh,1.25rem); font-weight: 700; color: var(--tinta);
+            outline: none; transition: border-color .12s;
+        }
+        .campo-escrita:focus { border-color: var(--azul); }
+        .campo-escrita.certa { border-color: var(--verde); background: var(--verde-claro); color: #2f6e00; }
+        .campo-escrita.errada { border-color: var(--vermelho); background: var(--vermelho-claro); color: #a81f1f; }
+
+        /* ---------- Barra inferior fixa (estilo Duolingo) ---------- */
+        .rodape {
+            flex-shrink: 0; padding: clamp(12px,2vh,20px) clamp(16px,3vw,28px);
+            border-top: 2px solid var(--borda); background: #fff;
+            display: flex; align-items: center; justify-content: flex-end; gap: 16px;
+            transition: background .2s;
+        }
+        .rodape.fundo-certo { background: var(--verde-claro); border-top-color: #b6f27a; }
+        .rodape.fundo-errado { background: var(--vermelho-claro); border-top-color: #ffb3b5; }
+
+        .feedback { flex: 1; display: none; align-items: center; gap: 12px; }
+        .feedback.on { display: flex; }
+        .feedback img { width: 46px; flex-shrink: 0; }
+        .feedback-texto { font-family: 'Baloo 2', sans-serif; font-weight: 700; }
+        .feedback-texto .titulo { font-size: clamp(.95rem,1.9vh,1.15rem); }
+        .feedback.fundo-certo .titulo { color: #2f6e00; }
+        .feedback.fundo-errado .titulo { color: #a81f1f; }
+        .feedback-texto .sub { font-size: .8rem; font-weight: 700; color: var(--cinza); }
+
+        .btn-grande {
+            border: none; border-radius: 14px; padding: clamp(12px,1.8vh,16px) clamp(28px,4vw,44px);
+            font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: clamp(.9rem,1.8vh,1.05rem);
+            text-transform: uppercase; letter-spacing: .03em; cursor: pointer;
+            transition: transform .08s, box-shadow .08s;
+        }
+        .btn-grande:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-verificar { background: var(--gradiente-azul); color: #fff; box-shadow: 0 4px 0 var(--azul-forte); }
+        .btn-verificar:hover:not(:disabled) { filter: brightness(1.06); }
+        .btn-verificar:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0 var(--azul-forte); }
+        .btn-continuar { background: var(--verde); color: #fff; box-shadow: 0 4px 0 var(--verde-escuro); }
+        .btn-continuar.errado { background: var(--vermelho); box-shadow: 0 4px 0 var(--vermelho-escuro); }
+        .btn-continuar:active { transform: translateY(4px); box-shadow: 0 0 0 var(--verde-escuro); }
+        .btn-continuar.errado:active { box-shadow: 0 0 0 var(--vermelho-escuro); }
+
+        /* ---------- Tela de resultado final ---------- */
+        .tela-final {
+            flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; text-align: center; padding: 24px;
+        }
+        .tela-final.on { display: flex; }
+        .tela-final h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.4rem,3.4vh,2rem); color: var(--azul-escuro); }
+        .placar-final { display: flex; gap: clamp(16px,3vw,32px); margin-top: 8px; flex-wrap: wrap; justify-content: center; }
+        .placar-final .bloco {
+            background: #fff; border: 2px solid var(--borda); border-radius: 14px; padding: 12px 22px;
+            box-shadow: 0 4px 0 var(--borda);
+        }
+        .placar-final .bloco .num { font-family: 'Baloo 2', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--azul-escuro); }
+        .placar-final .bloco .rot { font-size: .74rem; font-weight: 800; color: var(--cinza); text-transform: uppercase; }
+        .aviso-beta {
+            margin-top: 10px; font-size: .78rem; color: var(--cinza); font-weight: 700; max-width: 420px;
+        }
+
+        /* ---------- Tela de apresentação inicial ---------- */
+        .tela-intro {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; text-align: center; padding: 24px;
+        }
+        .tela-intro.off { display: none; }
+        .tela-intro .moldura-topo, .tela-final .moldura-topo {
+            position: relative;
+            width: clamp(175px,29vh,240px); height: clamp(175px,29vh,240px); border-radius: 50%;
+            background: var(--gradiente-azul); overflow: hidden;
+            box-shadow: 0 10px 26px rgba(12,99,231,.32), 0 0 0 7px rgba(28,176,246,.16);
+        }
+        .tela-intro img, .tela-final img {
+            position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px);
+            object-fit: contain; object-position: top center; display: block;
+        }
+        .tela-intro h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.3rem,3.2vh,1.9rem); color: var(--azul-escuro); }
+        .tela-intro p { max-width: 460px; font-weight: 700; color: var(--cinza); font-size: clamp(.85rem,1.7vh,1rem); line-height: 1.5; }
+        .selo-beta {
+            background: var(--amarelo); color: #7a5b00; font-weight: 800; font-size: .72rem;
+            padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: .04em;
+        }
+
+        @media (max-width: 620px) {
+            .topo { flex-wrap: wrap; }
+            .placar-topo { order: 3; width: 100%; justify-content: center; }
+            .placar-final { gap: 10px; }
+            .placar-final .bloco { padding: 10px 16px; }
+            .chat-caixa { max-height: 38vh; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="topo">
+        <a class="sair" href="../../atividade.html?curso=ingles" title="Sair">✕</a>
+        <div class="barra-progresso"><span id="barra"></span></div>
+        <div class="placar-topo">
+            <span class="item"><span class="estrela">⭐</span><span id="placar-pontos">0</span></span>
+        </div>
+    </div>
+
+    <div class="palco">
+        <div class="conteudo" id="conteudo" style="display:none;"></div>
+
+        <div class="tela-intro" id="tela-intro">
+            <span class="selo-beta">versão beta</span>
+            <div class="moldura-topo"><img src="assets/ingles-listening-beta/mascote-explicando.png" alt="Gabi acenando e explicando"></div>
+            <h1>Vamos conversar? 💬</h1>
+            <p>Dessa vez a dinâmica é outra: você entra em conversas de verdade com a Gabi — no café, no trabalho, na rua — e escolhe (ou escreve) a resposta certa pra continuar cada diálogo. Ao final de cada fala você ainda pode ouvir de novo, inclusive em câmera lenta.</p>
+            <button class="btn-grande btn-verificar" id="btn-comecar" style="opacity:1;">Começar</button>
+        </div>
+
+        <div class="tela-final" id="tela-final">
+            <div class="moldura-topo"><img src="assets/ingles-listening-beta/mascote-acertou.png" alt="Gabi comemorando" id="img-final"></div>
+            <h1 id="titulo-final">Diálogos concluídos!</h1>
+            <div class="placar-final">
+                <div class="bloco"><div class="num" id="final-acertos">0/0</div><div class="rot">acertos</div></div>
+                <div class="bloco"><div class="num" id="final-precisao">0%</div><div class="rot">precisão</div></div>
+                <div class="bloco"><div class="num" id="final-pontos">0</div><div class="rot">pontos</div></div>
+            </div>
+            <button class="btn-grande btn-verificar" id="btn-refazer" style="margin-top:14px;">Praticar de novo</button>
+            <p class="aviso-beta">Essa atividade é uma versão beta — se algo ficar estranho ou faltar frase, me avise que eu ajusto.</p>
+        </div>
+    </div>
+
+    <div class="rodape" id="rodape" style="display:none;">
+        <div class="feedback" id="feedback">
+            <img id="feedback-img" src="assets/ingles-listening-beta/mascote-acertou.png" alt="Gabi">
+            <div class="feedback-texto">
+                <div class="titulo" id="feedback-titulo">Muito bem!</div>
+                <div class="sub" id="feedback-sub"></div>
+            </div>
+        </div>
+        <button class="btn-grande btn-verificar" id="btn-verificar" disabled>Verificar</button>
+        <button class="btn-grande btn-continuar" id="btn-continuar" style="display:none;">Continuar</button>
+    </div>
+</div>
+
+<script>
+/* ==================================================================
+   1) OS DIÁLOGOS (dinâmica nova: em vez de frases soltas, a pessoa
+   participa de 5 conversas de verdade com a Gabi — café, trabalho,
+   rua, fim de semana, médico — escolhendo ou escrevendo a resposta
+   certa pra continuar cada uma. Cada fala da Gabi tem a tradução
+   (pra ajudar a entender o contexto) e o áudio pra ouvir/reouvir.
+   ================================================================== */
+const DIALOGOS = [
+    {
+        titulo: "No café", emoji: "☕",
+        falas: [
+            {
+                gabi: "Hi! What can I get for you today?", traducao: "Oi! O que você vai querer hoje?",
+                tipo: "multipla",
+                opcoes: ["I'd like a coffee, please.", "I am from Brazil.", "See you tomorrow."], resposta: 0,
+            },
+            {
+                gabi: "Would you like anything else?", traducao: "Você gostaria de mais alguma coisa?",
+                tipo: "multipla",
+                opcoes: ["No, thank you. Just the coffee.", "It's raining outside.", "I live near here."], resposta: 0,
+            },
+            {
+                gabi: "That will be five dollars.", traducao: "Vai dar cinco dólares.",
+                tipo: "escrever", respostas: ["here you go", "here you are"],
+            },
+            {
+                gabi: "Thank you! Have a nice day!", traducao: "Obrigada! Tenha um bom dia!",
+                tipo: "multipla",
+                opcoes: ["You too! Bye!", "I don't understand.", "Where is the bathroom?"], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "Novo colega de trabalho", emoji: "🧑‍💼",
+        falas: [
+            {
+                gabi: "Hi, I'm Gabi. I'm new here.", traducao: "Oi, eu sou a Gabi. Sou nova aqui.",
+                tipo: "multipla",
+                opcoes: ["Nice to meet you! Welcome!", "I need some help.", "The train leaves at nine."], resposta: 0,
+            },
+            {
+                gabi: "Thank you! What do you do here?", traducao: "Obrigada! O que você faz aqui?",
+                tipo: "multipla",
+                opcoes: ["I work in the marketing team.", "I live in Brazil.", "I am hungry."], resposta: 0,
+            },
+            {
+                gabi: "That sounds interesting!", traducao: "Isso parece interessante!",
+                tipo: "multipla",
+                opcoes: ["Thanks! I really enjoy it.", "I need some help.", "It's near the supermarket."], resposta: 0,
+            },
+            {
+                gabi: "Let's have lunch together sometime.", traducao: "Vamos almoçar juntos algum dia.",
+                tipo: "escrever", respostas: ["sounds great", "that sounds great"],
+            },
+        ],
+    },
+    {
+        titulo: "Pedindo direções", emoji: "🧭",
+        falas: [
+            {
+                gabi: "Excuse me, can you help me?", traducao: "Com licença, você pode me ajudar?",
+                tipo: "multipla",
+                opcoes: ["Of course! What do you need?", "I am fine, thank you.", "Nice to meet you."], resposta: 0,
+            },
+            {
+                gabi: "Where is the nearest bank?", traducao: "Onde fica o banco mais próximo?",
+                tipo: "multipla",
+                opcoes: ["It's two blocks from here.", "It's five dollars.", "I have two sisters."], resposta: 0,
+            },
+            {
+                gabi: "Is it far from here?", traducao: "É longe daqui?",
+                tipo: "multipla",
+                opcoes: ["No, it's very close.", "Yes, I live there.", "It's five dollars."], resposta: 0,
+            },
+            {
+                gabi: "Thank you so much!", traducao: "Muito obrigada!",
+                tipo: "escrever", respostas: ["you are welcome", "youre welcome", "you're welcome"],
+            },
+        ],
+    },
+    {
+        titulo: "Planos para o fim de semana", emoji: "🏖️",
+        falas: [
+            {
+                gabi: "What are your plans for the weekend?", traducao: "Quais são seus planos para o fim de semana?",
+                tipo: "multipla",
+                opcoes: ["I don't have any plans yet.", "I have two brothers.", "It's sunny today."], resposta: 0,
+            },
+            {
+                gabi: "Do you want to go to the beach?", traducao: "Você quer ir à praia?",
+                tipo: "multipla",
+                opcoes: ["Yes, that sounds great!", "I need some help.", "Turn left at the corner."], resposta: 0,
+            },
+            {
+                gabi: "What time should we meet?", traducao: "Que horas devemos nos encontrar?",
+                tipo: "escrever", respostas: ["lets meet at ten", "let's meet at ten"],
+            },
+            {
+                gabi: "Perfect! See you then!", traducao: "Perfeito! Até lá!",
+                tipo: "multipla",
+                opcoes: ["See you then! Bye!", "I am tired today.", "Where is the bathroom?"], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "No consultório médico", emoji: "🩺",
+        falas: [
+            {
+                gabi: "How are you feeling today?", traducao: "Como você está se sentindo hoje?",
+                tipo: "multipla",
+                opcoes: ["I have a headache.", "I live in Brazil.", "I like to read books."], resposta: 0,
+            },
+            {
+                gabi: "I'm sorry to hear that. Since when?", traducao: "Sinto muito. Desde quando?",
+                tipo: "multipla",
+                opcoes: ["Since this morning.", "Two blocks from here.", "Five dollars."], resposta: 0,
+            },
+            {
+                gabi: "You should rest and drink water.", traducao: "Você deveria descansar e beber água.",
+                tipo: "escrever", respostas: ["thank you doctor", "thanks doctor"],
+            },
+            {
+                gabi: "Take care! Get well soon.", traducao: "Se cuida! Melhoras!",
+                tipo: "multipla",
+                opcoes: ["Thank you very much!", "See you at the market.", "It's near the supermarket."], resposta: 0,
+            },
+        ],
+    },
+];
+const TOTAL_TURNOS = DIALOGOS.reduce((soma, d) => soma + d.falas.length, 0);
+
+/* ==================================================================
+   2) VOZ EM INGLÊS (mesma correção usada nas outras atividades: sem
+   escolher a voz explicitamente o Chrome pode falar com a voz padrão
+   do sistema em vez da pedida; preferimos uma voz feminina pra Gabi
+   quando o sistema tiver mais de uma opção em inglês).
+   ================================================================== */
+let vozEN = null;
+const NOMES_VOZ_FEMININA_EN = [
+    "female", "zira", "aria", "jenny", "michelle", "samantha", "susan", "karen",
+    "moira", "tessa", "victoria", "fiona", "kate", "salli", "joanna", "ivy",
+    "kimberly", "amy", "emma", "sara", "linda", "google us english",
+];
+function prepararVozEN() {
+    const vozes = speechSynthesis.getVoices();
+    if (!vozes.length) return;
+    const vozesEmIngles = vozes.filter((v) => v.lang && v.lang.toLowerCase().startsWith("en"));
+    const vozesEnUS = vozesEmIngles.filter((v) => v.lang === "en-US");
+    const candidatas = vozesEnUS.length ? vozesEnUS : vozesEmIngles;
+    const feminina = candidatas.find((v) =>
+        NOMES_VOZ_FEMININA_EN.some((nome) => v.name.toLowerCase().includes(nome))
+    );
+    vozEN = feminina || candidatas[0] || null;
+}
+if ("speechSynthesis" in window) {
+    prepararVozEN();
+    speechSynthesis.addEventListener("voiceschanged", prepararVozEN);
+}
+
+function iconeSom(tamanho, cor) {
+    return `<svg class="icone-som" width="${tamanho}" height="${tamanho}" viewBox="0 0 24 24" fill="${cor || "currentColor"}" aria-hidden="true">
+        <path d="M4 9v6h4l5 5V4L8 9H4z"/>
+        <path d="M16.5 12c0-1.77-.77-3.29-2-4.24v8.48c1.23-.95 2-2.47 2-4.24z" opacity=".9"/>
+        <path d="M14.5 3.23v2.06c2.89 1.09 5 3.94 5 7.31s-2.11 6.22-5 7.31v2.06c4-1.14 7-4.94 7-9.37s-3-8.23-7-9.37z" opacity=".7"/>
+    </svg>`;
+}
+function iconeDevagar(tamanho, cor) {
+    const c = cor || "currentColor";
+    return `<span class="icone-som" style="display:inline-flex; align-items:center; justify-content:center;
+        width:${tamanho}px; height:${tamanho}px; border-radius:50%; border:1.6px solid ${c};
+        font-size:${Math.round(tamanho * 0.62)}px; font-weight:800; line-height:1; color:${c};">½</span>`;
+}
+
+function falarEN(texto, botao, velocidade) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const f = new SpeechSynthesisUtterance(texto);
+    f.lang = "en-US";
+    f.rate = velocidade || 0.88;
+    if (vozEN) f.voice = vozEN;
+    if (botao) {
+        botao.classList.add("tocando");
+        f.onend = () => botao.classList.remove("tocando");
+        f.onerror = () => botao.classList.remove("tocando");
+    }
+    speechSynthesis.speak(f);
+}
+
+/* ==================================================================
+   3) ESTADO E ELEMENTOS
+   ================================================================== */
+const el = {
+    conteudo: document.getElementById("conteudo"),
+    telaIntro: document.getElementById("tela-intro"),
+    telaFinal: document.getElementById("tela-final"),
+    rodape: document.getElementById("rodape"),
+    barra: document.getElementById("barra"),
+    placarPontos: document.getElementById("placar-pontos"),
+    btnComecar: document.getElementById("btn-comecar"),
+    btnRefazer: document.getElementById("btn-refazer"),
+    btnVerificar: document.getElementById("btn-verificar"),
+    btnContinuar: document.getElementById("btn-continuar"),
+    feedback: document.getElementById("feedback"),
+    feedbackImg: document.getElementById("feedback-img"),
+    feedbackTitulo: document.getElementById("feedback-titulo"),
+    feedbackSub: document.getElementById("feedback-sub"),
+    imgFinal: document.getElementById("img-final"),
+    tituloFinal: document.getElementById("titulo-final"),
+    finalAcertos: document.getElementById("final-acertos"),
+    finalPrecisao: document.getElementById("final-precisao"),
+    finalPontos: document.getElementById("final-pontos"),
+};
+
+const MASCOTE = {
+    neutra: "assets/ingles-listening-beta/mascote-neutra.png",
+    explicando: "assets/ingles-listening-beta/mascote-explicando.png",
+    certo: "assets/ingles-listening-beta/mascote-acertou.png",
+    errado: "assets/ingles-listening-beta/mascote-errou.png",
+};
+
+const estado = {
+    dIdx: 0, tIdx: 0, turnoGlobal: 0,
+    pontos: 0, acertos: 0,
+    respondido: false,
+    selecaoAtual: null, // índice da opção OU o texto digitado
+    historico: [], // {quem:'gabi'|'voce', texto, traducao?} da conversa atual
+};
+
+function normalizar(txt) {
+    return txt.trim().toLowerCase().replace(/[.,!?;:]+$/g, "").replace(/\s+/g, " ");
+}
+function escaparHTML(txt) {
+    const div = document.createElement("div");
+    div.textContent = txt;
+    return div.innerHTML;
+}
+// Deixa a resposta escrita com aparência de frase (primeira letra maiúscula
+// e ponto final), só pra ficar bonito na bolha de chat — nunca é usada na
+// comparação de acerto, que já rodou por cima do texto original.
+function formatarFrase(txt) {
+    let t = txt.trim();
+    t = t.charAt(0).toUpperCase() + t.slice(1);
+    if (!/[.!?]$/.test(t)) t += ".";
+    return t;
+}
+
+/* ==================================================================
+   4) RENDERIZAÇÃO DO CHAT E DE CADA TURNO
+   ================================================================== */
+function atualizarTopo() {
+    el.barra.style.width = (estado.turnoGlobal / TOTAL_TURNOS * 100) + "%";
+    el.placarPontos.textContent = estado.pontos;
+}
+
+function montarChatHtml() {
+    let html = '<div class="chat-caixa" id="chat-caixa">';
+    estado.historico.forEach((m) => {
+        html += `<div class="msg ${m.quem}">`;
+        if (m.quem === "gabi") html += `<img class="avatar" src="${MASCOTE.neutra}" alt="Gabi">`;
+        html += `<div class="conteudo-msg">`;
+        html += `<div class="bolha-texto">${m.texto}</div>`;
+        if (m.traducao) html += `<div class="traducao-msg">${m.traducao}</div>`;
+        if (m.quem === "gabi") {
+            html += `<div class="controles-msg">
+                <button class="btn-msg-audio" data-texto="${m.texto}">${iconeSom(15)} ouvir</button>
+                <button class="btn-msg-audio-devagar" data-texto="${m.texto}">${iconeDevagar(13)} devagar</button>
+            </div>`;
+        }
+        html += `</div></div>`;
+    });
+    html += "</div>";
+    return html;
+}
+
+function iniciarDialogo(dIdx) {
+    estado.dIdx = dIdx;
+    estado.tIdx = 0;
+    estado.historico = [];
+    iniciarTurno();
+}
+
+function iniciarTurno() {
+    const dialogo = DIALOGOS[estado.dIdx];
+    const fala = dialogo.falas[estado.tIdx];
+    estado.respondido = false;
+    estado.selecaoAtual = null;
+    estado.historico.push({ quem: "gabi", texto: fala.gabi, traducao: fala.traducao });
+    atualizarTopo();
+
+    el.rodape.className = "rodape";
+    el.rodape.style.display = "flex";
+    el.feedback.classList.remove("on", "fundo-certo", "fundo-errado");
+    el.btnVerificar.style.display = "inline-block";
+    el.btnVerificar.disabled = true;
+    el.btnContinuar.style.display = "none";
+    el.btnContinuar.classList.remove("errado");
+
+    let html = `<span class="rotulo-tipo">💬 Diálogo ${estado.dIdx + 1} de ${DIALOGOS.length} · ${dialogo.emoji} ${dialogo.titulo}</span>`;
+    html += montarChatHtml();
+
+    if (fala.tipo === "multipla") {
+        html += `<div class="opcoes" id="opcoes">`;
+        fala.opcoes.forEach((op, i) => {
+            html += `<button class="opcao" data-i="${i}">${op}</button>`;
+        });
+        html += `</div>`;
+    } else {
+        html += `<input type="text" class="campo-escrita" id="campo-escrita" placeholder="Digite sua resposta em inglês..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`;
+    }
+
+    el.conteudo.innerHTML = html;
+
+    const chatCaixa = document.getElementById("chat-caixa");
+    chatCaixa.scrollTop = chatCaixa.scrollHeight;
+    chatCaixa.addEventListener("click", (e) => {
+        const btnOuvir = e.target.closest(".btn-msg-audio");
+        const btnDevagar = e.target.closest(".btn-msg-audio-devagar");
+        if (btnOuvir) falarEN(btnOuvir.dataset.texto, btnOuvir);
+        else if (btnDevagar) falarEN(btnDevagar.dataset.texto, btnDevagar, 0.55);
+    });
+
+    setTimeout(() => falarEN(fala.gabi), 350);
+
+    if (fala.tipo === "multipla") {
+        document.querySelectorAll(".opcao").forEach((b) => {
+            b.addEventListener("click", () => {
+                if (estado.respondido) return;
+                document.querySelectorAll(".opcao").forEach((x) => x.classList.remove("selecionada"));
+                b.classList.add("selecionada");
+                estado.selecaoAtual = Number(b.dataset.i);
+                el.btnVerificar.disabled = false;
+            });
+        });
+    } else {
+        const campo = document.getElementById("campo-escrita");
+        campo.focus();
+        campo.addEventListener("input", () => {
+            estado.selecaoAtual = campo.value;
+            el.btnVerificar.disabled = campo.value.trim() === "";
+        });
+        campo.addEventListener("keydown", (e) => {
+            // "else if": verificar() já vira estado.respondido pra true, então
+            // com dois "if" separados a segunda linha disparava continuar()
+            // na mesma tecla Enter, pulando a etapa antes de mostrar o
+            // resultado. Só um dos dois pode acontecer por tecla.
+            if (e.key !== "Enter") return;
+            if (!estado.respondido) { if (!el.btnVerificar.disabled) verificar(); }
+            else continuar();
+        });
+    }
+}
+
+/* ==================================================================
+   5) VERIFICAR RESPOSTA
+   ================================================================== */
+function verificar() {
+    if (estado.respondido || estado.selecaoAtual === null) return;
+    const fala = DIALOGOS[estado.dIdx].falas[estado.tIdx];
+    let acertou = false;
+    let respostaCertaTexto = "";
+
+    if (fala.tipo === "multipla") {
+        acertou = estado.selecaoAtual === fala.resposta;
+        respostaCertaTexto = fala.opcoes[fala.resposta];
+        document.querySelectorAll(".opcao").forEach((b, i) => {
+            b.classList.add("travado");
+            if (i === fala.resposta) b.classList.add("certa");
+            else if (i === estado.selecaoAtual) b.classList.add("errada");
+        });
+    } else {
+        const digitado = normalizar(estado.selecaoAtual);
+        acertou = fala.respostas.some((r) => normalizar(r) === digitado);
+        respostaCertaTexto = fala.respostas[0];
+        const campo = document.getElementById("campo-escrita");
+        campo.disabled = true;
+        campo.classList.add(acertou ? "certa" : "errada");
+    }
+
+    estado.respondido = true;
+
+    if (acertou) {
+        estado.acertos++;
+        estado.pontos += 15;
+    }
+    atualizarTopo();
+
+    el.rodape.classList.add(acertou ? "fundo-certo" : "fundo-errado");
+    el.feedback.classList.add("on", acertou ? "fundo-certo" : "fundo-errado");
+    el.feedbackImg.src = acertou ? MASCOTE.certo : MASCOTE.errado;
+    el.feedbackTitulo.textContent = acertou
+        ? ["Você acertou! 🎉", "Isso mesmo, acertou!", "Certíssimo!"][Math.floor(Math.random() * 3)]
+        : "Você errou — vamos praticar mais.";
+
+    if (fala.tipo === "escrever") {
+        el.feedbackSub.innerHTML =
+            `Você escreveu: <b>${escaparHTML(estado.selecaoAtual)}</b><br>` +
+            `Resposta certa: <b>${respostaCertaTexto}</b>`;
+    } else {
+        el.feedbackSub.innerHTML = acertou
+            ? `A resposta era: <b>${respostaCertaTexto}</b>`
+            : `A resposta certa é: <b>${respostaCertaTexto}</b>`;
+    }
+
+    el.btnVerificar.style.display = "none";
+    el.btnContinuar.style.display = "inline-block";
+    el.btnContinuar.classList.toggle("errado", !acertou);
+
+    // Importante: NÃO focar o botão agora. Se o Verificar foi acionado pelo
+    // Enter do teclado, focar o botão ainda dentro do mesmo evento de tecla
+    // faz o navegador interpretar o "keyup" daquele Enter como um clique no
+    // botão recém-focado — pulando a etapa antes da pessoa ver o resultado.
+    // Espera o Enter terminar de vez para então focar.
+    setTimeout(() => el.btnContinuar.focus(), 120);
+}
+
+function continuar() {
+    const dialogo = DIALOGOS[estado.dIdx];
+    const fala = dialogo.falas[estado.tIdx];
+    // A conversa sempre segue com a resposta CERTA (pra próxima fala da Gabi
+    // continuar fazendo sentido), mesmo quando a pessoa errou — o acerto ou
+    // erro já foi mostrado no rodapé antes de chegar aqui.
+    const textoVoce = fala.tipo === "multipla" ? fala.opcoes[fala.resposta] : fala.respostas[0];
+    estado.historico.push({ quem: "voce", texto: formatarFrase(textoVoce) });
+
+    estado.tIdx++;
+    estado.turnoGlobal++;
+
+    if (estado.tIdx >= dialogo.falas.length) {
+        if (estado.dIdx + 1 >= DIALOGOS.length) {
+            mostrarFinal();
+        } else {
+            iniciarDialogo(estado.dIdx + 1);
+        }
+    } else {
+        iniciarTurno();
+    }
+}
+
+/* ==================================================================
+   6) TELAS DE INÍCIO E FIM
+   ================================================================== */
+function mostrarFinal() {
+    el.conteudo.style.display = "none";
+    el.rodape.style.display = "none";
+    el.telaFinal.classList.add("on");
+    el.barra.style.width = "100%";
+
+    const precisao = Math.round((estado.acertos / TOTAL_TURNOS) * 100);
+    el.finalAcertos.textContent = `${estado.acertos}/${TOTAL_TURNOS}`;
+    el.finalPrecisao.textContent = precisao + "%";
+    el.finalPontos.textContent = estado.pontos;
+
+    if (precisao >= 80) {
+        el.imgFinal.src = MASCOTE.certo;
+        el.tituloFinal.textContent = "Você manda muito bem nas conversas!";
+    } else if (precisao >= 50) {
+        el.imgFinal.src = MASCOTE.neutra;
+        el.tituloFinal.textContent = "Bom treino de diálogo!";
+    } else {
+        el.imgFinal.src = MASCOTE.explicando;
+        el.tituloFinal.textContent = "Vamos conversar de novo?";
+    }
+}
+
+function reiniciar() {
+    Object.assign(estado, { dIdx: 0, tIdx: 0, turnoGlobal: 0, pontos: 0, acertos: 0, respondido: false, selecaoAtual: null, historico: [] });
+    el.telaFinal.classList.remove("on");
+    el.conteudo.style.display = "flex";
+    el.conteudo.style.flexDirection = "column";
+    iniciarDialogo(0);
+}
+
+el.btnComecar.addEventListener("click", () => {
+    el.telaIntro.classList.add("off");
+    el.conteudo.style.display = "flex";
+    el.conteudo.style.flexDirection = "column";
+    iniciarDialogo(0);
+});
+el.btnVerificar.addEventListener("click", verificar);
+el.btnContinuar.addEventListener("click", continuar);
+el.btnRefazer.addEventListener("click", reiniciar);
+</script>
+</body>
+</html>

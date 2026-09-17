@@ -403,20 +403,6 @@ const ATIVIDADES = [
         tipo: "link",
         url: "atividades/paginas/powerpoint-video-e-transicoes.html",
       },
-      {
-        titulo: "Avaliação Prática: Criação de Slides com Conteúdo Fornecido",
-        descricao:
-          "Atividade com textos prontos para copiar e colar: tema de Energias Renováveis, SmartArt, gráfico, hiperlink, cabeçalho/rodapé, transições e exportação em PDF.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-avaliacao-conteudo-fornecido.html",
-      },
-      {
-        titulo: "Avaliação Prática: Slides Textuais Extensos",
-        descricao:
-          "Apresentação densa sobre a Evolução da Computação, com textos longos para formatar (alinhamento, justificação), SmartArt, gráfico, hiperlinks de navegação e caça às imagens.",
-        tipo: "link",
-        url: "atividades/paginas/powerpoint-avaliacao-texto-extenso.html",
-      },
     ],
   },
 
@@ -685,6 +671,34 @@ const ATIVIDADES = [
           "Jogo de digitação com 8 letras de música em inglês: cada acerto e cada erro tem uma reação própria no HUD, com estatísticas de precisão, velocidade e combo. Música toca durante a digitação assim que os arquivos forem adicionados.",
         tipo: "link",
         url: "atividades/paginas/ingles-letras-digitacao.html",
+      },
+      {
+        titulo: "Ouça e Leia em Inglês — com a Gabi",
+        descricao:
+          "Atividade de listening, reading e writing com 20 exercícios (ouvir e escolher, ler e escolher, ouvir e escrever, traduzir), com a mascote Gabi reagindo a cada resposta e opção de ouvir o áudio em câmera lenta.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-listening-reading-beta.html",
+      },
+      {
+        titulo: "Ouça e Leia em Inglês 2 — Comida, Compras e Rotina",
+        descricao:
+          "Segunda atividade de listening, reading e writing com a Gabi, com 20 exercícios sobre assuntos diferentes: restaurante, compras e preços, direções, família, trabalho e hobbies.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-listening-reading-beta-2.html",
+      },
+      {
+        titulo: "Diálogos em Inglês — Converse com a Gabi",
+        descricao:
+          "Dinâmica em formato de chat: você participa de 5 conversas de verdade com a Gabi (café, trabalho, rua, fim de semana, médico) e escolhe ou escreve a resposta certa pra continuar cada diálogo, com tradução e áudio (inclusive em câmera lenta) em cada fala.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-dialogos-beta.html",
+      },
+      {
+        titulo: "Diálogos em Inglês 2 — Complete a Frase",
+        descricao:
+          "Segunda rodada de diálogos com a Gabi (hotel, escola, aeroporto, loja de roupas, cinema), agora numa tela maior, com a Gabi grande do lado reagindo a cada resposta e um novo tipo de exercício: completar o espaço em branco escolhendo a peça certa, igual no Duolingo.",
+        tipo: "link",
+        url: "atividades/paginas/ingles-dialogos-2-beta.html",
       },
     ],
   },
@@ -1402,6 +1416,137 @@ const ATIVIDADES = [
         descricao: "Conceito e elaboração do mapa de riscos (NR-5), padronização de cores e regras de representação.",
         tipo: "link",
         url: "atividades/paginas/seguranca-trabalho-mapa-de-riscos.html",
+      },
+    ],
+  },
+
+  {
+    slug: "assistente-gestao",
+    titulo: "Assistente de Gestão",
+    descricao: "Gestão empresarial, vendas e logística em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "AG",
+    cor: "#0891b2",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Gestão Empresarial e Estratégica",
+        descricao:
+          "Análise SWOT (matriz FOFA), Ciclo PDCA, cálculo de Retorno sobre Investimento (ROI) e liderança na resolução de conflitos de equipe.",
+        tipo: "link",
+        url: "atividades/paginas/assistente-gestao-empresarial-estrategica.html",
+      },
+      {
+        titulo: "Atividade Prática: Técnicas e Gestão de Vendas",
+        descricao:
+          "Perfil do profissional de vendas moderno, procedimento de atendimento consultivo e cálculo de metas e comissões.",
+        tipo: "link",
+        url: "atividades/paginas/assistente-gestao-tecnicas-vendas.html",
+      },
+      {
+        titulo: "Atividade Prática: Desafios Logísticos e Operações Situacionais",
+        descricao:
+          "Cenários de Analista de Supply Chain: crises de abastecimento, custos de frete e decisões operacionais em tempo real.",
+        tipo: "link",
+        url: "atividades/paginas/assistente-gestao-desafios-logisticos.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão Logística e Operações II",
+        descricao:
+          "Modais de transporte, indicador OTIF, cálculo de cubagem e estratégia de Cross-Docking na Cadeia de Suprimentos.",
+        tipo: "link",
+        url: "atividades/paginas/assistente-gestao-logistica-operacoes-2.html",
+      },
+      {
+        titulo: "Atividade Prática: Gestão de Logística e Supply Chain",
+        descricao:
+          "Logística Inbound/Outbound, gestão de estoques, cálculo de reposição e logística reversa.",
+        tipo: "link",
+        url: "atividades/paginas/assistente-gestao-logistica-supply-chain.html",
+      },
+    ],
+  },
+
+  {
+    slug: "secretariado",
+    titulo: "Secretariado",
+    descricao: "Rotinas de secretariado executivo em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "S",
+    cor: "#9333ea",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Rotinas de Secretariado e Assessoria Administrativa",
+        descricao:
+          "Rotinas administrativas, redação oficial, gestão de agenda, etiqueta corporativa e controle de fundo fixo (pequeno caixa).",
+        tipo: "link",
+        url: "atividades/paginas/secretariado-rotinas-assessoria-administrativa.html",
+      },
+      {
+        titulo: "Atividade Prática: Secretariado Executivo — Viagens, Eventos e Arquivo",
+        descricao:
+          "Planejamento de viagens, relatório de despesas, organização de eventos (RSVP), métodos de arquivamento e conflitos de agenda.",
+        tipo: "link",
+        url: "atividades/paginas/secretariado-executivo-viagens-eventos-arquivo.html",
+      },
+      {
+        titulo: "Atividade Prática: Secretariado Executivo — Gestão da Informação e 5S",
+        descricao:
+          "Metodologia 5S, rotinas de protocolo, orçamento de suprimentos, triagem telefônica avançada e LGPD na proteção de dados.",
+        tipo: "link",
+        url: "atividades/paginas/secretariado-executivo-gestao-informacao-5s.html",
+      },
+      {
+        titulo: "Atividade Prática: Secretariado — Gestão de Tempo, Comunicação e Ferramentas",
+        descricao:
+          "Matriz de Eisenhower, organização de reuniões virtuais (netiqueta), orçamentos, comunicação assertiva por e-mail e controles em nuvem.",
+        tipo: "link",
+        url: "atividades/paginas/secretariado-gestao-tempo-comunicacao-ferramentas.html",
+      },
+    ],
+  },
+
+  {
+    slug: "vendas",
+    titulo: "Vendas",
+    descricao: "Técnicas de vendas, negociação e gestão comercial em simulações práticas, com correção automática das respostas.",
+    grupo: "cursos",
+    sigla: "V",
+    cor: "#f97316",
+    materiais: [
+      {
+        titulo: "Atividade Prática: Técnicas e Gestão de Vendas",
+        descricao:
+          "Perfil do profissional de vendas moderno, procedimento de atendimento consultivo e cálculo de metas e comissões.",
+        tipo: "link",
+        url: "atividades/paginas/vendas-tecnicas-gestao-vendas.html",
+      },
+      {
+        titulo: "Atividade Prática: Técnicas de Vendas e Negociação Comercial",
+        descricao:
+          "Prospecção B2B (Spin Selling), técnicas de fechamento avançado, objeções complexas e cálculo de margens de desconto.",
+        tipo: "link",
+        url: "atividades/paginas/vendas-tecnicas-negociacao-comercial.html",
+      },
+      {
+        titulo: "Atividade Prática: Vendas — Gestão de Funil, CRM e Retenção",
+        descricao:
+          "Etapas do funil de vendas, estratégias Inbound/Outbound, Up-selling/Cross-selling, uso de CRM e cálculo de ticket médio.",
+        tipo: "link",
+        url: "atividades/paginas/vendas-funil-crm-retencao.html",
+      },
+      {
+        titulo: "Atividade Prática: Técnicas de Vendas na Linha de Frente",
+        descricao:
+          "Qualificação de leads pelo método BANT, técnicas persuasivas de fechamento, ligações frias (cold call) e cálculo de comissionamento.",
+        tipo: "link",
+        url: "atividades/paginas/vendas-tecnicas-linha-de-frente.html",
+      },
+      {
+        titulo: "Atividade Prática: Vendas — Social Selling, Inside Sales e Qualificação Avançada",
+        descricao:
+          "Qualificação de leads entre Marketing e Vendas, prospecção via redes sociais, cadência de follow-up e cálculo de Win Rate.",
+        tipo: "link",
+        url: "atividades/paginas/vendas-social-selling-inside-sales.html",
       },
     ],
   },

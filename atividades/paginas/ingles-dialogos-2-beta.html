@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diálogos em Inglês 2 (Beta) — com a Gabi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --azul: #1cb0f6;
+            --azul-escuro: #1899d6;
+            --azul-claro: #ddf4ff;
+            --azul-forte: #0c63e7;
+            --gradiente-azul: linear-gradient(135deg, #38bdf8 0%, #1cb0f6 45%, #0c63e7 100%);
+            --verde: #58cc02;
+            --verde-escuro: #46a302;
+            --verde-claro: #d7ffb8;
+            --vermelho: #ff4b4b;
+            --vermelho-escuro: #ea2b2b;
+            --vermelho-claro: #ffdfe0;
+            --amarelo: #ffc800;
+            --amarelo-escuro: #e6b400;
+            --tinta: #3c3c3c;
+            --cinza: #777;
+            --borda: #e5e5e5;
+            --papel: #f7f7f7;
+            --cartao: #ffffff;
+        }
+
+        html, body { height: 100%; }
+        body {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+            background: var(--papel);
+            color: var(--tinta);
+            overflow: hidden;
+        }
+
+        .app { height: 100dvh; display: flex; flex-direction: column; }
+
+        /* ---------- Topo: progresso + placar ---------- */
+        .topo {
+            display: flex; align-items: center; gap: clamp(10px,1.6vw,18px);
+            padding: clamp(10px,1.6vh,18px) clamp(14px,2vw,28px);
+            flex-shrink: 0; background: linear-gradient(120deg, #f2fbff 0%, #e3f4ff 100%);
+            border-bottom: 2px solid var(--borda);
+        }
+        .topo a.sair {
+            color: var(--cinza); text-decoration: none; font-size: 1.4rem; font-weight: 800;
+            flex-shrink: 0; line-height: 1;
+        }
+        .topo a.sair:hover { color: var(--tinta); }
+        .barra-progresso { flex: 1; height: 16px; background: #d9ecfa; border-radius: 999px; overflow: hidden; }
+        .barra-progresso span { display: block; height: 100%; width: 0; background: var(--gradiente-azul); border-radius: 999px; transition: width .3s; }
+        .placar-topo {
+            display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+            font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: clamp(.9rem,1.8vh,1.1rem);
+        }
+        .placar-topo .item { display: flex; align-items: center; gap: 4px; }
+        .placar-topo .estrela { color: #f0a93b; }
+
+        /* ---------- Palco central ---------- */
+        .palco { flex: 1; min-height: 0; overflow-y: auto; display: flex; justify-content: center; }
+        .conteudo { width: 100%; max-width: 780px; padding: clamp(20px,3.4vh,40px) clamp(18px,3.4vw,30px) 26px; display: flex; flex-direction: column; gap: clamp(16px,2.6vh,24px); }
+
+        .rotulo-tipo {
+            display: inline-flex; align-items: center; gap: 7px; align-self: flex-start;
+            background: var(--gradiente-azul); color: #fff; font-weight: 800;
+            font-size: clamp(.78rem,1.5vh,.92rem); padding: 6px 16px; border-radius: 999px;
+        }
+
+        /* ---------- Linha principal: retrato grande da Gabi ao lado da conversa ---------- */
+        .linha-gabi { display: flex; gap: clamp(14px,2.6vw,24px); align-items: flex-start; }
+        .retrato-gabi {
+            position: relative; flex-shrink: 0;
+            width: clamp(100px,15vh,140px); height: clamp(100px,15vh,140px); border-radius: 50%;
+            background: var(--gradiente-azul); overflow: hidden;
+            box-shadow: 0 8px 0 var(--azul-forte), 0 0 0 6px rgba(28,176,246,.18);
+        }
+        .retrato-gabi img {
+            position: absolute; inset: 5px; width: calc(100% - 10px); height: calc(100% - 10px);
+            object-fit: contain; object-position: top center;
+        }
+        .coluna-conversa { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: clamp(14px,2.4vh,20px); }
+
+        /* ---------- Ícone de alto-falante (SVG) ---------- */
+        .icone-som { display: inline-block; flex-shrink: 0; }
+
+        /* ---------- Chat do diálogo (sem avatar por mensagem — a Gabi já aparece grande do lado) ---------- */
+        .chat-caixa {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 18px;
+            padding: clamp(14px,2.2vh,20px); display: flex; flex-direction: column; gap: 14px;
+            max-height: 40vh; overflow-y: auto;
+        }
+        .msg { display: flex; max-width: 90%; }
+        .msg.gabi { align-self: flex-start; }
+        .msg.voce { align-self: flex-end; }
+        .msg .conteudo-msg { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+        .msg.voce .conteudo-msg { align-items: flex-end; }
+        .msg .bolha-texto {
+            background: #fff; border: 2px solid var(--borda); border-radius: 16px 16px 16px 4px;
+            padding: 10px 15px; font-weight: 700; font-size: clamp(.92rem,1.8vh,1.08rem); color: var(--tinta);
+        }
+        .msg.voce .bolha-texto {
+            background: var(--gradiente-azul); color: #fff; border: none; border-radius: 16px 16px 4px 16px;
+        }
+        .msg .traducao-msg { font-size: .78rem; color: var(--cinza); font-weight: 700; padding: 0 4px; }
+        .msg.voce .traducao-msg { text-align: right; }
+        .controles-msg { display: flex; gap: 16px; padding: 0 4px; }
+        .controles-msg button {
+            display: inline-flex; align-items: center; gap: 4px; background: none; border: none;
+            cursor: pointer; color: var(--azul-forte); font-weight: 800; font-size: .8rem; font-family: inherit;
+        }
+        .controles-msg button:hover { color: var(--azul-escuro); }
+
+        /* ---------- Frase com espaço em branco pra completar (estilo Duolingo) ---------- */
+        .cartao-texto {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 18px;
+            padding: clamp(20px,3.2vh,30px) clamp(18px,2.8vw,24px); text-align: center;
+        }
+        .cartao-texto p {
+            font-family: 'Baloo 2', sans-serif; font-size: clamp(1.2rem,2.8vh,1.6rem); font-weight: 700; color: var(--tinta);
+        }
+        .lacuna {
+            display: inline-block; min-width: 92px; border-bottom: 3px dashed var(--azul);
+            color: var(--azul-forte); text-align: center; padding: 0 6px;
+        }
+        .lacuna.preenchida { border-bottom-style: solid; }
+        .lacuna.certa { border-bottom-color: var(--verde); color: #2f6e00; }
+        .lacuna.errada { border-bottom-color: var(--vermelho); color: #a81f1f; }
+
+        /* ---------- Banco de palavras (peças clicáveis, estilo Duolingo) ---------- */
+        .banco-palavras { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+        .peca {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 12px;
+            padding: clamp(10px,1.8vh,14px) clamp(18px,2.8vw,26px); cursor: pointer;
+            font-family: 'Baloo 2', sans-serif; font-weight: 800; font-size: clamp(.98rem,1.9vh,1.18rem); color: var(--tinta);
+            box-shadow: 0 4px 0 var(--borda); transition: transform .08s, box-shadow .08s, border-color .12s, background .12s;
+        }
+        .peca:hover:not(.travado) { border-color: #c2c2c2; }
+        .peca.selecionada { border-color: var(--azul); background: var(--azul-claro); box-shadow: 0 4px 0 var(--azul); }
+        .peca.certa { border-color: var(--verde); background: var(--verde-claro); box-shadow: 0 4px 0 var(--verde); color: #2f6e00; }
+        .peca.errada { border-color: var(--vermelho); background: var(--vermelho-claro); box-shadow: 0 4px 0 var(--vermelho); color: #a81f1f; }
+        .peca.travado { cursor: default; }
+        .peca:active:not(.travado) { transform: translateY(3px); box-shadow: 0 1px 0 var(--borda); }
+
+        /* ---------- Opções de múltipla escolha ---------- */
+        .opcoes { display: flex; flex-direction: column; gap: 12px; }
+        .opcao {
+            background: var(--cartao); border: 2px solid var(--borda); border-radius: 14px;
+            padding: clamp(14px,2.2vh,18px) clamp(16px,2.4vw,20px); text-align: left; cursor: pointer;
+            font-family: inherit; font-size: clamp(.95rem,1.9vh,1.12rem); font-weight: 700; color: var(--tinta);
+            box-shadow: 0 4px 0 var(--borda); transition: transform .08s, box-shadow .08s, border-color .12s, background .12s;
+        }
+        .opcao:hover:not(.travado) { border-color: #c2c2c2; }
+        .opcao.selecionada { border-color: var(--azul); background: var(--azul-claro); box-shadow: 0 4px 0 var(--azul); }
+        .opcao.certa { border-color: var(--verde); background: var(--verde-claro); box-shadow: 0 4px 0 var(--verde); color: #2f6e00; }
+        .opcao.errada { border-color: var(--vermelho); background: var(--vermelho-claro); box-shadow: 0 4px 0 var(--vermelho); color: #a81f1f; }
+        .opcao.travado { cursor: default; }
+        .opcao:active:not(.travado) { transform: translateY(3px); box-shadow: 0 1px 0 var(--borda); }
+
+        /* ---------- Campo de resposta escrita ---------- */
+        .campo-escrita {
+            width: 100%; border: 2px solid var(--borda); border-radius: 14px;
+            padding: clamp(14px,2.2vh,18px); font-family: 'Baloo 2', sans-serif;
+            font-size: clamp(1.05rem,2.2vh,1.3rem); font-weight: 700; color: var(--tinta);
+            outline: none; transition: border-color .12s;
+        }
+        .campo-escrita:focus { border-color: var(--azul); }
+        .campo-escrita.certa { border-color: var(--verde); background: var(--verde-claro); color: #2f6e00; }
+        .campo-escrita.errada { border-color: var(--vermelho); background: var(--vermelho-claro); color: #a81f1f; }
+
+        /* ---------- Barra inferior fixa (estilo Duolingo) ---------- */
+        .rodape {
+            flex-shrink: 0; padding: clamp(14px,2.2vh,22px) clamp(18px,3.2vw,30px);
+            border-top: 2px solid var(--borda); background: #fff;
+            display: flex; align-items: center; justify-content: flex-end; gap: 18px;
+            transition: background .2s;
+        }
+        .rodape.fundo-certo { background: var(--verde-claro); border-top-color: #b6f27a; }
+        .rodape.fundo-errado { background: var(--vermelho-claro); border-top-color: #ffb3b5; }
+
+        .feedback { flex: 1; display: none; align-items: center; gap: 12px; }
+        .feedback.on { display: flex; }
+        .feedback img { width: 50px; flex-shrink: 0; }
+        .feedback-texto { font-family: 'Baloo 2', sans-serif; font-weight: 700; }
+        .feedback-texto .titulo { font-size: clamp(1rem,2vh,1.2rem); }
+        .feedback.fundo-certo .titulo { color: #2f6e00; }
+        .feedback.fundo-errado .titulo { color: #a81f1f; }
+        .feedback-texto .sub { font-size: .85rem; font-weight: 700; color: var(--cinza); }
+
+        .btn-grande {
+            border: none; border-radius: 14px; padding: clamp(13px,1.9vh,17px) clamp(30px,4.4vw,48px);
+            font-family: 'Baloo 2', sans-serif; font-weight: 700; font-size: clamp(.95rem,1.9vh,1.1rem);
+            text-transform: uppercase; letter-spacing: .03em; cursor: pointer;
+            transition: transform .08s, box-shadow .08s;
+        }
+        .btn-grande:disabled { opacity: .45; cursor: not-allowed; }
+        .btn-verificar { background: var(--gradiente-azul); color: #fff; box-shadow: 0 4px 0 var(--azul-forte); }
+        .btn-verificar:hover:not(:disabled) { filter: brightness(1.06); }
+        .btn-verificar:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 0 0 var(--azul-forte); }
+        .btn-continuar { background: var(--verde); color: #fff; box-shadow: 0 4px 0 var(--verde-escuro); }
+        .btn-continuar.errado { background: var(--vermelho); box-shadow: 0 4px 0 var(--vermelho-escuro); }
+        .btn-continuar:active { transform: translateY(4px); box-shadow: 0 0 0 var(--verde-escuro); }
+        .btn-continuar.errado:active { box-shadow: 0 0 0 var(--vermelho-escuro); }
+
+        /* ---------- Tela de resultado final ---------- */
+        .tela-final {
+            flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center;
+            gap: 14px; text-align: center; padding: 24px;
+        }
+        .tela-final.on { display: flex; }
+        .tela-final h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.4rem,3.4vh,2rem); color: var(--azul-escuro); }
+        .placar-final { display: flex; gap: clamp(16px,3vw,32px); margin-top: 8px; flex-wrap: wrap; justify-content: center; }
+        .placar-final .bloco {
+            background: #fff; border: 2px solid var(--borda); border-radius: 14px; padding: 12px 22px;
+            box-shadow: 0 4px 0 var(--borda);
+        }
+        .placar-final .bloco .num { font-family: 'Baloo 2', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--azul-escuro); }
+        .placar-final .bloco .rot { font-size: .74rem; font-weight: 800; color: var(--cinza); text-transform: uppercase; }
+        .aviso-beta {
+            margin-top: 10px; font-size: .78rem; color: var(--cinza); font-weight: 700; max-width: 420px;
+        }
+
+        /* ---------- Tela de apresentação inicial ---------- */
+        .tela-intro {
+            flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 16px; text-align: center; padding: 24px;
+        }
+        .tela-intro.off { display: none; }
+        .tela-intro .moldura-topo, .tela-final .moldura-topo {
+            position: relative;
+            width: clamp(175px,29vh,240px); height: clamp(175px,29vh,240px); border-radius: 50%;
+            background: var(--gradiente-azul); overflow: hidden;
+            box-shadow: 0 10px 26px rgba(12,99,231,.32), 0 0 0 7px rgba(28,176,246,.16);
+        }
+        .tela-intro img, .tela-final img {
+            position: absolute; inset: 6px; width: calc(100% - 12px); height: calc(100% - 12px);
+            object-fit: contain; object-position: top center; display: block;
+        }
+        .tela-intro h1 { font-family: 'Baloo 2', sans-serif; font-size: clamp(1.3rem,3.2vh,1.9rem); color: var(--azul-escuro); }
+        .tela-intro p { max-width: 460px; font-weight: 700; color: var(--cinza); font-size: clamp(.85rem,1.7vh,1rem); line-height: 1.5; }
+        .selo-beta {
+            background: var(--amarelo); color: #7a5b00; font-weight: 800; font-size: .72rem;
+            padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: .04em;
+        }
+
+        @media (max-width: 640px) {
+            .topo { flex-wrap: wrap; }
+            .placar-topo { order: 3; width: 100%; justify-content: center; }
+            .placar-final { gap: 10px; }
+            .placar-final .bloco { padding: 10px 16px; }
+            .linha-gabi { flex-direction: column; align-items: center; }
+            .retrato-gabi { width: clamp(84px,18vh,110px); height: clamp(84px,18vh,110px); }
+            .chat-caixa { max-height: 34vh; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <div class="topo">
+        <a class="sair" href="../../atividade.html?curso=ingles" title="Sair">✕</a>
+        <div class="barra-progresso"><span id="barra"></span></div>
+        <div class="placar-topo">
+            <span class="item"><span class="estrela">⭐</span><span id="placar-pontos">0</span></span>
+        </div>
+    </div>
+
+    <div class="palco">
+        <div class="conteudo" id="conteudo" style="display:none;"></div>
+
+        <div class="tela-intro" id="tela-intro">
+            <span class="selo-beta">versão beta</span>
+            <div class="moldura-topo"><img src="assets/ingles-listening-beta/mascote-explicando.png" alt="Gabi acenando e explicando"></div>
+            <h1>Mais conversas com a Gabi! 💬</h1>
+            <p>Essa é a segunda rodada de diálogos, agora maior e com uma dinâmica nova: em algumas falas você vai completar o espaço em branco escolhendo a peça certa, igual nos exercícios do Duolingo. A Gabi fica do seu lado o tempo todo, reagindo a cada resposta.</p>
+            <button class="btn-grande btn-verificar" id="btn-comecar" style="opacity:1;">Começar</button>
+        </div>
+
+        <div class="tela-final" id="tela-final">
+            <div class="moldura-topo"><img src="assets/ingles-listening-beta/mascote-acertou.png" alt="Gabi comemorando" id="img-final"></div>
+            <h1 id="titulo-final">Diálogos concluídos!</h1>
+            <div class="placar-final">
+                <div class="bloco"><div class="num" id="final-acertos">0/0</div><div class="rot">acertos</div></div>
+                <div class="bloco"><div class="num" id="final-precisao">0%</div><div class="rot">precisão</div></div>
+                <div class="bloco"><div class="num" id="final-pontos">0</div><div class="rot">pontos</div></div>
+            </div>
+            <button class="btn-grande btn-verificar" id="btn-refazer" style="margin-top:14px;">Praticar de novo</button>
+            <p class="aviso-beta">Essa atividade é uma versão beta — se algo ficar estranho ou faltar frase, me avise que eu ajusto.</p>
+        </div>
+    </div>
+
+    <div class="rodape" id="rodape" style="display:none;">
+        <div class="feedback" id="feedback">
+            <img id="feedback-img" src="assets/ingles-listening-beta/mascote-acertou.png" alt="Gabi">
+            <div class="feedback-texto">
+                <div class="titulo" id="feedback-titulo">Muito bem!</div>
+                <div class="sub" id="feedback-sub"></div>
+            </div>
+        </div>
+        <button class="btn-grande btn-verificar" id="btn-verificar" disabled>Verificar</button>
+        <button class="btn-grande btn-continuar" id="btn-continuar" style="display:none;">Continuar</button>
+    </div>
+</div>
+
+<script>
+/* ==================================================================
+   1) OS DIÁLOGOS (segunda rodada — 5 cenas novas, diferentes das da
+   primeira atividade de diálogos: hotel, escola, aeroporto, loja de
+   roupas e convite pro cinema). Três formatos por fala:
+     multipla  → escolhe a resposta certa entre frases completas
+     completar → a resposta já vem pronta com uma palavra faltando;
+                 a pessoa toca na peça certa pra preencher o espaço
+                 (igual ao exercício "complete a frase" do Duolingo)
+     escrever  → digita a resposta em inglês
+   ================================================================== */
+const DIALOGOS = [
+    {
+        titulo: "No hotel", emoji: "🏨",
+        falas: [
+            {
+                gabi: "Welcome! Do you have a reservation?", traducao: "Bem-vindo! Você tem uma reserva?",
+                tipo: "multipla",
+                opcoes: ["Yes, under my name.", "It's five dollars.", "I like to swim."], resposta: 0,
+            },
+            {
+                gabi: "How many nights will you stay?", traducao: "Quantas noites você vai ficar?",
+                tipo: "completar", antes: "I ", depois: " two nights.",
+                opcoes: ["need", "have", "am"], resposta: 0,
+            },
+            {
+                gabi: "Here is your key. Room 204.", traducao: "Aqui está sua chave. Quarto 204.",
+                tipo: "escrever", respostas: ["thank you very much", "thanks a lot"],
+            },
+            {
+                gabi: "Enjoy your stay!", traducao: "Aproveite sua estadia!",
+                tipo: "multipla",
+                opcoes: ["Thank you! I will.", "It's two blocks away.", "I need some help."], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "Na escola", emoji: "🏫",
+        falas: [
+            {
+                gabi: "Good morning! Are you ready for the test?", traducao: "Bom dia! Você está pronto(a) para a prova?",
+                tipo: "multipla",
+                opcoes: ["Yes, I studied a lot.", "It's five dollars.", "I live near here."], resposta: 0,
+            },
+            {
+                gabi: "Great! Do you have a pen?", traducao: "Ótimo! Você tem uma caneta?",
+                tipo: "completar", antes: "Yes, I ", depois: " one.",
+                opcoes: ["have", "need", "like"], resposta: 0,
+            },
+            {
+                gabi: "Good luck on your test!", traducao: "Boa sorte na sua prova!",
+                tipo: "escrever", respostas: ["thank you", "thanks"],
+            },
+            {
+                gabi: "You can start now.", traducao: "Você pode começar agora.",
+                tipo: "multipla",
+                opcoes: ["Okay, thank you.", "See you at the market.", "It's raining today."], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "No aeroporto", emoji: "✈️",
+        falas: [
+            {
+                gabi: "Can I see your passport, please?", traducao: "Posso ver seu passaporte, por favor?",
+                tipo: "multipla",
+                opcoes: ["Sure, here it is.", "I am hungry.", "It's very close."], resposta: 0,
+            },
+            {
+                gabi: "What is the purpose of your trip?", traducao: "Qual é o motivo da sua viagem?",
+                tipo: "completar", antes: "I am here on ", depois: ".",
+                opcoes: ["vacation", "Monday", "hospital"], resposta: 0,
+            },
+            {
+                gabi: "Enjoy your flight!", traducao: "Tenha um bom voo!",
+                tipo: "escrever", respostas: ["thank you", "thanks"],
+            },
+            {
+                gabi: "Have a safe trip!", traducao: "Tenha uma viagem segura!",
+                tipo: "multipla",
+                opcoes: ["Thank you, you too!", "It's two dollars.", "I have two sisters."], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "Na loja de roupas", emoji: "👕",
+        falas: [
+            {
+                gabi: "Can I help you find something?", traducao: "Posso te ajudar a achar alguma coisa?",
+                tipo: "multipla",
+                opcoes: ["Yes, I'm looking for a jacket.", "I live in Brazil.", "It's raining today."], resposta: 0,
+            },
+            {
+                gabi: "What size do you wear?", traducao: "Qual tamanho você usa?",
+                tipo: "completar", antes: "I ", depois: " medium.",
+                opcoes: ["wear", "have", "need"], resposta: 0,
+            },
+            {
+                gabi: "This one is on sale today.", traducao: "Esse está em promoção hoje.",
+                tipo: "escrever", respostas: ["thats great", "that's great"],
+            },
+            {
+                gabi: "You can pay at the counter.", traducao: "Você pode pagar no caixa.",
+                tipo: "multipla",
+                opcoes: ["Okay, thank you.", "See you tomorrow.", "I need some help."], resposta: 0,
+            },
+        ],
+    },
+    {
+        titulo: "Convite para o cinema", emoji: "🎬",
+        falas: [
+            {
+                gabi: "Do you want to watch a movie tonight?", traducao: "Você quer ver um filme hoje à noite?",
+                tipo: "multipla",
+                opcoes: ["Sure, I'd love to!", "It's five dollars.", "I have a headache."], resposta: 0,
+            },
+            {
+                gabi: "What time does the movie start?", traducao: "Que horas o filme começa?",
+                tipo: "completar", antes: "It ", depois: " at eight.",
+                opcoes: ["starts", "start", "started"], resposta: 0,
+            },
+            {
+                gabi: "Should we get some popcorn?", traducao: "Devemos pegar pipoca?",
+                tipo: "escrever", respostas: ["yes lets do it", "yes let's do it"],
+            },
+            {
+                gabi: "See you at the movies!", traducao: "Te vejo no cinema!",
+                tipo: "multipla",
+                opcoes: ["See you there!", "It's near the supermarket.", "I need some help."], resposta: 0,
+            },
+        ],
+    },
+];
+const TOTAL_TURNOS = DIALOGOS.reduce((soma, d) => soma + d.falas.length, 0);
+
+/* ==================================================================
+   2) VOZ EM INGLÊS (mesma correção usada nas outras atividades)
+   ================================================================== */
+let vozEN = null;
+const NOMES_VOZ_FEMININA_EN = [
+    "female", "zira", "aria", "jenny", "michelle", "samantha", "susan", "karen",
+    "moira", "tessa", "victoria", "fiona", "kate", "salli", "joanna", "ivy",
+    "kimberly", "amy", "emma", "sara", "linda", "google us english",
+];
+function prepararVozEN() {
+    const vozes = speechSynthesis.getVoices();
+    if (!vozes.length) return;
+    const vozesEmIngles = vozes.filter((v) => v.lang && v.lang.toLowerCase().startsWith("en"));
+    const vozesEnUS = vozesEmIngles.filter((v) => v.lang === "en-US");
+    const candidatas = vozesEnUS.length ? vozesEnUS : vozesEmIngles;
+    const feminina = candidatas.find((v) =>
+        NOMES_VOZ_FEMININA_EN.some((nome) => v.name.toLowerCase().includes(nome))
+    );
+    vozEN = feminina || candidatas[0] || null;
+}
+if ("speechSynthesis" in window) {
+    prepararVozEN();
+    speechSynthesis.addEventListener("voiceschanged", prepararVozEN);
+}
+
+function iconeSom(tamanho, cor) {
+    return `<svg class="icone-som" width="${tamanho}" height="${tamanho}" viewBox="0 0 24 24" fill="${cor || "currentColor"}" aria-hidden="true">
+        <path d="M4 9v6h4l5 5V4L8 9H4z"/>
+        <path d="M16.5 12c0-1.77-.77-3.29-2-4.24v8.48c1.23-.95 2-2.47 2-4.24z" opacity=".9"/>
+        <path d="M14.5 3.23v2.06c2.89 1.09 5 3.94 5 7.31s-2.11 6.22-5 7.31v2.06c4-1.14 7-4.94 7-9.37s-3-8.23-7-9.37z" opacity=".7"/>
+    </svg>`;
+}
+function iconeDevagar(tamanho, cor) {
+    const c = cor || "currentColor";
+    return `<span class="icone-som" style="display:inline-flex; align-items:center; justify-content:center;
+        width:${tamanho}px; height:${tamanho}px; border-radius:50%; border:1.6px solid ${c};
+        font-size:${Math.round(tamanho * 0.62)}px; font-weight:800; line-height:1; color:${c};">½</span>`;
+}
+
+function falarEN(texto, botao, velocidade) {
+    if (!("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const f = new SpeechSynthesisUtterance(texto);
+    f.lang = "en-US";
+    f.rate = velocidade || 0.88;
+    if (vozEN) f.voice = vozEN;
+    if (botao) {
+        botao.classList.add("tocando");
+        f.onend = () => botao.classList.remove("tocando");
+        f.onerror = () => botao.classList.remove("tocando");
+    }
+    speechSynthesis.speak(f);
+}
+
+/* ==================================================================
+   3) ESTADO E ELEMENTOS
+   ================================================================== */
+const el = {
+    conteudo: document.getElementById("conteudo"),
+    telaIntro: document.getElementById("tela-intro"),
+    telaFinal: document.getElementById("tela-final"),
+    rodape: document.getElementById("rodape"),
+    barra: document.getElementById("barra"),
+    placarPontos: document.getElementById("placar-pontos"),
+    btnComecar: document.getElementById("btn-comecar"),
+    btnRefazer: document.getElementById("btn-refazer"),
+    btnVerificar: document.getElementById("btn-verificar"),
+    btnContinuar: document.getElementById("btn-continuar"),
+    feedback: document.getElementById("feedback"),
+    feedbackImg: document.getElementById("feedback-img"),
+    feedbackTitulo: document.getElementById("feedback-titulo"),
+    feedbackSub: document.getElementById("feedback-sub"),
+    imgFinal: document.getElementById("img-final"),
+    tituloFinal: document.getElementById("titulo-final"),
+    finalAcertos: document.getElementById("final-acertos"),
+    finalPrecisao: document.getElementById("final-precisao"),
+    finalPontos: document.getElementById("final-pontos"),
+};
+
+const MASCOTE = {
+    neutra: "assets/ingles-listening-beta/mascote-neutra.png",
+    explicando: "assets/ingles-listening-beta/mascote-explicando.png",
+    certo: "assets/ingles-listening-beta/mascote-acertou.png",
+    errado: "assets/ingles-listening-beta/mascote-errou.png",
+};
+
+const estado = {
+    dIdx: 0, tIdx: 0, turnoGlobal: 0,
+    pontos: 0, acertos: 0,
+    respondido: false,
+    selecaoAtual: null, // índice da opção/peça OU o texto digitado
+    historico: [], // {quem:'gabi'|'voce', texto, traducao?} da conversa atual
+};
+
+function normalizar(txt) {
+    return txt.trim().toLowerCase().replace(/[.,!?;:]+$/g, "").replace(/\s+/g, " ");
+}
+function escaparHTML(txt) {
+    const div = document.createElement("div");
+    div.textContent = txt;
+    return div.innerHTML;
+}
+function formatarFrase(txt) {
+    let t = txt.trim();
+    t = t.charAt(0).toUpperCase() + t.slice(1);
+    if (!/[.!?]$/.test(t)) t += ".";
+    return t;
+}
+
+/* ==================================================================
+   4) RENDERIZAÇÃO DO CHAT E DE CADA TURNO
+   ================================================================== */
+function atualizarTopo() {
+    el.barra.style.width = (estado.turnoGlobal / TOTAL_TURNOS * 100) + "%";
+    el.placarPontos.textContent = estado.pontos;
+}
+
+function montarChatHtml() {
+    let html = '<div class="chat-caixa" id="chat-caixa">';
+    estado.historico.forEach((m) => {
+        html += `<div class="msg ${m.quem}"><div class="conteudo-msg">`;
+        html += `<div class="bolha-texto">${m.texto}</div>`;
+        if (m.traducao) html += `<div class="traducao-msg">${m.traducao}</div>`;
+        if (m.quem === "gabi") {
+            html += `<div class="controles-msg">
+                <button class="btn-msg-audio" data-texto="${m.texto}">${iconeSom(16)} ouvir</button>
+                <button class="btn-msg-audio-devagar" data-texto="${m.texto}">${iconeDevagar(14)} devagar</button>
+            </div>`;
+        }
+        html += `</div></div>`;
+    });
+    html += "</div>";
+    return html;
+}
+
+function iniciarDialogo(dIdx) {
+    estado.dIdx = dIdx;
+    estado.tIdx = 0;
+    estado.historico = [];
+    iniciarTurno();
+}
+
+function iniciarTurno() {
+    const dialogo = DIALOGOS[estado.dIdx];
+    const fala = dialogo.falas[estado.tIdx];
+    estado.respondido = false;
+    estado.selecaoAtual = null;
+    estado.historico.push({ quem: "gabi", texto: fala.gabi, traducao: fala.traducao });
+    atualizarTopo();
+
+    el.rodape.className = "rodape";
+    el.rodape.style.display = "flex";
+    el.feedback.classList.remove("on", "fundo-certo", "fundo-errado");
+    el.btnVerificar.style.display = "inline-block";
+    el.btnVerificar.disabled = true;
+    el.btnContinuar.style.display = "none";
+    el.btnContinuar.classList.remove("errado");
+
+    let html = `<span class="rotulo-tipo">💬 Diálogo ${estado.dIdx + 1} de ${DIALOGOS.length} · ${dialogo.emoji} ${dialogo.titulo}</span>`;
+    html += `<div class="linha-gabi">`;
+    html += `<div class="retrato-gabi"><img id="retrato-gabi-img" src="${MASCOTE.neutra}" alt="Gabi"></div>`;
+    html += `<div class="coluna-conversa">`;
+    html += montarChatHtml();
+
+    if (fala.tipo === "multipla") {
+        html += `<div class="opcoes" id="opcoes">`;
+        fala.opcoes.forEach((op, i) => {
+            html += `<button class="opcao" data-i="${i}">${op}</button>`;
+        });
+        html += `</div>`;
+    } else if (fala.tipo === "completar") {
+        html += `<div class="cartao-texto"><p>${fala.antes}<span class="lacuna" id="lacuna">_______</span>${fala.depois}</p></div>`;
+        html += `<div class="banco-palavras" id="banco-palavras">`;
+        fala.opcoes.forEach((op, i) => {
+            html += `<button class="peca" data-i="${i}">${op}</button>`;
+        });
+        html += `</div>`;
+    } else {
+        html += `<input type="text" class="campo-escrita" id="campo-escrita" placeholder="Digite sua resposta em inglês..." autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">`;
+    }
+
+    html += `</div></div>`; // fecha .coluna-conversa e .linha-gabi
+    el.conteudo.innerHTML = html;
+
+    const chatCaixa = document.getElementById("chat-caixa");
+    chatCaixa.scrollTop = chatCaixa.scrollHeight;
+    chatCaixa.addEventListener("click", (e) => {
+        const btnOuvir = e.target.closest(".btn-msg-audio");
+        const btnDevagar = e.target.closest(".btn-msg-audio-devagar");
+        if (btnOuvir) falarEN(btnOuvir.dataset.texto, btnOuvir);
+        else if (btnDevagar) falarEN(btnDevagar.dataset.texto, btnDevagar, 0.55);
+    });
+
+    setTimeout(() => falarEN(fala.gabi), 350);
+
+    if (fala.tipo === "multipla") {
+        document.querySelectorAll(".opcao").forEach((b) => {
+            b.addEventListener("click", () => {
+                if (estado.respondido) return;
+                document.querySelectorAll(".opcao").forEach((x) => x.classList.remove("selecionada"));
+                b.classList.add("selecionada");
+                estado.selecaoAtual = Number(b.dataset.i);
+                el.btnVerificar.disabled = false;
+            });
+        });
+    } else if (fala.tipo === "completar") {
+        document.querySelectorAll(".peca").forEach((b) => {
+            b.addEventListener("click", () => {
+                if (estado.respondido) return;
+                document.querySelectorAll(".peca").forEach((x) => x.classList.remove("selecionada"));
+                b.classList.add("selecionada");
+                const lacuna = document.getElementById("lacuna");
+                lacuna.textContent = b.textContent;
+                lacuna.classList.add("preenchida");
+                estado.selecaoAtual = Number(b.dataset.i);
+                el.btnVerificar.disabled = false;
+            });
+        });
+    } else {
+        const campo = document.getElementById("campo-escrita");
+        campo.focus();
+        campo.addEventListener("input", () => {
+            estado.selecaoAtual = campo.value;
+            el.btnVerificar.disabled = campo.value.trim() === "";
+        });
+        campo.addEventListener("keydown", (e) => {
+            // "else if": verificar() já vira estado.respondido pra true, então
+            // com dois "if" separados a segunda linha disparava continuar()
+            // na mesma tecla Enter, pulando a etapa antes de mostrar o
+            // resultado. Só um dos dois pode acontecer por tecla.
+            if (e.key !== "Enter") return;
+            if (!estado.respondido) { if (!el.btnVerificar.disabled) verificar(); }
+            else continuar();
+        });
+    }
+}
+
+/* ==================================================================
+   5) VERIFICAR RESPOSTA
+   ================================================================== */
+function verificar() {
+    if (estado.respondido || estado.selecaoAtual === null) return;
+    const fala = DIALOGOS[estado.dIdx].falas[estado.tIdx];
+    let acertou = false;
+    let respostaCertaTexto = "";
+
+    if (fala.tipo === "multipla") {
+        acertou = estado.selecaoAtual === fala.resposta;
+        respostaCertaTexto = fala.opcoes[fala.resposta];
+        document.querySelectorAll(".opcao").forEach((b, i) => {
+            b.classList.add("travado");
+            if (i === fala.resposta) b.classList.add("certa");
+            else if (i === estado.selecaoAtual) b.classList.add("errada");
+        });
+    } else if (fala.tipo === "completar") {
+        acertou = estado.selecaoAtual === fala.resposta;
+        respostaCertaTexto = fala.antes + fala.opcoes[fala.resposta] + fala.depois;
+        document.querySelectorAll(".peca").forEach((b, i) => {
+            b.classList.add("travado");
+            if (i === fala.resposta) b.classList.add("certa");
+            else if (i === estado.selecaoAtual) b.classList.add("errada");
+        });
+        const lacuna = document.getElementById("lacuna");
+        lacuna.textContent = fala.opcoes[fala.resposta];
+        lacuna.classList.add(acertou ? "certa" : "errada");
+    } else {
+        const digitado = normalizar(estado.selecaoAtual);
+        acertou = fala.respostas.some((r) => normalizar(r) === digitado);
+        respostaCertaTexto = fala.respostas[0];
+        const campo = document.getElementById("campo-escrita");
+        campo.disabled = true;
+        campo.classList.add(acertou ? "certa" : "errada");
+    }
+
+    estado.respondido = true;
+
+    if (acertou) {
+        estado.acertos++;
+        estado.pontos += 15;
+    }
+    atualizarTopo();
+
+    el.rodape.classList.add(acertou ? "fundo-certo" : "fundo-errado");
+    el.feedback.classList.add("on", acertou ? "fundo-certo" : "fundo-errado");
+    el.feedbackImg.src = acertou ? MASCOTE.certo : MASCOTE.errado;
+    const retrato = document.getElementById("retrato-gabi-img");
+    if (retrato) retrato.src = acertou ? MASCOTE.certo : MASCOTE.errado;
+    el.feedbackTitulo.textContent = acertou
+        ? ["Você acertou! 🎉", "Isso mesmo, acertou!", "Certíssimo!"][Math.floor(Math.random() * 3)]
+        : "Você errou — vamos praticar mais.";
+
+    if (fala.tipo === "escrever") {
+        el.feedbackSub.innerHTML =
+            `Você escreveu: <b>${escaparHTML(estado.selecaoAtual)}</b><br>` +
+            `Resposta certa: <b>${respostaCertaTexto}</b>`;
+    } else {
+        el.feedbackSub.innerHTML = acertou
+            ? `A resposta era: <b>${respostaCertaTexto}</b>`
+            : `A resposta certa é: <b>${respostaCertaTexto}</b>`;
+    }
+
+    el.btnVerificar.style.display = "none";
+    el.btnContinuar.style.display = "inline-block";
+    el.btnContinuar.classList.toggle("errado", !acertou);
+
+    // Importante: NÃO focar o botão agora. Se o Verificar foi acionado pelo
+    // Enter do teclado, focar o botão ainda dentro do mesmo evento de tecla
+    // faz o navegador interpretar o "keyup" daquele Enter como um clique no
+    // botão recém-focado — pulando a etapa antes da pessoa ver o resultado.
+    // Espera o Enter terminar de vez para então focar.
+    setTimeout(() => el.btnContinuar.focus(), 120);
+}
+
+function continuar() {
+    const dialogo = DIALOGOS[estado.dIdx];
+    const fala = dialogo.falas[estado.tIdx];
+    let textoVoce;
+    if (fala.tipo === "multipla") textoVoce = fala.opcoes[fala.resposta];
+    else if (fala.tipo === "completar") textoVoce = fala.antes + fala.opcoes[fala.resposta] + fala.depois;
+    else textoVoce = fala.respostas[0];
+    // A conversa sempre segue com a resposta CERTA (pra próxima fala da Gabi
+    // continuar fazendo sentido), mesmo quando a pessoa errou — o acerto ou
+    // erro já foi mostrado no rodapé antes de chegar aqui.
+    estado.historico.push({ quem: "voce", texto: formatarFrase(textoVoce) });
+
+    estado.tIdx++;
+    estado.turnoGlobal++;
+
+    if (estado.tIdx >= dialogo.falas.length) {
+        if (estado.dIdx + 1 >= DIALOGOS.length) {
+            mostrarFinal();
+        } else {
+            iniciarDialogo(estado.dIdx + 1);
+        }
+    } else {
+        iniciarTurno();
+    }
+}
+
+/* ==================================================================
+   6) TELAS DE INÍCIO E FIM
+   ================================================================== */
+function mostrarFinal() {
+    el.conteudo.style.display = "none";
+    el.rodape.style.display = "none";
+    el.telaFinal.classList.add("on");
+    el.barra.style.width = "100%";
+
+    const precisao = Math.round((estado.acertos / TOTAL_TURNOS) * 100);
+    el.finalAcertos.textContent = `${estado.acertos}/${TOTAL_TURNOS}`;
+    el.finalPrecisao.textContent = precisao + "%";
+    el.finalPontos.textContent = estado.pontos;
+
+    if (precisao >= 80) {
+        el.imgFinal.src = MASCOTE.certo;
+        el.tituloFinal.textContent = "Você manda muito bem nas conversas!";
+    } else if (precisao >= 50) {
+        el.imgFinal.src = MASCOTE.neutra;
+        el.tituloFinal.textContent = "Bom treino de diálogo!";
+    } else {
+        el.imgFinal.src = MASCOTE.explicando;
+        el.tituloFinal.textContent = "Vamos conversar de novo?";
+    }
+}
+
+function reiniciar() {
+    Object.assign(estado, { dIdx: 0, tIdx: 0, turnoGlobal: 0, pontos: 0, acertos: 0, respondido: false, selecaoAtual: null, historico: [] });
+    el.telaFinal.classList.remove("on");
+    el.conteudo.style.display = "flex";
+    el.conteudo.style.flexDirection = "column";
+    iniciarDialogo(0);
+}
+
+el.btnComecar.addEventListener("click", () => {
+    el.telaIntro.classList.add("off");
+    el.conteudo.style.display = "flex";
+    el.conteudo.style.flexDirection = "column";
+    iniciarDialogo(0);
+});
+el.btnVerificar.addEventListener("click", verificar);
+el.btnContinuar.addEventListener("click", continuar);
+el.btnRefazer.addEventListener("click", reiniciar);
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Vendas — Social Selling, Inside Sales e Qualificação Avançada</title>
+    <style>
+        :root {
+            --primary-dark: #064e3b; /* Emerald 900 */
+            --brand-color: #059669; /* Emerald 600 */
+            --brand-light: #d1fae5; /* Emerald 100 */
+            --accent-color: #047857; /* Emerald 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #064e3b 0%, #059669 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #a7f3d0; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 190px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .fill-text-paragraph {
+            line-height: 2.2;
+            font-size: 14.5px;
+            background-color: #fafafa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px dashed var(--border-color);
+        }
+
+        .dashboard-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .dashboard-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .dashboard-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Vendas — Social Selling e Inside Sales</h1>
+        <p>Aprofunde-se nas abordagens modernas de vendas: qualificação de leads entre Marketing e Vendas, estratégias de prospecção via redes sociais, cadência de follow-up e cálculo de Win Rate (Taxa de Ganho).</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: PREENCHIMENTO DE LACUNAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Preenchimento de Lacunas] A Transição de Marketing para Vendas</h2>
+        </div>
+        <div class="scenario-description">
+            O alinhamento (Smarketing) entre as equipes de Marketing e Vendas é crucial no Inside Sales. Complete o texto com as nomenclaturas corretas do funil:
+        </div>
+        <div class="fill-text-paragraph">
+            Quando um contato demonstra interesse através de materiais educativos e atinge uma pontuação mínima no sistema, ele é repassado para vendas como um 
+            <select id="ss-l1" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="mql">MQL (Marketing Qualified Lead)</option>
+                <option value="sql">SQL (Sales Qualified Lead)</option>
+            </select>. 
+            Após o time de pré-vendas (SDR) ligar para este contato e confirmar que ele tem perfil ideal e momento de compra (qualificação), o contato avança no funil e se torna oficialmente um 
+            <select id="ss-l2" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="mql">MQL (Marketing Qualified Lead)</option>
+                <option value="sql">SQL (Sales Qualified Lead)</option>
+            </select>. 
+            As regras, métricas e o acordo formal entre o Marketing (entregar volume) e Vendas (trabalhar os leads rápido) são documentadas em um 
+            <select id="ss-l3" class="input-inline">
+                <option value="">Selecione...</option>
+                <option value="sla">SLA (Service Level Agreement)</option>
+                <option value="roi">ROI (Retorno sobre Investimento)</option>
+            </select>.
+        </div>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Prospecção B2B via Social Selling</h2>
+        </div>
+        <div class="scenario-description">
+            O "Social Selling" (Venda Social) transformou a maneira de abordar executivos em redes como o LinkedIn. Avalie as condutas abaixo:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Conduta do Vendedor na Rede Social</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Praticar Social Selling significa automatizar milhares de convites no LinkedIn e, assim que o cliente aceitar, imediatamente enviar um texto longo (pitch) com um link de compra direto para o produto.</td>
+                    <td>
+                        <select id="ss-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. O verdadeiro Social Selling baseia-se na construção de relacionamento e autoridade: compartilhar artigos do setor, curtir posts do prospect e gerar valor consultivo antes de oferecer uma solução comercial.</td>
+                    <td>
+                        <select id="ss-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO E INDICADORES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Simulação Visual] Cálculo de Conversão: Win Rate (Taxa de Ganho)</h2>
+        </div>
+        <div class="scenario-description">
+            No Inside Sales, o <em>Win Rate</em> mede a eficiência final do vendedor: quantos negócios ele conseguiu fechar em relação ao total de oportunidades que ele negociou.
+        </div>
+        <div class="dashboard-box">
+            <div class="dashboard-header">DASHBOARD DO CRM - VENDEDORA ALINE (FECHAMENTO MENSAL)</div>
+            <div class="dashboard-grid">
+                <div><strong>Indicador do Funil</strong></div>
+                <div><strong>Volume (Unidades)</strong></div>
+
+                <div>Oportunidades Recebidas e Negociadas no mês</div>
+                <div>40 Oportunidades</div>
+
+                <div>Negócios Perdidos (Lost)</div>
+                <div>32 Negócios</div>
+
+                <div>Negócios Fechados / Ganhos (Won)</div>
+                <div>8 Negócios</div>
+            </div>
+            <div class="dashboard-footer">
+                <span>Fórmula Win Rate: (Ganhos ÷ Oportunidades Totais) × 100</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o Win Rate (Taxa de Ganho) da Aline (apenas o número, sem o sinal de %):</label>
+            <input type="text" id="ss-m3-input" class="input-box" style="margin-top: 6px; max-width: 220px;" placeholder="Exemplo: 15">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: ORDENAÇÃO CRONOLÓGICA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Sequenciamento] Cadência de Prospecção (Fluxo de Toques)</h2>
+        </div>
+        <div class="scenario-description">
+            Para não ser ignorado, o vendedor Outbound cria uma "Cadência" estratégica: uma sequência lógica de tentativas de contato alternando canais. Ordene as etapas de uma cadência típica (do 1º ao 4º passo):
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Ação do Fluxo de Cadência</th>
+                    <th style="width: 35%;">Ordem Cronológica</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pesquisa prévia da empresa e envio do 1º E-mail de Apresentação focado na dor do cliente.</td>
+                    <td>
+                        <select id="ss-ord1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Cold Call (Ligação Fria) para tentar uma conexão rápida e referenciar o e-mail enviado anteriormente.</td>
+                    <td>
+                        <select id="ss-ord2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Interação via Social Selling (ex: pedido de conexão no LinkedIn com nota amigável e sem pitch de venda).</td>
+                    <td>
+                        <select id="ss-ord3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>E-mail de Break-up (E-mail de despedida): "Como não tive retorno, estou encerrando as tentativas por aqui. Deixo meu contato caso precise no futuro".</td>
+                    <td>
+                        <select id="ss-ord4" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="1">1º Passo</option>
+                            <option value="2">2º Passo</option>
+                            <option value="3">3º Passo</option>
+                            <option value="4">4º Passo</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: DISSERTATIVA INTELIGENTE -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Análise Situacional] A Quebra de Gelo (Icebreaker) no LinkedIn</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Você quer prospectar a Diretora de RH de uma multinacional via LinkedIn. Você leu um post recente dela sobre "Os desafios do trabalho remoto".
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Escreva sua mensagem de conexão (máximo 300 caracteres). Não venda seu produto ainda! O objetivo é criar engajamento. (Mínimo de 10 palavras). Dica: utilize palavras como "post", "artigo", "conteúdo", "visão", "concordo" ou "conexão".
+        </label>
+        <textarea id="ss-m5-dissertativa" class="input-box" placeholder="Ex: Olá Fulana, li seu recente post sobre os desafios do trabalho remoto e concordo muito com a sua visão. Adoraria fazer essa conexão para acompanharmos nossos conteúdos..."></textarea>
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma abordagem mais completa (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Mensagens compostas apenas por números não geram conexões reais." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua mensagem precisa ter no mínimo ${minPalavras} palavras estruturadas.` };
+
+        return { valido: true, motivo: "Mensagem de quebra de gelo validada!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Lacunas (Funil de Marketing para Vendas)
+        const l1 = document.getElementById('ss-l1').value;
+        const l2 = document.getElementById('ss-l2').value;
+        const l3 = document.getElementById('ss-l3').value;
+
+        if (l1 === 'mql' && l2 === 'sql' && l3 === 'sla') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! O Marketing entrega o MQL. O SDR qualifica e o transforma em SQL. Tudo regido pelo SLA (Acordo de Nível de Serviço)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Revise a jornada: A pontuação de marketing gera um MQL, a aprovação de vendas gera um SQL, e o acordo entre as áreas é o SLA." });
+        }
+
+        // Módulo 2: Matriz V/F (Social Selling)
+        const vf1 = document.getElementById('ss-vf1').value;
+        const vf2 = document.getElementById('ss-vf2').value;
+
+        if (vf1 === 'F' && vf2 === 'V') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Exato! Disparar spam com links de compra imediata destrói a reputação (Falso). O verdadeiro Social Selling é consultivo e cria relacionamentos autênticos (Verdadeiro)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: A primeira afirmação é Falsa, pois Social Selling foge do spam automatizado. A segunda é Verdadeira, foco total no relacionamento." });
+        }
+
+        // Módulo 3: Cálculo Visual (Win Rate)
+        const inputVal = document.getElementById('ss-m3-input').value.trim().replace(',', '.');
+        if (inputVal === '20' || inputVal === '20.0' || inputVal === '20,0' || inputVal === '20%') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! Dividindo os 8 negócios ganhos por 40 oportunidades totais obtemos 0,20. Ou seja, um Win Rate de 20%." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Aplique a fórmula: (8 Ganhos ÷ 40 Oportunidades Totais). Multiplique o resultado por 100." });
+        }
+
+        // Módulo 4: Ordenação Cronológica (Cadência)
+        const ord1 = document.getElementById('ss-ord1').value;
+        const ord2 = document.getElementById('ss-ord2').value;
+        const ord3 = document.getElementById('ss-ord3').value;
+        const ord4 = document.getElementById('ss-ord4').value;
+
+        if (ord1 === '1' && ord2 === '2' && ord3 === '3' && ord4 === '4') {
+            aplicarFeedback('feedback-m4', { valido: true, motivo: "Excelente estruturação de Cadência! O E-mail abre portas, a Ligação busca a resposta, o Social apoia, e o Break-up encerra o fluxo com classe." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m4', { valido: false, motivo: "Incorreto. A cadência lógica é: 1º E-mail de pesquisa, 2º Ligação referenciando o e-mail, 3º Apoio Social (LinkedIn) e 4º Break-up." });
+        }
+
+        // Módulo 5: Dissertativa Inteligente (Icebreaker no LinkedIn)
+        const textM5 = document.getElementById('ss-m5-dissertativa').value;
+        const resM5 = validarTextoInteligente(textM5, 10, 35);
+        if (resM5.valido) {
+            const termosChave = /post|artigo|conteúdo|visão|concordo|conexão|relacionamento|insight|perspectiva|interessante/i;
+            if (!termosChave.test(textM5)) {
+                resM5.valido = false;
+                resM5.motivo = "Você deve personalizar a abordagem! Utilize o gancho sugerido mencionando o 'post/artigo', valorizando a 'visão' do cliente e pedindo a 'conexão'.";
+            } else {
+                resM5.motivo = "Abordagem excelente! Você usou um gatilho de afinidade (elogiar o conteúdo do prospect). Isso abaixa a guarda do cliente e eleva absurdamente a taxa de aceitação de conexões.";
+            }
+        }
+        aplicarFeedback('feedback-m5', resM5);
+        if (resM5.valido) acertos++;
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou forte domínio em métricas e táticas de Inside Sales, validando todos os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Estratégica Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção no processo: Você validou ${acertos} de ${total} módulos. Avalie o feedback destacado em vermelho, refine sua técnica e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Técnicas e Gestão de Vendas</title>
+    <style>
+        :root {
+            --primary-dark: #881337; /* Rose 900 */
+            --brand-color: #e11d48; /* Rose 600 */
+            --brand-light: #ffe4e6; /* Rose 100 */
+            --accent-color: #be123c; /* Rose 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #881337 0%, #e11d48 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fecdd3; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .calculo-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .calculo-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .calculo-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .calculo-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Técnicas e Gestão de Vendas</h1>
+        <p>Aprofunde suas habilidades comerciais analisando o perfil do profissional moderno, o procedimento de atendimento consultivo e os cálculos de metas e comissões.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ASSOCIAÇÃO - ETAPAS DO ATENDIMENTO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Associação] O Procedimento de Atendimento ao Cliente</h2>
+        </div>
+        <div class="scenario-description">
+            Um atendimento de excelência segue etapas lógicas para guiar o cliente até o fechamento. Associe a atitude do vendedor à etapa correspondente do processo de vendas:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 70%;">Ação do Vendedor</th>
+                    <th style="width: 30%;">Etapa de Vendas</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Fazer perguntas abertas e ouvir ativamente para descobrir quais são as reais "dores" e necessidades do cliente antes de oferecer qualquer produto.</td>
+                    <td>
+                        <select id="vds-m1-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="prospeccao">Prospecção</option>
+                            <option value="sondagem">Sondagem / Diagnóstico</option>
+                            <option value="contorno">Contorno de Objeções</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ouvir o cliente dizer "está muito caro" e responder demonstrando o custo-benefício e o valor agregado que o produto trará a longo prazo.</td>
+                    <td>
+                        <select id="vds-m1-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="prospeccao">Prospecção</option>
+                            <option value="sondagem">Sondagem / Diagnóstico</option>
+                            <option value="contorno">Contorno de Objeções</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Pesquisar na internet, no LinkedIn ou em listas de contatos potenciais clientes (leads) que tenham o perfil ideal para comprar a solução da empresa.</td>
+                    <td>
+                        <select id="vds-m1-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="prospeccao">Prospecção</option>
+                            <option value="sondagem">Sondagem / Diagnóstico</option>
+                            <option value="contorno">Contorno de Objeções</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO - PERFIL DO PROFISSIONAL -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] O Perfil do Profissional de Vendas</h2>
+        </div>
+        <div class="scenario-description">
+            O mercado mudou e o perfil do "vendedor tirador de pedidos" ficou no passado. Avalie as afirmações sobre o perfil do vendedor moderno como **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Afirmação sobre o Profissional</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. Um excelente profissional de vendas precisa focar apenas em falar muito e ser altamente extrovertido, sendo a habilidade de "ouvir o cliente" uma competência secundária.</td>
+                    <td>
+                        <select id="vds-m2-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. A resiliência (capacidade de lidar com constantes "nãos") e a empatia (colocar-se no lugar do cliente) são <em>soft skills</em> indispensáveis para o sucesso nas vendas consultivas.</td>
+                    <td>
+                        <select id="vds-m2-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO / INPUT EXATO - COMISSÕES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Cálculo Interativo] Apuração de Metas e Comissões</h2>
+        </div>
+        <div class="scenario-description">
+            Saber calcular seus próprios ganhos é essencial para gerenciar suas metas. Ajude o vendedor Carlos a calcular sua comissão do mês.
+        </div>
+        <div class="calculo-box">
+            <div class="calculo-header">ESPELHO DE VENDAS - CARLOS (MÊS ATUAL)</div>
+            <div class="calculo-grid">
+                <div><strong>Indicador</strong></div>
+                <div><strong>Valor</strong></div>
+
+                <div>Total Faturado no Mês</div>
+                <div>R$ 45.000,00</div>
+
+                <div>Percentual de Comissão Base</div>
+                <div>4% (0,04)</div>
+            </div>
+            <div class="calculo-footer">
+                <span>Fórmula: Faturamento × Percentual de Comissão</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o valor financeiro EXATO da comissão de Carlos em Reais (apenas números, sem "R$"):</label>
+            <input type="text" id="vds-m3-input" class="input-box" style="margin-top: 6px; max-width: 200px;" placeholder="Exemplo: 1200">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: DISSERTATIVA INTELIGENTE - NEGOCIAÇÃO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Análise Situacional] Tratativa da Objeção de Preço</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Após você apresentar sua proposta, o cliente cruza os braços e diz: <em>"Gostei do atendimento, mas o orçamento do seu concorrente está 20% mais barato. Não consigo fechar com você por esse preço."</em>
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como um vendedor consultivo, descreva sua argumentação para não perder a venda, SEM simplesmente dar desconto imediato (mínimo de 10 palavras). Dica: utilize palavras como "valor", "benefício", "diferencial" ou "qualidade".
+        </label>
+        <textarea id="vds-m4-dissertativa" class="input-box" placeholder="Ex: Entendo sua preocupação com o preço, mas gostaria de ressaltar o valor agregado do nosso produto, focando nos benefícios exclusivos e no nosso diferencial de suporte técnico..."></textarea>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRÁTICA EXTERNA - SCRIPT DE VENDAS -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Prática Externa] Roteiro de Abordagem (Pitch de Vendas)</h2>
+        </div>
+        <div class="scenario-description">
+            O "Elevator Pitch" é um discurso de apresentação curto e persuasivo sobre sua solução. Utilize o **Google Docs** para escrever um breve roteiro de vendas ou o **Canva** para criar um slide de apresentação visual do seu produto/serviço.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Cole abaixo o link público de compartilhamento do seu material (Google Docs ou Canva):
+        </label>
+        <input type="url" id="vds-m5-link" class="input-box" placeholder="https://docs.google.com/document/... ou https://canva.com/...">
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo de argumentação não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Elabore uma argumentação mais robusta (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Por favor, utilize palavras para criar seu argumento de vendas." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Seu roteiro precisa ter no mínimo ${minPalavras} palavras persuasivas.` };
+
+        return { valido: true, motivo: "Argumento analisado com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Associação (Etapas do Atendimento)
+        const a1 = document.getElementById('vds-m1-a1').value;
+        const a2 = document.getElementById('vds-m1-a2').value;
+        const a3 = document.getElementById('vds-m1-a3').value;
+
+        if (a1 === 'sondagem' && a2 === 'contorno' && a3 === 'prospeccao') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Perfeito! Ouvir o cliente é Sondagem; Argumentar sobre preço é Contorno de Objeções; Buscar na internet é Prospecção." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Revise as etapas: Pesquisar clientes = Prospecção; Fazer perguntas = Sondagem; Tratar recusas = Contorno de Objeções." });
+        }
+
+        // Módulo 2: Matriz V/F (Perfil do Profissional)
+        const vf1 = document.getElementById('vds-m2-vf1').value;
+        const vf2 = document.getElementById('vds-m2-vf2').value;
+
+        if (vf1 === 'F' && vf2 === 'V') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente leitura! Saber ouvir ativamente é MAIS importante do que apenas falar (Falso). A resiliência blinda o vendedor contra frustrações (Verdadeiro)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: O bom vendedor ouve mais do que fala, a época do falastrão acabou (A primeira é Falsa). Resiliência e Empatia são habilidades reais de vendas (A segunda é Verdadeira)." });
+        }
+
+        // Módulo 3: Cálculo Exato (Comissões)
+        const inputVal = document.getElementById('vds-m3-input').value.trim();
+        // Permite 1800, 1800,00, 1.800, 1.800,00
+        const valorLimpo = inputVal.replace('.', '').replace(',', '.');
+        if (parseFloat(valorLimpo) === 1800) {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! 4% de R$ 45.000,00 resulta exatamente em R$ 1.800,00 de comissão." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Multiplique o faturamento (45000) por 0,04 (ou divida por 100 e multiplique por 4)." });
+        }
+
+        // Módulo 4: Dissertativa Inteligente (Negociação)
+        const textM4 = document.getElementById('vds-m4-dissertativa').value;
+        const resM4 = validarTextoInteligente(textM4, 10, 35);
+        if (resM4.valido) {
+            const termosChave = /valor|benefício|benefícios|diferencial|qualidade|roi|retorno|solução|garantia/i;
+            if (!termosChave.test(textM4)) {
+                resM4.valido = false;
+                resM4.motivo = "Você deve ancorar a venda não apenas no preço, mas mencionar o 'valor', o 'diferencial', a 'qualidade' ou os 'benefícios' da sua solução.";
+            } else {
+                resM4.motivo = "Excelente técnica! Deslocar o foco do PREÇO para o VALOR agregado e os benefícios exclusivos é a base da venda consultiva bem-sucedida.";
+            }
+        }
+        aplicarFeedback('feedback-m4', resM4);
+        if (resM4.valido) acertos++;
+
+        // Módulo 5: Prática Externa (Roteiro/Pitch)
+        const urlLink = document.getElementById('vds-m5-link').value.trim();
+        const externalRegex = /^https?:\/\/(www\.)?(docs\.google\.com\/document|canva\.com)\/.+/i;
+        if (urlLink && externalRegex.test(urlLink)) {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Link validado! Ter um pitch (roteiro) bem estruturado transmite profissionalismo e segurança na abordagem." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "URL inválida. Certifique-se de colar o link público de um documento (Google Docs) ou design (Canva)." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Meta Atingida com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você demonstrou forte perfil comercial e validou corretamente os ${total} módulos.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção no processo: Você validou ${acertos} de ${total} módulos. Avalie o feedback em vermelho, ajuste a estratégia e tente novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

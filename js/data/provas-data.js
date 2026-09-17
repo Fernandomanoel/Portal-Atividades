@@ -930,22 +930,16 @@ const PROVAS_MANIFEST = {
   ],
   "Power Point": [
     {
-      "type": "file",
-      "label": "PowerPoint.docx",
-      "path": "provas/Power Point/PowerPoint.docx",
-      "size": "19.1 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao powerpoint conteudo fornecido",
+      "path": "provas/Power Point/avaliacao-powerpoint-conteudo-fornecido.prova.html",
+      "size": "17.9 KB"
     },
     {
-      "type": "file",
-      "label": "Prova Prática – Microsoft PowerPoint 01.pdf",
-      "path": "provas/Power Point/Prova Prática – Microsoft PowerPoint 01.pdf",
-      "size": "313.9 KB"
-    },
-    {
-      "type": "file",
-      "label": "Prova Prática – Microsoft PowerPoint 02 (1).pdf",
-      "path": "provas/Power Point/Prova Prática – Microsoft PowerPoint 02 (1).pdf",
-      "size": "304.2 KB"
+      "type": "quiz_html",
+      "label": "Avaliacao powerpoint texto extenso",
+      "path": "provas/Power Point/avaliacao-powerpoint-texto-extenso.prova.html",
+      "size": "21.1 KB"
     }
   ],
   "Python": [

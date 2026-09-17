@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atividade Prática: Gestão de Logística e Supply Chain</title>
+    <style>
+        :root {
+            --primary-dark: #1e293b; /* Slate 800 */
+            --brand-color: #ea580c; /* Orange 600 */
+            --brand-light: #ffedd5; /* Orange 100 */
+            --accent-color: #c2410c; /* Orange 700 */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #475569;
+            --border-color: #cbd5e1;
+            --success-color: #16a34a;
+            --success-bg: #f0fdf4;
+            --error-color: #dc2626;
+            --error-bg: #fef2f2;
+            --warning-color: #d97706;
+            --warning-bg: #fffbeb;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+
+        .main-header {
+            background: linear-gradient(135deg, #1e293b 0%, #ea580c 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+        }
+
+        .main-header h1 { font-size: 28px; font-weight: 700; margin-bottom: 12px; }
+        .main-header p { font-size: 15px; color: #fed7aa; max-width: 820px; }
+
+        .badge-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .status-panel {
+            position: sticky;
+            top: 15px;
+            z-index: 100;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .status-title { font-size: 15px; font-weight: 700; color: var(--primary-dark); }
+        .status-info { font-size: 13.5px; color: var(--text-muted); }
+
+        .btn-validate-all {
+            background-color: var(--brand-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .btn-validate-all:hover { background-color: var(--accent-color); transform: translateY(-1px); }
+
+        .module-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+        }
+
+        .module-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 2px solid var(--brand-light);
+            padding-bottom: 14px;
+            margin-bottom: 22px;
+        }
+
+        .module-number {
+            background-color: var(--brand-color);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .module-header h2 { font-size: 20px; color: var(--primary-dark); }
+
+        .scenario-description {
+            background-color: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--brand-color);
+            border-radius: 6px;
+            padding: 18px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .input-inline {
+            display: inline-block;
+            width: 180px;
+            padding: 6px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 13.5px;
+            margin: 0 4px;
+            background-color: #fff;
+        }
+
+        .input-box {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13.5px;
+            font-family: inherit;
+        }
+
+        .input-box:focus, .input-inline:focus {
+            outline: none;
+            border-color: var(--brand-color);
+            box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.15);
+        }
+
+        textarea.input-box { min-height: 110px; resize: vertical; }
+
+        .feedback-badge {
+            margin-top: 12px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-badge.success {
+            display: block;
+            background-color: var(--success-bg);
+            color: var(--success-color);
+            border: 1px solid #bbf7d0;
+        }
+
+        .feedback-badge.error {
+            display: block;
+            background-color: var(--error-bg);
+            color: var(--error-color);
+            border: 1px solid #fecaca;
+        }
+
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 15px 0; }
+        th { background-color: var(--primary-dark); color: white; padding: 12px; text-align: left; }
+        td { border: 1px solid var(--border-color); padding: 10px 12px; }
+
+        .estoque-box {
+            border: 2px solid var(--primary-dark);
+            border-radius: 8px;
+            background-color: #ffffff;
+            padding: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 15px;
+        }
+        .estoque-header { text-align: center; font-weight: bold; border-bottom: 2px dashed #94a3b8; padding-bottom: 10px; margin-bottom: 15px; }
+        .estoque-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; font-size: 14px; }
+        .estoque-footer { border-top: 2px dashed #94a3b8; margin-top: 15px; padding-top: 10px; display: flex; justify-content: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="main-header">
+        <span class="badge-tag">Plataforma Interativa de Fixação</span>
+        <h1>Atividade Prática: Gestão de Logística e Supply Chain</h1>
+        <p>Aprimore sua visão estratégica sobre a Cadeia de Suprimentos. Resolva cenários práticos envolvendo Logística Inbound/Outbound, Gestão de Estoques, Cálculo de Reposição e Logística Reversa.</p>
+    </header>
+
+    <div class="status-panel">
+        <div>
+            <div class="status-title">Status da Resolução: <span id="completion-text" style="color: var(--warning-color);">Em Andamento</span></div>
+            <div class="status-info" id="status-summary">Preencha todos os módulos e clique em "Validar Atividade".</div>
+        </div>
+        <button class="btn-validate-all" onclick="validarTudo()">🚀 Validar Atividade</button>
+    </div>
+
+    <!-- MÓDULO 1: ASSOCIAÇÃO - TIPOS DE LOGÍSTICA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">1</div>
+            <h2>[Associação] Fluxos da Cadeia de Suprimentos</h2>
+        </div>
+        <div class="scenario-description">
+            A logística atua em diferentes frentes de uma empresa. Associe a atividade descrita ao seu respectivo fluxo logístico (Inbound, Outbound ou Reversa):
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 65%;">Atividade Operacional</th>
+                    <th style="width: 35%;">Tipo de Logística</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Gerenciamento do transporte de matérias-primas dos fornecedores até a fábrica para a linha de produção.</td>
+                    <td>
+                        <select id="log-m1-a1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Logística Inbound (Suprimentos)</option>
+                            <option value="outbound">Logística Outbound (Distribuição)</option>
+                            <option value="reversa">Logística Reversa</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Planejamento de rotas e entrega do produto final acabado aos centros de distribuição e clientes finais.</td>
+                    <td>
+                        <select id="log-m1-a2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Logística Inbound (Suprimentos)</option>
+                            <option value="outbound">Logística Outbound (Distribuição)</option>
+                            <option value="reversa">Logística Reversa</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retorno de produtos com defeito e recolhimento de embalagens vazias para reciclagem e descarte adequado.</td>
+                    <td>
+                        <select id="log-m1-a3" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="inbound">Logística Inbound (Suprimentos)</option>
+                            <option value="outbound">Logística Outbound (Distribuição)</option>
+                            <option value="reversa">Logística Reversa</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m1" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 2: MATRIZ VERDADEIRO OU FALSO - GESTÃO DE ESTOQUES -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">2</div>
+            <h2>[Matriz Verdadeiro ou Falso] Métodos de Armazenagem</h2>
+        </div>
+        <div class="scenario-description">
+            Avalie as metodologias de controle de estoque e produção como **Verdadeira (V)** ou **Falsa (F)**:
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 75%;">Conceito Logístico</th>
+                    <th style="width: 25%;">Classificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1. O método PEPS (Primeiro a Entrar, Primeiro a Sair / FIFO) é o mais recomendado para a armazenagem e venda de produtos perecíveis, como alimentos e medicamentos.</td>
+                    <td>
+                        <select id="log-m2-vf1" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2. No sistema "Just-in-Time" (JIT), o objetivo principal é manter estoques gigantescos e abarrotados para garantir que nunca falte produto, ignorando os custos de armazenagem.</td>
+                    <td>
+                        <select id="log-m2-vf2" class="input-box">
+                            <option value="">Selecione...</option>
+                            <option value="V">Verdadeiro (V)</option>
+                            <option value="F">Falso (F)</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="feedback-m2" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 3: CÁLCULO / INPUT EXATO - PONTO DE PEDIDO -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">3</div>
+            <h2>[Simulação de Cálculo] Ponto de Pedido (PP)</h2>
+        </div>
+        <div class="scenario-description">
+            O Ponto de Pedido indica o momento exato em que um novo lote de compras deve ser solicitado para que o estoque não zere. A fórmula é: <code>PP = (Demanda Diária × Lead Time) + Estoque de Segurança</code>.
+        </div>
+        <div class="estoque-box">
+            <div class="estoque-header">FICHA DE CONTROLE DE ESTOQUE - PRODUTO X</div>
+            <div class="estoque-grid">
+                <div><strong>Variável</strong></div>
+                <div><strong>Valor</strong></div>
+
+                <div>Demanda Diária (vendas por dia)</div>
+                <div>10 unidades</div>
+
+                <div>Lead Time (Tempo de entrega do fornecedor)</div>
+                <div>5 dias</div>
+
+                <div>Estoque de Segurança (reserva técnica)</div>
+                <div>20 unidades</div>
+            </div>
+            <div class="estoque-footer">
+                <span>Fórmula: (10 × 5) + 20</span>
+            </div>
+        </div>
+        <div style="margin-top: 15px;">
+            <label style="font-size: 13.5px; font-weight: 600;">Calcule e digite o valor do PONTO DE PEDIDO exato em unidades:</label>
+            <input type="text" id="log-m3-input" class="input-box" style="margin-top: 6px; max-width: 200px;" placeholder="Digite apenas o número...">
+            <div id="feedback-m3" class="feedback-badge"></div>
+        </div>
+    </article>
+
+    <!-- MÓDULO 4: DISSERTATIVA INTELIGENTE - LOGÍSTICA REVERSA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">4</div>
+            <h2>[Análise Situacional] Gestão de Crise no E-commerce</h2>
+        </div>
+        <div class="scenario-description">
+            <strong>Cenário:</strong> Um grande e-commerce de moda enfrentou um problema no mês de Black Friday: 15% das roupas vendidas foram devolvidas pelos clientes por problemas de tamanho ou defeitos de fabricação.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Como analista de logística, descreva qual processo deve ser estruturado para lidar com essa situação. (Dica: utilize termos como "logística reversa", "devolução", "troca" ou "inspeção").
+        </label>
+        <textarea id="log-m4-dissertativa" class="input-box" placeholder="Ex: Para solucionar o problema, a empresa deve estruturar um processo eficiente de logística reversa para facilitar a devolução ou troca dos produtos..."></textarea>
+        <div id="feedback-m4" class="feedback-badge"></div>
+    </article>
+
+    <!-- MÓDULO 5: PRÁTICA EXTERNA - KANBAN / FLUXOGRAMA -->
+    <article class="module-card">
+        <div class="module-header">
+            <div class="module-number">5</div>
+            <h2>[Prática Externa] Mapeamento de Processos (Picking e Packing)</h2>
+        </div>
+        <div class="scenario-description">
+            Organizar visualmente as etapas de Separação (Picking) e Embalagem (Packing) reduz erros operacionais. Utilize o **Trello** para criar um quadro Kanban simples com as etapas do pedido (ex: Recebido, Em Separação, Embalado, Despachado) ou o **Canva** para desenhar um fluxograma.
+        </div>
+        <label style="font-weight: 600; font-size: 14px; display: block; margin-bottom: 8px;">
+            Cole abaixo o link público do seu Kanban ou Fluxograma gerado:
+        </label>
+        <input type="url" id="log-m5-link" class="input-box" placeholder="https://trello.com/b/... ou https://www.canva.com/...">
+        <div id="feedback-m5" class="feedback-badge"></div>
+    </article>
+
+</div>
+
+<script>
+    function validarTextoInteligente(texto, minPalavras = 8, minComprimento = 30) {
+        if (!texto) return { valido: false, motivo: "O campo não pode ficar vazio." };
+        const limpo = texto.trim();
+        if (limpo.length < minComprimento) return { valido: false, motivo: `Escreva uma resposta mais detalhada (mínimo de ${minComprimento} caracteres).` };
+        if (/^\d+$/.test(limpo)) return { valido: false, motivo: "Apenas números não são aceitos. Elabore um parecer técnico logístico." };
+
+        const palavras = limpo.split(/\s+/).filter(p => p.length > 0);
+        if (palavras.length < minPalavras) return { valido: false, motivo: `Sua resposta deve conter no mínimo ${minPalavras} palavras explicativas.` };
+
+        return { valido: true, motivo: "Análise recebida com sucesso!" };
+    }
+
+    function aplicarFeedback(elementId, resultado) {
+        const badge = document.getElementById(elementId);
+        if (resultado.valido) {
+            badge.className = "feedback-badge success";
+            badge.innerText = "✅ " + resultado.motivo;
+        } else {
+            badge.className = "feedback-badge error";
+            badge.innerText = "❌ " + resultado.motivo;
+        }
+    }
+
+    function validarTudo() {
+        let acertos = 0;
+        let total = 5;
+
+        // Módulo 1: Associação (Inbound/Outbound/Reversa)
+        const a1 = document.getElementById('log-m1-a1').value;
+        const a2 = document.getElementById('log-m1-a2').value;
+        const a3 = document.getElementById('log-m1-a3').value;
+
+        if (a1 === 'inbound' && a2 === 'outbound' && a3 === 'reversa') {
+            aplicarFeedback('feedback-m1', { valido: true, motivo: "Correto! Inbound é a entrada de insumos, Outbound é a saída/distribuição, e Reversa é o retorno." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m1', { valido: false, motivo: "Incorreto. Revise os conceitos: Recebimento = Inbound; Entrega ao cliente = Outbound; Retorno = Reversa." });
+        }
+
+        // Módulo 2: Matriz V/F (PEPS / JIT)
+        const vf1 = document.getElementById('log-m2-vf1').value;
+        const vf2 = document.getElementById('log-m2-vf2').value;
+
+        if (vf1 === 'V' && vf2 === 'F') {
+            aplicarFeedback('feedback-m2', { valido: true, motivo: "Excelente! PEPS previne perdas por validade (V). Just-in-Time faz exatamente o oposto: busca o estoque mínimo/zero (F)." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m2', { valido: false, motivo: "Atenção: O PEPS é vital para perecíveis (Afirmação 1 é Verdadeira). O Just-in-Time foca em estoque MÍNIMO, e não estoques gigantescos (Afirmação 2 é Falsa)." });
+        }
+
+        // Módulo 3: Cálculo Exato (Ponto de Pedido)
+        const inputVal = document.getElementById('log-m3-input').value.trim();
+        if (inputVal === '70') {
+            aplicarFeedback('feedback-m3', { valido: true, motivo: "Cálculo exato! (10 Demanda x 5 Lead Time) = 50. Somando ao Estoque de Segurança (20) = 70 unidades." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m3', { valido: false, motivo: "Incorreto. Multiplique a demanda pelo Lead Time e DEPOIS some o estoque de segurança (10x5 + 20)." });
+        }
+
+        // Módulo 4: Dissertativa Inteligente (Logística Reversa)
+        const textM4 = document.getElementById('log-m4-dissertativa').value;
+        const resM4 = validarTextoInteligente(textM4, 8, 30);
+        if (resM4.valido) {
+            const termosChave = /reversa|devolução|troca|inspeção|retorno|pós-venda|sustentabilidade/i;
+            if (!termosChave.test(textM4)) {
+                resM4.valido = false;
+                resM4.motivo = "Ação essencial faltando. Você deve citar processos de 'logística reversa', 'devolução', 'troca' ou 'inspeção' do material.";
+            } else {
+                resM4.motivo = "Diagnóstico perfeito! A Logística Reversa estruturada garante que a devolução/troca ocorra de forma rápida, mantendo a satisfação do cliente no pós-venda.";
+            }
+        }
+        aplicarFeedback('feedback-m4', resM4);
+        if (resM4.valido) acertos++;
+
+        // Módulo 5: Prática Externa (Link Trello/Canva)
+        const urlLink = document.getElementById('log-m5-link').value.trim();
+        const externalRegex = /^https?:\/\/(www\.)?(trello\.com|canva\.com)\/.+/i;
+        if (urlLink && externalRegex.test(urlLink)) {
+            aplicarFeedback('feedback-m5', { valido: true, motivo: "Link validado! Mapear as etapas visualmente ajuda a eliminar gargalos operacionais no armazém." });
+            acertos++;
+        } else {
+            aplicarFeedback('feedback-m5', { valido: false, motivo: "URL inválida. Certifique-se de colar o link público do Trello (trello.com) ou do Canva (canva.com)." });
+        }
+
+        // Atualização do Painel de Status
+        const statusSummary = document.getElementById('status-summary');
+        const completionText = document.getElementById('completion-text');
+
+        if (acertos === total) {
+            completionText.innerText = "Atividade Concluída com Sucesso!";
+            completionText.style.color = "var(--success-color)";
+            statusSummary.innerText = `Parabéns! Você validou corretamente todos os ${acertos} de ${total} módulos de Gestão Logística.`;
+        } else {
+            completionText.innerText = "Revisão Necessária";
+            completionText.style.color = "var(--error-color)";
+            statusSummary.innerText = `Atenção: Você validou ${acertos} de ${total} módulos. Corrija os itens marcados em vermelho e valide novamente.`;
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+.abas {
+  display: flex;
+  gap: var(--space-1);
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--line);
+}
+
+.aba {
+  padding: var(--space-3) var(--space-4);
+  color: var(--ink-soft);
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 140ms var(--ease-out), border-color 140ms var(--ease-out);
+}
+
+.aba:hover {
+  color: var(--ink);
+}
+
+.abaAtiva,
+.abaAtiva:hover {
+  color: var(--brand-deep);
+  border-bottom-color: var(--brand-deep);
+  font-weight: 600;
+}

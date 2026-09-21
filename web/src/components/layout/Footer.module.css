@@ -1,0 +1,24 @@
+.rodape {
+  border-top: 1px solid var(--line);
+  margin-top: var(--space-9);
+  background: var(--surface);
+}
+
+.interna {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  align-items: baseline;
+  justify-content: space-between;
+  color: var(--ink-faint);
+  font-size: var(--text-sm);
+}
+
+.marca {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink-soft);
+}

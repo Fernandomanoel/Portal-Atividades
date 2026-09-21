@@ -1,2 +1,9 @@
 *.log
 .DS_Store
+
+# Skill do Impeccable: link para um checkout local, fora do repositório.
+# Reinstale com `npx impeccable install --providers=claude --scope=project`.
+.claude/skills/impeccable
+
+# Capturas de revisão: geradas por web/scripts/capturar.mjs.
+.impeccable/review/

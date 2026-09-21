@@ -1,0 +1,38 @@
+.cabecalho {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.titulo {
+  font-size: var(--text-2xl);
+}
+
+.texto {
+  color: var(--ink-soft);
+  max-width: 68ch;
+  font-size: var(--text-md);
+}
+
+.voltar {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  align-self: flex-start;
+  margin-bottom: var(--space-2);
+  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-1);
+  margin-left: calc(var(--space-1) * -1);
+  border-radius: var(--radius-sm);
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  background: none;
+  border: 0;
+  transition: color 140ms var(--ease-out), background-color 140ms var(--ease-out);
+}
+
+.voltar:hover {
+  color: var(--ink);
+  background: var(--surface-soft);
+}

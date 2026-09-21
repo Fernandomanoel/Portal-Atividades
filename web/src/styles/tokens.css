@@ -1,0 +1,151 @@
+/* Paleta do portal. As cores base vêm do site anterior e são vinculantes;
+   o que muda é a amplitude do azul escuro e a existência de uma escala. */
+
+:root {
+  color-scheme: light;
+
+  --ground: #f4f6fb;
+  --ground-sunken: #e9edf6;
+  --surface: #ffffff;
+  --surface-soft: #eef2fb;
+  --surface-raised: #ffffff;
+
+  --line: #e6e9f2;
+  --line-strong: #d3dae9;
+
+  --ink: #2b2b2b;
+  --ink-soft: #5c6373;
+  --ink-faint: #838b9c;
+  --ink-on-brand: #ffffff;
+
+  --brand: #4f7cff;
+  --brand-hover: #3d69ee;
+  --brand-deep: #1e40af;
+  --brand-deepest: #16327a;
+  --brand-tint: #eef2fb;
+  --brand-tint-strong: #dde5fb;
+
+  --danger: #e5484d;
+  --danger-tint: #fdeced;
+  --success: #16843f;
+  --success-tint: #e8f5ec;
+  --warning: #9a6300;
+  --warning-tint: #fdf2e0;
+
+  --focus: #1e40af;
+
+  --shadow-1: 0 1px 2px rgba(22, 32, 68, 0.06), 0 1px 3px rgba(22, 32, 68, 0.05);
+  --shadow-2: 0 2px 4px rgba(22, 32, 68, 0.06), 0 6px 16px rgba(22, 32, 68, 0.08);
+  --shadow-3: 0 4px 8px rgba(22, 32, 68, 0.07), 0 16px 32px rgba(22, 32, 68, 0.11);
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: 0.9375rem;
+  --text-md: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.625rem;
+
+  --font-ui: "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: "Archivo", "Public Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --nav-height: 60px;
+  --page-max: 1180px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --ground: #101319;
+    --ground-sunken: #0a0d12;
+    --surface: #181c24;
+    --surface-soft: #1e242e;
+    --surface-raised: #1f2530;
+
+    --line: #2a313d;
+    --line-strong: #3a4352;
+
+    --ink: #eaedf4;
+    --ink-soft: #a5adbd;
+    --ink-faint: #7b8494;
+    --ink-on-brand: #0b0e14;
+
+    --brand: #7fa0ff;
+    --brand-hover: #96b1ff;
+    --brand-deep: #4f7cff;
+    --brand-deepest: #35539b;
+    --brand-tint: #1a2440;
+    --brand-tint-strong: #24325a;
+
+    --danger: #ff7b7f;
+    --danger-tint: #35181b;
+    --success: #5fcb85;
+    --success-tint: #12291c;
+    --warning: #e0a94a;
+    --warning-tint: #2e2413;
+
+    --focus: #7fa0ff;
+
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.45);
+    --shadow-3: 0 4px 8px rgba(0, 0, 0, 0.45), 0 16px 32px rgba(0, 0, 0, 0.5);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ground: #101319;
+  --ground-sunken: #0a0d12;
+  --surface: #181c24;
+  --surface-soft: #1e242e;
+  --surface-raised: #1f2530;
+
+  --line: #2a313d;
+  --line-strong: #3a4352;
+
+  --ink: #eaedf4;
+  --ink-soft: #a5adbd;
+  --ink-faint: #7b8494;
+  --ink-on-brand: #0b0e14;
+
+  --brand: #7fa0ff;
+  --brand-hover: #96b1ff;
+  --brand-deep: #4f7cff;
+  --brand-deepest: #35539b;
+  --brand-tint: #1a2440;
+  --brand-tint-strong: #24325a;
+
+  --danger: #ff7b7f;
+  --danger-tint: #35181b;
+  --success: #5fcb85;
+  --success-tint: #12291c;
+  --warning: #e0a94a;
+  --warning-tint: #2e2413;
+
+  --focus: #7fa0ff;
+
+  --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-2: 0 2px 4px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.45);
+  --shadow-3: 0 4px 8px rgba(0, 0, 0, 0.45), 0 16px 32px rgba(0, 0, 0, 0.5);
+}

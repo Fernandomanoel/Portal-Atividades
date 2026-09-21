@@ -52,8 +52,10 @@
   transition: border-color 140ms var(--ease-out);
 }
 
-.campo input:focus {
+.campo input:focus-visible {
   border-color: var(--brand);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .erro {

@@ -70,3 +70,16 @@
   letter-spacing: 0.06em;
   font-weight: 600;
 }
+
+/* Em tela estreita o rótulo disputa largura com o título, e o ícone já diz
+   a mesma coisa. */
+@media (max-width: 420px) {
+  .tipo {
+    display: none;
+  }
+
+  .item {
+    gap: var(--space-3);
+    padding: var(--space-3);
+  }
+}

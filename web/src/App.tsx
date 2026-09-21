@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { ProvedorProvaEmAndamento } from "@/hooks/ProvaEmAndamento";
@@ -13,33 +13,46 @@ import { IngresProvasPage } from "@/pages/IngresProvasPage";
 import { ProvasPage } from "@/pages/ProvasPage";
 import { QuizPage } from "@/pages/QuizPage";
 
-export default function App() {
+/** Os provedores ficam dentro do roteador para que a prova em andamento possa
+ *  usar o bloqueador de navegação, que só existe em data router. */
+function Raiz() {
   return (
     <ProvedorTema>
       <ProvedorProvaEmAndamento>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route index element={<HomePage />} />
-
-              <Route path="atividades" element={<AtividadesPage />} />
-              <Route path="atividades/:curso" element={<AtividadePage />} />
-
-              <Route path="ingles" element={<IngresHubPage />}>
-                <Route index element={<IngresAtividadesPage />} />
-                <Route path="atividades" element={<IngresAtividadesPage />} />
-                <Route path="provas" element={<IngresProvasPage />} />
-              </Route>
-              <Route path="ingles/atividades/:slug" element={<IngresAtividadePage />} />
-
-              <Route path="provas" element={<ProvasPage />} />
-              <Route path="provas/quiz/:categoria/:prova" element={<QuizPage />} />
-
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <Layout />
       </ProvedorProvaEmAndamento>
     </ProvedorTema>
   );
+}
+
+const roteador = createBrowserRouter([
+  {
+    element: <Raiz />,
+    children: [
+      { index: true, element: <HomePage /> },
+
+      { path: "atividades", element: <AtividadesPage /> },
+      { path: "atividades/:curso", element: <AtividadePage /> },
+
+      {
+        path: "ingles",
+        element: <IngresHubPage />,
+        children: [
+          { index: true, element: <IngresAtividadesPage /> },
+          { path: "atividades", element: <IngresAtividadesPage /> },
+          { path: "provas", element: <IngresProvasPage /> },
+        ],
+      },
+      { path: "ingles/atividades/:slug", element: <IngresAtividadePage /> },
+
+      { path: "provas", element: <ProvasPage /> },
+      { path: "provas/quiz/:categoria/:prova", element: <QuizPage /> },
+
+      { path: "*", element: <Navigate to="/" replace /> },
+    ],
+  },
+]);
+
+export default function App() {
+  return <RouterProvider router={roteador} />;
 }

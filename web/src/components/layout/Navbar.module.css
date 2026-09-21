@@ -82,6 +82,8 @@
 .busca:focus-within {
   background: var(--surface);
   border-color: var(--brand);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .busca input {

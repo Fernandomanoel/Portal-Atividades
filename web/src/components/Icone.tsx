@@ -66,8 +66,9 @@ const CAMINHOS: Record<NomeIcone, ReactElement> = {
   ),
   slides: (
     <>
-      <rect x="3.5" y="4.5" width="17" height="11" rx="2" />
-      <path d="M12 15.5V20m-3 0h6" />
+      <rect x="3.5" y="4" width="17" height="12" rx="2" />
+      <path d="M8 12.5v-3m4 3V8m4 4.5v-1.8" />
+      <path d="M12 16v4m-3 0h6" />
     </>
   ),
   link: (

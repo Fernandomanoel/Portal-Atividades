@@ -87,6 +87,14 @@
   gap: var(--space-3);
 }
 
+/* <legend> escapa da caixa do fieldset por padrão; o float devolve ele para
+   dentro do card, junto das opções que ele nomeia. */
+legend.enunciado {
+  float: left;
+  width: 100%;
+  padding: 0;
+}
+
 .numero {
   color: var(--ink-faint);
   font-variant-numeric: tabular-nums;
@@ -97,6 +105,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  clear: both;
 }
 
 .opcao {
@@ -137,8 +146,10 @@
   transition: border-color 140ms var(--ease-out);
 }
 
-.resposta:focus {
+.resposta:focus-visible {
   border-color: var(--brand);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .acoes {
@@ -215,8 +226,10 @@
   font-variant-numeric: tabular-nums;
 }
 
-.campoNota input:focus {
+.campoNota input:focus-visible {
   border-color: var(--brand);
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
 }
 
 .sair {

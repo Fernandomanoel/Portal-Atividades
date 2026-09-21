@@ -1,4 +1,9 @@
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  createHashRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 
 import { Layout } from "@/components/layout/Layout";
 import { ProvedorProvaEmAndamento } from "@/hooks/ProvaEmAndamento";
@@ -25,7 +30,13 @@ function Raiz() {
   );
 }
 
-const roteador = createBrowserRouter([
+/** Build de preview roda em host estático sem rewrite de SPA, onde só o hash
+ *  sobrevive ao recarregamento. Em produção continua sendo rota de caminho. */
+const criarRoteador = import.meta.env.VITE_PREVIEW
+  ? createHashRouter
+  : createBrowserRouter;
+
+const roteador = criarRoteador([
   {
     element: <Raiz />,
     children: [

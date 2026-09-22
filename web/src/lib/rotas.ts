@@ -9,6 +9,7 @@ export const rotas = {
   inglesAtividades: () => "/ingles/atividades",
   inglesAtividade: (slug: string) => `/ingles/atividades/${slug}`,
   inglesProvas: () => "/ingles/provas",
+  digitacao: () => "/digitacao",
   provas: () => "/provas",
   quiz: (categoria: string, prova: string) =>
     `/provas/quiz/${encodeURIComponent(categoria)}/${encodeURIComponent(prova)}`,

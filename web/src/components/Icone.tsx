@@ -19,7 +19,9 @@ export type NomeIcone =
   | "ingles"
   | "prova"
   | "check"
-  | "x";
+  | "x"
+  | "digitacao"
+  | "recomecar";
 
 /** Traçados em grade de 24, traço 1.6, pontas arredondadas. Um só sistema. */
 const CAMINHOS: Record<NomeIcone, ReactElement> = {
@@ -112,6 +114,18 @@ const CAMINHOS: Record<NomeIcone, ReactElement> = {
   ),
   check: <path d="m5 12.5 4.5 4.5L19 7" />,
   x: <path d="m6 6 12 12M18 6 6 18" />,
+  digitacao: (
+    <>
+      <rect x="2.5" y="6" width="19" height="12" rx="2" />
+      <path d="M6 9.5h.01M9.5 9.5h.01M13 9.5h.01M16.5 9.5h.01M6 12.8h.01M9.5 12.8h.01M13 12.8h.01M16.5 12.8h.01M8 15.6h8" />
+    </>
+  ),
+  recomecar: (
+    <>
+      <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1" />
+      <path d="M3.5 4.5V10H9" />
+    </>
+  ),
 };
 
 interface Props extends SVGProps<SVGSVGElement> {

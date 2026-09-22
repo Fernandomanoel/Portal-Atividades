@@ -1,116 +1,149 @@
 import { Link } from "react-router-dom";
 
-import { Icone } from "@/components/Icone";
+import { Icone, type NomeIcone } from "@/components/Icone";
 import { ATIVIDADES } from "@/data/atividades";
+import { EXERCICIOS } from "@/data/digitacao";
 import { ATIVIDADES_INGLES, PROVAS_INGLES } from "@/data/ingles";
 import { rotas } from "@/lib/rotas";
-import { CATEGORIAS } from "@/types/curso";
+import { CATEGORIAS, type CategoriaAtividade } from "@/types/curso";
 import estilos from "./HomePage.module.css";
 
-function plural(n: number, singular: string, plural: string) {
+const ICONE: Record<CategoriaAtividade, NomeIcone> = {
+  informatica: "informatica",
+  administrativa: "administrativa",
+  programacao: "programacao",
+  design: "design",
+};
+
+function contar(n: number, singular: string, plural: string) {
   return `${n} ${n === 1 ? singular : plural}`;
 }
 
 export function HomePage() {
-  const totalCursos = ATIVIDADES.length;
+  const totalIngles = ATIVIDADES_INGLES.length + PROVAS_INGLES.length;
 
   return (
     <>
-      <section className={estilos.abertura}>
+      <header className={estilos.abertura}>
         <h1 className={estilos.titulo}>O material da sua aula fica aqui.</h1>
         <p className={estilos.texto}>
-          Escolha a trilha do seu curso para ver os arquivos, exercícios e slides.
-          A área de provas é separada e usada pelo instrutor.
+          Escolha a trilha do seu curso para abrir os arquivos, exercícios e
+          slides da aula.
         </p>
+      </header>
+
+      <section aria-labelledby="titulo-trilhas">
+        <h2 id="titulo-trilhas" className="sr-only">
+          Trilhas de atividades
+        </h2>
+
+        <ul className={estilos.trilhas}>
+          {CATEGORIAS.map((categoria, indice) => {
+            const cursos = ATIVIDADES.filter(
+              (curso) => curso.categoria === categoria.id,
+            ).length;
+            const temConteudo = cursos > 0;
+
+            return (
+              <li
+                key={categoria.id}
+                className={
+                  temConteudo
+                    ? `${estilos.trilha} ${estilos.trilhaViva}`
+                    : estilos.trilha
+                }
+                style={{ "--atraso": `${indice * 60}ms` } as React.CSSProperties}
+              >
+                <span className={estilos.selo}>
+                  <Icone nome={ICONE[categoria.id]} tamanho={22} />
+                </span>
+
+                <div className={estilos.corpo}>
+                  <h3 className={estilos.nome}>
+                    <Link to={rotas.atividades(categoria.id)}>
+                      {categoria.nome}
+                    </Link>
+                  </h3>
+                  <p className={estilos.descricao}>{categoria.descricao}</p>
+                </div>
+
+                <span
+                  className={temConteudo ? estilos.contagem : estilos.aguardando}
+                >
+                  {temConteudo ? contar(cursos, "curso", "cursos") : "em breve"}
+                </span>
+
+                <Icone nome="seta-direita" tamanho={18} className={estilos.seta} />
+              </li>
+            );
+          })}
+        </ul>
       </section>
 
-      <section aria-label="Seções do portal" className={estilos.destinos}>
-        <article className={estilos.destino}>
-          <div className={estilos.topo}>
-            <span className={estilos.selo}>
-              <Icone nome="informatica" />
-            </span>
-            <h2 className={estilos.nome}>
-              <Link to={rotas.atividades()}>Atividades</Link>
-            </h2>
-          </div>
-          <p className={estilos.resumo}>
-            {totalCursos > 0
-              ? `${plural(totalCursos, "curso", "cursos")} em quatro trilhas.`
-              : "Quatro trilhas, organizadas por área."}
-          </p>
-          <ul className={estilos.lista}>
-            {CATEGORIAS.map((categoria) => {
-              const quantos = ATIVIDADES.filter(
-                (curso) => curso.categoria === categoria.id,
-              ).length;
-              return (
-                <li key={categoria.id} className={estilos.item}>
-                  <span className={estilos.itemNome}>{categoria.nome}</span>
-                  {quantos > 0 ? (
-                    <span className={`${estilos.contagem} tabular`}>
-                      {plural(quantos, "curso", "cursos")}
-                    </span>
-                  ) : (
-                    <span className={estilos.vazio}>em breve</span>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </article>
-
-        <article className={estilos.destino}>
-          <div className={estilos.topo}>
-            <span className={estilos.selo}>
-              <Icone nome="ingles" />
+      <section className={estilos.secundarios} aria-label="Outras seções">
+        <article className={estilos.ingles}>
+          <div className={estilos.inglesTopo}>
+            <span
+              className={
+                totalIngles > 0
+                  ? `${estilos.selo} ${estilos.seloVivo}`
+                  : estilos.selo
+              }
+            >
+              <Icone nome="ingles" tamanho={22} />
             </span>
             <h2 className={estilos.nome}>
               <Link to={rotas.ingles()}>Inglês</Link>
             </h2>
           </div>
-          <p className={estilos.resumo}>
-            Trilha própria, com atividades e provas separadas.
+          <p className={estilos.descricao}>
+            Trilha à parte, com atividades e provas próprias.
           </p>
-          <ul className={estilos.lista}>
-            <li className={estilos.item}>
-              <span className={estilos.itemNome}>Atividades</span>
-              {ATIVIDADES_INGLES.length > 0 ? (
-                <span className={`${estilos.contagem} tabular`}>
-                  {plural(ATIVIDADES_INGLES.length, "curso", "cursos")}
-                </span>
-              ) : (
-                <span className={estilos.vazio}>em breve</span>
-              )}
-            </li>
-            <li className={estilos.item}>
-              <span className={estilos.itemNome}>Provas</span>
-              {PROVAS_INGLES.length > 0 ? (
-                <span className={`${estilos.contagem} tabular`}>
-                  {plural(PROVAS_INGLES.length, "prova", "provas")}
-                </span>
-              ) : (
-                <span className={estilos.vazio}>em breve</span>
-              )}
-            </li>
-          </ul>
+          <span className={totalIngles > 0 ? estilos.contagem : estilos.aguardando}>
+            {totalIngles > 0
+              ? contar(totalIngles, "item", "itens")
+              : "em breve"}
+          </span>
         </article>
 
-        <article className={estilos.destino}>
-          <div className={estilos.topo}>
-            <span className={`${estilos.selo} ${estilos.seloRestrito}`}>
-              <Icone nome="prova" />
+        <article className={estilos.digitacao}>
+          <div className={estilos.inglesTopo}>
+            <span
+              className={
+                EXERCICIOS.length > 0
+                  ? `${estilos.selo} ${estilos.seloVivo}`
+                  : estilos.selo
+              }
+            >
+              <Icone nome="digitacao" tamanho={22} />
             </span>
             <h2 className={estilos.nome}>
+              <Link to={rotas.digitacao()}>Digitação</Link>
+            </h2>
+          </div>
+          <p className={estilos.descricao}>
+            Treino de teclado, medido em velocidade e precisão.
+          </p>
+          <span
+            className={EXERCICIOS.length > 0 ? estilos.contagem : estilos.aguardando}
+          >
+            {EXERCICIOS.length > 0
+              ? contar(EXERCICIOS.length, "exercício", "exercícios")
+              : "em breve"}
+          </span>
+        </article>
+
+        <article className={estilos.provas}>
+          <div className={estilos.inglesTopo}>
+            <span className={`${estilos.selo} ${estilos.seloProvas}`}>
+              <Icone nome="cadeado" tamanho={20} />
+            </span>
+            <h2 className={estilos.nomeQuieto}>
               <Link to={rotas.provas()}>Provas</Link>
             </h2>
           </div>
-          <p className={estilos.resumo}>
-            Provas dos cursos, para download ou respondidas aqui mesmo.
-          </p>
-          <p className={estilos.restrito}>
-            <Icone nome="cadeado" tamanho={16} />
-            Acesso do instrutor
+          <p className={estilos.descricao}>
+            Área do instrutor. Pede senha ao entrar.
           </p>
         </article>
       </section>

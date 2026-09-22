@@ -9,6 +9,7 @@ import estilos from "./Navbar.module.css";
 const SECOES = [
   { para: rotas.atividades(), rotulo: "Atividades" },
   { para: rotas.ingles(), rotulo: "Inglês" },
+  { para: rotas.digitacao(), rotulo: "Digitação" },
   { para: rotas.provas(), rotulo: "Provas" },
 ];
 
